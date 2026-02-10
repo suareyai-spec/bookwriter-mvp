@@ -1,17 +1,11 @@
 # USER.md - About Your Human
 
-_Learn about the person you're helping. Update this as you go._
-
-- **Name:**
-- **What to call them:**
-- **Pronouns:** _(optional)_
-- **Timezone:**
-- **Notes:**
+- **Name:** David Suarez
+- **What to call them:** David
+- **Pronouns:** he/him
+- **Timezone:** (US-based, exact TZ TBD)
+- **Notes:** Not very tech-savvy. Keep instructions simple. Budget-conscious.
 
 ## Context
 
-_(What do they care about? What projects are they working on? What annoys them? What makes them laugh? Build this over time.)_
-
----
-
-The more you know, the better you can help. But remember — you're learning about a person, not building a dossier. Respect the difference.
+David is building AI-powered software products. His first app is MyBook (AI book generator). He's learning as he goes and prefers step-by-step guidance without jargon. He likes clean, modern aesthetics — celadon green is his color. He wants to monetize his apps eventually (Stripe, subscriptions, pay-per-use). Primary setup: Mac Mini connecting via Tailscale to a Hostinger VPS running OpenClaw + his apps.
