@@ -14,13 +14,22 @@ const Body = z.object({
   language: z.string().max(30).optional(),
 });
 
-function getChapterPlan(bookLength: string): { chapters: number; wordsPerChapter: number } {
-  if (bookLength?.includes("10,000")) return { chapters: 5, wordsPerChapter: 2000 };
-  if (bookLength?.includes("25,000")) return { chapters: 8, wordsPerChapter: 3000 };
-  if (bookLength?.includes("50,000")) return { chapters: 10, wordsPerChapter: 5000 };
-  if (bookLength?.includes("75,000")) return { chapters: 12, wordsPerChapter: 6000 };
-  if (bookLength?.includes("100,000")) return { chapters: 15, wordsPerChapter: 6500 };
-  return { chapters: 5, wordsPerChapter: 2000 };
+function getChapterPlan(bookLength: string): { chapters: number; totalWords: number } {
+  if (bookLength?.includes("10,000")) return { chapters: 5, totalWords: 10000 };
+  if (bookLength?.includes("25,000")) return { chapters: 8, totalWords: 24000 };
+  if (bookLength?.includes("50,000")) return { chapters: 10, totalWords: 50000 };
+  if (bookLength?.includes("75,000")) return { chapters: 12, totalWords: 72000 };
+  if (bookLength?.includes("100,000")) return { chapters: 15, totalWords: 97500 };
+  return { chapters: 5, totalWords: 10000 };
+}
+
+function countChaptersInOutline(outline: string): number {
+  const matches = outline.match(/\bchapter\s+\d+/gi);
+  if (matches) {
+    const nums = matches.map(m => parseInt(m.replace(/\D+/g, ""), 10)).filter(n => !isNaN(n));
+    if (nums.length > 0) return Math.max(...nums);
+  }
+  return 0;
 }
 
 function isEducational(genre: string, tone: string): boolean {
@@ -68,7 +77,7 @@ ${body.description}`;
 
 ${bookContext}
 
-Create a detailed TABLE OF CONTENTS with exactly ${plan.chapters} chapters.
+Create a detailed TABLE OF CONTENTS. If the author's vision specifies a number of chapters, use that exact number. Otherwise use approximately ${plan.chapters} chapters.
 
 CRITICAL REQUIREMENTS FOR EDUCATIONAL/NON-FICTION:
 - Go DEEP, not wide. Each chapter should thoroughly explore its subject with real substance.
@@ -90,7 +99,7 @@ Write the entire outline in ${lang}.`
 
 ${bookContext}
 
-Create a detailed TABLE OF CONTENTS with exactly ${plan.chapters} chapters.
+Create a detailed TABLE OF CONTENTS. If the author's vision specifies a number of chapters, use that exact number. Otherwise use approximately ${plan.chapters} chapters.
 
 CRITICAL REQUIREMENTS FOR FICTION:
 - Characters must feel like REAL PEOPLE with contradictions, flaws, desires they don't fully understand, and histories that shape their behavior.
@@ -113,23 +122,25 @@ Write the entire outline in ${lang}.`;
       async start(controller) {
         try {
           // Step 1: Generate outline
-          controller.enqueue(new TextEncoder().encode(sseEvent({ type: "progress", chapter: 0, totalChapters: plan.chapters, title: "Generating outline...", status: "outline" })));
+          controller.enqueue(new TextEncoder().encode(sseEvent({ type: "progress", chapter: 0, totalChapters: 0, title: "Generating outline...", status: "outline" })));
           const outline = await callClaude(outlinePrompt, 3000);
-          controller.enqueue(new TextEncoder().encode(sseEvent({ type: "outline", content: outline, totalChapters: plan.chapters })));
-
-          // Extract chapter titles from outline
+          // Extract chapter titles from outline to determine actual count
           const chapterTitles: string[] = [];
           const titleRegex = /chapter\s+\d+[:\s]+(.+)/gi;
           let match;
           while ((match = titleRegex.exec(outline)) !== null) {
             chapterTitles.push(match[1].trim().replace(/\*+/g, "").trim());
           }
+          const actualChapters = chapterTitles.length > 0 ? chapterTitles.length : plan.chapters;
+          const wordsPerChapter = Math.round(plan.totalWords / actualChapters);
+
+          controller.enqueue(new TextEncoder().encode(sseEvent({ type: "outline", content: outline, totalChapters: actualChapters })));
 
           // Step 2: Generate each chapter
           const chapters: string[] = [];
-          for (let i = 1; i <= plan.chapters; i++) {
+          for (let i = 1; i <= actualChapters; i++) {
             const chTitle = chapterTitles[i - 1] || `Chapter ${i}`;
-            controller.enqueue(new TextEncoder().encode(sseEvent({ type: "progress", chapter: i, totalChapters: plan.chapters, title: chTitle, status: "writing" })));
+            controller.enqueue(new TextEncoder().encode(sseEvent({ type: "progress", chapter: i, totalChapters: actualChapters, title: chTitle, status: "writing" })));
 
             const prevSummary = chapters.length > 0
               ? `\nSummary of previous chapters:\n${chapters.map((c, idx) => `Chapter ${idx + 1}: ${c.slice(0, 500)}...`).join("\n\n")}`
@@ -144,7 +155,7 @@ Full book outline:
 ${outline}
 ${prevSummary}
 
-Now write CHAPTER ${i} in full. Target: approximately ${plan.wordsPerChapter} words. Write in ${lang}.
+Now write CHAPTER ${i} in full. Target: approximately ${wordsPerChapter} words. Write in ${lang}.
 
 REQUIREMENTS FOR THIS CHAPTER:
 - Write with DEPTH and AUTHORITY. You are the world's foremost expert on this subject.
@@ -171,7 +182,7 @@ Full book outline:
 ${outline}
 ${prevSummary}
 
-Now write CHAPTER ${i} in full. Target: approximately ${plan.wordsPerChapter} words. Write in ${lang}.
+Now write CHAPTER ${i} in full. Target: approximately ${wordsPerChapter} words. Write in ${lang}.
 
 REQUIREMENTS FOR THIS CHAPTER:
 - Write like a published literary novelist, not an AI. NO cliches, NO generic prose, NO melodrama.
@@ -193,7 +204,7 @@ Write Chapter ${i} now:`;
 
             const chapter = await callClaude(chapterPrompt, 8192);
             chapters.push(chapter);
-            controller.enqueue(new TextEncoder().encode(sseEvent({ type: "chapter", chapter: i, totalChapters: plan.chapters, title: chTitle, content: chapter })));
+            controller.enqueue(new TextEncoder().encode(sseEvent({ type: "chapter", chapter: i, totalChapters: actualChapters, title: chTitle, content: chapter })));
           }
 
           const fullBook = `${outline}\n\n${"━".repeat(50)}\n\n${chapters.join("\n\n" + "━".repeat(50) + "\n\n")}`;
