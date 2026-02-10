@@ -5,33 +5,49 @@ import { openai, BUDGET } from "@/lib/openai";
 const Body = z.object({
   title: z.string().min(1).max(200),
   description: z.string().min(10).max(5000),
+  genre: z.string().max(60).optional(),
+  tone: z.string().max(60).optional(),
+  audience: z.string().max(200).optional(),
 });
 
 export async function POST(req: Request) {
   try {
     const body = Body.parse(await req.json());
 
-    const prompt = `You are a professional book author. Write original content only.
+    const prompt = `You are a world-class professional book author and subject matter expert. Write original, publication-quality content only.
 
-Book Title: "${body.title}"
+BOOK DETAILS:
+Title: "${body.title}"
+Genre: ${body.genre || "General"}
+Tone: ${body.tone || "Professional"}
+${body.audience ? `Target Audience: ${body.audience}` : ""}
 
-Author's Vision:
+AUTHOR'S VISION:
 ${body.description}
 
-Based on the above, create:
+YOUR TASK — Create the following:
 
-1) A detailed TABLE OF CONTENTS with chapter titles and brief descriptions (8-12 chapters)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 TABLE OF CONTENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Create a detailed table of contents with 8-12 chapters. Each chapter should have a title and a 1-2 sentence description of what it covers.
 
-2) CHAPTER 1 — Write the full first chapter (~1500 words). Make it compelling, well-researched, and professional.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📖 CHAPTER 1 (Full Chapter — ~1500 words)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Write the complete first chapter. Make it compelling and set the foundation for the entire book.
 
-3) CHAPTER 2 — Write the full second chapter (~1500 words). Continue the narrative/guide naturally.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📖 CHAPTER 2 (Full Chapter — ~1500 words)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Write the complete second chapter. Build naturally on Chapter 1.
 
-Guidelines:
-- Write in a professional, authoritative tone
-- Include real-world context and practical insights
-- Make it engaging and informative
+QUALITY GUIDELINES:
+- Write at a professional, published-book level
+- Include real-world context, practical insights, and depth
+- Use engaging prose — not AI-summary style
 - Avoid imitating any specific living author
-- This should read like a published book, not an AI summary`.slice(0, BUDGET.maxPromptChars);
+- Structure with clear headings and flow`.slice(0, BUDGET.maxPromptChars);
 
     const resp = await openai.responses.create({
       model: "gpt-4.1-mini",
