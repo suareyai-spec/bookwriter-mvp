@@ -25,6 +25,7 @@ export default function Home() {
   const [tone, setTone] = useState("Professional & Authoritative");
   const [audience, setAudience] = useState("");
   const [bookLength, setBookLength] = useState("50,000 words (~200 pages)");
+  const [language, setLanguage] = useState("English");
   const [result, setResult] = useState("");
   const [error, setError] = useState("");
 
@@ -37,7 +38,7 @@ export default function Home() {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description, genre, tone, audience, bookLength }),
+        body: JSON.stringify({ title, description, genre, tone, audience, bookLength, language }),
       });
       const data = await res.json();
       if (data.error) {
@@ -159,6 +160,27 @@ export default function Home() {
                 </select>
               </div>
 
+              {/* Language */}
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Language</label>
+                <select
+                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl p-3.5 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all appearance-none"
+                  value={language}
+                  onChange={(e) => setLanguage(e.target.value)}
+                >
+                  <option value="English" className="bg-gray-900">🇺🇸 English</option>
+                  <option value="Spanish" className="bg-gray-900">🇪🇸 Spanish / Español</option>
+                  <option value="French" className="bg-gray-900">🇫🇷 French / Français</option>
+                  <option value="Portuguese" className="bg-gray-900">🇧🇷 Portuguese / Português</option>
+                  <option value="German" className="bg-gray-900">🇩🇪 German / Deutsch</option>
+                  <option value="Italian" className="bg-gray-900">🇮🇹 Italian / Italiano</option>
+                  <option value="Chinese" className="bg-gray-900">🇨🇳 Chinese / 中文</option>
+                  <option value="Japanese" className="bg-gray-900">🇯🇵 Japanese / 日本語</option>
+                  <option value="Korean" className="bg-gray-900">🇰🇷 Korean / 한국어</option>
+                  <option value="Arabic" className="bg-gray-900">🇸🇦 Arabic / العربية</option>
+                </select>
+              </div>
+
               {/* Audience */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">Target Audience <span className="text-gray-600">(optional)</span></label>
@@ -258,6 +280,8 @@ export default function Home() {
                   <span>{tone}</span>
                   <span>·</span>
                   <span>{bookLength}</span>
+                  <span>·</span>
+                  <span>{language}</span>
                 </div>
               </div>
 

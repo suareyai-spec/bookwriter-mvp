@@ -9,6 +9,7 @@ const Body = z.object({
   tone: z.string().max(60).optional(),
   audience: z.string().max(200).optional(),
   bookLength: z.string().max(100).optional(),
+  language: z.string().max(30).optional(),
 });
 
 export async function POST(req: Request) {
@@ -22,6 +23,7 @@ Title: "${body.title}"
 Genre: ${body.genre || "General"}
 Tone: ${body.tone || "Professional"}
 Target Book Length: ${body.bookLength || "50,000 words (~200 pages)"}
+Language: ${body.language || "English"} — Write the ENTIRE book in ${body.language || "English"}.
 ${body.audience ? `Target Audience: ${body.audience}` : ""}
 
 AUTHOR'S VISION:
