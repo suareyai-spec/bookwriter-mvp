@@ -151,11 +151,11 @@ export default function Home() {
                   value={bookLength}
                   onChange={(e) => setBookLength(e.target.value)}
                 >
-                  <option value="10,000 words (~40 pages)" className="bg-gray-900">Short — ~40 pages (10k words)</option>
-                  <option value="25,000 words (~100 pages)" className="bg-gray-900">Medium — ~100 pages (25k words)</option>
-                  <option value="50,000 words (~200 pages)" className="bg-gray-900">Standard — ~200 pages (50k words)</option>
-                  <option value="75,000 words (~300 pages)" className="bg-gray-900">Long — ~300 pages (75k words)</option>
-                  <option value="100,000 words (~400 pages)" className="bg-gray-900">Epic — ~400 pages (100k words)</option>
+                  <option value="10,000 words (~40 pages)" className="bg-gray-900">Short — 10,000 words · ~40 pages · 5 chapters</option>
+                  <option value="25,000 words (~100 pages)" className="bg-gray-900">Medium — 24,000 words · ~100 pages · 8 chapters</option>
+                  <option value="50,000 words (~200 pages)" className="bg-gray-900">Standard — 50,000 words · ~200 pages · 10 chapters</option>
+                  <option value="75,000 words (~300 pages)" className="bg-gray-900">Long — 72,000 words · ~300 pages · 12 chapters</option>
+                  <option value="100,000 words (~400 pages)" className="bg-gray-900">Epic — 97,500 words · ~400 pages · 15 chapters</option>
                 </select>
               </div>
 
@@ -306,6 +306,12 @@ export default function Home() {
                   <span>·</span>
                   <span>{language}</span>
                 </div>
+              </div>
+
+              {/* Word count bar */}
+              <div className="flex justify-center gap-6 py-3 border-b border-white/[0.06] text-sm text-gray-400">
+                <span>📝 {result.split(/\s+/).filter(Boolean).length.toLocaleString()} words</span>
+                <span>📄 ~{Math.ceil(result.split(/\s+/).filter(Boolean).length / 250)} pages</span>
               </div>
 
               {/* Book Text */}
