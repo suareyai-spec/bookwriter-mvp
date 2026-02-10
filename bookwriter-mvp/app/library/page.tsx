@@ -7,6 +7,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 
 interface UsageData {
+  isAdmin?: boolean;
   subscriptionPlan: string | null;
   subscriptionStatus: string | null;
   monthlyBooksUsed: number;
@@ -132,7 +133,11 @@ export default function LibraryPage() {
             <div className="mb-8 bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-5">
               <div className="flex items-center justify-between flex-wrap gap-4">
                 <div>
-                  {usage.subscriptionPlan && usage.subscriptionStatus === "active" ? (
+                  {usage.isAdmin ? (
+                    <div className="text-sm font-medium text-amber-400">
+                      Admin — Unlimited Access
+                    </div>
+                  ) : usage.subscriptionPlan && usage.subscriptionStatus === "active" ? (
                     <>
                       <div className="text-sm font-medium text-gray-300">
                         {usage.subscriptionPlan === "starter" ? "Starter" : usage.subscriptionPlan === "author" ? "Author" : "Pro Author"} Plan

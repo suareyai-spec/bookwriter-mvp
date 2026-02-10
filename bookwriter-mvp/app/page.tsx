@@ -576,7 +576,12 @@ function HomeContent() {
               </div>
 
               {/* Usage Info */}
-              {usage && usage.subscriptionPlan && usage.subscriptionStatus === "active" && (
+              {usage?.isAdmin && (
+                <div className="text-sm text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-xl p-3 text-center font-medium">
+                  Admin — Unlimited Access
+                </div>
+              )}
+              {usage && !usage.isAdmin && usage.subscriptionPlan && usage.subscriptionStatus === "active" && (
                 <div className="text-sm text-gray-400 bg-white/[0.03] border border-white/[0.06] rounded-xl p-3 flex items-center justify-between">
                   <span>
                     {usage.subscriptionPlan === "starter" ? "Starter" : usage.subscriptionPlan === "author" ? "Author" : "Pro Author"} Plan — {usage.monthlyCreditsRemaining} monthly credits remaining
@@ -586,7 +591,7 @@ function HomeContent() {
               )}
 
               {/* Plan restriction warning */}
-              {usage && usage.subscriptionPlan && usage.subscriptionStatus === "active" && (() => {
+              {usage && !usage.isAdmin && usage.subscriptionPlan && usage.subscriptionStatus === "active" && (() => {
                 const sizeMap: Record<string, string> = { "10,000": "short", "25,000": "medium", "50,000": "standard", "75,000": "standard", "100,000": "epic" };
                 const selectedSize = Object.entries(sizeMap).find(([k]) => bookLength.includes(k))?.[1] || "short";
                 if (selectedSize === "epic") {

@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { PLANS, getBookSize, getBookCreditCost, PlanKey } from "@/lib/stripe";
+import { isAdmin } from "@/lib/config";
 
 export const maxDuration = 600;
 export const dynamic = "force-dynamic";
@@ -99,13 +100,19 @@ export async function POST(req: Request) {
       return new Response(JSON.stringify({ error: "User not found" }), { status: 404, headers: { "Content-Type": "application/json" } });
     }
 
+    const body = Body.parse(await req.json());
+    const bookSize = getBookSize(body.bookLength || "10,000 words (~40 pages)");
+
+    // Admin bypass — skip all payment checks
+    if (isAdmin(user.email)) {
+      await prisma.user.update({ where: { id: userId }, data: { isGenerating: true } });
+      // Skip to generation (falls through to after payment gate)
+    } else {
+
     // Check if already generating
     if (user.isGenerating) {
       return new Response(JSON.stringify({ error: "You already have a book being generated. Please wait for it to complete." }), { status: 429, headers: { "Content-Type": "application/json" } });
     }
-
-    const body = Body.parse(await req.json());
-    const bookSize = getBookSize(body.bookLength || "10,000 words (~40 pages)");
     const userPlan = user.subscriptionPlan as PlanKey | null;
     const isActive = user.subscriptionStatus === "active";
 
@@ -172,6 +179,8 @@ export async function POST(req: Request) {
 
     // Mark as generating
     await prisma.user.update({ where: { id: userId }, data: { isGenerating: true } });
+
+    } // end admin bypass else
 
     // --- END PAYMENT GATE ---
 

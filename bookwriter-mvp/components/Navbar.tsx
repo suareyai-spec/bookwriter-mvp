@@ -27,7 +27,9 @@ export default function Navbar() {
     }
   }, [session]);
 
-  const badge = plan ? PLAN_BADGES[plan] : null;
+  const badge = plan === "admin"
+    ? { label: "Admin", color: "bg-amber-500/20 text-amber-400 border-amber-500/30" }
+    : plan ? PLAN_BADGES[plan] : null;
 
   return (
     <nav className="flex items-center justify-between px-6 py-5 max-w-5xl mx-auto">

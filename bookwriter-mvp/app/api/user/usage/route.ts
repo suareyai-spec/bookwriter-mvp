@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { PLANS, PlanKey } from "@/lib/stripe";
+import { isAdmin } from "@/lib/config";
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -13,6 +14,21 @@ export async function GET() {
   const userId = (session.user as any).id as string;
   const user = await prisma.user.findUnique({ where: { id: userId } });
   if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
+
+  if (isAdmin(user.email)) {
+    return NextResponse.json({
+      isAdmin: true,
+      subscriptionPlan: "admin",
+      subscriptionStatus: "active",
+      monthlyBooksUsed: 0,
+      monthlyCreditsTotal: Infinity,
+      monthlyCreditsRemaining: Infinity,
+      maxProjects: Infinity,
+      allowedSizes: ["short", "medium", "standard", "epic"],
+      credits: [],
+      creditCounts: { short: 0, medium: 0, standard: 0, epic: 0 },
+    });
+  }
 
   // Check if monthly reset is needed
   if (user.monthlyResetDate && new Date() > user.monthlyResetDate) {
