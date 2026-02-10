@@ -6,6 +6,15 @@ import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 
+interface UsageData {
+  subscriptionPlan: string | null;
+  subscriptionStatus: string | null;
+  monthlyBooksUsed: number;
+  monthlyCreditsTotal: number;
+  monthlyCreditsRemaining: number;
+  creditCounts: Record<string, number>;
+}
+
 interface BookData {
   id: string;
   title: string;
@@ -20,6 +29,7 @@ export default function LibraryPage() {
   const router = useRouter();
   const [books, setBooks] = useState<BookData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [usage, setUsage] = useState<UsageData | null>(null);
 
   const fetchBooks = useCallback(async () => {
     const res = await fetch("/api/books");
@@ -30,13 +40,19 @@ export default function LibraryPage() {
     setLoading(false);
   }, []);
 
+  const fetchUsage = useCallback(async () => {
+    const res = await fetch("/api/user/usage");
+    if (res.ok) setUsage(await res.json());
+  }, []);
+
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/auth/login");
     } else if (status === "authenticated") {
       fetchBooks();
+      fetchUsage();
     }
-  }, [status, router, fetchBooks]);
+  }, [status, router, fetchBooks, fetchUsage]);
 
   async function deleteBook(id: string) {
     if (!confirm("Are you sure you want to delete this book?")) return;
@@ -110,6 +126,50 @@ export default function LibraryPage() {
               Create New Book
             </Link>
           </div>
+
+          {/* Subscription Status Bar */}
+          {usage && (
+            <div className="mb-8 bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-5">
+              <div className="flex items-center justify-between flex-wrap gap-4">
+                <div>
+                  {usage.subscriptionPlan && usage.subscriptionStatus === "active" ? (
+                    <>
+                      <div className="text-sm font-medium text-gray-300">
+                        {usage.subscriptionPlan === "starter" ? "Starter" : usage.subscriptionPlan === "author" ? "Author" : "Pro Author"} Plan
+                        <span className="text-gray-500 ml-2">
+                          {usage.monthlyBooksUsed} of {usage.monthlyCreditsTotal} monthly credits used
+                        </span>
+                      </div>
+                      <div className="mt-2 w-48 h-2 bg-white/[0.06] rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all"
+                          style={{ width: `${Math.min(100, (usage.monthlyBooksUsed / usage.monthlyCreditsTotal) * 100)}%` }}
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-sm text-gray-400">No active subscription</div>
+                  )}
+                  {(usage.creditCounts.short > 0 || usage.creditCounts.medium > 0 || usage.creditCounts.standard > 0 || usage.creditCounts.epic > 0) && (
+                    <div className="mt-2 flex gap-3 text-xs text-gray-500">
+                      {usage.creditCounts.short > 0 && <span>{usage.creditCounts.short} short credit{usage.creditCounts.short > 1 ? "s" : ""}</span>}
+                      {usage.creditCounts.medium > 0 && <span>{usage.creditCounts.medium} medium credit{usage.creditCounts.medium > 1 ? "s" : ""}</span>}
+                      {usage.creditCounts.standard > 0 && <span>{usage.creditCounts.standard} standard credit{usage.creditCounts.standard > 1 ? "s" : ""}</span>}
+                      {usage.creditCounts.epic > 0 && <span>{usage.creditCounts.epic} epic credit{usage.creditCounts.epic > 1 ? "s" : ""}</span>}
+                    </div>
+                  )}
+                </div>
+                <div className="flex gap-2">
+                  <Link
+                    href="/pricing"
+                    className="text-sm bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] text-gray-300 rounded-lg px-4 py-2 transition-all"
+                  >
+                    {usage.subscriptionPlan ? "Upgrade Plan" : "Subscribe"}
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
 
           {books.length === 0 ? (
             <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-12 text-center">

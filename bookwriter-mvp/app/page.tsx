@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, Suspense, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
+import UpsellModal from "@/components/UpsellModal";
 import Link from "next/link";
 
 interface ReferenceItem {
@@ -123,6 +124,18 @@ function HomeContent() {
     setReferences(prev => prev.filter((_, i) => i !== index));
   }
 
+  // Usage/payment state
+  const [usage, setUsage] = useState<any>(null);
+  const [upsellOpen, setUpsellOpen] = useState(false);
+  const [upsellMessage, setUpsellMessage] = useState("");
+  const [upsellSize, setUpsellSize] = useState("any");
+
+  useEffect(() => {
+    if (session?.user) {
+      fetch("/api/user/usage").then((r) => r.json()).then(setUsage).catch(() => {});
+    }
+  }, [session]);
+
   // Streaming state
   const [outline, setOutline] = useState("");
   const [chapters, setChapters] = useState<ChapterInfo[]>([]);
@@ -205,7 +218,13 @@ function HomeContent() {
 
       if (!res.ok || !res.body) {
         const data = await res.json().catch(() => ({ error: "Failed to connect" }));
-        setError(data.error || "Generation failed");
+        if (data.needsSubscription || data.needsCredit) {
+          setUpsellMessage(data.error);
+          setUpsellSize(data.creditSize || "any");
+          setUpsellOpen(true);
+        } else {
+          setError(data.error || "Generation failed");
+        }
         setStep("input");
         return;
       }
@@ -556,13 +575,36 @@ function HomeContent() {
                 )}
               </div>
 
+              {/* Usage Info */}
+              {usage && usage.subscriptionPlan && usage.subscriptionStatus === "active" && (
+                <div className="text-sm text-gray-400 bg-white/[0.03] border border-white/[0.06] rounded-xl p-3 flex items-center justify-between">
+                  <span>
+                    {usage.subscriptionPlan === "starter" ? "Starter" : usage.subscriptionPlan === "author" ? "Author" : "Pro Author"} Plan — {usage.monthlyCreditsRemaining} monthly credits remaining
+                  </span>
+                  <Link href="/pricing" className="text-blue-400 hover:text-blue-300 text-xs">Manage</Link>
+                </div>
+              )}
+
+              {/* Plan restriction warning */}
+              {usage && usage.subscriptionPlan && usage.subscriptionStatus === "active" && (() => {
+                const sizeMap: Record<string, string> = { "10,000": "short", "25,000": "medium", "50,000": "standard", "75,000": "standard", "100,000": "epic" };
+                const selectedSize = Object.entries(sizeMap).find(([k]) => bookLength.includes(k))?.[1] || "short";
+                if (selectedSize === "epic") {
+                  return <div className="text-sm text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-xl p-3">Epic books require a one-time credit purchase on any plan.</div>;
+                }
+                if (!usage.allowedSizes.includes(selectedSize)) {
+                  return <div className="text-sm text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-xl p-3">Your plan does not include {selectedSize} books. Upgrade or buy a credit.</div>;
+                }
+                return null;
+              })()}
+
               {/* Generate Button */}
               <button
                 className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 disabled:from-gray-700 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-semibold rounded-xl p-4 transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 disabled:shadow-none"
                 onClick={generate}
                 disabled={!title.trim() || !description.trim()}
               >
-                Generate Book
+                {session ? "Generate Book" : "Sign in to Generate"}
               </button>
             </div>
 
@@ -767,7 +809,13 @@ function HomeContent() {
           </div>
         )}
 
-        
+        <UpsellModal
+          isOpen={upsellOpen}
+          onClose={() => setUpsellOpen(false)}
+          currentPlan={usage?.subscriptionPlan || null}
+          requestedSize={upsellSize}
+          message={upsellMessage}
+        />
       </div>
     </main>
   );

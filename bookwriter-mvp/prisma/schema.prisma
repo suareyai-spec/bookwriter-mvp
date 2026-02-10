@@ -8,12 +8,20 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  name         String?
-  passwordHash String
-  createdAt    DateTime @default(now())
-  books        Book[]
+  id                String    @id @default(cuid())
+  email             String    @unique
+  name              String?
+  passwordHash      String
+  createdAt         DateTime  @default(now())
+  books             Book[]
+  credits           BookCredit[]
+  stripeCustomerId  String?
+  subscriptionId    String?
+  subscriptionPlan  String?
+  subscriptionStatus String?
+  monthlyBooksUsed  Int       @default(0)
+  monthlyResetDate  DateTime?
+  isGenerating      Boolean   @default(false)
 }
 
 model Book {
@@ -52,4 +60,15 @@ model BookVersion {
   createdAt DateTime @default(now())
   bookId    String
   book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+}
+
+model BookCredit {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id])
+  bookSize        String
+  used            Boolean   @default(false)
+  purchasedAt     DateTime  @default(now())
+  usedAt          DateTime?
+  stripePaymentId String?
 }

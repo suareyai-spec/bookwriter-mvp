@@ -1,5 +1,9 @@
 import { z } from "zod";
 import { anthropic } from "@/lib/openai";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { PLANS, getBookSize, getBookCreditCost, PlanKey } from "@/lib/stripe";
 
 export const maxDuration = 600;
 export const dynamic = "force-dynamic";
@@ -84,7 +88,93 @@ function sseEvent(data: Record<string, unknown>): string {
 
 export async function POST(req: Request) {
   try {
+    // --- PAYMENT GATE ---
+    const session = await getServerSession(authOptions);
+    if (!session?.user) {
+      return new Response(JSON.stringify({ error: "Please sign in to generate books." }), { status: 401, headers: { "Content-Type": "application/json" } });
+    }
+    const userId = (session.user as any).id as string;
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (!user) {
+      return new Response(JSON.stringify({ error: "User not found" }), { status: 404, headers: { "Content-Type": "application/json" } });
+    }
+
+    // Check if already generating
+    if (user.isGenerating) {
+      return new Response(JSON.stringify({ error: "You already have a book being generated. Please wait for it to complete." }), { status: 429, headers: { "Content-Type": "application/json" } });
+    }
+
     const body = Body.parse(await req.json());
+    const bookSize = getBookSize(body.bookLength || "10,000 words (~40 pages)");
+    const userPlan = user.subscriptionPlan as PlanKey | null;
+    const isActive = user.subscriptionStatus === "active";
+
+    // Check if user has any way to generate
+    if (!isActive && !userPlan) {
+      // Check for credits
+      const credit = await prisma.bookCredit.findFirst({
+        where: { userId, bookSize, used: false },
+      });
+      if (!credit) {
+        return new Response(JSON.stringify({ error: "You need a subscription or book credit to generate. Visit the pricing page to get started.", needsSubscription: true }), { status: 403, headers: { "Content-Type": "application/json" } });
+      }
+    }
+
+    // Check if plan allows this size (epic never included in subscriptions)
+    if (bookSize === "epic") {
+      const credit = await prisma.bookCredit.findFirst({
+        where: { userId, bookSize: "epic", used: false },
+      });
+      if (!credit) {
+        return new Response(JSON.stringify({ error: "Epic books require a one-time credit purchase. Buy an Epic Book credit to continue.", needsCredit: true, creditSize: "epic" }), { status: 403, headers: { "Content-Type": "application/json" } });
+      }
+      // Will use this credit
+      await prisma.bookCredit.update({ where: { id: credit.id }, data: { used: true, usedAt: new Date() } });
+    } else if (isActive && userPlan) {
+      const planConfig = PLANS[userPlan];
+      if (!planConfig.allowedSizes.includes(bookSize)) {
+        return new Response(JSON.stringify({ error: `Your ${planConfig.name} plan doesn't include ${bookSize} books. Upgrade your plan or buy a credit.`, needsCredit: true, creditSize: bookSize }), { status: 403, headers: { "Content-Type": "application/json" } });
+      }
+
+      // Check monthly reset
+      if (user.monthlyResetDate && new Date() > user.monthlyResetDate) {
+        await prisma.user.update({ where: { id: userId }, data: { monthlyBooksUsed: 0, monthlyResetDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) } });
+        user.monthlyBooksUsed = 0;
+      }
+
+      const creditCost = getBookCreditCost(userPlan, bookSize);
+      const remaining = planConfig.monthlyCredits - user.monthlyBooksUsed;
+
+      if (remaining >= creditCost) {
+        // Use monthly credits
+        await prisma.user.update({ where: { id: userId }, data: { monthlyBooksUsed: user.monthlyBooksUsed + creditCost } });
+      } else {
+        // Try purchased credits
+        const credit = await prisma.bookCredit.findFirst({
+          where: { userId, bookSize, used: false },
+        });
+        if (credit) {
+          await prisma.bookCredit.update({ where: { id: credit.id }, data: { used: true, usedAt: new Date() } });
+        } else {
+          return new Response(JSON.stringify({ error: `You've used all your monthly books. Buy an extra ${bookSize} book credit to continue.`, needsCredit: true, creditSize: bookSize }), { status: 403, headers: { "Content-Type": "application/json" } });
+        }
+      }
+    } else {
+      // No active subscription — check credits
+      const credit = await prisma.bookCredit.findFirst({
+        where: { userId, bookSize, used: false },
+      });
+      if (!credit) {
+        return new Response(JSON.stringify({ error: "You need a subscription or book credit to generate. Visit the pricing page to get started.", needsSubscription: true }), { status: 403, headers: { "Content-Type": "application/json" } });
+      }
+      await prisma.bookCredit.update({ where: { id: credit.id }, data: { used: true, usedAt: new Date() } });
+    }
+
+    // Mark as generating
+    await prisma.user.update({ where: { id: userId }, data: { isGenerating: true } });
+
+    // --- END PAYMENT GATE ---
+
     const plan = getChapterPlan(body.bookLength || "10,000 words (~40 pages)");
     const lang = body.language || "English";
     const genre = body.genre || "General";
@@ -244,10 +334,12 @@ Write Chapter ${i} now:`;
 
           const fullBook = `${outline}\n\n${"━".repeat(50)}\n\n${chapters.join("\n\n" + "━".repeat(50) + "\n\n")}`;
           controller.enqueue(new TextEncoder().encode(sseEvent({ type: "complete", fullText: fullBook })));
+          await prisma.user.update({ where: { id: userId }, data: { isGenerating: false } });
           controller.close();
         } catch (err) {
           const message = err instanceof Error ? err.message : "Failed";
           controller.enqueue(new TextEncoder().encode(sseEvent({ type: "error", message })));
+          await prisma.user.update({ where: { id: userId }, data: { isGenerating: false } }).catch(() => {});
           controller.close();
         }
       },
