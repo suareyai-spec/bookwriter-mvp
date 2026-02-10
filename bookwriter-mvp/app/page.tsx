@@ -66,9 +66,8 @@ export default function Home() {
       <div className="relative z-10">
         {/* Nav */}
         <nav className="flex items-center justify-between px-6 py-5 max-w-5xl mx-auto">
-          <div className="flex items-center gap-2.5">
-            <img src="/logo.svg" alt="MyBook" className="w-9 h-9" />
-            <span className="text-xl font-bold tracking-tight">MyBook</span>
+          <div className="flex items-center">
+            <span className="text-2xl font-bold tracking-wide" style={{ fontFamily: "var(--font-playfair), Georgia, serif", letterSpacing: "0.08em" }}>My Book</span>
           </div>
           <div className="flex items-center gap-4 text-sm text-gray-500">
             <span className="hidden sm:inline">AI-Powered Book Generator</span>
@@ -82,10 +81,10 @@ export default function Home() {
               <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse" />
               Powered by Claude Opus
             </div>
-            <h1 className="text-4xl sm:text-6xl font-bold tracking-tight leading-tight">
+            <h1 className="text-4xl sm:text-6xl font-bold tracking-tight leading-tight" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
               Write your next
               <br />
-              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent italic">
                 bestseller
               </span>
             </h1>
@@ -297,7 +296,7 @@ export default function Home() {
             <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl overflow-hidden">
               {/* Book Header */}
               <div className="bg-gradient-to-r from-blue-600/20 to-indigo-600/20 border-b border-white/[0.06] p-8 text-center">
-                <h2 className="text-3xl font-bold">{title}</h2>
+                <h2 className="text-3xl font-bold" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>{title}</h2>
                 <div className="flex justify-center gap-3 mt-3 text-sm text-gray-400">
                   <span>{genre}</span>
                   <span>·</span>
