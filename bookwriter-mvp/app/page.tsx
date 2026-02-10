@@ -1,6 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
+import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import Link from "next/link";
 
 const GENRES = [
   "Non-Fiction", "Fantasy", "Sci-Fi", "Mystery", "Romance",
@@ -18,6 +23,19 @@ const TONES = [
 ];
 
 export default function Home() {
+  return (
+    <Suspense>
+      <HomeContent />
+    </Suspense>
+  );
+}
+
+function HomeContent() {
+  const { data: session } = useSession();
+  const searchParams = useSearchParams();
+  const bookIdParam = searchParams.get("bookId");
+  const isNewVersion = searchParams.get("newVersion") === "true";
+
   const [step, setStep] = useState<"input" | "generating" | "result">("input");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -28,12 +46,15 @@ export default function Home() {
   const [language, setLanguage] = useState("English");
   const [result, setResult] = useState("");
   const [error, setError] = useState("");
+  const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   async function generate() {
     if (!title.trim() || !description.trim()) return;
     setStep("generating");
     setResult("");
     setError("");
+    setSaved(false);
     try {
       const res = await fetch("/api/generate", {
         method: "POST",
@@ -47,11 +68,47 @@ export default function Home() {
       } else {
         setResult(data.text || "No output");
         setStep("result");
+
+        // Auto-save if logged in
+        if (session?.user) {
+          autoSave(data.text || "");
+        }
       }
     } catch {
       setError("Network error — please try again.");
       setStep("input");
     }
+  }
+
+  async function autoSave(content: string) {
+    setSaving(true);
+    try {
+      const res = await fetch("/api/books/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bookId: isNewVersion ? bookIdParam : undefined,
+          title,
+          description,
+          genre,
+          tone,
+          audience,
+          language,
+          bookLength,
+          content,
+          notes: isNewVersion ? "New version" : "Initial generation",
+        }),
+      });
+      if (res.ok) setSaved(true);
+    } catch {
+      // Silent fail for auto-save
+    }
+    setSaving(false);
+  }
+
+  async function saveToLibrary() {
+    if (!session?.user || !result) return;
+    await autoSave(result);
   }
 
   return (
@@ -64,15 +121,7 @@ export default function Home() {
       </div>
 
       <div className="relative z-10">
-        {/* Nav */}
-        <nav className="flex items-center justify-between px-6 py-5 max-w-5xl mx-auto">
-          <div className="flex items-center">
-            <span className="text-2xl font-bold tracking-wide" style={{ fontFamily: "var(--font-playfair), Georgia, serif", letterSpacing: "0.08em" }}>My Book</span>
-          </div>
-          <div className="flex items-center gap-4 text-sm text-gray-500">
-            <span className="hidden sm:inline">AI-Powered Book Generator</span>
-          </div>
-        </nav>
+        <Navbar />
 
         {/* Hero */}
         {step === "input" && (
@@ -89,7 +138,7 @@ export default function Home() {
               </span>
             </h1>
             <p className="mt-4 text-lg text-gray-400 max-w-lg mx-auto">
-              Describe your vision. We'll write a professional book with chapters, structure, and export-ready formatting.
+              Describe your vision. We&apos;ll write a professional book with chapters, structure, and export-ready formatting.
             </p>
           </div>
         )}
@@ -151,11 +200,11 @@ export default function Home() {
                   value={bookLength}
                   onChange={(e) => setBookLength(e.target.value)}
                 >
-                  <option value="10,000 words (~40 pages)" className="bg-gray-900">Short — 10,000 words · ~40 pages · 5 chapters</option>
-                  <option value="25,000 words (~100 pages)" className="bg-gray-900">Medium — 24,000 words · ~100 pages · 8 chapters</option>
-                  <option value="50,000 words (~200 pages)" className="bg-gray-900">Standard — 50,000 words · ~200 pages · 10 chapters</option>
-                  <option value="75,000 words (~300 pages)" className="bg-gray-900">Long — 72,000 words · ~300 pages · 12 chapters</option>
-                  <option value="100,000 words (~400 pages)" className="bg-gray-900">Epic — 97,500 words · ~400 pages · 15 chapters</option>
+                  <option value="10,000 words (~40 pages)" className="bg-gray-900">Short -- 10,000 words - ~40 pages - 5 chapters</option>
+                  <option value="25,000 words (~100 pages)" className="bg-gray-900">Medium -- 24,000 words - ~100 pages - 8 chapters</option>
+                  <option value="50,000 words (~200 pages)" className="bg-gray-900">Standard -- 50,000 words - ~200 pages - 10 chapters</option>
+                  <option value="75,000 words (~300 pages)" className="bg-gray-900">Long -- 72,000 words - ~300 pages - 12 chapters</option>
+                  <option value="100,000 words (~400 pages)" className="bg-gray-900">Epic -- 97,500 words - ~400 pages - 15 chapters</option>
                 </select>
               </div>
 
@@ -167,16 +216,16 @@ export default function Home() {
                   value={language}
                   onChange={(e) => setLanguage(e.target.value)}
                 >
-                  <option value="English" className="bg-gray-900">🇺🇸 English</option>
-                  <option value="Spanish" className="bg-gray-900">🇪🇸 Spanish / Español</option>
-                  <option value="French" className="bg-gray-900">🇫🇷 French / Français</option>
-                  <option value="Portuguese" className="bg-gray-900">🇧🇷 Portuguese / Português</option>
-                  <option value="German" className="bg-gray-900">🇩🇪 German / Deutsch</option>
-                  <option value="Italian" className="bg-gray-900">🇮🇹 Italian / Italiano</option>
-                  <option value="Chinese" className="bg-gray-900">🇨🇳 Chinese / 中文</option>
-                  <option value="Japanese" className="bg-gray-900">🇯🇵 Japanese / 日本語</option>
-                  <option value="Korean" className="bg-gray-900">🇰🇷 Korean / 한국어</option>
-                  <option value="Arabic" className="bg-gray-900">🇸🇦 Arabic / العربية</option>
+                  <option value="English" className="bg-gray-900">English</option>
+                  <option value="Spanish" className="bg-gray-900">Spanish / Espanol</option>
+                  <option value="French" className="bg-gray-900">French / Francais</option>
+                  <option value="Portuguese" className="bg-gray-900">Portuguese / Portugues</option>
+                  <option value="German" className="bg-gray-900">German / Deutsch</option>
+                  <option value="Italian" className="bg-gray-900">Italian / Italiano</option>
+                  <option value="Chinese" className="bg-gray-900">Chinese</option>
+                  <option value="Japanese" className="bg-gray-900">Japanese</option>
+                  <option value="Korean" className="bg-gray-900">Korean</option>
+                  <option value="Arabic" className="bg-gray-900">Arabic</option>
                 </select>
               </div>
 
@@ -209,15 +258,15 @@ export default function Home() {
                 onClick={generate}
                 disabled={!title.trim() || !description.trim()}
               >
-                ✨ Generate Book
+                Generate Book
               </button>
             </div>
 
             {/* Trust badges */}
             <div className="flex justify-center gap-6 mt-8 text-xs text-gray-600">
-              <span>🔒 Your content stays private</span>
-              <span>⚡ ~30 second generation</span>
-              <span>📄 PDF & Google Docs export</span>
+              <span>Your content stays private</span>
+              <span>~30 second generation</span>
+              <span>PDF and DOCX export</span>
             </div>
           </div>
         )}
@@ -228,7 +277,6 @@ export default function Home() {
             <div className="relative">
               <div className="w-20 h-20 border-4 border-blue-500/20 rounded-full" />
               <div className="absolute inset-0 w-20 h-20 border-4 border-transparent border-t-blue-500 rounded-full animate-spin" />
-              <span className="absolute inset-0 flex items-center justify-center text-2xl">✍️</span>
             </div>
             <h2 className="mt-8 text-2xl font-bold">Writing your book...</h2>
             <p className="mt-2 text-gray-400">Creating outline, then writing each chapter individually</p>
@@ -243,14 +291,31 @@ export default function Home() {
         {step === "result" && (
           <div className="mx-auto max-w-3xl px-4 py-8 pb-20">
             {/* Back + Title */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
               <button
                 onClick={() => setStep("input")}
                 className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-1"
               >
-                ← New Book
+                &larr; New Book
               </button>
-              <div className="flex gap-3">
+              <div className="flex gap-3 flex-wrap">
+                {session?.user && !saved && (
+                  <button
+                    className="inline-flex items-center gap-2 bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-400 rounded-xl px-4 py-2 text-sm font-medium transition-all disabled:opacity-50"
+                    onClick={saveToLibrary}
+                    disabled={saving}
+                  >
+                    {saving ? "Saving..." : "Save to Library"}
+                  </button>
+                )}
+                {saved && (
+                  <Link
+                    href="/library"
+                    className="inline-flex items-center gap-2 bg-green-600/20 border border-green-500/30 text-green-400 rounded-xl px-4 py-2 text-sm font-medium"
+                  >
+                    Saved — View Library
+                  </Link>
+                )}
                 <button
                   className="inline-flex items-center gap-2 bg-green-600/20 hover:bg-green-600/30 border border-green-500/30 text-green-400 rounded-xl px-4 py-2 text-sm font-medium transition-all"
                   onClick={async () => {
@@ -268,7 +333,7 @@ export default function Home() {
                     URL.revokeObjectURL(url);
                   }}
                 >
-                  📄 Export PDF
+                  Export PDF
                 </button>
                 <button
                   className="inline-flex items-center gap-2 bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/30 text-purple-400 rounded-xl px-4 py-2 text-sm font-medium transition-all"
@@ -287,10 +352,16 @@ export default function Home() {
                     URL.revokeObjectURL(url);
                   }}
                 >
-                  📝 Download .docx
+                  Download .docx
                 </button>
               </div>
             </div>
+
+            {!session && (
+              <div className="mb-6 bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 text-sm text-blue-300">
+                <Link href="/auth/signup" className="text-blue-400 hover:text-blue-300 font-medium underline">Sign up</Link> to save this book to your library and access it anytime.
+              </div>
+            )}
 
             {/* Book Content Card */}
             <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl overflow-hidden">
@@ -310,8 +381,8 @@ export default function Home() {
 
               {/* Word count bar */}
               <div className="flex justify-center gap-6 py-3 border-b border-white/[0.06] text-sm text-gray-400">
-                <span>📝 {result.split(/\s+/).filter(Boolean).length.toLocaleString()} words</span>
-                <span>📄 ~{Math.ceil(result.split(/\s+/).filter(Boolean).length / 250)} pages</span>
+                <span>{result.split(/\s+/).filter(Boolean).length.toLocaleString()} words</span>
+                <span>~{Math.ceil(result.split(/\s+/).filter(Boolean).length / 250)} pages</span>
               </div>
 
               {/* Book Text */}
@@ -323,6 +394,8 @@ export default function Home() {
             </div>
           </div>
         )}
+
+        <Footer />
       </div>
     </main>
   );
