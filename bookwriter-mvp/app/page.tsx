@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useRef, useEffect, Suspense, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import Link from "next/link";
 
 const GENRES = [
@@ -21,6 +20,13 @@ const TONES = [
   "Narrative & Story-Driven",
   "Humorous & Lighthearted",
 ];
+
+interface ChapterInfo {
+  number: number;
+  title: string;
+  status: "pending" | "writing" | "done";
+  content?: string;
+}
 
 export default function Home() {
   return (
@@ -49,36 +55,33 @@ function HomeContent() {
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  async function generate() {
-    if (!title.trim() || !description.trim()) return;
-    setStep("generating");
-    setResult("");
-    setError("");
-    setSaved(false);
-    try {
-      const res = await fetch("/api/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description, genre, tone, audience, bookLength, language }),
-      });
-      const data = await res.json();
-      if (data.error) {
-        setError(data.error);
-        setStep("input");
-      } else {
-        setResult(data.text || "No output");
-        setStep("result");
+  // Streaming state
+  const [outline, setOutline] = useState("");
+  const [chapters, setChapters] = useState<ChapterInfo[]>([]);
+  const [currentChapter, setCurrentChapter] = useState(0);
+  const [totalChapters, setTotalChapters] = useState(0);
+  const [statusText, setStatusText] = useState("Preparing...");
+  const [startTime, setStartTime] = useState<number>(0);
+  const [chapterTimes, setChapterTimes] = useState<number[]>([]);
+  const previewRef = useRef<HTMLDivElement>(null);
 
-        // Auto-save if logged in
-        if (session?.user) {
-          autoSave(data.text || "");
-        }
-      }
-    } catch {
-      setError("Network error — please try again.");
-      setStep("input");
+  const progressPercent = totalChapters > 0 ? Math.round((chapters.filter(c => c.status === "done").length / totalChapters) * 100) : 0;
+
+  const estimatedRemaining = useCallback(() => {
+    const done = chapterTimes.length;
+    if (done === 0) return null;
+    const avg = chapterTimes.reduce((a, b) => a + b, 0) / done;
+    const remaining = totalChapters - chapters.filter(c => c.status === "done").length;
+    const secs = Math.round(avg * remaining / 1000);
+    if (secs < 60) return `~${secs} seconds`;
+    return `~${Math.ceil(secs / 60)} minute${Math.ceil(secs / 60) > 1 ? "s" : ""}`;
+  }, [chapterTimes, totalChapters, chapters]);
+
+  useEffect(() => {
+    if (previewRef.current) {
+      previewRef.current.scrollTop = previewRef.current.scrollHeight;
     }
-  }
+  }, [outline, chapters]);
 
   async function autoSave(content: string) {
     setSaving(true);
@@ -101,9 +104,149 @@ function HomeContent() {
       });
       if (res.ok) setSaved(true);
     } catch {
-      // Silent fail for auto-save
+      // Silent fail
     }
     setSaving(false);
+  }
+
+  async function generate() {
+    if (!title.trim() || !description.trim()) return;
+    setStep("generating");
+    setResult("");
+    setError("");
+    setSaved(false);
+    setOutline("");
+    setChapters([]);
+    setCurrentChapter(0);
+    setTotalChapters(0);
+    setStatusText("Generating outline...");
+    setStartTime(Date.now());
+    setChapterTimes([]);
+
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 600000);
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, description, genre, tone, audience, bookLength, language }),
+        signal: controller.signal,
+      });
+      clearTimeout(timeout);
+
+      if (!res.ok || !res.body) {
+        const data = await res.json().catch(() => ({ error: "Failed to connect" }));
+        setError(data.error || "Generation failed");
+        setStep("input");
+        return;
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let chapterStartTime = Date.now();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+
+        const lines = buffer.split("\n\n");
+        buffer = lines.pop() || "";
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed.startsWith("data: ")) continue;
+          const jsonStr = trimmed.slice(6);
+          let event: Record<string, unknown>;
+          try {
+            event = JSON.parse(jsonStr);
+          } catch {
+            continue;
+          }
+
+          switch (event.type) {
+            case "progress": {
+              const tc = event.totalChapters as number;
+              setTotalChapters(tc);
+              if (event.status === "outline") {
+                setStatusText("Generating outline...");
+              } else {
+                const ch = event.chapter as number;
+                setCurrentChapter(ch);
+                setStatusText(`Writing Chapter ${ch}: ${event.title}...`);
+                chapterStartTime = Date.now();
+                setChapters(prev => {
+                  const updated = [...prev];
+                  // Initialize pending chapters if needed
+                  while (updated.length < tc) {
+                    updated.push({ number: updated.length + 1, title: `Chapter ${updated.length + 1}`, status: "pending" });
+                  }
+                  if (updated[ch - 1]) {
+                    updated[ch - 1] = { ...updated[ch - 1], title: event.title as string, status: "writing" };
+                  }
+                  return updated;
+                });
+              }
+              break;
+            }
+            case "outline": {
+              setOutline(event.content as string);
+              const tc = event.totalChapters as number;
+              setTotalChapters(tc);
+              setStatusText("Outline complete. Starting chapters...");
+              // Try to extract chapter titles from outline
+              const titles: string[] = [];
+              const regex = /chapter\s+\d+[:\s]+(.+)/gi;
+              let m;
+              while ((m = regex.exec(event.content as string)) !== null) {
+                titles.push(m[1].trim().replace(/\*+/g, "").trim());
+              }
+              const initial: ChapterInfo[] = [];
+              for (let i = 0; i < tc; i++) {
+                initial.push({ number: i + 1, title: titles[i] || `Chapter ${i + 1}`, status: "pending" });
+              }
+              setChapters(initial);
+              break;
+            }
+            case "chapter": {
+              const ch = event.chapter as number;
+              const elapsed = Date.now() - chapterStartTime;
+              setChapterTimes(prev => [...prev, elapsed]);
+              setChapters(prev => {
+                const updated = [...prev];
+                if (updated[ch - 1]) {
+                  updated[ch - 1] = { ...updated[ch - 1], title: event.title as string, status: "done", content: event.content as string };
+                }
+                return updated;
+              });
+              break;
+            }
+            case "complete": {
+              const fullText = event.fullText as string;
+              setResult(fullText);
+              setStep("result");
+              if (session?.user) {
+                autoSave(fullText);
+              }
+              break;
+            }
+            case "error": {
+              setError(event.message as string);
+              setStep("input");
+              break;
+            }
+          }
+        }
+      }
+    } catch (e) {
+      if (e instanceof DOMException && e.name === "AbortError") {
+        setError("Generation timed out. Try a shorter book length.");
+      } else {
+        setError("Network error — please try again. Longer books may take 3-8 minutes.");
+      }
+      setStep("input");
+    }
   }
 
   async function saveToLibrary() {
@@ -128,7 +271,6 @@ function HomeContent() {
           <div className="text-center pt-8 pb-12 px-4">
             <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 rounded-full px-4 py-1.5 text-sm text-blue-400 mb-6">
               <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse" />
-              Powered by Claude Opus
             </div>
             <h1 className="text-4xl sm:text-6xl font-bold tracking-tight leading-tight" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
               Write your next
@@ -271,18 +413,86 @@ function HomeContent() {
           </div>
         )}
 
-        {/* Generating State */}
+        {/* Generating State — Progress UI */}
         {step === "generating" && (
-          <div className="flex flex-col items-center justify-center py-32 px-4">
-            <div className="relative">
-              <div className="w-20 h-20 border-4 border-blue-500/20 rounded-full" />
-              <div className="absolute inset-0 w-20 h-20 border-4 border-transparent border-t-blue-500 rounded-full animate-spin" />
-            </div>
-            <h2 className="mt-8 text-2xl font-bold">Writing your book...</h2>
-            <p className="mt-2 text-gray-400">Creating outline, then writing each chapter individually</p>
-            <div className="mt-6 flex items-center gap-2 text-sm text-gray-600">
-              <span className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse" />
-              Writing chapter by chapter — this takes 2-5 minutes for a full book
+          <div className="mx-auto max-w-3xl px-4 py-8 pb-20">
+            <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 sm:p-8 shadow-2xl">
+              {/* Header */}
+              <div className="text-center mb-6">
+                <h2 className="text-2xl font-bold mb-1" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+                  Writing &ldquo;{title}&rdquo;
+                </h2>
+                <p className="text-gray-400 text-sm">{statusText}</p>
+              </div>
+
+              {/* Progress Bar */}
+              <div className="mb-6">
+                <div className="flex justify-between items-center mb-2 text-sm">
+                  <span className="text-gray-400">{progressPercent}% complete</span>
+                  {estimatedRemaining() && (
+                    <span className="text-gray-500">Est. remaining: {estimatedRemaining()}</span>
+                  )}
+                </div>
+                <div className="w-full h-3 bg-white/[0.06] rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 transition-all duration-700 ease-out"
+                    style={{ width: `${progressPercent}%` }}
+                  />
+                </div>
+                <div className="text-right mt-1 text-xs text-gray-600">
+                  {chapters.filter(c => c.status === "done").length} / {totalChapters} chapters
+                </div>
+              </div>
+
+              {/* Chapter Checklist */}
+              {chapters.length > 0 && (
+                <div className="mb-6 max-h-48 overflow-y-auto pr-2">
+                  <div className="space-y-1.5">
+                    {chapters.map((ch) => (
+                      <div key={ch.number} className="flex items-center gap-3 text-sm">
+                        {ch.status === "done" && (
+                          <span className="flex-shrink-0 w-5 h-5 rounded-full bg-green-500/20 border border-green-500/40 flex items-center justify-center text-green-400 text-xs">✓</span>
+                        )}
+                        {ch.status === "writing" && (
+                          <span className="flex-shrink-0 w-5 h-5 rounded-full border-2 border-blue-400/60 border-t-transparent animate-spin" />
+                        )}
+                        {ch.status === "pending" && (
+                          <span className="flex-shrink-0 w-5 h-5 rounded-full bg-white/[0.04] border border-white/[0.08]" />
+                        )}
+                        <span className={ch.status === "done" ? "text-gray-300" : ch.status === "writing" ? "text-blue-300 font-medium" : "text-gray-600"}>
+                          Ch. {ch.number}: {ch.title}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Live Preview */}
+              <div className="border-t border-white/[0.06] pt-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+                  <span className="text-xs text-gray-500 uppercase tracking-wider font-medium">Live Preview</span>
+                </div>
+                <div ref={previewRef} className="max-h-[50vh] overflow-y-auto bg-white/[0.02] rounded-xl p-4 text-sm text-gray-400 leading-relaxed whitespace-pre-wrap">
+                  {outline && (
+                    <div className="mb-4">
+                      <div className="text-xs text-blue-400 uppercase tracking-wider mb-2 font-medium">Outline</div>
+                      {outline}
+                    </div>
+                  )}
+                  {chapters.filter(c => c.content).map((ch) => (
+                    <div key={ch.number} className="mb-4 border-t border-white/[0.04] pt-4">
+                      <div className="text-xs text-purple-400 uppercase tracking-wider mb-2 font-medium">Chapter {ch.number}</div>
+                      {ch.content}
+                    </div>
+                  ))}
+                  {!outline && <span className="text-gray-600">Waiting for content...</span>}
+                </div>
+              </div>
+
+              {/* Keep tab open notice */}
+              <p className="text-center text-xs text-gray-600 mt-4">Please keep this tab open. Do not refresh.</p>
             </div>
           </div>
         )}
@@ -395,7 +605,7 @@ function HomeContent() {
           </div>
         )}
 
-        <Footer />
+        
       </div>
     </main>
   );

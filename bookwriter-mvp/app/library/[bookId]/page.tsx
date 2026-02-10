@@ -5,7 +5,6 @@ import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 interface Version {
   id: string;
@@ -226,7 +225,7 @@ export default function BookDetailPage() {
           )}
         </div>
 
-        <Footer />
+        
       </div>
     </main>
   );

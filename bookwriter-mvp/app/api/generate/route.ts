@@ -1,6 +1,8 @@
-import { NextResponse } from "next/server";
 import { z } from "zod";
 import { anthropic } from "@/lib/openai";
+
+export const maxDuration = 600;
+export const dynamic = "force-dynamic";
 
 const Body = z.object({
   title: z.string().min(1).max(200),
@@ -39,6 +41,10 @@ async function callClaude(prompt: string, maxTokens: number): Promise<string> {
     .join("\n");
 }
 
+function sseEvent(data: Record<string, unknown>): string {
+  return `data: ${JSON.stringify(data)}\n\n`;
+}
+
 export async function POST(req: Request) {
   try {
     const body = Body.parse(await req.json());
@@ -57,7 +63,6 @@ Language: ${lang} — Write EVERYTHING in ${lang}.
 Author's Vision:
 ${body.description}`;
 
-    // Step 1: Generate outline
     const outlinePrompt = isEdu
       ? `You are an expert author and subject-matter specialist writing a definitive book on this topic.
 
@@ -104,17 +109,34 @@ For each chapter, provide:
 
 Write the entire outline in ${lang}.`;
 
-    const outline = await callClaude(outlinePrompt, 3000);
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          // Step 1: Generate outline
+          controller.enqueue(new TextEncoder().encode(sseEvent({ type: "progress", chapter: 0, totalChapters: plan.chapters, title: "Generating outline...", status: "outline" })));
+          const outline = await callClaude(outlinePrompt, 3000);
+          controller.enqueue(new TextEncoder().encode(sseEvent({ type: "outline", content: outline, totalChapters: plan.chapters })));
 
-    // Step 2: Generate each chapter
-    const chapters: string[] = [];
-    for (let i = 1; i <= plan.chapters; i++) {
-      const prevSummary = chapters.length > 0
-        ? `\nSummary of previous chapters:\n${chapters.map((c, idx) => `Chapter ${idx + 1}: ${c.slice(0, 500)}...`).join("\n\n")}`
-        : "";
+          // Extract chapter titles from outline
+          const chapterTitles: string[] = [];
+          const titleRegex = /chapter\s+\d+[:\s]+(.+)/gi;
+          let match;
+          while ((match = titleRegex.exec(outline)) !== null) {
+            chapterTitles.push(match[1].trim().replace(/\*+/g, "").trim());
+          }
 
-      const chapterPrompt = isEdu
-        ? `You are an expert author and subject-matter specialist writing a comprehensive, authoritative book.
+          // Step 2: Generate each chapter
+          const chapters: string[] = [];
+          for (let i = 1; i <= plan.chapters; i++) {
+            const chTitle = chapterTitles[i - 1] || `Chapter ${i}`;
+            controller.enqueue(new TextEncoder().encode(sseEvent({ type: "progress", chapter: i, totalChapters: plan.chapters, title: chTitle, status: "writing" })));
+
+            const prevSummary = chapters.length > 0
+              ? `\nSummary of previous chapters:\n${chapters.map((c, idx) => `Chapter ${idx + 1}: ${c.slice(0, 500)}...`).join("\n\n")}`
+              : "";
+
+            const chapterPrompt = isEdu
+              ? `You are an expert author and subject-matter specialist writing a comprehensive, authoritative book.
 
 ${bookContext}
 
@@ -141,7 +163,7 @@ REQUIREMENTS FOR THIS CHAPTER:
 
 Write Chapter ${i} now:`
 
-        : `You are a masterful novelist writing with literary depth, emotional honesty, and vivid authenticity.
+              : `You are a masterful novelist writing with literary depth, emotional honesty, and vivid authenticity.
 
 ${bookContext}
 
@@ -169,15 +191,34 @@ REQUIREMENTS FOR THIS CHAPTER:
 
 Write Chapter ${i} now:`;
 
-      const chapter = await callClaude(chapterPrompt, 8192);
-      chapters.push(chapter);
-    }
+            const chapter = await callClaude(chapterPrompt, 8192);
+            chapters.push(chapter);
+            controller.enqueue(new TextEncoder().encode(sseEvent({ type: "chapter", chapter: i, totalChapters: plan.chapters, title: chTitle, content: chapter })));
+          }
 
-    const fullBook = `${outline}\n\n${"━".repeat(50)}\n\n${chapters.join("\n\n" + "━".repeat(50) + "\n\n")}`;
+          const fullBook = `${outline}\n\n${"━".repeat(50)}\n\n${chapters.join("\n\n" + "━".repeat(50) + "\n\n")}`;
+          controller.enqueue(new TextEncoder().encode(sseEvent({ type: "complete", fullText: fullBook })));
+          controller.close();
+        } catch (err) {
+          const message = err instanceof Error ? err.message : "Failed";
+          controller.enqueue(new TextEncoder().encode(sseEvent({ type: "error", message })));
+          controller.close();
+        }
+      },
+    });
 
-    return NextResponse.json({ text: fullBook });
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        "Connection": "keep-alive",
+      },
+    });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Failed";
-    return NextResponse.json({ error: message }, { status: 400 });
+    return new Response(JSON.stringify({ error: message }), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }

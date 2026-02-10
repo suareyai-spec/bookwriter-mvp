@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 interface BookData {
   id: string;
@@ -176,7 +175,7 @@ export default function LibraryPage() {
           )}
         </div>
 
-        <Footer />
+        
       </div>
     </main>
   );
