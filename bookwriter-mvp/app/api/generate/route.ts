@@ -3,19 +3,35 @@ import { z } from "zod";
 import { openai, BUDGET } from "@/lib/openai";
 
 const Body = z.object({
-  title: z.string().min(1).max(120),
-  genre: z.string().min(2).max(60),
-  targetWords: z.number().min(5000).max(100000),
+  title: z.string().min(1).max(200),
+  description: z.string().min(10).max(5000),
 });
 
 export async function POST(req: Request) {
   try {
     const body = Body.parse(await req.json());
 
-    const prompt = `Write original fiction only. Create:\n1) a one-page outline\n2) chapter 1 (~900 words)\n3) chapter 2 (~900 words)\n\nTitle: ${body.title}\nGenre: ${body.genre}\nTarget length: ${body.targetWords} words\n\nAvoid imitating specific living authors.`.slice(
-      0,
-      BUDGET.maxPromptChars
-    );
+    const prompt = `You are a professional book author. Write original content only.
+
+Book Title: "${body.title}"
+
+Author's Vision:
+${body.description}
+
+Based on the above, create:
+
+1) A detailed TABLE OF CONTENTS with chapter titles and brief descriptions (8-12 chapters)
+
+2) CHAPTER 1 — Write the full first chapter (~1500 words). Make it compelling, well-researched, and professional.
+
+3) CHAPTER 2 — Write the full second chapter (~1500 words). Continue the narrative/guide naturally.
+
+Guidelines:
+- Write in a professional, authoritative tone
+- Include real-world context and practical insights
+- Make it engaging and informative
+- Avoid imitating any specific living author
+- This should read like a published book, not an AI summary`.slice(0, BUDGET.maxPromptChars);
 
     const resp = await openai.responses.create({
       model: "gpt-4.1-mini",
