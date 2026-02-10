@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.74.0",
     "@auth/prisma-adapter": "^2.11.1",
     "@googleapis/docs": "^3.0.0",
     "@googleapis/drive": "^8.0.0",

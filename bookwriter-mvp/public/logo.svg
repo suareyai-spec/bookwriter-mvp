@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- Book shape -->
+  <rect x="20" y="15" width="80" height="95" rx="6" fill="url(#bookGrad)" stroke="#4f6fff" stroke-width="2"/>
+  <!-- Spine -->
+  <rect x="20" y="15" width="12" height="95" rx="6" fill="#3b52cc"/>
+  <!-- Pages effect -->
+  <rect x="36" y="22" width="56" height="2" rx="1" fill="rgba(255,255,255,0.15)"/>
+  <rect x="36" y="30" width="56" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+  <rect x="36" y="38" width="56" height="2" rx="1" fill="rgba(255,255,255,0.10)"/>
+  <rect x="36" y="46" width="42" height="2" rx="1" fill="rgba(255,255,255,0.08)"/>
+  <!-- Quill / pen -->
+  <g transform="translate(52, 50) rotate(-30)">
+    <path d="M0 0 L6 -35 Q8 -38 10 -35 L16 0 Q8 4 0 0Z" fill="url(#penGrad)"/>
+    <path d="M6 -35 L8 -42 L10 -35" fill="#ffd700"/>
+    <line x1="8" y1="-30" x2="8" y2="0" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+  </g>
+  <!-- Sparkle -->
+  <circle cx="85" cy="25" r="3" fill="#ffd700" opacity="0.9"/>
+  <circle cx="92" cy="18" r="1.5" fill="#ffd700" opacity="0.6"/>
+  <circle cx="78" cy="18" r="2" fill="#a78bfa" opacity="0.7"/>
+  <!-- Gradients -->
+  <defs>
+    <linearGradient id="bookGrad" x1="20" y1="15" x2="100" y2="110">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#4338ca"/>
+    </linearGradient>
+    <linearGradient id="penGrad" x1="0" y1="-40" x2="16" y2="4">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+  </defs>
+</svg>

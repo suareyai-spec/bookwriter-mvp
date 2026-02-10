@@ -66,7 +66,7 @@ export default function Home() {
         {/* Nav */}
         <nav className="flex items-center justify-between px-6 py-5 max-w-5xl mx-auto">
           <div className="flex items-center gap-2.5">
-            <span className="text-2xl">📖</span>
+            <img src="/logo.svg" alt="MyBook" className="w-9 h-9" />
             <span className="text-xl font-bold tracking-tight">MyBook</span>
           </div>
           <div className="flex items-center gap-4 text-sm text-gray-500">
@@ -79,7 +79,7 @@ export default function Home() {
           <div className="text-center pt-8 pb-12 px-4">
             <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 rounded-full px-4 py-1.5 text-sm text-blue-400 mb-6">
               <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse" />
-              Powered by AI
+              Powered by Claude Opus
             </div>
             <h1 className="text-4xl sm:text-6xl font-bold tracking-tight leading-tight">
               Write your next

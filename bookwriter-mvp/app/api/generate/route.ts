@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { openai, BUDGET } from "@/lib/openai";
+import { anthropic, BUDGET } from "@/lib/openai";
 
 const Body = z.object({
   title: z.string().min(1).max(200),
@@ -51,13 +51,18 @@ QUALITY GUIDELINES:
 - Avoid imitating any specific living author
 - Structure with clear headings and flow`.slice(0, BUDGET.maxPromptChars);
 
-    const resp = await openai.responses.create({
-      model: "gpt-4.1-mini",
-      input: prompt,
-      max_output_tokens: BUDGET.maxOutputTokens,
+    const resp = await anthropic.messages.create({
+      model: "claude-opus-4-20250514",
+      max_tokens: BUDGET.maxOutputTokens,
+      messages: [{ role: "user", content: prompt }],
     });
 
-    const text = resp.output_text || "No text returned.";
+    const text =
+      resp.content
+        .filter((b) => b.type === "text")
+        .map((b) => (b as { type: "text"; text: string }).text)
+        .join("\n") || "No text returned.";
+
     return NextResponse.json({ text });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Failed";
