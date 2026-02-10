@@ -143,16 +143,14 @@ export default function BookDetailPage() {
     try {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 600000);
-      const res = await fetch("/api/generate", {
+      const res = await fetch("/api/revise", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title: book.title,
-          description: book.description,
           genre: book.genre,
           tone: book.tone,
           audience: book.audience,
-          bookLength: book.bookLength,
           language: book.language,
           references: allRefs,
           revisionInstructions,
