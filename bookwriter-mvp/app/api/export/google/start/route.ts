@@ -1,4 +1,3 @@
-import { NextRequest } from "next/server";
 import {
   Document,
   Packer,
@@ -9,9 +8,8 @@ import {
   PageBreak,
 } from "docx";
 
-export async function GET(req: NextRequest) {
-  const title = req.nextUrl.searchParams.get("title") || "Untitled Book";
-  const content = req.nextUrl.searchParams.get("content") || "";
+export async function POST(req: Request) {
+  const { title = "Untitled Book", content = "" } = await req.json();
 
   const children: Paragraph[] = [];
 
@@ -36,14 +34,12 @@ export async function GET(req: NextRequest) {
         }),
       ],
     }),
-    new Paragraph({
-      children: [new PageBreak()],
-    })
+    new Paragraph({ children: [new PageBreak()] })
   );
 
-  // Parse content into paragraphs
+  // Parse content
   if (content) {
-    const lines = content.split("\n");
+    const lines = (content as string).split("\n");
     for (const line of lines) {
       const trimmed = line.trim();
 
@@ -52,20 +48,12 @@ export async function GET(req: NextRequest) {
         continue;
       }
 
-      // Markdown headings
       if (trimmed.startsWith("### ")) {
         children.push(
           new Paragraph({
             heading: HeadingLevel.HEADING_3,
             spacing: { before: 240, after: 120 },
-            children: [
-              new TextRun({
-                text: trimmed.replace(/^###\s*/, ""),
-                bold: true,
-                size: 26,
-                font: "Georgia",
-              }),
-            ],
+            children: [new TextRun({ text: trimmed.replace(/^###\s*/, ""), bold: true, size: 26, font: "Georgia" })],
           })
         );
       } else if (trimmed.startsWith("## ")) {
@@ -73,14 +61,7 @@ export async function GET(req: NextRequest) {
           new Paragraph({
             heading: HeadingLevel.HEADING_2,
             spacing: { before: 360, after: 160 },
-            children: [
-              new TextRun({
-                text: trimmed.replace(/^##\s*/, ""),
-                bold: true,
-                size: 30,
-                font: "Georgia",
-              }),
-            ],
+            children: [new TextRun({ text: trimmed.replace(/^##\s*/, ""), bold: true, size: 30, font: "Georgia" })],
           })
         );
       } else if (trimmed.startsWith("# ")) {
@@ -88,64 +69,31 @@ export async function GET(req: NextRequest) {
           new Paragraph({
             heading: HeadingLevel.HEADING_1,
             spacing: { before: 480, after: 200 },
-            children: [
-              new TextRun({
-                text: trimmed.replace(/^#\s*/, ""),
-                bold: true,
-                size: 36,
-                font: "Georgia",
-              }),
-            ],
+            children: [new TextRun({ text: trimmed.replace(/^#\s*/, ""), bold: true, size: 36, font: "Georgia" })],
           })
         );
       } else if (trimmed.startsWith("━") || trimmed.startsWith("---")) {
-        // Separator — skip or add spacing
         children.push(new Paragraph({ spacing: { before: 200, after: 200 } }));
       } else {
-        // Handle inline bold **text**
         const parts = trimmed.split(/(\*\*[^*]+\*\*)/g);
         const runs: TextRun[] = [];
         for (const part of parts) {
           if (part.startsWith("**") && part.endsWith("**")) {
-            runs.push(
-              new TextRun({
-                text: part.slice(2, -2),
-                bold: true,
-                size: 24,
-                font: "Georgia",
-              })
-            );
+            runs.push(new TextRun({ text: part.slice(2, -2), bold: true, size: 24, font: "Georgia" }));
           } else {
-            runs.push(
-              new TextRun({
-                text: part,
-                size: 24,
-                font: "Georgia",
-              })
-            );
+            runs.push(new TextRun({ text: part, size: 24, font: "Georgia" }));
           }
         }
-        children.push(
-          new Paragraph({
-            spacing: { after: 120 },
-            children: runs,
-          })
-        );
+        children.push(new Paragraph({ spacing: { after: 120 }, children: runs }));
       }
     }
   }
 
   const doc = new Document({
-    sections: [
-      {
-        properties: {
-          page: {
-            margin: { top: 1440, bottom: 1440, left: 1440, right: 1440 },
-          },
-        },
-        children,
-      },
-    ],
+    sections: [{
+      properties: { page: { margin: { top: 1440, bottom: 1440, left: 1440, right: 1440 } } },
+      children,
+    }],
   });
 
   const buffer = await Packer.toBuffer(doc);
@@ -153,8 +101,7 @@ export async function GET(req: NextRequest) {
 
   return new Response(bytes, {
     headers: {
-      "Content-Type":
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       "Content-Disposition": `attachment; filename="${title.replace(/[^a-zA-Z0-9 ]/g, "").slice(0, 50)}.docx"`,
     },
   });

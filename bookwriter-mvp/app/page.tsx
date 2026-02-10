@@ -252,20 +252,44 @@ export default function Home() {
                 ← New Book
               </button>
               <div className="flex gap-3">
-                <a
+                <button
                   className="inline-flex items-center gap-2 bg-green-600/20 hover:bg-green-600/30 border border-green-500/30 text-green-400 rounded-xl px-4 py-2 text-sm font-medium transition-all"
-                  href={`/api/export/pdf?title=${encodeURIComponent(title)}&content=${encodeURIComponent(result)}`}
-                  target="_blank"
+                  onClick={async () => {
+                    const res = await fetch("/api/export/pdf", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ title, content: result }),
+                    });
+                    const blob = await res.blob();
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = `${title || "book"}.pdf`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                  }}
                 >
                   📄 Export PDF
-                </a>
-                <a
+                </button>
+                <button
                   className="inline-flex items-center gap-2 bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/30 text-purple-400 rounded-xl px-4 py-2 text-sm font-medium transition-all"
-                  href={`/api/export/google/start?title=${encodeURIComponent(title)}&content=${encodeURIComponent(result)}`}
-                  target="_blank"
+                  onClick={async () => {
+                    const res = await fetch("/api/export/google/start", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ title, content: result }),
+                    });
+                    const blob = await res.blob();
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = `${title || "book"}.docx`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                  }}
                 >
                   📝 Download .docx
-                </a>
+                </button>
               </div>
             </div>
 

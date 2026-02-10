@@ -1,5 +1,4 @@
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
-import { NextRequest } from "next/server";
 
 function wrapText(text: string, font: any, fontSize: number, maxWidth: number): string[] {
   const lines: string[] = [];
@@ -25,9 +24,8 @@ function wrapText(text: string, font: any, fontSize: number, maxWidth: number): 
   return lines;
 }
 
-export async function GET(req: NextRequest) {
-  const title = req.nextUrl.searchParams.get("title") || "Untitled Book";
-  const content = req.nextUrl.searchParams.get("content") || "";
+export async function POST(req: Request) {
+  const { title = "Untitled Book", content = "" } = await req.json();
 
   const pdf = await PDFDocument.create();
   const fontRegular = await pdf.embedFont(StandardFonts.Helvetica);
@@ -45,7 +43,7 @@ export async function GET(req: NextRequest) {
   const titlePage = pdf.addPage([pageWidth, pageHeight]);
   const titleWidth = fontBold.widthOfTextAtSize(title, titleSize);
   titlePage.drawText(title, {
-    x: (pageWidth - titleWidth) / 2,
+    x: Math.max(margin, (pageWidth - titleWidth) / 2),
     y: pageHeight / 2 + 40,
     size: titleSize,
     font: fontBold,
@@ -76,38 +74,18 @@ export async function GET(req: NextRequest) {
         continue;
       }
 
-      // Detect headings (lines starting with # or all caps short lines)
       const isHeading = line.startsWith("#") || (line.length < 80 && line === line.toUpperCase() && line.length > 3);
       const cleanLine = line.replace(/^#+\s*/, "");
 
       if (isHeading) {
         y -= 6;
-        page.drawText(cleanLine, {
-          x: margin,
-          y,
-          size: 13,
-          font: fontBold,
-          color: rgb(0.1, 0.1, 0.1),
-        });
+        page.drawText(cleanLine, { x: margin, y, size: 13, font: fontBold, color: rgb(0.1, 0.1, 0.1) });
         y -= lineHeight + 4;
       } else if (line.startsWith("**") && line.endsWith("**")) {
-        const boldText = line.slice(2, -2);
-        page.drawText(boldText, {
-          x: margin,
-          y,
-          size: fontSize,
-          font: fontBold,
-          color: rgb(0.15, 0.15, 0.15),
-        });
+        page.drawText(line.slice(2, -2), { x: margin, y, size: fontSize, font: fontBold, color: rgb(0.15, 0.15, 0.15) });
         y -= lineHeight;
       } else {
-        page.drawText(cleanLine, {
-          x: margin,
-          y,
-          size: fontSize,
-          font: fontRegular,
-          color: rgb(0.15, 0.15, 0.15),
-        });
+        page.drawText(cleanLine, { x: margin, y, size: fontSize, font: fontRegular, color: rgb(0.15, 0.15, 0.15) });
         y -= lineHeight;
       }
     }
