@@ -24,6 +24,7 @@ export default function Home() {
   const [genre, setGenre] = useState("Non-Fiction");
   const [tone, setTone] = useState("Professional & Authoritative");
   const [audience, setAudience] = useState("");
+  const [bookLength, setBookLength] = useState("50,000 words (~200 pages)");
   const [result, setResult] = useState("");
   const [error, setError] = useState("");
 
@@ -36,7 +37,7 @@ export default function Home() {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description, genre, tone, audience }),
+        body: JSON.stringify({ title, description, genre, tone, audience, bookLength }),
       });
       const data = await res.json();
       if (data.error) {
@@ -142,6 +143,22 @@ export default function Home() {
                 </div>
               </div>
 
+              {/* Book Length */}
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Book Length</label>
+                <select
+                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl p-3.5 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all appearance-none"
+                  value={bookLength}
+                  onChange={(e) => setBookLength(e.target.value)}
+                >
+                  <option value="10,000 words (~40 pages)" className="bg-gray-900">Short — ~40 pages (10k words)</option>
+                  <option value="25,000 words (~100 pages)" className="bg-gray-900">Medium — ~100 pages (25k words)</option>
+                  <option value="50,000 words (~200 pages)" className="bg-gray-900">Standard — ~200 pages (50k words)</option>
+                  <option value="75,000 words (~300 pages)" className="bg-gray-900">Long — ~300 pages (75k words)</option>
+                  <option value="100,000 words (~400 pages)" className="bg-gray-900">Epic — ~400 pages (100k words)</option>
+                </select>
+              </div>
+
               {/* Audience */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">Target Audience <span className="text-gray-600">(optional)</span></label>
@@ -238,6 +255,8 @@ export default function Home() {
                   <span>{genre}</span>
                   <span>·</span>
                   <span>{tone}</span>
+                  <span>·</span>
+                  <span>{bookLength}</span>
                 </div>
               </div>
 
