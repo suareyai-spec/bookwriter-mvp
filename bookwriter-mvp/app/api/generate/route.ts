@@ -4,6 +4,12 @@ import { anthropic } from "@/lib/openai";
 export const maxDuration = 600;
 export const dynamic = "force-dynamic";
 
+const ReferenceItem = z.object({
+  type: z.enum(["pdf", "gdoc", "text"]),
+  content: z.string(),
+  name: z.string(),
+});
+
 const Body = z.object({
   title: z.string().min(1).max(200),
   description: z.string().min(10).max(5000),
@@ -12,7 +18,29 @@ const Body = z.object({
   audience: z.string().max(200).optional(),
   bookLength: z.string().max(100).optional(),
   language: z.string().max(30).optional(),
+  references: z.array(ReferenceItem).optional(),
+  revisionInstructions: z.string().max(5000).optional(),
+  previousContent: z.string().optional(),
 });
+
+function buildReferenceContext(references: z.infer<typeof ReferenceItem>[]): string {
+  if (!references.length) return "";
+  const MAX_REF_CHARS = 50000;
+  let total = 0;
+  const parts: string[] = [];
+  for (let i = 0; i < references.length; i++) {
+    const ref = references[i];
+    const remaining = MAX_REF_CHARS - total;
+    if (remaining <= 0) break;
+    const content = ref.content.slice(0, remaining);
+    total += content.length;
+    parts.push(`[Reference ${i + 1}: ${ref.name}]\n${content}`);
+  }
+  return `\n\nREFERENCE MATERIALS PROVIDED BY THE AUTHOR:
+The author has provided the following reference materials. Use these to inform the book's content, style, facts, and direction. Incorporate relevant information naturally.
+
+${parts.join("\n\n")}`;
+}
 
 function getChapterPlan(bookLength: string): { chapters: number; totalWords: number } {
   if (bookLength?.includes("10,000")) return { chapters: 5, totalWords: 10000 };
@@ -62,6 +90,13 @@ export async function POST(req: Request) {
     const genre = body.genre || "General";
     const tone = body.tone || "Professional";
     const isEdu = isEducational(genre, tone);
+    const refContext = body.references?.length ? buildReferenceContext(body.references) : "";
+    const revisionContext = body.revisionInstructions
+      ? `\n\nREVISION INSTRUCTIONS FROM THE AUTHOR:\n${body.revisionInstructions}`
+      : "";
+    const previousContentContext = body.previousContent
+      ? `\n\nPREVIOUS VERSION OF THE BOOK (use as foundation, improve upon it):\n${body.previousContent.slice(0, 80000)}`
+      : "";
 
     const bookContext = `Title: "${body.title}"
 Genre: ${genre}
@@ -70,7 +105,7 @@ Target Audience: ${body.audience || "General readers"}
 Language: ${lang} — Write EVERYTHING in ${lang}.
 
 Author's Vision:
-${body.description}`;
+${body.description}${refContext}${revisionContext}${previousContentContext}`;
 
     const outlinePrompt = isEdu
       ? `You are an expert author and subject-matter specialist writing a definitive book on this topic.

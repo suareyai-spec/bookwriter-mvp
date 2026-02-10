@@ -6,6 +6,12 @@ import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
 
+interface ReferenceItem {
+  type: "pdf" | "gdoc" | "text";
+  name: string;
+  content: string;
+}
+
 const GENRES = [
   "Non-Fiction", "Fantasy", "Sci-Fi", "Mystery", "Romance",
   "Thriller", "Self-Help", "Business", "Biography", "Historical",
@@ -55,6 +61,68 @@ function HomeContent() {
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
 
+  // Reference materials state
+  const [references, setReferences] = useState<ReferenceItem[]>([]);
+  const [refExpanded, setRefExpanded] = useState(false);
+  const [gdocUrl, setGdocUrl] = useState("");
+  const [pasteText, setPasteText] = useState("");
+  const [refLoading, setRefLoading] = useState(false);
+  const [refError, setRefError] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  async function handlePdfUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = e.target.files;
+    if (!files?.length) return;
+    const currentCount = references.filter(r => r.type === "pdf").length;
+    if (currentCount + files.length > 5) {
+      setRefError("Maximum 5 PDF files allowed");
+      return;
+    }
+    setRefLoading(true);
+    setRefError("");
+    try {
+      const formData = new FormData();
+      for (const file of Array.from(files)) {
+        if (file.size > 10 * 1024 * 1024) {
+          setRefError(`File "${file.name}" exceeds 10MB limit`);
+          setRefLoading(false);
+          return;
+        }
+        formData.append("files", file);
+      }
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const data = await res.json();
+      if (!res.ok) { setRefError(data.error); setRefLoading(false); return; }
+      setReferences(prev => [...prev, ...data.files.map((f: { name: string; content: string }) => ({ type: "pdf" as const, name: f.name, content: f.content }))]);
+    } catch { setRefError("Failed to upload PDF"); }
+    setRefLoading(false);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  async function handleGdocAdd() {
+    if (!gdocUrl.trim()) return;
+    setRefLoading(true);
+    setRefError("");
+    try {
+      const res = await fetch("/api/fetch-doc", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ url: gdocUrl }) });
+      const data = await res.json();
+      if (!res.ok) { setRefError(data.error); setRefLoading(false); return; }
+      setReferences(prev => [...prev, { type: "gdoc", name: data.name, content: data.content }]);
+      setGdocUrl("");
+    } catch { setRefError("Failed to fetch document"); }
+    setRefLoading(false);
+  }
+
+  function handlePasteAdd() {
+    if (!pasteText.trim()) return;
+    setReferences(prev => [...prev, { type: "text", name: `Pasted Text ${prev.filter(r => r.type === "text").length + 1}`, content: pasteText }]);
+    setPasteText("");
+  }
+
+  function removeReference(index: number) {
+    setReferences(prev => prev.filter((_, i) => i !== index));
+  }
+
   // Streaming state
   const [outline, setOutline] = useState("");
   const [chapters, setChapters] = useState<ChapterInfo[]>([]);
@@ -100,6 +168,7 @@ function HomeContent() {
           bookLength,
           content,
           notes: isNewVersion ? "New version" : "Initial generation",
+          references: references.map(r => ({ name: r.name, type: r.type, content: r.content })),
         }),
       });
       if (res.ok) setSaved(true);
@@ -129,7 +198,7 @@ function HomeContent() {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description, genre, tone, audience, bookLength, language }),
+        body: JSON.stringify({ title, description, genre, tone, audience, bookLength, language, references }),
         signal: controller.signal,
       });
       clearTimeout(timeout);
@@ -392,6 +461,99 @@ function HomeContent() {
                   onChange={(e) => setDescription(e.target.value)}
                   rows={6}
                 />
+              </div>
+
+              {/* Reference Materials */}
+              <div className="border border-white/[0.08] rounded-xl overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setRefExpanded(!refExpanded)}
+                  className="w-full flex items-center justify-between p-4 text-left hover:bg-white/[0.02] transition-colors"
+                >
+                  <span className="text-sm font-medium text-gray-300">Add Reference Materials <span className="text-gray-600">(optional)</span></span>
+                  <svg className={`w-4 h-4 text-gray-500 transition-transform ${refExpanded ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                </button>
+
+                {refExpanded && (
+                  <div className="border-t border-white/[0.06] p-4 space-y-4">
+                    {refError && <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg p-3">{refError}</div>}
+
+                    {/* PDF Upload */}
+                    <div>
+                      <label className="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">Upload PDFs</label>
+                      <div
+                        onClick={() => fileInputRef.current?.click()}
+                        className="border-2 border-dashed border-white/[0.1] rounded-xl p-6 text-center cursor-pointer hover:border-blue-500/30 hover:bg-blue-500/5 transition-all"
+                      >
+                        <div className="text-sm text-gray-400">
+                          {refLoading ? "Processing..." : "Click to upload PDF files"}
+                        </div>
+                        <div className="text-xs text-gray-600 mt-1">Max 5 files, 10MB each</div>
+                      </div>
+                      <input ref={fileInputRef} type="file" accept=".pdf" multiple className="hidden" onChange={handlePdfUpload} />
+                    </div>
+
+                    {/* Google Docs */}
+                    <div>
+                      <label className="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">Google Docs Link</label>
+                      <div className="flex gap-2">
+                        <input
+                          className="flex-1 bg-white/[0.04] border border-white/[0.08] rounded-xl p-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+                          placeholder="https://docs.google.com/document/d/..."
+                          value={gdocUrl}
+                          onChange={(e) => setGdocUrl(e.target.value)}
+                        />
+                        <button
+                          type="button"
+                          onClick={handleGdocAdd}
+                          disabled={!gdocUrl.trim() || refLoading}
+                          className="bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] text-white text-sm rounded-xl px-4 transition-all disabled:opacity-40"
+                        >
+                          Add
+                        </button>
+                      </div>
+                      <p className="text-xs text-gray-600 mt-1">Make sure your Google Doc is set to &quot;Anyone with the link can view&quot;</p>
+                    </div>
+
+                    {/* Paste Text */}
+                    <div>
+                      <label className="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">Or paste your reference text here</label>
+                      <textarea
+                        className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl p-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all resize-none"
+                        placeholder="Paste notes, outlines, research, previous drafts..."
+                        value={pasteText}
+                        onChange={(e) => setPasteText(e.target.value)}
+                        rows={4}
+                      />
+                      {pasteText.trim() && (
+                        <button
+                          type="button"
+                          onClick={handlePasteAdd}
+                          className="mt-2 bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] text-white text-sm rounded-xl px-4 py-2 transition-all"
+                        >
+                          Add as Reference
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Reference Cards */}
+                    {references.length > 0 && (
+                      <div className="space-y-2">
+                        <label className="block text-xs font-medium text-gray-400 uppercase tracking-wider">Added References ({references.length})</label>
+                        {references.map((ref, i) => (
+                          <div key={i} className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-3 flex items-start gap-3">
+                            <div className="flex-shrink-0 text-xs font-mono text-gray-500 bg-white/[0.06] rounded px-2 py-1 uppercase">{ref.type}</div>
+                            <div className="flex-1 min-w-0">
+                              <div className="text-sm font-medium text-gray-300 truncate">{ref.name}</div>
+                              <div className="text-xs text-gray-500 mt-1 line-clamp-2">{ref.content.slice(0, 200)}</div>
+                            </div>
+                            <button type="button" onClick={() => removeReference(i)} className="flex-shrink-0 text-gray-500 hover:text-red-400 transition-colors text-lg leading-none">&times;</button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Generate Button */}

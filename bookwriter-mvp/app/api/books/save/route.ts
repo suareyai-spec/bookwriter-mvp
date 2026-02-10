@@ -4,6 +4,12 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
+const ReferenceSchema = z.object({
+  name: z.string(),
+  type: z.string(),
+  content: z.string(),
+});
+
 const SaveSchema = z.object({
   bookId: z.string().optional(),
   title: z.string().min(1),
@@ -15,6 +21,7 @@ const SaveSchema = z.object({
   bookLength: z.string().optional(),
   content: z.string(),
   notes: z.string().optional(),
+  references: z.array(ReferenceSchema).optional(),
 });
 
 export async function POST(req: Request) {
@@ -50,6 +57,18 @@ export async function POST(req: Request) {
         },
       });
 
+      // Save new references if provided
+      if (body.references?.length) {
+        await prisma.bookReference.createMany({
+          data: body.references.map(r => ({
+            name: r.name,
+            type: r.type,
+            content: r.content,
+            bookId: body.bookId!,
+          })),
+        });
+      }
+
       await prisma.book.update({ where: { id: body.bookId }, data: { updatedAt: new Date() } });
 
       return NextResponse.json({ bookId: body.bookId, versionId: version.id });
@@ -73,6 +92,15 @@ export async function POST(req: Request) {
               notes: body.notes || "Initial generation",
             },
           },
+          ...(body.references?.length ? {
+            references: {
+              create: body.references.map(r => ({
+                name: r.name,
+                type: r.type,
+                content: r.content,
+              })),
+            },
+          } : {}),
         },
       });
 

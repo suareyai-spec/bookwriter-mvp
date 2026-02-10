@@ -16,6 +16,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ bookId:
     where: { id: bookId, userId },
     include: {
       versions: { orderBy: { version: "asc" } },
+      references: { orderBy: { createdAt: "asc" } },
     },
   });
 
