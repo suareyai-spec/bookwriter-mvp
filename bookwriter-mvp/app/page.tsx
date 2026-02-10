@@ -231,10 +231,10 @@ export default function Home() {
               <span className="absolute inset-0 flex items-center justify-center text-2xl">✍️</span>
             </div>
             <h2 className="mt-8 text-2xl font-bold">Writing your book...</h2>
-            <p className="mt-2 text-gray-400">Creating outline, chapters, and structure</p>
+            <p className="mt-2 text-gray-400">Creating outline, then writing each chapter individually</p>
             <div className="mt-6 flex items-center gap-2 text-sm text-gray-600">
               <span className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse" />
-              This usually takes 15-30 seconds
+              Writing chapter by chapter — this takes 2-5 minutes for a full book
             </div>
           </div>
         )}

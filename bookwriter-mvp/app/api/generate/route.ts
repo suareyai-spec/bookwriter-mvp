@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { anthropic, BUDGET } from "@/lib/openai";
+import { anthropic } from "@/lib/openai";
 
 const Body = z.object({
   title: z.string().min(1).max(200),
@@ -12,60 +12,91 @@ const Body = z.object({
   language: z.string().max(30).optional(),
 });
 
+// Map book length to chapter count and words per chapter
+function getChapterPlan(bookLength: string): { chapters: number; wordsPerChapter: number } {
+  if (bookLength?.includes("10,000")) return { chapters: 5, wordsPerChapter: 2000 };
+  if (bookLength?.includes("25,000")) return { chapters: 8, wordsPerChapter: 3000 };
+  if (bookLength?.includes("50,000")) return { chapters: 10, wordsPerChapter: 5000 };
+  if (bookLength?.includes("75,000")) return { chapters: 12, wordsPerChapter: 6000 };
+  if (bookLength?.includes("100,000")) return { chapters: 15, wordsPerChapter: 6500 };
+  return { chapters: 5, wordsPerChapter: 2000 };
+}
+
+async function callClaude(prompt: string, maxTokens: number): Promise<string> {
+  const resp = await anthropic.messages.create({
+    model: "claude-opus-4-20250514",
+    max_tokens: maxTokens,
+    messages: [{ role: "user", content: prompt }],
+  });
+  return resp.content
+    .filter((b) => b.type === "text")
+    .map((b) => (b as { type: "text"; text: string }).text)
+    .join("\n");
+}
+
 export async function POST(req: Request) {
   try {
     const body = Body.parse(await req.json());
+    const plan = getChapterPlan(body.bookLength || "10,000 words (~40 pages)");
+    const lang = body.language || "English";
 
-    const prompt = `You are a world-class professional book author and subject matter expert. Write original, publication-quality content only.
-
-BOOK DETAILS:
-Title: "${body.title}"
+    const bookContext = `Title: "${body.title}"
 Genre: ${body.genre || "General"}
 Tone: ${body.tone || "Professional"}
-Target Book Length: ${body.bookLength || "50,000 words (~200 pages)"}
-Language: ${body.language || "English"} — Write the ENTIRE book in ${body.language || "English"}.
-${body.audience ? `Target Audience: ${body.audience}` : ""}
+Target Audience: ${body.audience || "General readers"}
+Language: ${lang} — Write EVERYTHING in ${lang}.
 
-AUTHOR'S VISION:
-${body.description}
+Author's Vision:
+${body.description}`;
 
-YOUR TASK — Create the following:
+    // Step 1: Generate outline
+    const outlinePrompt = `You are a world-class professional book author. Create a detailed outline for this book.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📋 TABLE OF CONTENTS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Create a detailed table of contents with 8-12 chapters. Each chapter should have a title and a 1-2 sentence description of what it covers.
+${bookContext}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📖 CHAPTER 1 (Full Chapter — ~1500 words)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Write the complete first chapter. Make it compelling and set the foundation for the entire book.
+Create a TABLE OF CONTENTS with exactly ${plan.chapters} chapters.
+For each chapter, provide:
+- Chapter number and title
+- A 2-3 sentence description of what the chapter covers
+- Key topics/sections within the chapter
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📖 CHAPTER 2 (Full Chapter — ~1500 words)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Write the complete second chapter. Build naturally on Chapter 1.
+Make the outline cohesive, logical, and compelling. This must read like a real published book.
+Write the entire outline in ${lang}.`;
 
-QUALITY GUIDELINES:
-- Write at a professional, published-book level
-- Include real-world context, practical insights, and depth
-- Use engaging prose — not AI-summary style
-- Avoid imitating any specific living author
-- Structure with clear headings and flow`.slice(0, BUDGET.maxPromptChars);
+    const outline = await callClaude(outlinePrompt, 2000);
 
-    const resp = await anthropic.messages.create({
-      model: "claude-opus-4-20250514",
-      max_tokens: BUDGET.maxOutputTokens,
-      messages: [{ role: "user", content: prompt }],
-    });
+    // Step 2: Generate each chapter
+    const chapters: string[] = [];
+    for (let i = 1; i <= plan.chapters; i++) {
+      const chapterPrompt = `You are a world-class professional book author writing a book.
 
-    const text =
-      resp.content
-        .filter((b) => b.type === "text")
-        .map((b) => (b as { type: "text"; text: string }).text)
-        .join("\n") || "No text returned.";
+${bookContext}
 
-    return NextResponse.json({ text });
+Here is the full book outline:
+${outline}
+
+${chapters.length > 0 ? `Here is a brief summary of what you've written so far:\n${chapters.map((c, idx) => `Chapter ${idx + 1}: ${c.slice(0, 300)}...`).join("\n")}` : ""}
+
+Now write CHAPTER ${i} in full. Requirements:
+- Write approximately ${plan.wordsPerChapter} words
+- Write in ${lang}
+- Professional, published-book quality prose
+- Include depth, real-world context, and practical insights
+- Use clear section headings within the chapter
+- Build naturally on previous chapters
+- Do NOT include the outline or table of contents — just write the chapter content
+- Start with the chapter title as a heading
+
+Write Chapter ${i} now:`;
+
+      const chapter = await callClaude(chapterPrompt, 4096);
+      chapters.push(chapter);
+    }
+
+    // Combine everything
+    const fullBook = `${outline}\n\n${"━".repeat(50)}\n\n${chapters.join("\n\n" + "━".repeat(50) + "\n\n")}`;
+
+    return NextResponse.json({ text: fullBook });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Failed";
     return NextResponse.json({ error: message }, { status: 400 });
