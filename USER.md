@@ -3,7 +3,7 @@
 - **Name:** David Suarez
 - **What to call them:** David
 - **Pronouns:** he/him
-- **Timezone:** (US-based, exact TZ TBD)
+- **Timezone:** US Eastern (EST/EDT)
 - **Notes:** Not very tech-savvy. Keep instructions simple. Budget-conscious.
 
 ## Context

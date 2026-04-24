@@ -19,7 +19,7 @@ export default function TermsPage() {
         <div className="prose prose-invert max-w-none space-y-8 text-gray-300 leading-relaxed">
           <section>
             <h2 className="text-xl font-bold text-white mb-3" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>1. Service Description</h2>
-            <p>My Book is an AI-powered book generation service. Users provide a title, description, and preferences, and the service generates full-length book content using artificial intelligence. Users can store, manage, and export their generated books.</p>
+            <p>Plot Ghost is an AI-powered book generation service. Users provide a title, description, and preferences, and the service generates full-length book content using artificial intelligence. Users can store, manage, and export their generated books.</p>
           </section>
 
           <section>
@@ -29,7 +29,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-xl font-bold text-white mb-3" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>3. Intellectual Property</h2>
-            <p>You retain full ownership of all content generated through the service. Books created using My Book are yours to use, publish, distribute, or modify as you see fit. We claim no ownership or license over your generated content. The My Book platform, its design, code, and branding remain our intellectual property.</p>
+            <p>You retain full ownership of all content generated through the service. Books created using Plot Ghost are yours to use, publish, distribute, or modify as you see fit. We claim no ownership or license over your generated content. The Plot Ghost platform, its design, code, and branding remain our intellectual property.</p>
           </section>
 
           <section>
@@ -59,7 +59,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-xl font-bold text-white mb-3" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>9. Contact</h2>
-            <p>For questions about these terms, contact us at support@mybookapp.com.</p>
+            <p>For questions about these terms, contact us at support@iamdivid.com.</p>
           </section>
         </div>
       </div>

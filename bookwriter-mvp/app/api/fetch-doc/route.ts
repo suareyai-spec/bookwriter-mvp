@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { rateLimitByUser } from "@/lib/rate-limit";
 
 const Body = z.object({
   url: z.string().url(),
@@ -7,6 +8,10 @@ const Body = z.object({
 
 export async function POST(req: Request) {
   try {
+    // --- RATE LIMIT ---
+    const rl = await rateLimitByUser("fetch-doc", 20, 60 * 60 * 1000);
+    if (rl.blocked) return rl.blocked;
+
     const { url } = Body.parse(await req.json());
 
     // Convert Google Docs URL to export format

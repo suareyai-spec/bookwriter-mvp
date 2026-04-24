@@ -1,0 +1,136 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String   @id @default(cuid())
+  email      String   @unique
+  password   String
+  name       String
+  role       String
+  department String?
+  createdAt  DateTime @default(now())
+}
+
+model Patient {
+  id                  String         @id @default(cuid())
+  mrn                 String         @unique
+  firstName           String
+  lastName            String
+  dateOfBirth         DateTime
+  gender              String
+  roomNumber          String?
+  bedNumber           String?
+  admissionDate       DateTime
+  admissionDiagnosis  String
+  status              String
+  allergies           String?
+  codeStatus          String?
+  dietaryRestrictions String?
+  primaryPhysician    String?
+  insurance           String?
+  notes               ChartNote[]
+  vitals              Vital[]
+  medications         Medication[]
+  labResults          LabResult[]
+  orders              Order[]
+  problems            Problem[]
+  images              PatientImage[]
+}
+
+model PatientImage {
+  id          String   @id @default(cuid())
+  patientId   String
+  patient     Patient  @relation(fields: [patientId], references: [id])
+  filename    String
+  filepath    String
+  category    String
+  description String?
+  uploadedBy  String
+  uploadedAt  DateTime @default(now())
+}
+
+model ChartNote {
+  id         String   @id @default(cuid())
+  patientId  String
+  patient    Patient  @relation(fields: [patientId], references: [id])
+  authorName String
+  authorRole String
+  noteType   String
+  shiftType  String
+  content    String
+  createdAt  DateTime @default(now())
+  department String?
+}
+
+model Vital {
+  id               String   @id @default(cuid())
+  patientId        String
+  patient          Patient  @relation(fields: [patientId], references: [id])
+  temperature      Float?
+  heartRate        Int?
+  bloodPressureSys Int?
+  bloodPressureDia Int?
+  respiratoryRate  Int?
+  oxygenSat        Float?
+  painLevel        Int?
+  recordedAt       DateTime
+  recordedBy       String
+}
+
+model Medication {
+  id        String    @id @default(cuid())
+  patientId String
+  patient   Patient   @relation(fields: [patientId], references: [id])
+  name      String
+  dosage    String
+  route     String
+  frequency String
+  status    String
+  startDate DateTime
+  endDate   DateTime?
+  orderedBy String
+  notes     String?
+}
+
+model LabResult {
+  id          String   @id @default(cuid())
+  patientId   String
+  patient     Patient  @relation(fields: [patientId], references: [id])
+  testName    String
+  value       String
+  unit        String?
+  normalRange String?
+  flag        String?
+  collectedAt DateTime
+  resultAt    DateTime
+}
+
+model Order {
+  id          String    @id @default(cuid())
+  patientId   String
+  patient     Patient   @relation(fields: [patientId], references: [id])
+  orderType   String
+  description String
+  status      String
+  priority    String
+  orderedBy   String
+  orderedAt   DateTime
+  completedAt DateTime?
+}
+
+model Problem {
+  id        String    @id @default(cuid())
+  patientId String
+  patient   Patient   @relation(fields: [patientId], references: [id])
+  name      String
+  icdCode   String?
+  status    String
+  onsetDate DateTime?
+  notes     String?
+}

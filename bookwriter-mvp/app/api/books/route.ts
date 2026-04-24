@@ -14,7 +14,18 @@ export async function GET() {
   const books = await prisma.book.findMany({
     where: { userId },
     orderBy: { updatedAt: "desc" },
-    include: {
+    select: {
+      id: true,
+      title: true,
+      genre: true,
+      status: true,
+      progress: true,
+      contentType: true,
+      mature: true,
+      seriesId: true,
+      seriesOrder: true,
+      createdAt: true,
+      updatedAt: true,
       _count: { select: { versions: true } },
       versions: {
         orderBy: { version: "desc" },

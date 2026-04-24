@@ -1,0 +1,674 @@
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
+
+const doc = new PDFDocument({ size: [1280, 720], margin: 0 });
+doc.pipe(fs.createWriteStream('KOSIQ-Investor-Pitch-2026.pdf'));
+
+const blue = '#26acf7';
+const dark = '#1d1d1f';
+const gray = '#6e6e73';
+const green = '#34c759';
+const lightGray = '#f5f5f7';
+const red = '#ff3b30';
+const amber = '#f59e0b';
+const purple = '#8b5cf6';
+
+function newSlide(bg = '#ffffff') {
+  doc.addPage({ size: [1280, 720], margin: 0 });
+  doc.rect(0, 0, 1280, 720).fill(bg);
+}
+
+function sectionTag(text, y = 60) {
+  doc.fontSize(12).font('Helvetica').fillColor(blue).text(text.toUpperCase(), 80, y, { width: 1120 });
+}
+
+function title(text, y = 85) {
+  doc.fontSize(32).font('Helvetica-Bold').fillColor(dark).text(text, 80, y, { width: 1120 });
+}
+
+function subtitle(text, y) {
+  doc.fontSize(14).font('Helvetica').fillColor(gray).text(text, 80, y, { width: 1120 });
+}
+
+function body(text, x, y, opts = {}) {
+  doc.fontSize(opts.size || 13).font(opts.bold ? 'Helvetica-Bold' : 'Helvetica').fillColor(opts.color || gray).text(text, x, y, { width: opts.width || 500, lineGap: 3 });
+}
+
+function card(x, y, w, h, borderColor) {
+  doc.roundedRect(x, y, w, h, 8).fillAndStroke(lightGray, borderColor || '#e5e7eb');
+}
+
+function metricBox(x, y, num, label) {
+  doc.roundedRect(x, y, 160, 70, 8).fill(lightGray);
+  doc.fontSize(24).font('Helvetica-Bold').fillColor(blue).text(num, x, y + 12, { width: 160, align: 'center' });
+  doc.fontSize(11).font('Helvetica').fillColor(gray).text(label, x, y + 45, { width: 160, align: 'center' });
+}
+
+// ===== SLIDE 0: TITLE =====
+doc.rect(0, 0, 1280, 720).fill('#000');
+doc.fontSize(14).font('Helvetica').fillColor('#999').text('INVESTOR PRESENTATION — 2026', 80, 200, { width: 1120 });
+doc.fontSize(52).font('Helvetica-Bold').fillColor('#fff').text('KOSIQ', 80, 240);
+doc.fontSize(22).font('Helvetica').fillColor('#ccc').text('AI-Powered Medical Economics Platform', 80, 310);
+doc.fontSize(14).fillColor('#888').text('Transforming Healthcare Analytics with Artificial Intelligence', 80, 350);
+doc.fontSize(12).fillColor('#666').text('David Suarez, CTO  •  Dr. JD Suarez, CMO', 80, 620);
+doc.fontSize(12).fillColor('#666').text('david@iamdivid.com  •  drjdsuarez@gmail.com', 80, 640);
+
+// ===== SLIDE 1: PROBLEM =====
+newSlide();
+sectionTag('The Problem');
+title('Healthcare Groups Are Flying Blind');
+body('Managed care organizations handle millions of patients and billions in claims — yet most rely on outdated reporting tools that show what already happened.', 80, 150, { size: 15, width: 1100 });
+
+const problems = [
+  ['Retrospective Only', 'Legacy platforms report on past events. By the time you see the data, the patient is already in the ER.'],
+  ['No AI, No Predictions', 'Current tools lack predictive analytics. CMOs can\'t identify at-risk patients before costly events.'],
+  ['Fragmented Data', 'Claims, EHR, pharmacy, and lab data live in separate silos with no unified view.'],
+  ['Manual Workflows', 'Clinicians spend hours pulling reports, cross-referencing data, and building spreadsheets.']
+];
+
+problems.forEach((p, i) => {
+  const y = 220 + i * 105;
+  doc.roundedRect(80, y, 1120, 90, 8).fill(lightGray);
+  doc.fontSize(15).font('Helvetica-Bold').fillColor(dark).text(p[0], 100, y + 15, { width: 300 });
+  doc.fontSize(12).font('Helvetica').fillColor(gray).text(p[1], 100, y + 40, { width: 1060 });
+});
+
+// ===== SLIDE 2: SOLUTION =====
+newSlide();
+sectionTag('The Solution');
+title('KOSIQ — Intelligence, Not Just Analytics');
+body('KOSIQ is an AI-powered medical economics platform that ingests claims data, predicts outcomes, and tells clinicians exactly what to do — in plain English.', 80, 150, { size: 15, width: 1100 });
+
+const solutions = [
+  [blue, 'Predictive Analytics', '30/60/90-day hospitalization risk, LACE readmission scoring, cost forecasting'],
+  [green, 'AI Recommendations', 'Monthly reports with prioritized actions, financial impact, and patient lists'],
+  [purple, 'Natural Language Chat', 'Ask questions about your data in plain English — "Show me diabetics with HbA1c > 9"'],
+  [amber, 'Clinical Alert Programs', '8 CMO-designed protocols for high-risk identification (SMI, HIV, ESRD, CKD, etc.)']
+];
+
+solutions.forEach((s, i) => {
+  const y = 220 + i * 105;
+  doc.roundedRect(80, y, 1120, 90, 8).lineWidth(1).fillAndStroke('#fff', '#e5e7eb');
+  doc.rect(80, y, 5, 90).fill(s[0]);
+  doc.fontSize(15).font('Helvetica-Bold').fillColor(dark).text(s[1], 105, y + 15, { width: 300 });
+  doc.fontSize(12).font('Helvetica').fillColor(gray).text(s[2], 105, y + 40, { width: 1060 });
+});
+
+// ===== SLIDE 3: PRODUCT =====
+newSlide();
+sectionTag('Product');
+title('Built for Managed Care CMOs');
+body('Every page has live data. No "Coming Soon." Investors and CMOs see a working platform from day one.', 80, 150, { size: 14, width: 1100 });
+
+const features = [
+  'Action Center Dashboard — 30+ metric cards across membership, clinical, cost, hospitalization',
+  'Predictive Analytics — 30/60/90 day risk models, LACE scores, population health trends',
+  'AI Recommendations — Pre-generated monthly reports with decision suggestions',
+  'AI Chat Assistant — Natural language queries against your entire dataset',
+  'Pharmacy Analytics — Brand vs generic, top Rx, cost trends, top utilizers',
+  'Claims & Finance — INP/OUT/PRO breakdown, PMPM by payer, MLR trends, MRA tracking',
+  'Patient Management — 500+ patient records, risk stratification, clinical history',
+  'Excel/PDF Export — Branded reports, bulk data export, audit trails'
+];
+
+features.forEach((f, i) => {
+  const y = 195 + i * 55;
+  doc.roundedRect(80, y, 1120, 45, 6).fill(i % 2 === 0 ? lightGray : '#fff');
+  doc.fontSize(12).font('Helvetica').fillColor(dark).text('→  ' + f, 100, y + 14, { width: 1080 });
+});
+
+// ===== SLIDE 4: HOW IT WORKS =====
+newSlide();
+sectionTag('How It Works');
+title('From Raw Claims to Actionable Intelligence');
+
+const steps = [
+  ['1', 'Ingest', 'Upload claims data (CSV, EDI 837/835). AI cleans and normalizes automatically.'],
+  ['2', 'Analyze', 'ML models run risk stratification, cost analysis, and predictive scoring.'],
+  ['3', 'Recommend', 'AI generates prioritized recommendations with financial impact estimates.'],
+  ['4', 'Act', 'CMOs and care teams execute interventions. KOSIQ tracks outcomes.']
+];
+
+steps.forEach((s, i) => {
+  const x = 80 + i * 280;
+  doc.roundedRect(x, 160, 260, 200, 12).fill(lightGray);
+  doc.circle(x + 130, 200, 25).fill(blue);
+  doc.fontSize(20).font('Helvetica-Bold').fillColor('#fff').text(s[0], x + 118, 190, { width: 25, align: 'center' });
+  doc.fontSize(16).font('Helvetica-Bold').fillColor(dark).text(s[1], x + 20, 245, { width: 220, align: 'center' });
+  doc.fontSize(11).font('Helvetica').fillColor(gray).text(s[2], x + 20, 275, { width: 220, align: 'center' });
+});
+
+body('Continuous loop: new data → updated predictions → refined recommendations → better outcomes', 80, 420, { size: 14, width: 1100 });
+
+// ===== SLIDE 5: FEATURES =====
+newSlide();
+sectionTag('Key Features');
+title('What Sets KOSIQ Apart');
+
+const feats = [
+  [blue, 'Predictive Risk Models', '30/60/90-day hospitalization risk\nLACE readmission scoring\nCost trajectory forecasting'],
+  [green, 'AI Chat Interface', 'Ask anything in plain English\nInstant data queries\nClaude-powered intelligence'],
+  [purple, '8 Clinical Alert Programs', 'SMI metabolic + mental health\nHIV, ESRD, CKD Stage 3b/4\nHbA1c > 9, Asthma/COPD\nUnengaged members'],
+  [amber, 'Automated Reports', 'Monthly AI-generated reports\nPrioritized recommendations\nFinancial impact per action']
+];
+
+feats.forEach((f, i) => {
+  const x = 80 + (i % 2) * 570;
+  const y = 150 + Math.floor(i / 2) * 200;
+  doc.roundedRect(x, y, 540, 180, 10).lineWidth(1).fillAndStroke('#fff', '#e5e7eb');
+  doc.rect(x, y, 5, 180).fill(f[0]);
+  doc.fontSize(16).font('Helvetica-Bold').fillColor(dark).text(f[1], x + 25, y + 20, { width: 490 });
+  doc.fontSize(12).font('Helvetica').fillColor(gray).text(f[2], x + 25, y + 50, { width: 490, lineGap: 4 });
+});
+
+// ===== SLIDE 6: COMPETITIVE LANDSCAPE =====
+newSlide();
+sectionTag('Competitive Landscape');
+title('Legacy Platforms Report. KOSIQ Predicts.');
+
+// Table header
+doc.roundedRect(80, 160, 1120, 40, 0).fill(dark);
+['Feature', 'Legacy Platforms', 'Cozeva', 'KOSIQ'].forEach((h, i) => {
+  const x = i === 0 ? 100 : 380 + (i - 1) * 270;
+  doc.fontSize(12).font('Helvetica-Bold').fillColor('#fff').text(h, x, 170, { width: 250 });
+});
+
+const compRows = [
+  ['Predictive Analytics', 'None', 'Limited', 'Full — 30/60/90 day'],
+  ['AI Recommendations', 'None', 'None', 'Monthly AI reports'],
+  ['Natural Language Chat', 'None', 'None', 'Claude-powered'],
+  ['Clinical Alert Programs', 'None', 'Generic', '8 CMO-designed'],
+  ['Real-time Data', 'Batch only', 'Near real-time', 'Real-time + predictive'],
+  ['PMPM Pricing', '$2-5+', '$1-3 est.', '$0.50-$2.24'],
+  ['Setup Time', 'Months', 'Weeks-months', 'Days'],
+  ['AI-Native Architecture', 'No', 'Retrofitted', 'Built on AI from day one']
+];
+
+compRows.forEach((r, i) => {
+  const y = 200 + i * 48;
+  doc.roundedRect(80, y, 1120, 44, 0).fill(i % 2 === 0 ? lightGray : '#fff');
+  doc.fontSize(11).font('Helvetica-Bold').fillColor(dark).text(r[0], 100, y + 14, { width: 260 });
+  doc.fontSize(11).font('Helvetica').fillColor(red).text(r[1], 380, y + 14, { width: 250 });
+  doc.fontSize(11).font('Helvetica').fillColor(amber).text(r[2], 650, y + 14, { width: 250 });
+  doc.fontSize(11).font('Helvetica-Bold').fillColor(green).text(r[3], 920, y + 14, { width: 250 });
+});
+
+// ===== SLIDE 7: MARKET OPPORTUNITY =====
+newSlide();
+sectionTag('Market Opportunity');
+title('$53B+ Healthcare Analytics Market');
+
+metricBox(80, 160, '$53B+', 'Market Size (2026)');
+metricBox(260, 160, '21%', 'CAGR');
+metricBox(440, 160, '~3,000', 'Large Care Groups');
+metricBox(620, 160, '40K+', 'Avg Members/Group');
+
+body('Target: Large managed care groups with 20,000-60,000+ members managing Medicare Advantage, Medicaid, and Commercial populations.', 80, 270, { size: 14, width: 1100 });
+
+doc.roundedRect(80, 320, 350, 100, 8).fill(lightGray);
+doc.fontSize(13).font('Helvetica-Bold').fillColor(dark).text('TAM', 100, 335);
+doc.fontSize(12).font('Helvetica').fillColor(gray).text('~3,000 large groups nationally', 100, 355);
+doc.fontSize(11).fillColor(gray).text('Total addressable opportunity', 100, 375);
+
+doc.roundedRect(460, 320, 350, 100, 8).fill(lightGray);
+doc.fontSize(13).font('Helvetica-Bold').fillColor(dark).text('SAM', 480, 335);
+doc.fontSize(12).font('Helvetica').fillColor(gray).text('~1,500 groups with 40K+ members', 480, 355);
+doc.fontSize(11).fillColor(gray).text('Ideal customer profile', 480, 375);
+
+doc.roundedRect(840, 320, 360, 100, 8).fill(lightGray);
+doc.fontSize(13).font('Helvetica-Bold').fillColor(dark).text('SOM (Year 3)', 860, 335);
+doc.fontSize(12).font('Helvetica').fillColor(gray).text('25 groups, ~1M members', 860, 355);
+doc.fontSize(11).fillColor(gray).text('$18.6M+ ARR target', 860, 375);
+
+// ===== SLIDE 8: MARKET VALIDATION =====
+newSlide();
+sectionTag('Market Validation');
+title('Cozeva Proves the Market — KOSIQ Accelerates It');
+
+// Left: Cozeva timeline
+doc.fontSize(16).font('Helvetica-Bold').fillColor(dark).text('Cozeva: 14 Years to $50-100M', 80, 150);
+
+const timeline = [
+  ['2012', 'Founded', 'Quality measurement tools. No AI. Bootstrapped.'],
+  ['2016', 'Product-market fit', 'First major clients. 15 quality awards. ~$5M revenue.'],
+  ['2019', 'Scale', '50+ awards. Multi-state. ~$20M revenue.'],
+  ['2026', 'Market leader', '84 clients, 25M lives, 30 states. $50-100M revenue.']
+];
+
+timeline.forEach((t, i) => {
+  const y = 190 + i * 70;
+  doc.roundedRect(80, y, 50, 25, 4).fill(lightGray);
+  doc.fontSize(11).font('Helvetica-Bold').fillColor(gray).text(t[0], 82, y + 6, { width: 46, align: 'center' });
+  doc.fontSize(12).font('Helvetica-Bold').fillColor(dark).text(t[1], 145, y + 2);
+  doc.fontSize(11).font('Helvetica').fillColor(gray).text(t[2], 145, y + 18, { width: 430 });
+});
+
+doc.roundedRect(80, 480, 540, 50, 8).fill(lightGray);
+doc.fontSize(11).font('Helvetica').fillColor(gray).text('Key insight: Cozeva built $50-100M with no AI, no predictions, no chat, and no venture funding.', 100, 495, { width: 500 });
+
+// Right: KOSIQ advantages
+doc.fontSize(16).font('Helvetica-Bold').fillColor(dark).text('KOSIQ: Built for Today\'s Market', 660, 150);
+
+const advantages = [
+  [blue, '5x Larger Market', 'Healthcare analytics was $10B in 2012. It\'s $53B+ today.'],
+  [green, 'AI-Native from Day One', 'What took Cozeva 10 years to add, we ship at launch.'],
+  [purple, 'Capital-Accelerated', 'With seed funding + clinical network, targeting $18.6M+ in 3 years.'],
+  [amber, 'Aggressive Pricing', '$0.50-$2.24 PMPM vs Cozeva\'s estimated $1-3.']
+];
+
+advantages.forEach((a, i) => {
+  const y = 190 + i * 85;
+  doc.roundedRect(660, y, 540, 75, 8).lineWidth(1).fillAndStroke('#fff', '#e5e7eb');
+  doc.rect(660, y, 4, 75).fill(a[0]);
+  doc.fontSize(13).font('Helvetica-Bold').fillColor(a[0]).text(a[1], 680, y + 12, { width: 500 });
+  doc.fontSize(11).font('Helvetica').fillColor(gray).text(a[2], 680, y + 32, { width: 500 });
+});
+
+doc.roundedRect(660, 540, 540, 40, 8).fill(lightGray);
+doc.fontSize(12).font('Helvetica-Bold').fillColor(dark).text('Cozeva validated the market.', 680, 548, { width: 250 });
+doc.fontSize(12).font('Helvetica-Bold').fillColor(blue).text('KOSIQ captures it faster, smarter, and cheaper.', 680, 563, { width: 500 });
+
+// ===== SLIDE 9: BUSINESS MODEL =====
+newSlide();
+sectionTag('Business Model');
+title('PMPM Pricing + Full Integration Services');
+
+// PMPM tiers
+doc.fontSize(14).font('Helvetica-Bold').fillColor(blue).text('Per Member Per Month (PMPM)', 80, 150);
+
+const tiers = [
+  ['60,000+ members', '$0.50 PMPM'],
+  ['20,000 - 60,000 members', '$1.25 PMPM'],
+  ['Under 20,000 members', '$2.24 PMPM']
+];
+
+tiers.forEach((t, i) => {
+  const y = 180 + i * 40;
+  doc.roundedRect(80, y, 540, 35, 6).fill(i % 2 === 0 ? lightGray : '#fff');
+  doc.fontSize(12).font('Helvetica').fillColor(dark).text(t[0], 100, y + 10, { width: 300 });
+  doc.fontSize(14).font('Helvetica-Bold').fillColor(blue).text(t[1], 400, y + 9, { width: 200, align: 'right' });
+});
+
+// Integration tiers
+doc.fontSize(14).font('Helvetica-Bold').fillColor(green).text('Full Integration Services', 80, 320);
+const intTiers = [
+  ['Standard Integration', '$10,000/mo'],
+  ['Advanced Integration', '$15,000/mo'],
+  ['Enterprise Integration', '$20,000/mo']
+];
+
+intTiers.forEach((t, i) => {
+  const y = 350 + i * 40;
+  doc.roundedRect(80, y, 540, 35, 6).fill(i % 2 === 0 ? lightGray : '#fff');
+  doc.fontSize(12).font('Helvetica').fillColor(dark).text(t[0], 100, y + 10, { width: 300 });
+  doc.fontSize(14).font('Helvetica-Bold').fillColor(green).text(t[1], 400, y + 9, { width: 200, align: 'right' });
+});
+
+// Revenue example
+doc.roundedRect(660, 150, 540, 120, 10).fill(lightGray);
+doc.fontSize(14).font('Helvetica-Bold').fillColor(dark).text('Revenue Example — 50,000 Members', 680, 170);
+doc.fontSize(13).font('Helvetica').fillColor(gray).text('At $1.25 PMPM = $62,500/mo ($750K/yr)', 680, 200);
+doc.fontSize(13).font('Helvetica').fillColor(green).text('+ Full integration: $72,500/mo ($870K/yr)', 680, 220);
+
+// Cost breakdown
+doc.roundedRect(660, 290, 540, 200, 10).lineWidth(1).fillAndStroke('#fff', red);
+doc.fontSize(14).font('Helvetica-Bold').fillColor(dark).text('Cost Per Customer (Monthly)', 680, 310);
+
+const costs = [
+  ['AWS Infrastructure (compute, DB, storage)', '$300-500'],
+  ['AI/Claude API (Bedrock)', '$200-400'],
+  ['Data pipeline & processing', '$100-200'],
+  ['Monitoring, security, compliance', '$50-100'],
+  ['Total cost per customer', '$650-1,200']
+];
+
+costs.forEach((c, i) => {
+  const y = 340 + i * 28;
+  const isTotal = i === costs.length - 1;
+  if (isTotal) { doc.moveTo(680, y - 2).lineTo(1170, y - 2).strokeColor('#e5e7eb').stroke(); }
+  doc.fontSize(11).font(isTotal ? 'Helvetica-Bold' : 'Helvetica').fillColor(isTotal ? red : gray).text(c[0], 680, y + 2, { width: 350 });
+  doc.fontSize(11).font('Helvetica-Bold').fillColor(isTotal ? red : dark).text(c[1], 1050, y + 2, { width: 130, align: 'right' });
+});
+
+// Margin
+metricBox(660, 510, '98%+', 'Gross Margin');
+metricBox(850, 510, '$62.5K', 'Revenue/customer/mo');
+doc.fontSize(11).font('Helvetica').fillColor(gray).text('Revenue $62.5K/mo vs cost ~$1K/mo per customer', 660, 600, { width: 540 });
+
+// ===== SLIDE 10: TRACTION =====
+newSlide();
+sectionTag('Traction');
+title('Where We Are Today');
+
+const tractions = [
+  ['Platform Built', 'Fully functional MVP with 10+ pages, all with live demo data. AI chat, predictive analytics, recommendations.'],
+  ['Clinical Validation', 'Dr. JD Suarez (CMO) actively managing 40,000+ patients — KOSIQ designed from his workflows.'],
+  ['Domain Secured', 'kosiq.ai — live and accessible for investor demos.'],
+  ['Technology Stack', 'Next.js, Claude AI (AWS Bedrock for production), HIPAA-ready architecture.'],
+  ['Go-to-Market Ready', 'Beta with 3-5 South Florida practices through Dr. JD\'s network.']
+];
+
+tractions.forEach((t, i) => {
+  const y = 150 + i * 95;
+  doc.roundedRect(80, y, 1120, 80, 8).fill(lightGray);
+  doc.fontSize(14).font('Helvetica-Bold').fillColor(dark).text(t[0], 100, y + 15, { width: 250 });
+  doc.fontSize(12).font('Helvetica').fillColor(gray).text(t[1], 100, y + 38, { width: 1060 });
+});
+
+// ===== SLIDE 11: DR. JD =====
+newSlide();
+sectionTag('Clinical Advisory');
+title('Dr. JD Suarez, CMO');
+
+body('Chief Medical Officer of a Florida-based healthcare group managing 40,000+ Medicare Advantage and Medicaid patients across multiple payers including Simply Health, Sunshine Health, Humana, Aetna, Molina, and WellCare.', 80, 150, { size: 14, width: 1100 });
+
+doc.roundedRect(80, 220, 1120, 80, 10).fill(lightGray);
+doc.fontSize(14).font('Helvetica-Bold').fillColor(dark).text('"I\'ve used every analytics platform on the market. None of them tell me what to DO. KOSIQ does."', 120, 240, { width: 1040 });
+doc.fontSize(12).font('Helvetica').fillColor(gray).text('— Dr. JD Suarez, CMO', 120, 275);
+
+doc.fontSize(13).font('Helvetica').fillColor(gray).text('Dr. JD is not an advisor on paper. He is an active practitioner whose daily workflows shaped every feature in KOSIQ. His 8 clinical alert programs are built from real patient management experience.', 80, 330, { width: 1100 });
+
+const programs = [
+  'SMI: Flag metabolic + mental health patients',
+  'HIV: Patients not in Clear Choice Alliance',
+  'ESRD: Patients needing specialized insurance',
+  'CKD Stage 3b/4: Early intervention before ESRD',
+  'HbA1c > 9: Aggressive diabetes management',
+  'Asthma/COPD: Frequent hospitalizers — medication review',
+  'Unengaged Members: 40% of ER patients never saw their PCP',
+  'Age-Provider Mismatch: Kids with geriatric docs, adults with pediatricians'
+];
+
+programs.forEach((p, i) => {
+  const x = 80 + (i % 2) * 560;
+  const y = 390 + Math.floor(i / 2) * 35;
+  doc.fontSize(11).font('Helvetica').fillColor(dark).text('→  ' + p, x, y, { width: 540 });
+});
+
+// ===== SLIDE 12: GO-TO-MARKET =====
+newSlide();
+sectionTag('Go-to-Market');
+title('Land & Expand Through Clinical Networks');
+
+const gtm = [
+  ['Phase 1: South Florida (Months 1-6)', 'Beta with 3-5 practices through Dr. JD\'s network. Prove ROI with real managed care data. Target: Simply Health, Sunshine Health groups.'],
+  ['Phase 2: Florida Expansion (Months 6-12)', 'Expand to 10+ groups statewide. Case studies from Phase 1. Conference presence (HIMSS, AHIP). Target: Humana, Aetna groups.'],
+  ['Phase 3: Multi-State (Months 12-24)', 'Enter Texas, California, New York. Payer partnerships (Elevance pilot). Target: 25 groups, 1M members.'],
+  ['Phase 4: Payer Mandates (Months 24-36)', 'Elevance full rollout. Second payer partnership. National presence.']
+];
+
+gtm.forEach((g, i) => {
+  const y = 150 + i * 120;
+  doc.roundedRect(80, y, 1120, 105, 8).lineWidth(1).fillAndStroke('#fff', '#e5e7eb');
+  doc.rect(80, y, 4, 105).fill(i < 2 ? blue : green);
+  doc.fontSize(14).font('Helvetica-Bold').fillColor(dark).text(g[0], 100, y + 15, { width: 1060 });
+  doc.fontSize(12).font('Helvetica').fillColor(gray).text(g[1], 100, y + 40, { width: 1060 });
+});
+
+// ===== SLIDE 13: TECHNOLOGY =====
+newSlide();
+sectionTag('Technology & Security');
+title('Enterprise-Ready Architecture');
+
+const techItems = [
+  ['AI Engine', 'Claude AI via AWS Bedrock — HIPAA-compliant, AWS signs BAA. Predictive models, NLP chat, automated reports.'],
+  ['Infrastructure', 'AWS cloud. Encryption at rest (AES-256) and in transit (TLS 1.3). SOC 2 Type II roadmap.'],
+  ['Data Pipeline', 'Automated claims ingestion (CSV, EDI 837/835). AI cleaning and normalization. Monthly refresh cycles.'],
+  ['Security', 'Role-based access, session timeouts, audit logging, API key management, IP allowlisting.'],
+  ['Compliance Roadmap', 'Phase 1: HIPAA policies + Vanta ($25-50K). Phase 2: SOC 2 Type I ($75-125K). Phase 3: SOC 2 Type II + pen testing ($120-200K).']
+];
+
+techItems.forEach((t, i) => {
+  const y = 150 + i * 95;
+  doc.roundedRect(80, y, 1120, 82, 8).fill(lightGray);
+  doc.fontSize(13).font('Helvetica-Bold').fillColor(dark).text(t[0], 100, y + 12, { width: 200 });
+  doc.fontSize(11).font('Helvetica').fillColor(gray).text(t[1], 100, y + 32, { width: 1060 });
+});
+
+// ===== SLIDE 14: COMPLIANCE TIMELINE =====
+newSlide();
+sectionTag('Compliance');
+title('6-Month Path to HIPAA + SOC 2');
+
+const compPhases = [
+  ['Month 1-2', 'Foundation', 'HIPAA policies, risk assessment, Vanta setup, workforce training', '$15-25K', blue],
+  ['Month 3-4', 'Implementation', 'Technical safeguards, encryption audit, BAA execution, pen testing', '$25-40K', green],
+  ['Month 5-6', 'Certification', 'SOC 2 Type I audit, HIPAA attestation, ongoing monitoring', '$35-60K', purple]
+];
+
+compPhases.forEach((p, i) => {
+  const y = 160 + i * 140;
+  doc.roundedRect(80, y, 1120, 120, 10).lineWidth(1).fillAndStroke('#fff', p[4]);
+  doc.rect(80, y, 5, 120).fill(p[4]);
+  doc.fontSize(12).font('Helvetica-Bold').fillColor(p[4]).text(p[0], 105, y + 15);
+  doc.fontSize(16).font('Helvetica-Bold').fillColor(dark).text(p[1], 105, y + 35);
+  doc.fontSize(12).font('Helvetica').fillColor(gray).text(p[2], 105, y + 60, { width: 800 });
+  doc.fontSize(16).font('Helvetica-Bold').fillColor(p[4]).text(p[3], 950, y + 40, { width: 220, align: 'right' });
+});
+
+doc.fontSize(13).font('Helvetica-Bold').fillColor(dark).text('Total Compliance Budget: $75-125K from seed round', 80, 600);
+doc.fontSize(12).font('Helvetica').fillColor(gray).text('Vendors: Clearwater Compliance ($10-15K), Vanta ($6-12K/yr), Prescient Assurance ($20-30K), Healthcare Attorney ($5-10K)', 80, 625, { width: 1100 });
+
+// ===== SLIDE 15: INVESTOR RETURNS =====
+newSlide();
+sectionTag('Investor Returns');
+title('The Path to $1B — The Elevance Scenario');
+
+// Elevance box
+doc.roundedRect(80, 150, 540, 120, 10).lineWidth(1).fillAndStroke('#fff', blue);
+doc.rect(80, 150, 5, 120).fill(blue);
+doc.fontSize(14).font('Helvetica-Bold').fillColor(blue).text('Elevance Health (NYSE: ELV)', 105, 165);
+doc.fontSize(12).font('Helvetica').fillColor(gray).text('$175B+ revenue  •  40M+ members  •  ~$70B market cap\nAnthem Blue Cross, BCBS affiliates across 14 states\nMedicare, Medicaid, Commercial — all lines of business', 105, 190, { width: 490, lineGap: 3 });
+
+doc.roundedRect(80, 285, 540, 95, 10).lineWidth(1).fillAndStroke('#fff', green);
+doc.rect(80, 285, 5, 95).fill(green);
+doc.fontSize(14).font('Helvetica-Bold').fillColor(green).text('One Elevance Deal = Game Over', 105, 300);
+doc.fontSize(12).font('Helvetica').fillColor(gray).text('10% of their providers = 4M members\n4M x $1 PMPM = $4M/mo = $48M ARR from a single partnership', 105, 325, { width: 490 });
+
+doc.roundedRect(80, 395, 540, 80, 10).lineWidth(1).fillAndStroke('#fff', purple);
+doc.rect(80, 395, 5, 80).fill(purple);
+doc.fontSize(14).font('Helvetica-Bold').fillColor(purple).text('Why Payers Want This', 105, 410);
+doc.fontSize(12).font('Helvetica').fillColor(gray).text('5% reduction in avoidable admits across 4M members saves Elevance $200M+ annually. KOSIQ pays for itself 50x over.', 105, 435, { width: 490 });
+
+// Path to $1B
+doc.fontSize(16).font('Helvetica-Bold').fillColor(dark).text('Path to $1B Valuation', 660, 150);
+
+const path = [
+  ['Year 1', 'Seed + first clients', '5 groups, 100K members, $1.5M ARR', '$20M', gray],
+  ['Year 2', 'Series A + Elevance pilot', '500K members + 10 direct groups', '$200M', blue],
+  ['Year 3', 'Elevance full rollout + 2nd payer', '4M+ members, $50M+ ARR', '$1B+', green]
+];
+
+path.forEach((p, i) => {
+  const y = 185 + i * 80;
+  doc.roundedRect(660, y, 540, 70, 8).fill(lightGray);
+  doc.fontSize(12).font('Helvetica-Bold').fillColor(gray).text(p[0], 680, y + 10);
+  doc.fontSize(13).font('Helvetica-Bold').fillColor(dark).text(p[1], 740, y + 10, { width: 300 });
+  doc.fontSize(11).font('Helvetica').fillColor(gray).text(p[2], 740, y + 30, { width: 300 });
+  doc.fontSize(18).font('Helvetica-Bold').fillColor(p[4]).text(p[3], 1050, y + 18, { width: 130, align: 'right' });
+});
+
+// Returns table
+doc.roundedRect(660, 440, 540, 130, 10).fill('#f0f9ff');
+doc.fontSize(14).font('Helvetica-Bold').fillColor(dark).text('Investor Returns on $3M Seed', 680, 458);
+
+const returns = [
+  ['At $200M (Series A)', '~8.5x return', blue],
+  ['At $500M (Series B)', '~21x return', blue],
+  ['At $1B (Elevance scenario)', '~43x return', green]
+];
+
+returns.forEach((r, i) => {
+  const y = 488 + i * 25;
+  doc.fontSize(12).font('Helvetica').fillColor(dark).text(r[0], 680, y, { width: 300 });
+  doc.fontSize(12).font('Helvetica-Bold').fillColor(r[2]).text(r[1], 1050, y, { width: 130, align: 'right' });
+});
+
+doc.fontSize(11).font('Helvetica').fillColor(gray).text('13% seed stake x $1B = $130M on a $3M investment', 680, 568);
+
+doc.fontSize(11).font('Helvetica').fillColor(gray).text('Comparable: Innovaccer reached $3.2B in 6 years. Arcadia sold for $1.1B.', 660, 600, { width: 540, align: 'center' });
+
+// ===== SLIDE 16: FINANCIAL PROJECTIONS =====
+newSlide();
+sectionTag('Financial Projections');
+title('Path to $18.6M+ ARR in Three Years');
+
+// PMPM Revenue
+doc.fontSize(12).font('Helvetica-Bold').fillColor(gray).text('PMPM REVENUE', 80, 150);
+const pmpmRows = [
+  ['Year 1 — 5 groups (~100K members)', '$1.5M'],
+  ['Year 2 — 12 groups (~400K members)', '$6M'],
+  ['Year 3 — 25 groups (~1M members)', '$15M']
+];
+pmpmRows.forEach((r, i) => {
+  const y = 172 + i * 30;
+  doc.roundedRect(80, y, 560, 26, 4).fill(i % 2 === 0 ? lightGray : '#fff');
+  doc.fontSize(12).font('Helvetica').fillColor(dark).text(r[0], 95, y + 6, { width: 400 });
+  doc.fontSize(13).font('Helvetica-Bold').fillColor(dark).text(r[1], 480, y + 5, { width: 140, align: 'right' });
+});
+
+// Integration Revenue
+doc.fontSize(12).font('Helvetica-Bold').fillColor(green).text('INTEGRATION SERVICES ($10K-$20K/MO PER CUSTOMER)', 80, 275);
+const intRows = [
+  ['Year 1 — 2 integrations x $10K/mo', '$240K'],
+  ['Year 2 — 6 integrations x $15K/mo avg', '$1.08M'],
+  ['Year 3 — 15 integrations x $20K/mo avg', '$3.6M']
+];
+intRows.forEach((r, i) => {
+  const y = 297 + i * 30;
+  doc.roundedRect(80, y, 560, 26, 4).fill(i % 2 === 0 ? lightGray : '#fff');
+  doc.fontSize(12).font('Helvetica').fillColor(dark).text(r[0], 95, y + 6, { width: 400 });
+  doc.fontSize(13).font('Helvetica-Bold').fillColor(green).text(r[1], 480, y + 5, { width: 140, align: 'right' });
+});
+
+// Combined
+doc.fontSize(12).font('Helvetica-Bold').fillColor(blue).text('COMBINED ARR', 80, 400);
+const combRows = [
+  ['Year 1 Total', '$1.74M'],
+  ['Year 2 Total', '$7.08M'],
+  ['Year 3 Total', '$18.6M+']
+];
+combRows.forEach((r, i) => {
+  const y = 422 + i * 35;
+  doc.roundedRect(80, y, 560, 30, 4).lineWidth(2).strokeColor(blue).stroke();
+  doc.fontSize(13).font('Helvetica-Bold').fillColor(dark).text(r[0], 95, y + 8, { width: 300 });
+  doc.fontSize(16).font('Helvetica-Bold').fillColor(blue).text(r[1], 440, y + 6, { width: 180, align: 'right' });
+});
+
+// Right side: metrics + breakdown
+metricBox(680, 150, '98%+', 'Gross Margin');
+metricBox(870, 150, '<6 mo', 'CAC Payback');
+metricBox(1060, 150, '10:1+', 'LTV:CAC Target');
+
+doc.roundedRect(680, 245, 520, 200, 10).lineWidth(1).fillAndStroke('#fff', blue);
+doc.rect(680, 245, 4, 200).fill(blue);
+doc.fontSize(13).font('Helvetica-Bold').fillColor(dark).text('How We Got These Numbers', 700, 260);
+
+const breakdown = [
+  'Year 1: 5 groups x 20K avg = 100K x $1.25 PMPM x 12 = $1.5M',
+  'Year 2: 12 groups x 33K avg = 400K x $1.25 PMPM x 12 = $6M',
+  'Year 3: 25 groups x 40K avg = 1M x $1.25 PMPM x 12 = $15M',
+  '',
+  'Avg PMPM of $1.25 blended across tiers ($0.50-$2.24).',
+  'Integration assumes ~40-60% of customers opt for services.'
+];
+
+breakdown.forEach((b, i) => {
+  const y = 290 + i * 20;
+  doc.fontSize(11).font(i < 3 ? 'Helvetica-Bold' : 'Helvetica').fillColor(i < 3 ? dark : gray).text(b, 700, y, { width: 480 });
+});
+
+// Disclaimer
+doc.fontSize(11).font('Helvetica').fillColor(gray).text('These projections are intentionally conservative. They exclude payer-level partnerships (e.g., Elevance) and assume organic group-by-group sales only. Actual results with a strategic payer deal could significantly exceed these estimates.', 80, 560, { width: 1120, align: 'center' });
+
+// ===== SLIDE 17: THE ASK =====
+newSlide();
+sectionTag('The Ask');
+title('Raising $2-5M Seed Round');
+
+doc.fontSize(16).font('Helvetica-Bold').fillColor(dark).text('Use of Funds', 80, 150);
+
+const funds = [
+  ['50%', 'Engineering', 'Expand team, HIPAA hardening, enterprise features', blue],
+  ['30%', 'Sales & Marketing', '2 sales reps, conferences, content marketing', green],
+  ['20%', 'Operations', 'AWS infrastructure, SOC 2 audit, legal/compliance', purple]
+];
+
+funds.forEach((f, i) => {
+  const y = 185 + i * 75;
+  doc.roundedRect(80, y, 540, 65, 8).fill(lightGray);
+  doc.fontSize(24).font('Helvetica-Bold').fillColor(f[3]).text(f[0], 100, y + 10, { width: 60 });
+  doc.fontSize(14).font('Helvetica-Bold').fillColor(dark).text(f[1], 170, y + 10);
+  doc.fontSize(12).font('Helvetica').fillColor(gray).text(f[2], 170, y + 32, { width: 420 });
+});
+
+doc.fontSize(16).font('Helvetica-Bold').fillColor(dark).text('18-Month Milestones', 660, 150);
+
+const milestones = [
+  '25 Paying Customers',
+  '$1.5M ARR',
+  'SOC 2 Type II Certified',
+  'EHR Integrations (eCW, athenahealth)',
+  'Elevance Pilot Initiated'
+];
+
+milestones.forEach((m, i) => {
+  const y = 185 + i * 50;
+  doc.roundedRect(660, y, 540, 42, 8).fill(lightGray);
+  doc.fontSize(13).font('Helvetica-Bold').fillColor(dark).text('✓  ' + m, 680, y + 12, { width: 500 });
+});
+
+// Terms
+doc.roundedRect(660, 460, 540, 120, 10).lineWidth(1).fillAndStroke('#fff', blue);
+doc.fontSize(14).font('Helvetica-Bold').fillColor(dark).text('Investment Terms', 680, 478);
+doc.fontSize(12).font('Helvetica').fillColor(gray).text('$15-20M pre-money valuation\nSeries Seed Preferred Stock\n$500K minimum investment\n1x non-participating liquidation preference', 680, 500, { width: 480, lineGap: 4 });
+
+// ===== SLIDE 18: EQUITY =====
+newSlide();
+sectionTag('Capitalization');
+title('Post-Closing Equity Structure');
+
+const equity = [
+  ['David Suarez (CTO)', '33%', dark],
+  ['Dr. JD Suarez (CMO)', '33%', dark],
+  ['Lead Investor', '13%', blue],
+  ['Growth Officer', '10%', green],
+  ['Option Pool', '11%', purple]
+];
+
+equity.forEach((e, i) => {
+  const y = 160 + i * 55;
+  doc.roundedRect(80, y, 540, 45, 8).fill(lightGray);
+  doc.fontSize(14).font('Helvetica-Bold').fillColor(e[2]).text(e[0], 100, y + 13, { width: 350 });
+  doc.fontSize(18).font('Helvetica-Bold').fillColor(e[2]).text(e[1], 460, y + 11, { width: 140, align: 'right' });
+});
+
+// Board
+doc.fontSize(16).font('Helvetica-Bold').fillColor(dark).text('5-Seat Board of Directors', 660, 160);
+const board = ['David Suarez (CTO)', 'Dr. JD Suarez (CMO)', 'Lead Investor', 'Growth Officer', 'Independent Director (mutually agreed)'];
+board.forEach((b, i) => {
+  doc.fontSize(12).font('Helvetica').fillColor(dark).text((i + 1) + '.  ' + b, 680, 195 + i * 28, { width: 500 });
+});
+
+doc.roundedRect(660, 350, 540, 100, 8).fill(lightGray);
+doc.fontSize(13).font('Helvetica-Bold').fillColor(dark).text('Key Terms', 680, 370);
+doc.fontSize(11).font('Helvetica').fillColor(gray).text('• All shares fully vested at issuance (no vesting for any party)\n• Quorum: 3 of 5. Supermajority (4 of 5) for sale, new equity, C-suite removal\n• Florida C-Corporation\n• CEO position: Board-appointed (negotiable)', 680, 392, { width: 500, lineGap: 4 });
+
+doc.fontSize(11).font('Helvetica').fillColor(gray).text('CTO Compensation: $150K/yr (raises to $180K at $1M ARR). CMO: Equity only at inception.', 80, 480, { width: 1100 });
+
+// ===== SLIDE 19: CONTACT =====
+newSlide('#000');
+doc.fontSize(14).font('Helvetica').fillColor('#999').text('LET\'S BUILD THE FUTURE OF HEALTHCARE ANALYTICS', 0, 220, { width: 1280, align: 'center' });
+doc.fontSize(48).font('Helvetica-Bold').fillColor('#fff').text('KOSIQ', 0, 260, { width: 1280, align: 'center' });
+doc.fontSize(18).font('Helvetica').fillColor('#ccc').text('AI-Powered Medical Economics Intelligence', 0, 320, { width: 1280, align: 'center' });
+
+doc.fontSize(14).font('Helvetica').fillColor('#999').text('David Suarez, CTO', 0, 420, { width: 1280, align: 'center' });
+doc.fontSize(14).fillColor(blue).text('david@iamdivid.com', 0, 445, { width: 1280, align: 'center' });
+
+doc.fontSize(14).font('Helvetica').fillColor('#999').text('Dr. JD Suarez, CMO', 0, 490, { width: 1280, align: 'center' });
+doc.fontSize(14).fillColor(blue).text('drjdsuarez@gmail.com', 0, 515, { width: 1280, align: 'center' });
+
+doc.fontSize(14).font('Helvetica').fillColor(blue).text('kosiq.ai', 0, 570, { width: 1280, align: 'center' });
+
+doc.end();
+console.log('PDF generated: KOSIQ-Investor-Pitch-2026.pdf');

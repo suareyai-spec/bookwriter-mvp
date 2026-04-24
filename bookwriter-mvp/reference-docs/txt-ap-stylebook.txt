@@ -1,0 +1,1810 @@
+
+
+-- 1 of 1028 --
+
+Contents
+Foreword
+What’s new
+Key to Stylebook entries
+A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q | R | S | T | U | V | W | XYZ
+Punctuation
+Business
+Covering Corporate Earnings Reports
+International Bureaus
+Bankruptcy
+Mergers and Acquisitions
+Data journalism
+Polls and surveys
+Health and science
+AP social media guidelines
+The Basics
+Using Lists to Stay Organized And Protect Your Privacy
+Search for People — and Their Photos and Videos
+User-Generated Content
+Digital Security for Journalists
+Social Media Guidelines for AP Employees
+Religion
+
+-- 2 of 1028 --
+
+Religion Guidelines
+Sports
+Sports Identification Codes
+Major College Basketball Conferences
+Major College Football Conferences
+Football Championship Subdivision
+Food
+Fashion
+Briefing on Media Law
+Introduction
+Legal Principles of Newsgathering
+Legal Principles of Publication
+The Associated Press statement of news values and principles
+Corrections
+Data
+Fabrications
+Graphics and Interactives
+Images
+Music
+Obscenities, Profanities, Vulgarities, Hate and Propaganda
+Privacy of Victims
+Quotations
+Responses
+Social Networks
+Use of Others’ Material
+Broadcast Guidelines
+Corrections, correctives, clarifications
+Editing marks
+Bibliography
+
+-- 3 of 1028 --
+
+About the AP
+Index
+Choose the right tool to keep you in style
+
+-- 4 of 1028 --
+
+Foreword
+The first Associated Press Stylebook was 60 pages, bound together with staples, a
+basic guide for news writing. It has evolved into a comprehensive reference manual
+that fills more than 600 pages and is published across an array of digital platforms,
+encompassing the collective wisdom of the AP staff and Stylebook readers. Despite
+drastic changes in the media landscape, one constant remains: The AP Stylebook is a
+definitive resource for writers.
+Today's Stylebook still outlines basic rules on grammar, punctuation, usage and
+journalistic style, but it also reflects changes in common language, offers guidance
+on media law, explains AP's news values and principles, and helps to navigate the
+ever-changing world of social media.
+A team of top AP editors meets throughout the year to make updates and
+improvements, many of which appear immediately in Stylebook Online.
+Contributions come from the AP staff, AP's member news organizations and
+subscribers, journalism teachers and students, specialists in a host of fields, and
+everyday readers. Indeed, some of the changes that are talked about most have come
+at the suggestion of @APStylebook's Twitter followers.
+Every update is deeply rooted in respect for language and commitment to the
+original goal: to be clear, fair and concise around the globe, no matter what the news
+is or where it happens.
+Whether you access it in print or online, The Associated Press Stylebook remains
+an essential tool in newsrooms, classrooms and boardrooms alike, the perfect
+resource for journalists and anyone who cares about good writing.
+Gary Pruitt
+President and Chief Executive Officer
+
+-- 5 of 1028 --
+
+What’s new
+In this edition of the AP Stylebook
+This edition of the Stylebook contains more than 200 new and modified entries.
+A new health and science chapter provides guidelines and flags pitfalls.
+Individual terms, including a new entry on “Medicare for All,” remain in the
+book’s main section.
+We added a race-related coverage entry, which begins: “Reporting and writing
+about issues involving race calls for thoughtful consideration, precise language,
+and an openness to discussions with others of diverse backgrounds about how to
+frame coverage or what language is most appropriate, accurate and fair.” The entry
+discusses the terms racist and racially charged, as well as blacks, Native
+Americans and more.
+We removed the hyphen from African American and other dual heritage terms.
+We now use the % symbol in all but casual uses: 53% of Americans, but he
+has a zero percent chance. We also now use accent marks and other diacritical
+marks in the names of people who request them.
+New entries discuss cryptocurrency; deepfakes; constitutional amendments
+and clauses; sports betting terms; vaping terms; and use of the words suspect,
+casualties, and human trafficking/human smuggling. We expanded our suicide
+entry and revised marijuana, medical marijuana; The Church of Jesus Christ of
+Latter-day Saints; and “right to work.”
+An enhanced hyphen section of the Punctuation chapter stresses: “If the sheer
+number of hyphens in a phrase, or confusion about how to use them, can daunt
+either the writer or the reader, try rephrasing. It’s a guide about how to use
+hyphens wisely, not it’s a how-to-use-hyphens-wisely guide.” We no longer
+hyphenate most compound modifiers after versions of the verb to be. And: no
+hyphen in first grader, first quarter score, etc.
+We removed the hyphen in double-e combinations (reelection, preempt),
+reflecting usage. We also removed the hyphen from passerby and bestseller. We
+revised our guidance to say data typically takes singular verbs and pronouns in
+writing for general audiences. Also: Do not use the term sic to indicate incorrect
+spelling or usage.
+We now say that splitting the infinitive or compound forms of a verb is often
+necessary to convey meaning and make a sentence easy to read. We added more
+guidance to the headlines entry. The composition titles entry is rewritten for
+clarity, and we removed quotation marks from game titles.
+
+-- 6 of 1028 --
+
+We say STEM is acceptable on first reference. Grassroots is now one word, as
+is babysit and budtender. Macao is now our style, instead of Macau. We now use
+Ecuadorian instead of Ecuadorean. Macedonia is now North Macedonia.
+We note that it’s frosting or icing, depending on where you live. And:
+Santa Claus, Santa Nice in any reference. Naughty: Using Claus on second
+reference. Mrs. Claus is acceptable for Santa’s wife.
+
+-- 7 of 1028 --
+
+Key to Stylebook entries
+This updated and revised version of The Associated Press Stylebook has been
+organized like a dictionary. Need the acronym for a government agency? Look under
+the agency’s name. Should you capitalize a word? Check the word itself or the
+capitalization entry. What’s the format for baseball boxes? See baseball.
+A key to entries is on the next screen.
+
+-- 8 of 1028 --
+
+
+
+-- 9 of 1028 --
+
+Tap image to enlarge
+
+-- 10 of 1028 --
+
+a
+a- The rules of prefixes apply, but in general, no hyphen. Some examples:
+achromatic
+atonal
+AAA Formerly the American Automobile Association.
+Headquarters is in Heathrow, Florida.
+a, an Use the article a before consonant sounds: a historic event, a one-year term
+(sounds as if it begins with a w), a united stand (sounds like you).
+Use the article an before vowel sounds: an energy crisis, an honorable man
+(the h is silent), an homage (the h is silent), an NBA record (sounds like it begins
+with the letter e), an 1890s celebration.
+AARP Use only the initials for the organization formerly known as the American
+Association of Retired Persons.
+abaya Robe-like outer garment worn by Muslim women.
+abbreviations and acronyms A few universally recognized abbreviations are
+required in some circumstances. Some others are acceptable depending on the
+context. But in general, avoid alphabet soup. Do not use abbreviations or
+acronyms that the reader would not quickly recognize.
+Abbreviations and most acronyms should be avoided in headlines.
+Guidance on how to use a particular abbreviation or acronym is provided in
+entries alphabetized according to the sequence of letters in the word or phrase.
+An acronym is a word formed from the first letter or letters of a series of
+words: laser (light amplification by stimulated emission of radiation). An
+abbreviation is not an acronym.
+Some general principles:
+BEFORE A NAME: Abbreviate titles when used before a full name: Dr., Gov., Lt.
+Gov., Mr., Mrs., Rep., the Rev., Sen. and certain military designations listed in the
+military titles entry.
+
+-- 11 of 1028 --
+
+For guidelines on how to use titles, see courtesy titles; legislative titles; military titles;
+religious titles; and the entries for the most commonly used titles.
+AFTER A NAME: Abbreviate junior or senior after an individual’s name.
+Abbreviate company, corporation, incorporated and limited when used after the
+name of a corporate entity. See entries under these words and company names.
+In some cases, an academic degree may be abbreviated after an individual’s
+name. See academic degrees.
+WITH DATES OR NUMERALS: Use the abbreviations A.D., B.C., a.m., p.m., No.,
+and abbreviate certain months (Jan., Feb., Aug., Sept., Oct., Nov., Dec.) when
+used with the day of the month.
+Right: In 450 B.C.; at 9:30 a.m.; in room No. 6; on Sept. 16.
+Wrong: Early this a.m. he asked for the No. of your room. The abbreviations
+are correct only with figures.
+Right: Early this morning he asked for the number of your room.
+See months and individual entries for these other terms:
+IN NUMBERED ADDRESSES: Abbreviate avenue, boulevard and street in
+numbered addresses: He lives on Pennsylvania Avenue. He lives at 1600
+Pennsylvania Ave.
+See addresses.
+STATES: The names of certain states and the United States are abbreviated with
+periods in some circumstances.
+See state names; datelines; and individual entries.
+AVOID AWKWARD CONSTRUCTIONS: Do not follow an organization’s full name
+with an abbreviation or acronym in parentheses or set off by dashes. If an
+abbreviation or acronym would not be clear on second reference without this
+arrangement, do not use it.
+Names not commonly before the public should not be reduced to acronyms
+solely to save a few words.
+SPECIAL CASES: Many abbreviations are desirable in tabulations and certain
+types of technical writing. See individual entries.
+CAPS, PERIODS: Use capital letters and periods according to the listings in this
+book. For words not in this book, use the first-listed abbreviation in Webster’s
+New World College Dictionary. Generally, omit periods in acronyms unless the
+result would spell an unrelated word. But use periods in most two-letter
+abbreviations: U.S., U.N., U.K., B.A., B.C. (AP, a trademark, is an exception.
+Also, no periods in GI, ID and EU, among others.) In headlines, do not use
+periods in abbreviations, unless required for clarity.
+Use all caps, but no periods, in longer abbreviations when the individual letters
+are pronounced: ABC, CIA, FBI.
+
+-- 12 of 1028 --
+
+Use only an initial cap and then lowercase for abbreviations and acronyms of
+more than five letters, unless listed otherwise in this Stylebook or Webster’s New
+World College Dictionary.
+ABC Acceptable in all references for American Broadcasting Cos. (the plural is
+part of the corporate name). Owned by The Walt Disney Co.
+ABCs
+able-bodied
+ABM, ABMs Acceptable in all references for anti-ballistic missile(s), but the
+term should be defined in the story. (The hyphen is an exception to Webster’s New
+World College Dictionary.)
+Avoid the redundant phrase ABM missiles.
+Aborigine See race-related coverage.
+abortion Use the modifiers anti-abortion or abortion-rights; don’t use pro-life,
+pro-choice or pro-abortion unless they are in quotes or proper names. Avoid
+abortionist, which connotes a person who performs clandestine abortions.
+aboveboard
+absent-minded
+Abu Sayyaf Muslim separatist group based in the southern islands of the
+Philippines. The name is Arabic for father of the bearer of the sword.
+academic degrees If mention of degrees is necessary to establish someone’s
+credentials, the preferred form is to avoid an abbreviation and use instead a phrase
+such as: John Jones, who has a doctorate in psychology.
+Use an apostrophe in bachelor’s degree, a master’s, etc., but there is no
+possessive in Bachelor of Arts or Master of Science.
+Also: an associate degree (no possessive).
+Use such abbreviations as B.A., M.A., LL.D. and Ph.D. only when the need to
+identify many individuals by degree on first reference would make the preferred
+
+-- 13 of 1028 --
+
+form cumbersome. Use these abbreviations only after a full name — never after
+just a last name.
+When used after a name, an academic abbreviation is set off by commas: John
+Snow, Ph.D., spoke.
+Do not precede a name with a courtesy title for an academic degree and follow
+it with the abbreviation for the degree in the same reference.
+See doctor; Master of Arts, Master of Science, Master of Business Administration.
+academic departments Use lowercase except for words that are proper nouns
+or adjectives: the department of history, the history department, the department
+of English, the English department, or when department is part of the official and
+formal name: University of Connecticut Department of Economics.
+academic titles Capitalize and spell out formal titles such as chancellor,
+chairman, etc., when they precede a name. Lowercase elsewhere.
+Lowercase modifiers such as department in department Chairman Jerome
+Wiesner.
+See doctor; titles.
+academy See military academies.
+Academy Awards Presented annually by the Academy of Motion Picture Arts
+and Sciences. Also known as the Oscars. (Both Academy Awards and Oscars are
+trademarks.)
+Lowercase the academy and the awards whenever they stand alone.
+accent marks Use accent marks or other diacritical marks with names of people
+who request them or are widely known to use them, or if quoting directly in a
+language that uses them: An immigration officer spotted him and asked an
+innocuous question: “Cómo estás?” How are you? Otherwise, do not use these
+marks in English-language stories. Note: Many AP customers’ computer systems
+ingest via the ANPA standard and will not receive diacritical marks published by
+the AP.
+accept, except Accept means to receive.
+Except means to exclude.
+accident, crash Generally acceptable for automobile and other collisions and
+wrecks. However, when negligence is claimed or proven, avoid accident, which
+
+-- 14 of 1028 --
+
+can be read by some as a term exonerating the person responsible. In such cases,
+use crash, collision or other terms.
+accommodate
+accounts payable Current liabilities or debts of a business which must be paid
+within one year.
+accounts receivable Amounts due to a company for merchandise or services
+sold on credit. These are short-term assets.
+accused, alleged, suspected A person is accused of, not with, a crime.
+To avoid any suggestion that an individual is being judged before a trial, do not
+use a phrase such as accused slayer John Jones or the accused slayer; alleged
+killer Ralph Hornsby or the alleged killer; suspected shooter Carmine Jablonski
+or the suspected shooter. Instead: John Jones, accused of the slaying or Ralph
+Hornsby, charged with killing the man.
+Also see separate allege and suspect entries. For guidance on related terms, see
+arrest and indict.
+Ace A trademark for a brand of elastic bandage. Elastic bandage is preferred in all
+references.
+Achilles tendon No apostrophe for the tendon connecting the back of the heel
+to the calf muscles. But it’s Achilles’ heel, with an apostrophe, for a vulnerable
+spot.
+acknowledgment
+acquisition The process of buying or acquiring some asset. The term can refer to
+the purchase of a block of stock or, more often, to the acquisition of an entire
+company.
+acre Equal to 43,560 square feet or 4,840 square yards. The metric equivalent is
+0.4 (two-fifths) of a hectare or 4,047 square meters.
+One square mile is 640 acres.
+To convert to hectares, multiply by 0.4 (5 acres x 0.4 equals 2 hectares).
+Use square miles to describe the size of wildfires.
+
+-- 15 of 1028 --
+
+See wildfires; hectare.
+acronyms See abbreviations and acronyms.
+ACT Use only the initials in referring to the previously designated American
+College Testing.
+act, amendment, bill, law, measure, ordinance, resolution, rule,
+statute The word act is sometimes included in a formal name for pending or
+implemented legislation. Capitalize when part of the name: the Taft-Hartley Act.
+An amendment is a change or proposed change to a bill or law. Amendments
+are usually passed or enacted.
+A bill is a draft proposal presented to a lawmaking body, such as a legislature,
+that requires debate, voting and final approval before it can become a law. Bills
+usually pass or fail, or are approved or signed. Do not capitalize when part of
+references to specific legislation: the Kennedy bill. Use conditional language for
+bills throughout the legislative process: The bill would prohibit such activity; the
+bill seeks to legalize the drug.
+A law is a bill that has been approved by a lawmaking body, usually at the state
+or federal level, and that sometimes requires the signature of an executive such as
+a governor or president. Laws are usually enacted and don’t necessarily take effect
+at the time they are enacted.
+An ordinance is the municipal equivalent of a law. Ordinances are enacted.
+Before they become ordinances, they should usually be called proposals or
+proposed ordinances. Though terminology varies from place to place, it’s usually
+best to avoid referring to such proposals as bills, to avoid confusion with higher
+levels of government.
+A resolution is a sentiment or recommendation of a lawmaking body, often
+described as binding or nonbinding depending on whether it has the force of law.
+Resolutions are adopted or fail.
+A rule is an authoritative regulation that can be enacted, created or ordered at
+various levels of government.
+A statute is a written and enacted law or ordinance.
+Any of the above terms can also be described generically as measures,
+provided no confusion would result.
+acting Always lowercase, but capitalize any formal title that may follow before a
+name: acting Mayor Peter Barry.
+See titles.
+
+-- 16 of 1028 --
+
+act numbers Use Arabic figures and capitalize act: Act 1; Act 2, Scene 2. But:
+the first act, the second act. See numerals.
+actor (man) actress (woman) It is acceptable to use actor for a woman if she
+prefers it.
+A.D. Acceptable in all references for anno Domini: in the year of the Lord.
+Because the full phrase would read in the year of the Lord 96, the abbreviation
+A.D. goes before the figure for the year: A.D. 96.
+Do not write: The fourth century A.D. The fourth century is sufficient. If A.D.
+is not specified with a year, the year is presumed to be A.D.
+See B.C.
+addiction Addiction is a treatable disease that affects a person’s brain and
+behavior. Drug and alcohol use can cause changes in the brain that lead to
+compulsive use, despite damage to health and relationships. Genetics, mental
+illness and other factors make certain people susceptible to addiction.
+Addiction is the preferred term. The term substance use disorder is preferred
+by some health professionals and is acceptable in some uses, such as in quotations
+or scientific contexts. Alcoholism is acceptable for addiction to alcohol.
+Avoid words like abuse or problem in favor of the word use with an
+appropriate modifier such as risky, unhealthy, excessive or heavy. Misuse is also
+acceptable. Don’t assume all people who engage in risky use of drugs or alcohol
+have an addiction.
+Avoid words like alcoholic, addict, user, abuser, junkie, drunk or crackhead
+unless they are in quotations or names of organizations, such as Alcoholics
+Anonymous. Many researchers and organizations, including the Office of National
+Drug Control Policy and the International Society of Addiction Journal Editors,
+agree that stigmatizing or punitive-sounding language can be inaccurate by
+emphasizing the person, not the disease; can be a barrier to seeking treatment; and
+can prejudice even doctors. Instead, choose phrasing like he was addicted, people
+with heroin addiction or he used drugs.
+Examples: Keene had trouble keeping his job because of alcoholism, not
+Keene had trouble keeping his job because he was an alcoholic. Yang joined
+other people with heroin addictions at the conference, not Yang joined other
+heroin addicts at the conference.
+Avoid describing sobriety as clean unless in quotations, since it implies a
+previous state of dirtiness instead of disease.
+
+-- 17 of 1028 --
+
+Not all compulsive behaviors, including shopping, eating and sex, are
+considered addictions. Gambling is the only one classified as an addiction in the
+American Psychiatric Association’s diagnostic manual. The World Health
+Organization says excessive video gaming can be an addiction.
+Do not use the terms addiction and dependence interchangeably. Addiction
+usually refers to a disease or disorder; dependence may not involve one, such as
+some babies born to mothers who use drugs or cancer patients who take prescribed
+painkillers.
+The term misuse can be helpful in cases of legally prescribed medications, such
+as if a person with a painkiller prescription purposely takes too many to get high,
+or excessively uses medical marijuana. Such actions do not necessarily entail an
+addiction but can progress into one.
+See alcoholic; drugs; naloxone; opiate, opioid.
+addresses Use the abbreviations Ave., Blvd. and St. only with a numbered
+address: 1600 Pennsylvania Ave. Spell them out and capitalize when part of a
+formal street name without a number: Pennsylvania Avenue. Lowercase and spell
+out when used alone or with more than one street name: Massachusetts and
+Pennsylvania avenues.
+All similar words (alley, drive, road, terrace, etc.) always are spelled out.
+Capitalize them when part of a formal name without a number; lowercase when
+used alone or with two or more names.
+Always use figures for an address number: 9 Morningside Circle.
+Spell out and capitalize First through Ninth when used as street names; use
+figures for 10th and above: 7 Fifth Ave., 100 21st St.
+Abbreviate compass points used to indicate directional ends of a street or
+quadrants of a city in a numbered address: 222 E. 42nd St., 562 W. 43rd St., 600 K
+St. NW. Do not abbreviate if the number is omitted: East 42nd Street, West 43rd
+Street, K Street Northwest. No periods in quadrant abbreviations — NW, SE —
+unless customary locally.
+See highway designations.
+Use periods in the abbreviation P.O. for P.O. Box numbers.
+See numerals.
+adjectives The abbreviation adj. is used in this book to identify the spelling of
+the adjectival forms of words that frequently are misspelled.
+The comma entry provides guidance on punctuating a series of adjectives.
+The hyphen entry provides guidance on handling compound modifiers used
+before a noun.
+
+-- 18 of 1028 --
+
+adjustable-rate mortgage A mortgage that has a fixed interest rate for a short
+period of time and then resets, usually yearly, over the life of the loan, based on an
+index tied to changes in market interest rates. ARM should be used only in direct
+quotes.
+ad-lib
+administration Lowercase: the administration, the president’s administration,
+the governor’s administration, the Trump administration.
+See government, junta, regime, administration for distinctions that apply in using these
+terms.
+administrative law judge This is the federal title for the position formerly
+known as hearing examiner. Capitalize it when used as a formal title before a
+name.
+To avoid the long title, seek a construction that sets the title off by commas:
+The administrative law judge, John Williams, disagreed.
+administrator Never abbreviate. Capitalize when used as a formal title before a
+name.
+See titles.
+admiral See military titles.
+admissible
+admit, admitted These words may in some contexts give the erroneous
+connotation of wrongdoing.
+People who say they are recovering from alcoholism, for example, are not
+admitting it. Said is usually sufficient.
+ad nauseam
+adopt, approve, enact, pass See act, amendment, bill, law, measure, ordinance,
+resolution, rule, statute entry.
+adoption The adoptive status of children or their parents should be mentioned
+only when its relevance is made clear in the story. If relevant, use the term
+
+-- 19 of 1028 --
+
+biological parents to refer to the birth mother and father. Preferred phrasing: A
+child is placed for adoption, rather than given up for adoption.
+Adrenalin A trademark for the synthetic or chemically extracted forms of
+epinephrine, a substance produced by the adrenal glands.
+The nonproprietary terms are epinephrine hydrochloride or adrenaline.
+adult A person who has reached 18. See privacy.
+Advance Publications Inc. Privately held company whose holdings include
+Conde Nast Publications and newspapers in more than 25 U.S. cities. Headquarters
+is in New York.
+adverbs The abbreviation adv. is used in this book to identify the spelling of
+adverbial forms of words frequently misspelled.
+See the hyphen entry in the Punctuation chapter for guidelines on when an adverb
+should be followed by a hyphen in constructing a compound modifier.
+adverse, averse Adverse means unfavorable: He predicted adverse weather.
+Averse means reluctant, opposed: She is averse to change.
+adviser Not advisor.
+advisory
+Aer Lingus Headquarters of this airline is in Dublin, Ireland.
+Aeroflot Headquarters of this airline is in Moscow.
+Aeromexico Headquarters of this airline is in Mexico City.
+aesthetic
+affect, effect Affect, as a verb, means to influence: The game will affect the
+standings.
+Affect, as a noun, is best avoided. It occasionally is used in psychology to
+describe an emotion, but there is no need for it in everyday language.
+
+-- 20 of 1028 --
+
+Effect, as a verb, means to cause: He will effect many changes in the
+company.
+Effect, as a noun, means result: The effect was overwhelming. He
+miscalculated the effect of his actions. It was a law of little effect.
+Affordable Care Act Shorthand for the formal title of the health care overhaul
+that former President Barack Obama signed into law in 2010. The term is
+acceptable on first reference, but explain later in the story: former President
+Barack Obama’s health care law. On second reference, ACA or “Obamacare”
+(the latter in quote marks) are acceptable. Its full name is Patient Protection and
+Affordable Care Act.
+Afghan The term for the people and culture of Afghanistan. Afghani is the
+Afghan unit of currency.
+AFL-CIO Acceptable in all references for the American Federation of Labor
+and Congress of Industrial Organizations. Headquarters is in Washington.
+A-frame
+African American See race-related coverage.
+African Union The African Union, established in 2002 to succeed the
+Organization of African Unity, has the following 55 members:
+Algeria, Angola, Benin, Botswana, Burkina Faso, Burundi, Cameroon, Cape
+Verde, Central African Republic, Chad, Comoros, Congo, Djibouti, Egypt,
+Equatorial Guinea, Eritrea, Ethiopia, Gabon, Gambia, Ghana, Guinea-Bissau,
+Guinea, Ivory Coast, Kenya, Lesotho, Liberia, Libya, Madagascar, Malawi, Mali,
+Mauritania, Mauritius, Morocco, Mozambique, Namibia, Niger, Nigeria, Republic
+of Congo, Rwanda, Sao Tome and Principe, Senegal, Seychelles, Sierra Leone,
+Somalia, South Africa, South Sudan, Sudan, Swaziland, Tanzania, Togo, Tunisia,
+Uganda, Western Sahara, Zambia, Zimbabwe. There are two Congos: the
+Republic of Congo and the Democratic Republic of Congo. The latter is the
+Congo in AP style.
+after- No hyphen after this prefix when it is used to form a noun:
+aftereffect
+afterthought
+Follow after with a hyphen when it is used to form compound modifiers:
+
+-- 21 of 1028 --
+
+after-dinner drink
+after-theater snack
+after-party
+afterward Not afterwards.
+Agence France-Presse A global news agency with headquarters in Paris. AFP
+acceptable on second reference.
+agent Lowercase unless it is a formal title used before a name.
+In the FBI, the formal title is special agent. In most cases, make it agent
+William Smith or FBI agent William Smith.
+See titles.
+ages Use when deemed relevant to the situation. If someone is quoted as saying,
+“I’m too old to get another job,” the age is relevant. Generally, use ages for
+profiles, obituaries, significant career milestones and achievements unusual for the
+age. Use ages for people commenting or providing information only if their age is
+relevant to their comments (e.g., a teenager’s comment on video games aimed at
+that age group). Appropriate background, such as a parent of two young children
+or a World War II veteran, may suffice instead of the actual age.
+Always use figures. The girl is 15 years old; the law is 8 years old; the 101-
+year-old house. When the context does not require years or years old, the figure is
+presumed to be years.
+Use hyphens for ages expressed as adjectives before a noun or as substitutes for
+a noun.
+Examples: A 5-year-old boy, but the boy is 5 years old. The boy, 7, has a
+sister, 10. The woman, 26, has a daughter 2 months old. The race is for 3-year-
+olds. The woman is in her 30s (no apostrophe).
+See also boy, girl; infant; youth; numerals; elderly.
+See comma in punctuation guidelines.
+aggregator A website or feed that amasses content from other sources and
+assembles it in a form digestible to its users.
+agnostic, atheist An agnostic is a person who believes it is impossible to know
+whether there is a God.
+An atheist is a person who believes there is no God.
+
+-- 22 of 1028 --
+
+aid, aide Aid is assistance.
+An aide is a person who serves as an assistant.
+aide-de-camp, aides-de-camp A military officer who serves as assistant and
+confidential secretary to a superior.
+AIDS Acceptable in all references for acquired immune deficiency syndrome,
+sometimes called acquired immunodeficiency syndrome.
+AIDS is a disease that weakens the immune system, gradually destroying the
+body’s ability to fight infections and certain cancers. It is caused by human
+immunodeficiency virus, or HIV. (HIV virus is redundant.)
+HIV is spread most often through sexual contact; shared or contaminated
+needles or syringes; infected blood or blood products; and from infected women to
+their babies at birth or through breastfeeding.
+Use the HIV/AIDS construction with care. People can be infected with the
+virus and not have AIDS; they do not have AIDS until they develop serious
+symptoms. Many remain infected but apparently healthy for years.
+See cocktail.
+ain’t A dialectical or nonstandard contraction. Use it only in quoted matter or
+special contexts.
+air bag Two words.
+air base Two words. Follow the practice of the U.S. Air Force, which uses air
+force base as part of the proper name for its bases in the United States and air base
+for its installations abroad. Some bases have become joint bases with other
+services.
+On second reference: the Air Force base, the air base, or the base.
+Do not abbreviate, even in datelines:
+LACKLAND AIR FORCE BASE, Texas (AP) —
+JOINT BASE ANDREWS, Md.
+(AP) —
+Airbnb See vacation rental websites.
+Air Canada Headquarters of this airline is in Saint-Laurent, Canada.
+
+-- 23 of 1028 --
+
+Air China Headquarters of this airline is in Beijing.
+air-condition, air-conditioned (v. and adj.) The nouns are: air conditioner,
+air conditioning.
+aircraft names Use a hyphen when changing from letters to figures; no hyphen
+when adding a letter after figures.
+Some examples of aircraft: B-1, C-5A, FH-227, F-15 Eagle, F-16 Falcon,
+MiG-29, Tu-154, Il-96, Boeing 737-800, 747, 747B. Airbus A380, A380F (no
+hyphen) is an exception.
+This hyphenation principle is the one used most frequently by manufacturers
+and users. Apply it in all cases for consistency. For other elements of a name, use
+the form adopted by the manufacturer or user. If in doubt, consult IHS Jane’s All
+the World’s Aircraft.
+NO QUOTES: Do not use quotation marks for aircraft with names: Air Force
+One, the Spirit of St. Louis.
+AVOID PROMOTIONAL NAMES: Boeing 787, not Dreamliner.
+PLURALS: 747s. But: 747B’s. (As noted in plurals, the apostrophe is used in
+forming the plural of a single letter.)
+SEQUENCE: Use Arabic figures to establish the sequence of aircraft, spacecraft
+and missiles: Apollo 10. Do not use hyphens.
+See numerals.
+aircraft terms Use engine, not motor, for the units that propel aircraft: a twin-
+engine plane (not twin engined).
+Use jet plane or jetliner to describe only those aircraft driven solely by jet
+engines. Use turboprop to describe an aircraft on which the jet engine is geared to
+a propeller. Turboprops sometimes are called propjets.
+See engine, motor.
+airfare One word.
+air force Capitalize when referring to U.S. forces: the U.S. Air Force, the Air
+Force, Air Force regulations. Do not use the abbreviation USAF.
+Congress established the Army Air Forces (note the s) in 1941. Prior to that, the
+air arm was known as the U.S. Army Air Corps. The U.S. Air Force (no s) was
+created as a separate service in 1947.
+Use lowercase for the forces of other nations: the Israeli air force.
+
+-- 24 of 1028 --
+
+This approach has been adopted for consistency, because many foreign nations
+do not use air force as the proper name.
+See military academies; military titles.
+air force base See air base.
+Air Force One The Air Force applies this name to any of its aircraft the
+president of the United States may be using.
+In ordinary usage, however, Air Force One is the name of the Air Force plane
+normally reserved for the president’s use.
+Air France Corporate name is Air France-KLM. Headquarters of this airline is
+in Roissy, France.
+Air India Headquarters of this airline is in Mumbai, India.
+airline, airlines Capitalize airlines, air lines and airways when used as part of a
+proper airline name.
+Companies that use Airlines in the title include Alaska, American, Hawaiian,
+Japan, Southwest and United.
+Companies that use Airways include British, JetBlue and Qantas.
+Delta uses Air Lines.
+Companies that use none of these include Aer Lingus, Aeromexico, Air
+Canada, Air France, Air India, Alitalia, Emirates and Iberia.
+On second reference, use just the proper name (Delta), an abbreviation if
+applicable, or the airline. Acceptable abbreviations are ANA for All Nippon
+Airways, BA for British Airways and JAL for Japan Airlines. Use airlines when
+referring to more than one line.
+Do not use air line, air lines or airways in generic references to an airline.
+airman See military titles.
+Air National Guard
+airport Capitalize as part of a proper name: LaGuardia Airport, O’Hare
+International Airport.
+The first name of an individual and the word international may be deleted from
+a formal airport name while the remainder is capitalized: John F. Kennedy
+
+-- 25 of 1028 --
+
+International Airport, Kennedy International Airport, or Kennedy Airport. Use
+whichever is appropriate in the context.
+Do not make up names, however. There is no Boston Airport, for example. The
+Boston airport (lowercase airport) would be acceptable if for some reason the
+proper name, Logan International Airport, were not used.
+airsoft gun A gun that commonly shoots plastic spheres, typically propelled by
+compressed air or springs. Pellet gun is acceptable on first reference.
+airstrike
+airtight
+air traffic controller No hyphen.
+airways The system of routes that the federal government has established for
+airplane traffic.
+See the airline, airlines entry for its use in carriers’ names.
+aka Abbreviation for also known as.
+Alabama Abbreviate Ala. in datelines only; spell out in stories. Postal code: AL
+See state names.
+Al-Aqsa Mosque The mosque completed in the eighth century atop the Haram
+al-Sharif, or Noble Sanctuary, in the Old City of Jerusalem; Arabs also use Al-
+Aqsa to refer to the whole area, which houses the Dome of the Rock shrine, too.
+To Jews the area is known as the Temple Mount, the site of the ancient Jewish
+temples.
+alarms Avoid referring to a fire in terms of the number of “alarms,” which may
+mean little to a distant reader. Depending on the city or town, a two-alarm fire
+could involve widely varying numbers of firefighters. Instead, specify the number
+of firefighters or quantity of equipment.
+Alaska Do not abbreviate in datelines or stories. Largest land area of the 50 states.
+Postal code: AK
+See state names.
+
+-- 26 of 1028 --
+
+Alaska Air Group Inc. Parent company of Alaska Airlines and Horizon Air.
+Headquarters is in Seattle.
+Alaska Native See race-related coverage.
+Alaska Standard Time The time zone used in all of Alaska, except the
+western Aleutian Islands and St. Lawrence Island, which are on Hawaii-Aleutian
+Standard Time.
+There is also an Alaska Daylight Time.
+See time zones.
+Alberta A province of western Canada. Do not abbreviate.
+See datelines.
+albino, albinos
+alcoholic As an adjective, use it to describe beverages. For people, say people or
+person with alcoholism, or person recovering from alcoholism. Many people
+with the disease refer to themselves as alcoholics, but leading authorities on
+addiction say such language can be self-punitive and stigmatizing. Avoid
+describing people as drunks, though the word can be used as an adjective to
+describe someone who is temporarily intoxicated by alcohol. See addiction.
+Alcoholics Anonymous AA is acceptable on second reference.
+alderman Do not abbreviate. See legislative titles.
+alert See weather terms.
+Alibaba Group Holding Ltd. An e-commerce and online services provider.
+Headquarters is in Hangzhou, China.
+A-list
+Alitalia Airlines Headquarters of this airline is in Rome.
+Al-Jazeera Pan-Arab satellite television news network based in Doha, Qatar.
+
+-- 27 of 1028 --
+
+all- Use a hyphen:
+all-around (not all-round)
+all-clear
+all-out
+all-star
+See all right; all time, all-time.
+Allah The Arabic word for God. The word God should be used, unless the Arabic
+name is used in a quote written or spoken in English.
+Allahu akbar The Arabic phrase for God is great.
+allege The word must be used with great care.
+Some guidelines:
+— Avoid any suggestion that the writer is making an allegation.
+— Specify the source of an allegation. In a criminal case, it should be an arrest
+record, an indictment or the statement of a public official connected with the
+case.
+— Use alleged bribe or similar phrase when necessary to make it clear that an
+unproved action is not being treated as fact. Be sure that the source of the charge
+is specified elsewhere in the story.
+— Avoid, where possible, alleged victim. It is too easily construed as skepticism of
+a victim’s account.
+— Avoid redundant uses of alleged. It is proper to say: The district attorney alleged
+that she took a bribe. Or: The district attorney accused her of taking a bribe.
+But not: The district attorney accused her of allegedly taking a bribe.
+— Do not use alleged to describe an event that is known to have occurred, when the
+dispute is over who participated in it. Do not say: He attended the alleged
+meeting when what you mean is: He allegedly attended the meeting.
+— Do not use alleged as a routine qualifier. Instead, use a word such as apparent,
+ostensible or reputed.
+For guidelines on related words, see accused; arrest; indict.
+Allegheny Mountains Or simply: the Alleghenies.
+Allegiant Air Airline is owned by Allegiant Travel Co. Headquarters is in Las
+Vegas.
+
+-- 28 of 1028 --
+
+alley Do not abbreviate. See addresses.
+allies, allied Capitalize allies or allied only when referring to the combination of
+the United States and its Allies during World War I or World War II: The Allies
+defeated Germany. He was in the Allied invasion of France.
+All Nippon Airways Headquarters of this airline is in Tokyo.
+all right Never alright. Hyphenate only if used colloquially as a compound
+modifier: He is an all-right guy.
+all-terrain vehicle ATV is acceptable on second reference.
+all time, all-time An all-time high, but the greatest runner of all time.
+Avoid the redundant phrase all-time record.
+allude, refer To allude to something is to speak of it without specifically
+mentioning it.
+To refer is to mention it directly.
+allusion, illusion Allusion means an indirect reference: The allusion was to his
+opponent’s war record.
+Illusion means an unreal or false impression: The scenic director created the
+illusion of choppy seas.
+alma mater
+Alphabet Inc. See Google.
+al-Qaida Muslim militant group founded by Osama bin Laden that carried out the
+attacks in the United States on Sept. 11, 2001. Bin Laden was killed by U.S. forces
+in Pakistan in May 2011. Al-Qaida’s current leader is Ayman al-Zawahri.
+Affiliated groups include:
+al-Qaida in the Arabian Peninsula, operating in Yemen and Saudi Arabia.
+Nusra Front, operating in Syria.
+al-Qaida in the Islamic Maghreb, operating in the Sahel region, a region along
+the Sahara Desert stretching across North Africa.
+
+-- 29 of 1028 --
+
+Khorasan group, an al-Qaida cell that the United States says operated in Syria
+to plot attacks on the U.S.
+Al-Quds The Arabic name for Jerusalem; it means the holy.
+al-Shabab The preferred spelling for the Somali militant group.
+also-ran (n.)
+altar, alter An altar is a tablelike platform used in a religious service.
+To alter is to change.
+Altria Group Inc. Headquarters is in Richmond, Virginia.
+“alt-right” A political grouping or tendency mixing racism, white nationalism,
+anti-Semitism and populism; a name currently embraced by some white
+supremacists and white nationalists to refer to themselves and their ideology,
+which emphasizes preserving and protecting the white race in the United States.
+Avoid using the term generically and without definition, because it is not well-
+known globally and the term may exist primarily as a public relations device to
+make its supporters’ actual beliefs less clear and more acceptable to a broader
+audience. In AP stories discussing what the movement says about itself, the term
+“alt-right” (quotation marks, hyphen and lowercase) may be used in quotes or
+modified as in the self-described “alt-right” or so-called alt-right.
+Depending on the specifics of the situation, such beliefs might be termed racist,
+white supremacist or neo-Nazi; be sure to describe the specifics. Whenever “alt-
+right” is used in a story, include a definition: an offshoot of conservatism mixing
+racism, white nationalism, anti-Semitism and populism, or, more simply, a white
+nationalist movement.
+When writing on extreme groups, be precise and provide evidence to support
+the characterization. Report their actions, associations, history and positions to
+reveal their actual beliefs and philosophy, as well as how others see them.
+Some related definitions:
+RACISM The broad term for asserting racial or ethnic discrimination or
+superiority based solely on race, ethnic or religious origins; it can be by any group
+against any other group.
+WHITE NATIONALISM A subset of racist beliefs that calls for a separate territory
+and/or enhanced legal rights and protections for white people. Critics accuse white
+nationalists of being white supremacists in disguise.
+
+-- 30 of 1028 --
+
+WHITE SEPARATISM A term sometimes used as a synonym for white
+nationalism but differs in that it advocates a form of segregation in which races
+would live apart but in the same general geographic area.
+WHITE SUPREMACY The racist belief that whites are superior to justify political,
+economic and social suppression of nonwhite people and other minority groups.
+NEO-NAZISM Combines racist and white supremacist beliefs with admiration for
+an authoritarian, totalitarian style of government such as the German Third Reich
+to enforce its beliefs.
+ANTIFA Shorthand for anti-fascists, an umbrella description for the far-left-
+leaning militant groups that resist neo-Nazis and white supremacists at
+demonstrations and other events. Until the term becomes better known, include a
+definition in close proximity to first use of the word.
+“ALT-LEFT” A term that some use to describe far-left factions. See “alt-right”
+for usage guidelines.
+See race-related coverage.
+alumnus, alumni, alumna, alumnae Use alumnus (alumni in the plural)
+when referring to a man who has attended a school.
+Use alumna (alumnae in the plural) for similar references to a woman.
+Use alumni when referring to a group of men and women.
+Alzheimer’s disease A progressive, irreversible neurological disorder and the
+most common form of dementia. Most victims are older than 65, but Alzheimer’s
+can strike at earlier ages.
+Symptoms may include memory loss, impairment of judgment, disorientation,
+personality change, difficulty in learning and loss of language skills. Alzheimer’s
+disease is defined by specific changes in the brain that occur before symptoms
+appear. Current drugs only ease symptoms and don’t reverse the course of the
+disease.
+AM Acceptable in all references to the amplitude modulation system of radio
+transmission.
+ambassador Capitalize as a formal title before a name.
+See titles.
+Amber Alert A procedure for rapidly publicizing the disappearance of a child.
+
+-- 31 of 1028 --
+
+America, American, Americans Can be used to refer to the United States
+and U.S. citizens if that meaning is clear in the context. Use the modifier U.S. in
+referring to the federal government and its officials in the United States.
+American Airlines Headquarters is in Fort Worth, Texas. Parent company is
+American Airlines Group Inc. The company is the result of the 2013 merger of
+AMR Corp. and US Airways Group.
+American Baptist Association See Baptist churches in Religion chapter.
+American Baptist Churches in the U.S.A. See Baptist churches in Religion
+chapter.
+American Bar Association ABA is acceptable on second reference. Also: the
+bar association, the association.
+Headquarters is in Chicago.
+American Broadcasting Cos. See ABC.
+American Civil Liberties Union (ACLU) ACLU is acceptable on second
+reference.
+Headquarters is in New York.
+American depositary receipt A negotiable certificate representing a foreign
+company’s equity or debt. ADR is acceptable on second reference.
+American depositary share A security issued by a foreign company
+representing an ownership interest in that company. It can represent a fixed
+number of securities on deposit, or a fraction of them. ADS is acceptable on
+second reference.
+American Express Co. Headquarters is in New York.
+American Federation of Government Employees Use this full name on
+first reference to prevent confusion with other unions that represent government
+workers. AFGE is acceptable on second reference.
+Headquarters is in Washington.
+
+-- 32 of 1028 --
+
+American Federation of Labor and Congress of Industrial
+Organizations AFL-CIO is acceptable in all references.
+Headquarters is in Washington.
+American Federation of State, County and Municipal Employees
+AFSCME is acceptable on second reference.
+Headquarters is in Washington.
+American Federation of Teachers AFT is acceptable on second reference.
+Headquarters is in Washington.
+American Hospital Association AHA is acceptable on second reference.
+Also: the hospital association, the association.
+Headquarters is in Chicago.
+American Indian See race-related coverage.
+American International Group Inc. AIG is acceptable on second reference.
+Headquarters is in New York.
+Americanisms Words and phrases that have become part of the English
+language as spoken in the United States are listed with a star in Webster’s New
+World College Dictionary.
+Most Americanisms are acceptable in news stories, but let the context be the
+guide.
+American Legion Capitalize also the Legion in second reference. Members are
+Legionnaires, just as members of the Lions Club are Lions.
+Legion and Legionnaires are capitalized because they are not being used in
+their common noun sense. A legion (lowercase) is a large group of soldiers or, by
+derivation, a large number of items: His friends are legion. A legionnaire
+(lowercase) is a member of such a legion.
+See fraternal organizations and service clubs.
+American Medical Association AMA is acceptable on second reference.
+Headquarters is in Chicago.
+American Petroleum Institute API is acceptable on second reference.
+
+-- 33 of 1028 --
+
+Headquarters is in Washington.
+American Postal Workers Union This union represents clerks and similar
+employees who work inside post offices.
+Use the full name on first reference to prevent confusion with the National
+Association of Letter Carriers. The shortened form Postal Workers union is
+acceptable on second reference.
+Headquarters is in Washington.
+American Press Institute API is acceptable on second reference.
+Headquarters is in Arlington, Virginia.
+American Society for the Prevention of Cruelty to Animals This
+organization is limited to the five boroughs of New York City and neighboring
+Suffolk County in providing animal adoption services, although it has offices
+elsewhere that offer legal advice and other services to other animal welfare
+organizations. ASPCA is acceptable on second reference.
+See Society for the Prevention of Cruelty to Animals.
+American Society of Composers, Authors and Publishers ASCAP is
+acceptable on second reference.
+Headquarters is in New York.
+AmeriCorps
+amid Not amidst.
+ammunition See weapons.
+amnesty See pardon, parole, probation.
+amok Not amuck.
+among, between The maxim that between introduces two items and among
+introduces more than two covers most questions about how to use these words:
+The choice is between fish and tofu. The funds were divided among Ford, Carter
+and McCarthy.
+
+-- 34 of 1028 --
+
+However, between is the correct word when expressing the relationships of
+three or more items considered one pair at a time: The games between the
+Yankees, Phillies and Mets have been rollicking ones.
+As with all prepositions, any pronouns that follow these words must be in the
+objective case: among us, between him and her, between you and me.
+amount, number Use amount for things that cannot be counted individually:
+the amount of milk in the refrigerator, the amount of courage it takes to climb
+Mount Everest. For things that can be counted individually, use number: The
+number of soldiers in an army, the number of books in a library. Similarly, use
+less for things that can’t be counted — less paper, less paint — and fewer for
+things that can: fewer days, fewer votes. However, some expressions are
+exceptions: Write the jingle in 25 words or less.
+ampersand (&) Use the ampersand when it is part of a company’s formal name
+or composition title: House & Garden, Procter & Gamble, Wheeling & Lake Erie
+Railway.
+The ampersand should not otherwise be used in place of and, except for some
+accepted abbreviations: B&B, R&B.
+a.m., p.m. Lowercase, with periods. Avoid the redundant 10 a.m. this morning.
+Amsterdam The city in the Netherlands stands alone in datelines.
+Amtrak This acronym, drawn from the words American travel by track, may be
+used in all references to the National Railroad Passenger Corp. Do not use
+AMTRAK. Headquarters is in Washington.
+AMVETS Acceptable in all references for American Veterans, the organization
+formerly known as American Veterans of World War II, Korea, and Vietnam.
+Headquarters is in Washington.
+Android An operating system created by Google that’s used in many smartphones
+and tablets.
+Anglo- Always capitalized. No hyphen when the word that follows is in
+lowercase:
+Anglomania
+
+-- 35 of 1028 --
+
+Anglophile
+Anglophobe
+Use a hyphen when the word that follows is capitalized:
+Anglo-American
+Anglo-Catholic
+Anglo-Indian
+Anglo-Saxon
+angry At someone or with someone.
+animals Do not apply a personal pronoun to an animal unless its sex has been
+established or the animal has a name: The dog was scared; it barked. Rover was
+scared; he barked. The cat, which was scared, ran to its basket. Susie the cat,
+who was scared, ran to her basket. The bull tosses his horns.
+Capitalize the name of a specific animal, and use Roman numerals to show
+sequence: Bowser, Whirlaway II.
+For breed names, follow the spelling and capitalization in Webster’s New
+World College Dictionary. For breeds not listed in the dictionary, capitalize words
+derived from proper nouns; use lowercase elsewhere: basset hound, Boston
+terrier.
+animal welfare activist Use instead of animal rights activist.
+anniversary Avoid terms such as six-month anniversary (or other time spans
+less than a year).
+anno Domini See A.D.
+annual Avoid the term first annual.
+annual meeting Lowercase in all uses.
+anonymous sources Whenever possible, we pursue information on the record.
+When a source insists on background or off-the-record ground rules, we must
+adhere to a strict set of guidelines.
+Under AP’s rules, material from anonymous sources may be used only if:
+— The material is information and not opinion or speculation, and is vital to the
+news report.
+
+-- 36 of 1028 --
+
+— The information is not available except under the conditions of anonymity
+imposed by the source.
+— The source is reliable, and in a position to have accurate information.
+Reporters who intend to use material from anonymous sources must get
+approval from their news managers.
+Explain in the story why the source requested anonymity. And, when it’s
+relevant, describe the source’s motive for disclosing the information.
+The story also must provide attribution that establishes the source’s credibility;
+simply quoting a source is not allowed. Be as descriptive as possible about the
+source of information. If space is limited, use source as a last resort. Official or a
+similar word will often suffice, including in headlines. See source.
+Examples:
+Speaking on customary condition of anonymity in line with government
+rules, the official said the two sides were engaged “in very fierce” battles near
+the border crossing, and that one woman was wounded by a stray bullet.
+Incorrect: Granting anonymity “on customary condition … in line with
+government rules” is insufficient. Readers need a plausible explanation of such a
+condition, and why we’re accepting it. For instance, “The rules of the official’s
+job did not allow him to be quoted by name.”
+A security official, who requested anonymity because of the sensitivity of the
+case, said the suspect was monitoring and recording the movements of tourists
+before his arrest in July.
+Incorrect: First, we grant anonymity only to those who insist on it, not those
+who request it. Second, granting anonymity because of the sensitivity of the case
+is insufficient explanation. Did the official insist on anonymity because he was not
+allowed to speak with reporters? Because he was not authorized to release
+information in advance of a public announcement of details of the case?
+Speaking privately, a senior Foreign Ministry official said any further
+increase in tension could strengthen “warlike” sentiment on both sides and
+make a resolution of the problem even more difficult.
+Incorrect: Speaking privately isn’t the same thing as insisting on anonymity, so
+we cannot use the privately explanation. Moreover, the official is speculating on
+something that might happen. We grant anonymity for factual information, not
+speculation or opinion.
+Sometimes a government or corporation intentionally leaks information, but
+insists we publish it attributed to an anonymous official. If we cannot convince the
+government or company to go on the record, it’s best to use a formulation that
+implies that the release of the information was official, even though anonymous.
+For instance: “... according to the official, who insisted on anonymity because he
+was not allowed to use his own name in releasing the findings.”
+
+-- 37 of 1028 --
+
+For additional guidance, see Statement of News Values.
+another Another is not a synonym for additional; it refers to an element that
+somehow duplicates a previously stated quantity.
+Right: Ten people took the test; another 10 refused.
+Wrong: Ten people took the test; another 20 refused.
+Right: Ten people took the test; 20 others refused.
+Antarctic, Antarctica, Antarctic Ocean
+ante- The rules in prefixes apply, but in general, no hyphen. Some examples:
+antebellum
+antedate
+anthems See composition titles. Lowercase the term national anthem.
+anti- Hyphenate all except the following words, which have specific meanings of
+their own:
+antibiotic
+antibody
+anticlimax
+anticoagulant
+antidepressant
+antidote
+antifreeze
+antigen
+antihistamine
+antiknock
+antimatter
+antimony
+antiparticle*
+antipasto
+antiperspirant
+antiphon
+antiphony
+antipollution
+antipsychotic
+antiseptic
+antiserum
+
+-- 38 of 1028 --
+
+antithesis
+antitoxin
+antitrust
+antioxidant
+antitussive
+*And similar terms in physics such as antiproton.
+This approach has been adopted in the interests of readability and easily
+remembered consistency.
+It’s anti-lock in Webster’s New World College Dictionary. But note these
+Stylebook exceptions to Webster’s spellings:
+anti-abortion
+anti-aircraft
+anti-labor
+anti-social
+anti-war
+See Antichrist, anti-Christ in Religion chapter.
+anticipate, expect Anticipate means to expect and prepare for something;
+expect does not include the notion of preparation:
+They expect a record crowd. They have anticipated it by adding more seats to
+the auditorium.
+antitrust Any law or policy designed to encourage competition by curtailing
+monopolistic power and unfair business practices.
+anybody, any body, anyone, any one One word for an indefinite
+reference: Anyone can do that.
+Two words when the emphasis is on singling out one element of a group: Any
+one of them may speak up.
+AOL An online services provider owned by Verizon Communications Inc. Do not
+use its former name, America Online.
+AP Acceptable on second reference for The Associated Press.
+On second reference, AP or the AP (no capital on the) may be used.
+See Associated Press.
+
+-- 39 of 1028 --
+
+API Abbreviation for application programming interface. A programming
+interface that a website or a piece of software uses to allow other websites or
+software to interact with it.
+apostolic delegate, papal nuncio An apostolic delegate is a Roman
+Catholic diplomat chosen by the pope to be his envoy to the church in a nation that
+does not have formal diplomatic relations with the Vatican.
+A papal nuncio is the pope’s envoy to a nation with which the Vatican has
+diplomatic relations.
+apostrophe (’) See entry in Punctuation section.
+app Short for application and acceptable on first reference. A program that runs
+inside another service. Many cellphones, tablets, operating systems and web
+browsers allow apps to be downloaded to give the user access to additional
+functions.
+Appalachia In the broadest sense, the word applies to the entire region along the
+Appalachian Mountains, which extend from Maine into northern Alabama.
+In a sense that often suggests economic depression and poverty, the reference is
+to sections of eastern Tennessee, eastern Kentucky, southeastern Ohio and the
+western portion of West Virginia.
+The Appalachian Regional Commission, established by federal law in 1965,
+has a mandate to foster development in 397 counties in 13 states — all of West
+Virginia and parts of Alabama, Georgia, Kentucky, Maryland, Mississippi, New
+York, North Carolina, Ohio, Pennsylvania, South Carolina, Tennessee and
+Virginia.
+When the word Appalachia is used, specify the extent of the area in question.
+Appalachian Mountains Or simply: the Appalachians.
+appeals court See U.S. Court of Appeals.
+Apple Inc. Headquarters is in Cupertino, California.
+appreciation Increase in value of property, as opposed to depreciation.
+approve See act, amendment, bill, law, measure, ordinance, resolution, rule, statute entry.
+
+-- 40 of 1028 --
+
+April Fools’ Day
+APTN, AP Radio Do not refer to these units of The Associated Press as if they
+were separate entities. Say Alexander Barbosa told the AP [not APTN] in Rio de
+Janeiro; AP [not APTN] video journalist John Smith contributed to this report.
+See Associated Press, The.
+Arab Spring Wave of pro-democratic protests, revolutions and civil wars that
+have swept some Arab nations since 2011.
+Arabic names In general, use an English spelling that approximates the way a
+name sounds in Arabic.
+If an individual has a preferred spelling in English, use that. If usage has
+established a particular spelling, use that.
+Problems in transliteration of Arabic names often are traceable to
+pronunciations that vary from region to region. The g, for example, is pronounced
+like the g of go mainly in Egypt, and the j of joy in the rest of the Arab world.
+Thus it is Gamal in Egypt and Jamal in nations on the peninsula. Follow local
+practice in deciding which letter to use.
+Arabs commonly are known by two names (Hassan Nasrallah), or by three
+(Mohammed Mahdi Akef). Follow the individual’s preference on first reference.
+On second reference, use only the final name in the sequence.
+The articles al- or el- may be used or dropped depending on the person’s
+preference or established usage. (Ayman al-Zawahri, al-Zawahri, or Moammar
+Gadhafi, Gadhafi). The article al- or el- should not be capitalized.
+The Arabic word for son (ibn or bin) is sometimes part of a name. On second
+reference, it is often dropped, using only the final name. In cases of personal
+preference or common usage, it should be retained. (Osama bin Laden, bin
+Laden; Abdul-Aziz bin Baz, bin Baz).
+The word abu or abou, meaning father of, occasionally is used as a last name
+(Abdel-Halim Abou Ghazala). Capitalize and repeat it on second reference: Abou
+Ghazala.
+The word abdul, meaning “servant of (God),” generally does not stand alone as
+a name, except sometimes in South Asia and Afghanistan. It is used in
+combination with a second name (an Arabic word for an attribute of God). This
+combination should be hyphenated, unless the individual prefers otherwise, and
+capitalized (Adil Abdul-Mahdi, Abdul-Mahdi). In Egypt and some other
+countries, Abdul is often written Abdel, reflecting local pronunciation.
+
+-- 41 of 1028 --
+
+For royalty, the titles king, emir, sheikh and imam are used, but prince usually
+replaces emir. Some Arabs are known only by the title and a given name on first
+reference (King Abdullah). Others are known by a complete name (Sheikh
+Mohammed bin Rashid Al Maktoum). Follow the common usage on first
+reference. On second reference, drop the title and use only the first name
+(Abdullah, Mohammed). The full names of many Gulf royals include the word Al,
+which in their case should be capitalized without a hyphen since it means family
+of.
+The al should be capitalized in front of most Muslim and Arab institutions,
+universities, newspapers and major mosques, as in Al-Azhar, the university in
+Cairo; Al-Aqsa, the Jerusalem mosque, the newspaper Al-Ahram and the satellite
+television news network Al-Jazeera.
+Arabic numerals The numerical figures 0, 1, 2, 3, 4, 5, 6, 7, 8, 9.
+In general, use Arabic forms unless denoting the sequence of wars or
+establishing a personal sequence for people or animals. See Roman numerals.
+Separate entries list more details and examples. For a full list, see numerals.
+arbitrage Buying currencies, commercial bills or securities in one market and
+selling them at the same time in another to make a profit on the price discrepancy.
+arbitrate, mediate Both terms are used in reports about labor negotiations, but
+they should not be interchanged.
+One who arbitrates hears evidence from all people concerned, then hands down
+a decision.
+One who mediates listens to arguments of both parties and tries by the exercise
+of reason or persuasion to bring them to an agreement.
+arch- No hyphen after this prefix unless it precedes a capitalized word:
+archbishop
+archenemy
+arch-Republican
+archrival
+archaeology
+arctic Lowercase for adjective meaning frigid; capitalize for region around the
+North Pole. Arctic Circle, arctic fox, Arctic Ocean
+
+-- 42 of 1028 --
+
+area codes See telephone numbers.
+Argentine The preferred term for the people and culture of Argentina.
+Arizona Abbreviate Ariz. in datelines only; spell out in stories. Postal code: AZ
+See state names.
+Arkansas Abbreviate Ark. in datelines only; spell out in stories. Postal code: AR
+See state names.
+army Capitalize when referring to U.S. forces: the U.S. Army, the Army, Army
+regulations. Do not use the abbreviation USA.
+Use lowercase for the forces of other nations: the French army.
+This approach has been adopted for consistency, because many foreign nations
+do not use army as the proper name.
+See military academies; military titles.
+arrest To avoid any suggestion that someone is being judged before a trial, do not
+use a phrase such as arrested for killing. Instead, use arrested on a charge of
+killing. If a charge hasn’t been filed, arrested on suspicion of, or a similar phrase,
+should be used.
+For guidelines on related words, see accused; allege; indict; sue.
+arrive It requires the preposition at. Do not omit, as airline dispatchers often do in:
+He will arrive LaGuardia.
+artificial intelligence Software or computer systems that emulate aspects of
+human cognition. Such systems are not sentient, but can accomplish human-level
+tasks such as visual perception, understanding and using speech, and learning —
+though only to a limited extent in many cases. AI is acceptable on second
+reference. See machine learning.
+artillery See weapons.
+artworks Lowercase impressionism, modernism and other art styles and
+movements unless used in formal titles of shows or exhibits with quotation marks.
+Exception: Bauhaus is capitalized as the name of a school. Gothic, Renaissance
+and other historical periods are capitalized for art and architecture from those ages.
+
+-- 43 of 1028 --
+
+Titles of paintings are enclosed in quotes: “Mona Lisa.” Sculptures are capitalized
+without quotes: The Thinker, Michelangelo’s Pieta.
+See composition titles.
+as See like, as.
+ASCII An acronym for American Standard Code for Information Interchange.
+A numeric code used to represent the letters of the Roman alphabet, numbers and
+punctuation marks. Use of the acronym on first reference is acceptable if it is
+identified as a code.
+asexual Describes people who don’t experience sexual attraction, though they
+may feel other types of attraction, such as romantic or aesthetic. Not synonymous
+with and does not assume celibacy. See LGBT, LGBTQ; gender.
+Asian American See race-related coverage.
+Asian, Asiatic Use Asian or Asians when referring to people.
+Some Asians regard Asiatic as offensive when applied to people.
+Asperger’s syndrome After Hans Asperger, an Austrian pediatrician. A
+milder form of autism, Asperger’s was once a separate diagnosis but is now part of
+a broader term called autism spectrum disorder. People with this condition can
+have high intelligence and narrow, sometimes obsessive interests but lack social
+skills. See autism spectrum disorder.
+assassin, killer, murderer An assassin is one who kills a politically important
+or prominent person.
+A killer is anyone who kills with a motive of any kind.
+A murderer is one who is convicted of murder in a court of law.
+Preferred use: Joe Smith was convicted of second-degree murder.
+See execute; homicide, murder, manslaughter.
+assassination Use the term only if it involves the murder of a politically
+important or prominent individual by surprise attack.
+assassination, date of A prominent person is shot one day and dies the next.
+Which day was he assassinated? The day he was attacked.
+
+-- 44 of 1028 --
+
+assault, battery Assault almost always implies physical contact and sudden,
+intense violence.
+Legally, however, assault means simply to threaten violence, as in pointing a
+pistol at an individual without firing it. Assault and battery is the legal term when
+the victim was touched by the assaulter or something the assaulter put in motion.
+assembly Capitalize when part of the proper name for the lower house of a
+legislature: the California Assembly. Retain capitalization if the state name is
+dropped but the reference is specific:
+SACRAMENTO, Calif. (AP) — The state Assembly ...
+If a legislature is known as a general assembly: the Missouri General
+Assembly, the General Assembly, the assembly. Legislature also may be used as
+the proper name, however. See legislature.
+Lowercase all plural uses: the California and New York assemblies.
+assemblyman, assemblywoman Do not abbreviate. See legislative titles.
+assets Everything a company or an individual owns or is owed.
+Assets may be broken down as:
+Current assets: cash, investments, money due to a corporation, unused raw
+materials and inventories of finished but unsold products.
+Fixed assets: buildings, machinery and land.
+Intangible assets: patents and goodwill.
+See goodwill.
+asset-backed security A financial security backed by loans, leases, credit-card
+debt, royalties, a company’s accounts receivables, etc. ABS should not be used in
+copy.
+asset, fixed Plant, land, equipment, long-term investments that cannot be readily
+liquefied without disturbing the operation of the business.
+assistant Do not abbreviate. Capitalize only when part of a formal title before a
+name: Assistant Secretary of State Richard Boucher. Whenever practical,
+however, an appositional construction should be used: Richard Boucher, assistant
+secretary of state.
+See titles.
+
+-- 45 of 1028 --
+
+associate Never abbreviate. Apply the same capitalization norms listed under
+assistant.
+Associated Press, The The newsgathering cooperative dating from 1846.
+Use The Associated Press on first reference (the capitalized article is part of the
+formal name).
+On second reference, AP or the AP (no capital on the) may be used.
+Do not refer to APTN and AP Radio, units of the AP, as if they were separate
+entities. Say Alexander Barbosa told the AP [not APTN] in Rio de Janeiro; AP
+[not APTN] video journalist John Smith contributed to this report.
+The address is 200 Liberty St., New York, NY 10281. The telephone number is
+212-621-1500.
+Online: http://www.ap.org
+See AP.
+Association Do not abbreviate. Capitalize as part of a proper name: American
+Medical Association.
+assure See ensure, insure, assure.
+asterisk Do not use the symbol. It rarely translates and in many cases cannot be
+seen by AP computers or received by newspaper or other computers.
+astronaut It is not a formal title. Do not capitalize when used before a name:
+astronaut John Glenn.
+AT&T Inc. The full name of the business formerly known as American
+Telephone & Telegraph Co., today one of the country’s largest wireless and
+broadband providers. The company owns DirecTV and the Warner Bros. movie
+and TV studio and TV networks including HBO, CNN, TBS and TNT. The
+government is appealing the decision that said AT&T could buy Time Warner,
+though the deal has been closed. Headquarters is in Dallas.
+atheist See agnostic, atheist.
+athlete’s foot
+Atlanta The city in Georgia stands alone in datelines.
+
+-- 46 of 1028 --
+
+Atlantic Ocean
+Atlantic Standard Time, Atlantic Daylight Time Used in the Maritime
+Provinces of Canada and in Puerto Rico.
+See time zones.
+at large Usually two words for an individual representing more than a single
+district: councilman at large.
+But it is ambassador-at-large for an ambassador assigned to no particular
+country.
+ATM Acceptable in all references for automated teller machine.
+Do not use the redundant ATM machine.
+attache It is not a formal title. Always lowercase.
+attorney general, attorneys general Never abbreviate. Capitalize only
+when used as a title before a name: Attorney General William Barr.
+See titles.
+attorney, lawyer In common usage the words are interchangeable.
+Technically, however, an attorney is someone (usually, but not necessarily, a
+lawyer) empowered to act for another. Such an individual occasionally is called an
+attorney in fact.
+A lawyer is a person admitted to practice in a court system. Such an individual
+occasionally is called an attorney at law.
+Do not abbreviate. Do not capitalize unless it is an officeholder’s title: defense
+attorney Perry Mason, attorney Perry Mason, District Attorney Hamilton
+Burger.
+Power of attorney is a written statement legally authorizing a person to act for
+another.
+See lawyer.
+attribution AP news reports must attribute facts not gathered or confirmed on our
+own, whether the pickup is from a newspaper, website, broadcaster or blog, U.S.
+or international, AP member or subscriber. AP reports must also credit other
+organizations when they break a story and AP matches or further develops it.
+News from a government, agency, organization, company or other recognized
+
+-- 47 of 1028 --
+
+group may be attributed to that entity on first reference in the story: the White
+House announced. In a follow-up attribution, specify whether the information
+came from a spokesman or other named official or in a news release.
+augur A transitive verb. Do not follow it with the preposition for. Correct: The tea
+leaves augur a time of success.
+“Auld Lang Syne” Sung to greet the New Year, poem by Robert Burns set to
+Scottish music.
+autism spectrum disorder An umbrella term for a group of developmental
+disorders that can involve varying degrees of language and social impairments,
+and repetitive behaviors. It encompasses mild autism and the more classic form.
+Acceptable to use the term autism in stories. See Asperger’s syndrome.
+author A noun. Do not use it as a verb.
+automaker, automakers
+automatic See pistol; weapons.
+autonomous vehicles Describes cars or trucks that can monitor the road and
+drive for an entire trip without the intervention of a human. Also can be called
+self-driving. The term driverless should not be used unless there is no human
+backup driver. In cases where vehicles can perform some driving functions
+themselves but require human intervention for other tasks, such as changing lanes
+or driving at low speeds, use semi-autonomous or partially self-driving. As of
+2019 there were no autonomous vehicles for sale to the public, but many with
+semi-autonomous capabilities.
+Autopilot The trade name for the semi-autonomous driving system offered in
+Tesla Inc.’s vehicles. Autopilot can maintain a set speed, brake automatically,
+change lanes and keep a vehicle within its lane. A driver’s hands need to touch the
+wheel at certain intervals or the system will turn off. Some other automakers offer
+similar systems under different trade names, such as Mercedes-Benz’s Drive Pilot.
+Autopilot, Drive Pilot and other trade names should be capitalized; the generic use
+of autopilot is lowercase. Tesla is gathering data when owners engage the
+
+-- 48 of 1028 --
+
+Autopilot feature. In today’s airliners, the autopilot is on nearly the entire time
+the plane is in the air.
+Auto Train Rail service that carries passengers and their cars. Owned and
+operated by Amtrak.
+autoworker, autoworkers One word when used generically.
+But United Auto Workers when referring to the union.
+autumn See seasons.
+avatar A version of yourself that you put forward in an online or video game
+setting. Sometimes bears a strong resemblance to the user; at other times, it is used
+to highlight a company or organization’s brand, make a political statement or act
+out fantasies of a wished-for identity.
+avenue Abbreviate only with a numbered address. See addresses.
+average, mean, median, norm Average refers to the result obtained by
+dividing a sum by the number of quantities added together: The average of 7, 9,
+17 is 33 divided by 3, or 11.
+Mean, in its sense used in arithmetic and statistics, is an average and is
+determined by adding the series of numbers and dividing the sum by the number of
+cases: The mean temperature of five days with temperatures of 67, 62, 68, 69, 64
+is 66.
+Median is the middle number of points in a series arranged in order of size:
+The median grade in the group of 50, 55, 85, 88, 92 is 85. The average is 74.
+Norm implies a standard of average performance for a given group: The child
+was below the norm for his age in reading comprehension.
+average of The phrase takes a plural verb in a construction such as: An average
+of 100 new jobs are created daily.
+averse See adverse, averse.
+Avianca Headquarters of this airline is in Bogota, Colombia.
+awards and decorations Capitalize them: Bronze Star, Medal of Honor, etc.
+
+-- 49 of 1028 --
+
+See Nobel Prize; Pulitzer Prizes.
+awhile (adv.) a while He plans to stay awhile (adv.). He plans to stay for a
+while (n.).
+AWOL Acceptable in all references for absent without leave.
+ax Not axe.
+The verb forms: ax, axed, axing.
+Axis The alliance of Germany, Italy and Japan during World War II.
+Aymara An ethnic group around Lake Titicaca, in Bolivia and Peru, or the
+language of these people.
+
+-- 50 of 1028 --
+
+b
+baby boom, baby boomer Reference to those born between 1946 and 1964, a
+span defined by the U.S. Census Bureau. Hyphenated as an adjective: baby-boom
+generation. See Generation X; millennials.
+baby bump The rounded abdominal area of a pregnant woman. Avoid using.
+babysit, babysitting, babysat, babysitter
+baccalaureate
+Bachelor of Arts, Bachelor of Science A bachelor’s degree or bachelor’s
+is acceptable in any reference.
+See academic degrees for guidelines on when the abbreviations B.A. or B.S. are
+acceptable.
+backfire In wildfires, this term is for a fire set along the inner edge of a fire line to
+consume the fuel in the fire’s path or change its direction.
+backstage Part of the stage or theater behind the proscenium, particularly the
+wings and dressing rooms. Also can refer to the press area where award winners
+meet with the news media.
+backup (n. and adj.) back up (v.)
+backward Not backwards.
+backyard One word in all uses.
+bad, badly Bad should not be used as an adverb. It does not lose its status as an
+adjective, however, in a sentence such as I feel bad. Such a statement is the
+idiomatic equivalent of I am in bad health. An alternative, I feel badly, could be
+interpreted as meaning that your sense of touch was bad.
+
+-- 51 of 1028 --
+
+See good, well.
+Baghdad The city in Iraq stands alone in datelines.
+Bagram Airfield The preferred spelling for the U.S. base in Afghanistan.
+Bahamas In datelines, give the name of the city or town followed by Bahamas:
+NASSAU, Bahamas (AP) —
+In stories, use Bahamas, the Bahamas or the Bahama Islands as the
+construction of a sentence dictates.
+Identify a specific island in the text if relevant.
+bail Bail is money or property that will be forfeited to the court if an accused
+individual fails to appear for trial. It may be posted as follows:
+— The accused may deposit with the court the full amount or its equivalent in
+collateral such as a deed to property.
+— A friend or relative may make such a deposit with the court.
+— The accused may pay a professional bail bondsman a percentage of the total
+figure. The bondsman, in turn, guarantees the court that it will receive from him
+the full amount in the event the individual fails to appear for trial.
+It is correct in all cases to say that an accused posted bail or posted a bail bond
+(the money held by the court is a form of bond). When a distinction is desired, say
+that the individual posted his own bail, that bail was posted by a friend or relative,
+or that bail was obtained through a bondsman.
+balance of payments, balance of trade The balance of payments is the
+difference between the amount of money that leaves a nation and the amount that
+enters it during a period of time.
+The balance of payments is determined by computing the amount of money a
+nation and its citizens send abroad for all purposes — including goods and
+services purchased, travel, loans, foreign aid, etc. — and subtracting from it the
+amount that foreign nations send into the nation for similar purposes.
+The balance of trade is the difference between the monetary value of the goods
+a nation imports and the goods it exports.
+An example illustrating the difference between the two:
+The United States and its citizens might send $10 billion abroad — $5 billion
+for goods, $3 billion for loans and foreign aid, $1 billion for services and $1
+
+-- 52 of 1028 --
+
+billion for tourism and other purposes.
+Other nations might send $9 billion into the United States — $6 billion for U.S.
+goods, $2 billion for services and $1 billion for tourism and other purposes.
+The United States would have a balance-of-payments deficit of $1 billion but a
+balance-of-trade surplus of $1 billion.
+balance sheet A listing of assets, liabilities and net worth showing the financial
+position of a company at the specific time. A bank balance sheet is generally
+referred to as a statement of condition.
+ballclub, ballpark, ballplayer, ballroom
+balloon mortgage A mortgage whose amortization schedule will not extinguish
+the debt by the end of the mortgage term, leaving a large payment (called balloon
+payment) of the remaining principal balance to be paid at that time.
+baloney Foolish or exaggerated talk.
+The sausage or luncheon meat is bologna.
+Baltimore The city in Maryland stands alone in datelines.
+Band-Aid A trademark for a type of adhesive bandage.
+Bangkok The city in Thailand stands alone in datelines.
+Bank of America Corp. Headquarters is in Charlotte, North Carolina.
+bankruptcy Federal courts have exclusive jurisdiction over bankruptcy cases and
+each of the 94 federal judicial districts handles bankruptcy matters. The primary
+purposes of the federal bankruptcy laws are to give honest debtors a fresh start in
+life by relieving them of most debts, and to repay creditors in an orderly manner to
+the extent debtors have property available for payment. Bankruptcies can be
+voluntary or involuntary.
+Chapter 7 of the Bankruptcy Code is available to both individual and business
+debtors. Its purpose is to achieve a fair distribution to creditors of the debtor’s
+available non-exempt property. It provides a fresh financial start for individuals,
+although not all debt is wiped away; debts for certain taxes, fraudulently incurred
+credit card debt, family support obligations — including child support and alimony
+
+-- 53 of 1028 --
+
+— and most student loans must still be repaid. The bankruptcy law that took effect
+in October 2005 limits Chapter 7 as an option for many Americans: Those deemed
+by a “means test” to have at least $100 a month left over after paying certain debts
+and expenses must file a five-year repayment plan under the more restrictive
+Chapter 13 instead. When a company files for Chapter 7, it usually leads to
+liquidation. But a company in Chapter 7 proceedings can continue to operate under
+the direction of a court trustee until the matter is settled, and if it can settle with
+creditors in the interim, it may not have to be liquidated.
+Chapter 11 of the Bankruptcy Code is available for both business and consumer
+debtors. Its purpose is to rehabilitate a business as a going concern or reorganize
+an individual’s finances through a court-approved reorganization plan. When
+referring to such a filing, say the company is seeking Chapter 11 protection. This
+action frees a company from the threat of creditors’ lawsuits while it reorganizes
+its finances. The debtor’s reorganization plan must be accepted by a majority of its
+creditors. Unless the court rules otherwise, the debtor remains in control of the
+business and its assets.
+Chapter 12 of the Bankruptcy Code is designed to give special debt relief to a
+family farmer with regular income from farming.
+Chapter 13 of the Bankruptcy Code is likely to be required for an increasing
+percentage of individuals seeking to wipe the slate clean. Those deemed by a
+“means test” to have at least $100 a month left over after paying certain debts and
+expenses will have to file a five-year repayment plan under Chapter 13 allowing
+unsecured creditors to recover part or all of what they are owed.
+Chapter 15 was added to the Bankruptcy Code in 2005 and covers U.S. filings
+that are secondary to bankruptcy cases filed overseas. Courts can authorize trustees
+to act in a foreign country on behalf of a bankruptcy estate in a Chapter 15
+proceeding. It represents the U.S. adoption of a model law on cross-border
+bankruptcy developed by the United Nations.
+barbiturate
+barrel A standard barrel in U.S. measure contains 31.5 gallons.
+A standard barrel in British and Canadian measure contains 36 imperial
+gallons.
+In international dealings with crude oil, a standard barrel contains 42 U.S.
+gallons or 35 imperial gallons.
+See the oil entry for guidelines on computing the volume and weight of
+petroleum products.
+barrel, barreled, barreling
+
+-- 54 of 1028 --
+
+barrister See lawyer.
+barroom
+BASE jumping Acceptable on first reference for the extreme sport, but explain
+later in the story. BASE is an acronym for building, antenna, span (such as a
+bridge) and earth (such as a cliff).
+basis point One one-hundredth of one percentage point. Changes in interest rates
+are measured in basis points. If the Federal Reserve’s target rate was 2% and it
+was cut by 50 basis points, the new rate would be 1.5%.
+battalion Capitalize when used with a figure to form a name: the 3rd Battalion,
+the 10th Battalion.
+battlefield Also: battlefront, battleground, battleship. But battle station.
+battleground states States where candidates from both major political parties
+have a reasonable chance for victory in a statewide race or presidential vote.
+bay Capitalize as an integral part of a proper name: Hudson Bay, San Francisco
+Bay.
+Capitalize also San Francisco Bay Area or the Bay Area as the popular name
+for the nine-county region that has San Francisco as its focal point.
+B.C. Acceptable in all references to a calendar year in the period before Christ.
+Because the full phrase would be in the year 43 before Christ, the abbreviation
+B.C. is placed after the figure for the year: 43 B.C.
+See A.D.
+bear market A period of generally declining stock prices over a prolonged
+period, generally defined as a 20% or larger decline in broad stock indexes such as
+the S&P 500.
+bearer bond A bond for which the owner’s name is not registered on the books
+of the issuing company. Interest and principal is thus payable to the bondholder.
+
+-- 55 of 1028 --
+
+bearer stock Stock certificates that are not registered in any name. They are
+negotiable without endorsement and transferable by delivery.
+because, since Use because to denote a specific cause-effect relationship: He
+went because he was told.
+Since is acceptable in a causal sense when the first event in a sequence led
+logically to the second but was not its direct cause: They went to the game, since
+they had been given the tickets.
+bed-and-breakfast B&B is acceptable on second reference.
+bedbug
+before Christ See B.C.
+Beijing The city in China stands alone in datelines.
+Beirut The city in Lebanon stands alone in datelines.
+bellwether
+benefit, benefited, benefiting
+Ben-Gurion International Airport Located at Lod, Israel, about 10 miles
+southeast of Tel Aviv.
+See airport.
+Berkshire Hathaway Inc. Headquarters is in Omaha, Nebraska.
+Berlin The city in Germany stands alone in datelines.
+Berlin Wall
+Bermuda collar, Bermuda grass, Bermuda shorts
+beside, besides Beside means at the side of.
+Besides means in addition to.
+
+-- 56 of 1028 --
+
+bestseller, bestselling No hyphen.
+betting odds Use figures and a hyphen: The odds were 5-4, he won despite 3-2
+odds against him. See numerals.
+bettor A person who bets.
+between See among, between.
+bi- The rules in prefixes apply, but in general, no hyphen. Some examples:
+bifocal
+bilateral
+bilingual
+bimonthly
+bipartisan
+biannual, biennial Biannual means twice a year and is a synonym for the word
+semiannual.
+Biennial means every two years.
+Bible Capitalize, without quotation marks, when referring to the Scriptures in the
+Old Testament or the New Testament. Capitalize also related terms such as the
+Gospels, Gospel of St. Mark, the Scriptures, the Holy Scriptures.
+Lowercase biblical in all uses.
+Lowercase bible as a nonreligious term: My dictionary is my bible.
+Do not abbreviate individual books of the Bible.
+Old Testament is a Christian designation; Hebrew Bible or Jewish Bible is the
+appropriate term for stories dealing with Judaism alone.
+The standard names and order of Old Testament books as they appear in
+Protestant Bibles are: Genesis, Exodus, Leviticus, Numbers, Deuteronomy,
+Joshua, Judges, Ruth, 1 Samuel, 2 Samuel, 1 Kings, 2 Kings, 1 Chronicles, 2
+Chronicles, Ezra, Nehemiah, Esther, Job, Psalms, Proverbs, Ecclesiastes, Song of
+Solomon, Isaiah, Jeremiah, Lamentations, Ezekiel, Daniel, Hosea, Joel, Amos,
+Obadiah, Jonah, Micah, Nahum, Habakkuk, Zephaniah, Haggai, Zechariah,
+Malachi.
+Jewish Bibles contain the same 39 books, in different order. Roman Catholic
+Bibles follow a different order, usually use some different names and include the
+seven Deuterocanonical books (called the Apocrypha by Protestants): Tobit,
+Judith, 1 Maccabees, 2 Maccabees, Wisdom, Sirach, Baruch.
+
+-- 57 of 1028 --
+
+The books of the New Testament, in order: Matthew, Mark, Luke, John, Acts,
+Romans, 1 Corinthians, 2 Corinthians, Galatians, Ephesians, Philippians,
+Colossians, 1 Thessalonians, 2 Thessalonians, 1 Timothy, 2 Timothy, Titus,
+Philemon, Hebrews, James, 1 Peter, 2 Peter, 1 John, 2 John, 3 John, Jude,
+Revelation.
+Citation listing the number of chapter and verse(s) use this form: Matthew
+3:16, Luke 21:1-13, 1 Peter 2:1.
+Big Board Acceptable on second reference for the New York Stock Exchange.
+big brother One’s older brother is a big brother. Big Brother (capitalized) means
+under the watchful eye of big government, from George Orwell’s “1984.”
+Capitalize also in reference to members of Big Brothers Big Sisters of America
+Inc. The organization has headquarters in Philadelphia.
+Big Three automakers Do not use that term, or Detroit Three, for Detroit
+automakers General Motors, Ford and Fiat Chrysler.
+billion A thousand million.
+For forms, see millions, billions.
+Bill of Rights The first 10 amendments to the Constitution. See Constitution.
+bimonthly Means every other month. Semimonthly means twice a month.
+Bing A web search engine owned by Microsoft Corp.
+bin Laden, Osama Use bin Laden on all second and later references except at
+the start of a sentence. It is the family preference for the last name, which is an
+exception to the general rule on Arabic names. He founded al-Qaida and was
+killed by U.S. forces in Pakistan in May 2011.
+bioterrorism
+biracial, multiracial See race-related coverage.
+bird flu Preferred term for avian influenza, viruses that mostly infect poultry and
+other birds. Several types are known to infect humans and the deadliest form so far
+
+-- 58 of 1028 --
+
+appears to be H5N1. Other strains that have infected people include H7N9, H9N2
+and H6N1. The viruses mainly infect people who have direct contact with sick
+birds but human-to-human transmission occasionally occurs.
+birthday Capitalize as part of the name for a holiday: Washington’s Birthday.
+Lowercase in other uses.
+bisexual Describes people attracted to more than one gender. Some people prefer
+pansexual, which describes people attracted to others regardless of their gender.
+See LGBT, LGBTQ; gender.
+bit Acceptable in all references as an abbreviation for binary digit. Actual data
+takes the form of electrical impulses. These can be thought of as either on or off or
+1 and 0. The pulses are bits.
+bitcoin A digital currency created and exchanged independent of banks or
+governments. Bitcoin is a form of cryptocurrency and should not be confused with
+other systems, such as Dogecoin and Ethereum. As with other cryptocurrencies,
+bitcoins do not exist as physical bills or coins. Rather, they exist as lines of
+computer code that are digitally signed each time they travel from one owner to
+the next. Bitcoins are typically stored in virtual wallets, including online services
+that resemble bank accounts.
+Capitalize when referring to Bitcoin as a system, but lowercase when referring
+to its use as a form of payment. The government wants to regulate Bitcoin. He
+bought a vacuum cleaner online using bitcoins.
+Bitcoins can be bought and sold on exchanges with U.S. dollars and other
+traditional currencies. Given the speculative nature of bitcoins, some investors
+have traded in them the way they would in the stock market. Some businesses
+have jumped on the Bitcoin bandwagon. Overstock.com accepts payments in
+bitcoins, for example. But most individuals and businesses won’t accept such
+currencies for payments.
+Records are kept through ledgers known as blockchain. In essence, a group of
+people called miners lend their computing power to verify other users’
+transactions, so that the same bitcoin isn’t spent twice. They are given new
+bitcoins as rewards.
+Transactions typically are completed anonymously, making the currency
+popular among people who want to conceal their financial activity. However,
+investigators may still be able to tie transactions to a real person when bitcoins are
+converted into a traditional currency for spending elsewhere.
+
+-- 59 of 1028 --
+
+The system was designed with a finite supply of bitcoins, with about 17 million
+minted so far and another 4 million to come. The rate of minting slows down over
+time, such that the final bitcoin isn’t expected for another century.
+Bitcoin was launched in 2009 by a person or group of people operating under
+the name Satoshi Nakamoto, and was then adopted by a small clutch of
+enthusiasts. Nakamoto dropped off the map as Bitcoin began to attract widespread
+attention.
+See blockchain; cryptocurrency.
+biweekly Means every other week. Semiweekly means twice a week.
+bizarre Unusual. A fair is a bazaar.
+black See race-related coverage.
+BlackBerry, BlackBerrys A brand of smartphone manufactured by
+BlackBerry Ltd.
+blackout, brownout A blackout is a total power failure over a large area or the
+concealing of lights that might be visible to enemy raiders.
+The term rolling blackout is used by electric companies to describe a situation
+in which electric power to some sections temporarily is cut off on a rotating basis
+to assure that voltage will meet minimum standards in other sections.
+A brownout is a small, temporary voltage reduction, usually from 2% to 8%,
+implemented to conserve electric power.
+blastoff (n. and adj.) blast off (v.)
+blind See disabled, handicapped.
+blizzard See weather terms.
+bloc, block A bloc is a coalition of people, groups or nations with the same
+purpose or goal.
+Block has more than a dozen definitions, but a political alliance is not one of
+them.
+
+-- 60 of 1028 --
+

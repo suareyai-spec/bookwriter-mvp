@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KOSIQ - Investor Presentation 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#26acf7;--dark:#231f20;--gray:#6b7280;--light-gray:#f3f4f6;--white:#ffffff;--green:#10b981;--red:#ef4444;--amber:#f59e0b}
+html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:#000;color:var(--dark)}
+.logo{font-weight:900;letter-spacing:-1px}
+.logo .kos{color:var(--dark)}.logo .iq{color:var(--blue)}
+.deck{position:relative;width:100%;height:100%}
+.slide{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .5s ease,transform .5s ease;transform:scale(.97);background:var(--white)}
+.slide.active{opacity:1;pointer-events:auto;transform:scale(1);z-index:2}
+.slide-inner{width:min(1120px,90%);max-height:90%;overflow-y:auto}
+h1{font-size:clamp(28px,4vw,56px);font-weight:800;line-height:1.1;color:var(--dark);margin-bottom:.4em}
+h2{font-size:clamp(22px,3vw,40px);font-weight:700;line-height:1.2;color:var(--dark);margin-bottom:.6em}
+h3{font-size:clamp(16px,1.8vw,24px);font-weight:600;color:var(--dark);margin-bottom:.4em}
+p,.desc{font-size:clamp(13px,1.4vw,18px);color:var(--gray);line-height:1.6}
+.subtitle{font-size:clamp(16px,2vw,24px);color:var(--gray);font-weight:400;margin-bottom:.3em}
+.tag{display:inline-block;background:var(--blue);color:#fff;font-size:13px;font-weight:600;padding:6px 16px;border-radius:20px;margin-top:12px}
+.accent{color:var(--blue)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px}
+.grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:20px}
+.card{background:var(--light-gray);border-radius:16px;padding:24px}
+.card h3{margin-bottom:8px}
+.card p{font-size:14px}
+.card-blue{background:linear-gradient(135deg,var(--blue),#1a8fd4);color:#fff}
+.card-blue h3,.card-blue p{color:#fff}
+.stat{text-align:center;padding:20px}
+.stat .num{font-size:clamp(28px,3.5vw,48px);font-weight:800;color:var(--blue);line-height:1}
+.stat .label{font-size:14px;color:var(--gray);margin-top:6px}
+ul{list-style:none;padding:0}
+ul li{position:relative;padding-left:20px;margin-bottom:10px;font-size:clamp(13px,1.3vw,17px);color:#374151;line-height:1.5}
+ul li::before{content:'';position:absolute;left:0;top:8px;width:8px;height:8px;border-radius:50%;background:var(--blue)}
+.steps{display:flex;gap:16px;margin-top:20px}
+.step{flex:1;text-align:center;padding:20px 12px;background:var(--light-gray);border-radius:16px;position:relative}
+.step .step-num{width:36px;height:36px;border-radius:50%;background:var(--blue);color:#fff;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.step h3{font-size:15px;margin-bottom:6px}
+.step p{font-size:13px;color:var(--gray)}
+.step+.step::before{content:'';position:absolute;left:-20px;top:50%;width:24px;height:2px;background:#d1d5db}
+table{width:100%;border-collapse:collapse;font-size:clamp(11px,1.1vw,14px);margin-top:16px}
+th{background:var(--dark);color:#fff;padding:10px 12px;text-align:left;font-weight:600}
+td{padding:10px 12px;border-bottom:1px solid #e5e7eb}
+tr:nth-child(even) td{background:#f9fafb}
+.check{color:var(--green);font-weight:700}.cross{color:#d1d5db;font-weight:700}.partial{color:var(--amber);font-weight:700}
+.quote{font-size:clamp(18px,2.2vw,28px);font-style:italic;color:var(--dark);line-height:1.5;border-left:4px solid var(--blue);padding-left:24px;margin:24px 0}
+.quote-author{font-size:16px;color:var(--gray);margin-top:8px;font-style:normal;font-weight:600}
+.bar{height:8px;border-radius:4px;background:#e5e7eb;margin-top:6px;margin-bottom:16px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;background:var(--blue)}
+.tier{display:flex;align-items:center;gap:16px;padding:16px 20px;background:var(--light-gray);border-radius:12px;margin-bottom:12px}
+.tier-price{font-size:28px;font-weight:800;color:var(--blue);white-space:nowrap}
+.tier-name{font-weight:700;font-size:16px;color:var(--dark)}
+.tier-desc{font-size:13px;color:var(--gray)}
+.fund-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.fund-pct{font-size:28px;font-weight:800;color:var(--blue);width:70px;text-align:right}
+.fund-label{font-weight:600;font-size:16px}
+.fund-desc{font-size:13px;color:var(--gray)}
+.milestone{display:inline-block;background:var(--light-gray);border-radius:10px;padding:12px 20px;margin:6px;font-weight:600;font-size:15px}
+.controls{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;z-index:100}
+.dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:all .2s;border:none;padding:0}
+.dot.active{background:var(--blue);transform:scale(1.3)}
+.slide-counter{position:fixed;bottom:22px;right:24px;font-size:13px;color:rgba(0,0,0,.35);font-weight:500;z-index:100}
+.fs-btn{position:fixed;bottom:20px;left:24px;background:rgba(0,0,0,.06);border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12px;color:var(--gray);font-family:'Inter';z-index:100}
+.fs-btn:hover{background:rgba(0,0,0,.1)}
+.title-slide{background:linear-gradient(160deg,#fff 60%,#e8f6fe 100%)}
+.title-slide .slide-inner{text-align:center}
+.title-logo{font-size:clamp(56px,8vw,96px);font-weight:900;letter-spacing:-3px;margin-bottom:16px}
+.contact-slide{background:linear-gradient(160deg,#fff 40%,#e8f6fe 100%)}
+.contact-slide .slide-inner{text-align:center}
+.contact-item{font-size:18px;color:var(--gray);margin:10px 0}
+.contact-item a{color:var(--blue);text-decoration:none;font-weight:500}
+.section-tag{font-size:13px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}
+.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.demo-card{background:var(--light-gray);border-radius:12px;padding:32px 24px;text-align:center;border:2px solid #e5e7eb}
+.demo-card h3{color:var(--dark);font-size:16px}
+.demo-card p{font-size:13px;color:var(--gray);margin-top:4px}
+.phase{padding:20px 24px;border-left:3px solid var(--blue);margin-bottom:16px;background:var(--light-gray);border-radius:0 12px 12px 0}
+.phase h3{font-size:16px;margin-bottom:4px}
+.phase p{font-size:14px;color:var(--gray)}
+.proj-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #e5e7eb}
+.proj-row:last-child{border:none}
+.proj-label{font-weight:600;font-size:16px}
+.proj-val{font-size:24px;font-weight:800;color:var(--blue)}
+@media print{
+.controls,.slide-counter,.fs-btn{display:none!important}
+.slide{position:relative!important;opacity:1!important;transform:none!important;pointer-events:auto!important;page-break-after:always;break-after:page;height:100vh;z-index:auto!important}
+body{overflow:visible}
+.deck{position:static}
+}
+@media(max-width:768px){
+.grid2,.grid3,.grid4{grid-template-columns:1fr}
+.steps{flex-direction:column}
+.step+.step::before{display:none}
+table{font-size:11px}
+th,td{padding:6px 8px}
+}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<!-- Slide 1: Title -->
+<div class="slide title-slide active" data-slide="0">
+<div class="slide-inner">
+<div class="title-logo"><span class="kos">KOS</span><span class="iq" style="color:var(--blue)">IQ</span></div>
+<p class="subtitle">AI-Powered Medical Economics Intelligence</p>
+<p style="color:#9ca3af;font-size:16px;margin-top:24px">Investor Presentation &nbsp;|&nbsp; 2026</p>
+</div>
+</div>
+
+<!-- Slide 2: The Problem -->
+<div class="slide" data-slide="1">
+<div class="slide-inner">
+<p class="section-tag">The Problem</p>
+<h2>Managed Care Analytics Are Broken</h2>
+<div class="grid2">
+<div>
+<ul>
+<li>Practices manage thousands of patients across multiple payers with no unified view</li>
+<li>Current tools (legacy platforms) are outdated, manual, and purely retrospective</li>
+<li>Zero AI, zero predictive analytics, zero actionable recommendations</li>
+<li>CMOs spend hours manually reviewing reports to identify at-risk patients</li>
+</ul>
+</div>
+<div>
+<div class="card card-blue">
+<h3>$53B+ Market</h3>
+<p>Healthcare analytics growing at 21%+ CAGR &mdash; dominated by legacy tools ripe for disruption</p>
+</div>
+<div class="card" style="margin-top:16px">
+<h3>The Reality</h3>
+<p>Retrospective data tells you what happened. It does nothing to prevent the next hospitalization, the next cost spike, the next missed diagnosis.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 3: The Solution -->
+<div class="slide" data-slide="2">
+<div class="slide-inner">
+<p class="section-tag">The Solution</p>
+<h2><span class="logo"><span class="kos">KOS</span><span class="iq">IQ</span></span>: AI Medical Economics Platform</h2>
+<p class="desc" style="max-width:700px;margin-bottom:28px">Ingest claims data from any payer. AI cleans and normalizes. Deliver actionable intelligence that saves lives and reduces costs.</p>
+<div class="grid3">
+<div class="card">
+<h3 class="accent">Predictive Analytics</h3>
+<p>30/60/90-day hospitalization risk, LACE scoring, cost forecasting powered by AI models</p>
+</div>
+<div class="card">
+<h3 class="accent">AI Recommendations</h3>
+<p>Monthly prioritized action reports with financial impact estimates for every patient cohort</p>
+</div>
+<div class="card">
+<h3 class="accent">Clinical Alert Programs</h3>
+<p>8 physician-designed protocols identifying high-risk patients before adverse events occur</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 4: Product -->
+<div class="slide" data-slide="3">
+<div class="slide-inner">
+<p class="section-tag">The Product</p>
+<h2>Built for How CMOs Actually Work</h2>
+<div class="demo-grid">
+<div class="demo-card">
+<h3>Dashboard Action Center</h3>
+<p>Unified view of all payer populations with real-time KPIs and alerts</p>
+</div>
+<div class="demo-card">
+<h3>Predictive Analytics</h3>
+<p>ML-powered risk stratification across hospitalization, cost, and quality metrics</p>
+</div>
+<div class="demo-card">
+<h3>AI Recommendations</h3>
+<p>Automated monthly reports with prioritized clinical and financial actions</p>
+</div>
+<div class="demo-card">
+<h3>AI Chat Assistant</h3>
+<p>Natural language queries: "Show me diabetic patients with rising HbA1c and no PCP visit in 90 days"</p>
+</div>
+</div>
+<p style="text-align:center;margin-top:20px"><span class="tag">Live Demo: kosiq.ai</span></p>
+</div>
+</div>
+
+<!-- Slide 5: How It Works -->
+<div class="slide" data-slide="4">
+<div class="slide-inner">
+<p class="section-tag">How It Works</p>
+<h2>From Raw Claims to Action in Four Steps</h2>
+<div class="steps">
+<div class="step">
+<div class="step-num">1</div>
+<h3>Connect</h3>
+<p>Payer claims, eligibility, and pharmacy data from any format</p>
+</div>
+<div class="step">
+<div class="step-num">2</div>
+<h3>AI Processing</h3>
+<p>Clean, normalize, and enrich data with intelligent mapping</p>
+</div>
+<div class="step">
+<div class="step-num">3</div>
+<h3>Intelligence</h3>
+<p>Real-time dashboards, predictive models, and recommendations</p>
+</div>
+<div class="step">
+<div class="step-num">4</div>
+<h3>Action</h3>
+<p>Automated monthly reports with prioritized intervention items</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 6: Key Features -->
+<div class="slide" data-slide="5">
+<div class="slide-inner">
+<p class="section-tag">Key Features</p>
+<h2>Comprehensive Intelligence Suite</h2>
+<div class="grid2">
+<div>
+<ul>
+<li><strong>20+ Analytics Dashboards</strong> &mdash; Membership, pharmacy, hospitalization, claims, finance, referrals, billing/MRA</li>
+<li><strong>Predictive Analytics</strong> &mdash; 30/60/90-day hospitalization risk, LACE scoring, cost forecasting</li>
+<li><strong>AI Recommendations</strong> &mdash; Monthly reports with prioritized actions and financial impact estimates</li>
+</ul>
+</div>
+<div>
+<ul>
+<li><strong>AI Chat Assistant</strong> &mdash; Natural language queries on any patient data</li>
+<li><strong>8 Clinical Alert Programs</strong> &mdash; SMI, HIV, ESRD, CKD, HbA1c&gt;9, COPD/Asthma, Unengaged, Age-Provider Mismatch</li>
+<li><strong>Enterprise-Grade</strong> &mdash; Role-based access, audit logging, session management</li>
+</ul>
+</div>
+</div>
+<p style="margin-top:16px;font-size:14px;color:var(--gray)">All clinical alert programs designed by Dr. JD Suarez from real-world managed care practice.</p>
+</div>
+</div>
+
+<!-- Slide 7: Competitive Landscape -->
+<div class="slide" data-slide="6">
+<div class="slide-inner">
+<p class="section-tag">Competitive Landscape</p>
+<h2>Legacy Tools vs. AI-Native Platform</h2>
+<table>
+<tr><th>Capability</th><th style="background:var(--blue)">KOSIQ</th><th>Legacy Platforms</th><th>eClinicalWorks</th><th>Arcadia</th><th>Innovaccer</th></tr>
+<tr><td>AI-Powered Analytics</td><td class="check">Yes</td><td class="cross">No</td><td class="cross">No</td><td class="partial">Limited</td><td class="partial">Limited</td></tr>
+<tr><td>Predictive Analytics</td><td class="check">Yes</td><td class="cross">No</td><td class="cross">No</td><td class="partial">Basic</td><td class="partial">Basic</td></tr>
+<tr><td>AI Recommendations</td><td class="check">Yes</td><td class="cross">No</td><td class="cross">No</td><td class="cross">No</td><td class="cross">No</td></tr>
+<tr><td>Natural Language Chat</td><td class="check">Yes</td><td class="cross">No</td><td class="cross">No</td><td class="cross">No</td><td class="cross">No</td></tr>
+<tr><td>Clinical Alert Programs</td><td class="check">8 Protocols</td><td class="cross">No</td><td class="partial">Basic</td><td class="partial">Limited</td><td class="partial">Limited</td></tr>
+<tr><td>Modern UI/UX</td><td class="check">Yes</td><td class="cross">Dated</td><td class="cross">Dated</td><td class="partial">Moderate</td><td class="check">Yes</td></tr>
+<tr><td>Setup Time</td><td class="check">Days</td><td class="cross">Months</td><td class="cross">Months</td><td class="cross">Months</td><td class="cross">Months</td></tr>
+<tr><td>Price Point</td><td class="check">Accessible</td><td class="partial">High</td><td class="partial">High</td><td class="cross">Enterprise</td><td class="cross">Enterprise</td></tr>
+</table>
+</div>
+</div>
+
+<!-- Slide 8: Market Opportunity -->
+<div class="slide" data-slide="7">
+<div class="slide-inner">
+<p class="section-tag">Market Opportunity</p>
+<h2>Massive and Growing Addressable Market</h2>
+<div class="grid2">
+<div>
+<div class="stat"><div class="num">$59.7B</div><div class="label">US Healthcare Analytics Market by 2030</div></div>
+<div class="bar"><div class="bar-fill" style="width:33%"></div></div>
+<p style="font-size:13px;color:var(--gray);text-align:center">$19.65B (2025) at 24.9% CAGR</p>
+<div class="stat" style="margin-top:20px"><div class="num">$456.6B</div><div class="label">Medicare Advantage Market | 33M+ Enrollees</div></div>
+</div>
+<div>
+<div class="card" style="margin-bottom:16px">
+<h3>TAM</h3>
+<p>~3,000 large managed care groups (20K+ patients) in the US</p>
+</div>
+<div class="card" style="margin-bottom:16px">
+<h3>SAM</h3>
+<p>~1,500 groups with 40,000+ members (our sweet spot)</p>
+</div>
+<div class="card card-blue">
+<h3>SOM &mdash; Year 3</h3>
+<p>25 groups in Year 3 = <strong>$15M+ ARR</strong></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 9: Market Validation -->
+<div class="slide" data-slide="8">
+<div class="slide-inner">
+<p class="section-tag">Market Validation</p>
+<h2>Cozeva Proves the Market &mdash; KOSIQ Accelerates It</h2>
+<div class="grid2" style="margin-top:20px">
+<div>
+<h3 style="margin-bottom:16px">Cozeva: 14 Years to $50-100M</h3>
+<div style="display:flex;gap:12px;margin-bottom:14px">
+<div style="min-width:55px;text-align:center;padding:6px;background:var(--light-gray);border-radius:8px;font-weight:700;font-size:13px;color:var(--gray)">2012</div>
+<div><p style="font-size:13px"><strong>Founded</strong> — Quality measurement tools for CA health plans. No AI. No predictive analytics. Bootstrapped.</p></div>
+</div>
+<div style="display:flex;gap:12px;margin-bottom:14px">
+<div style="min-width:55px;text-align:center;padding:6px;background:var(--light-gray);border-radius:8px;font-weight:700;font-size:13px;color:var(--gray)">2016</div>
+<div><p style="font-size:13px"><strong>Product-market fit</strong> — First major clients. 15 quality awards. ~$5M estimated revenue.</p></div>
+</div>
+<div style="display:flex;gap:12px;margin-bottom:14px">
+<div style="min-width:55px;text-align:center;padding:6px;background:var(--light-gray);border-radius:8px;font-weight:700;font-size:13px;color:var(--gray)">2019</div>
+<div><p style="font-size:13px"><strong>Scale</strong> — 50+ quality awards. Multi-state expansion. ~$20M estimated revenue.</p></div>
+</div>
+<div style="display:flex;gap:12px;margin-bottom:14px">
+<div style="min-width:55px;text-align:center;padding:6px;background:var(--light-gray);border-radius:8px;font-weight:700;font-size:13px;color:var(--gray)">2026</div>
+<div><p style="font-size:13px"><strong>Market leader</strong> — 84 clients, 25M lives, 30 states, Best in KLAS. $50-100M revenue. ~500 employees.</p></div>
+</div>
+<div class="card" style="background:#fff;border:1px solid #e5e7eb;padding:14px;margin-top:8px">
+<p style="font-size:13px;color:var(--gray)"><strong style="color:var(--dark)">Key insight:</strong> Cozeva built a $50-100M business with no AI, no predictive analytics, no chat interface, and no venture funding. Pure analytics reporting.</p>
+</div>
+</div>
+<div>
+<h3 style="margin-bottom:16px">KOSIQ: Built for Today's Market</h3>
+<div class="card" style="margin-bottom:12px;padding:16px;border-left:4px solid var(--blue)">
+<p style="font-size:14px"><strong style="color:var(--blue)">5x Larger Market</strong></p>
+<p style="font-size:13px;color:var(--gray)">Healthcare analytics was $10B in 2012. It's $53B+ today and growing 21% CAGR. The opportunity is fundamentally different.</p>
+</div>
+<div class="card" style="margin-bottom:12px;padding:16px;border-left:4px solid var(--green)">
+<p style="font-size:14px"><strong style="color:var(--green)">AI-Native from Day One</strong></p>
+<p style="font-size:13px;color:var(--gray)">Cozeva retrofitted AI years later. KOSIQ is built on it &mdash; predictive models, natural language chat, automated recommendations. What took them 10 years to add, we ship at launch.</p>
+</div>
+<div class="card" style="margin-bottom:12px;padding:16px;border-left:4px solid #8b5cf6">
+<p style="font-size:14px"><strong style="color:#8b5cf6">Capital-Accelerated Growth</strong></p>
+<p style="font-size:13px;color:var(--gray)">Cozeva bootstrapped to $50-100M over 14 years. With $2-5M in seed funding, a built-in clinical network, and AI-powered sales enablement, KOSIQ targets $15M+ ARR in 3 years.</p>
+</div>
+<div class="card" style="margin-bottom:12px;padding:16px;border-left:4px solid var(--amber)">
+<p style="font-size:14px"><strong style="color:var(--amber)">Aggressive Pricing</strong></p>
+<p style="font-size:13px;color:var(--gray)">Cozeva charges an estimated $1-3 PMPM for their full platform. KOSIQ enters at $0.50-$2.24 PMPM &mdash; same value-based analytics plus AI, at a fraction of the cost.</p>
+</div>
+<div style="background:var(--light-gray);border-radius:12px;padding:16px;text-align:center;margin-top:8px">
+<p style="font-size:15px;font-weight:700;color:var(--dark)">Cozeva validated the market.</p>
+<p style="font-size:15px;font-weight:700;color:var(--blue)">KOSIQ captures it faster, smarter, and cheaper.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 10: Business Model -->
+<div class="slide" data-slide="9">
+<div class="slide-inner">
+<p class="section-tag">Business Model</p>
+<h2>PMPM Pricing + Full Integration Services</h2>
+<div class="grid2">
+<div>
+<div class="card" style="border-top:4px solid var(--blue);margin-bottom:16px">
+<h3 style="color:var(--blue)">Per Member Per Month (PMPM)</h3>
+<p style="font-size:14px;margin-bottom:12px">Targeting large managed care groups with 20,000-60,000+ members. Scales with population size.</p>
+<div class="tier">
+<div><div class="tier-name">60,000+ members</div></div>
+<div class="tier-price" style="margin-left:auto">$0.50<span style="font-size:14px;font-weight:400"> PMPM</span></div>
+</div>
+<div class="tier">
+<div><div class="tier-name">20,000 - 60,000 members</div></div>
+<div class="tier-price" style="margin-left:auto">$1.25<span style="font-size:14px;font-weight:400"> PMPM</span></div>
+</div>
+<div class="tier">
+<div><div class="tier-name">Under 20,000 members</div></div>
+<div class="tier-price" style="margin-left:auto">$2.24<span style="font-size:14px;font-weight:400"> PMPM</span></div>
+</div>
+</div>
+<div class="card" style="border-top:4px solid var(--green)">
+<h3 style="color:var(--green)">Full Integration Services</h3>
+<p style="font-size:14px;margin-bottom:8px">Custom EHR integrations, real-time data feeds, dedicated support, white-glove onboarding.</p>
+<div class="tier">
+<div><div class="tier-name">Starting at</div></div>
+<div class="tier-price" style="margin-left:auto">$10K+<span style="font-size:14px;font-weight:400">/mo</span></div>
+</div>
+</div>
+</div>
+<div>
+<div class="card" style="margin-bottom:12px">
+<h3>Revenue Example — 50,000 Members</h3>
+<p style="font-size:14px">At $1.25 PMPM = <strong style="color:var(--blue)">$62,500/mo</strong> ($750K/yr)<br>+ Full integration: <strong style="color:var(--green)">$72,500/mo</strong> ($870K/yr)</p>
+</div>
+<div class="card" style="margin-bottom:12px;border-left:4px solid var(--red)">
+<h3>Cost Per Customer (Monthly)</h3>
+<table style="width:100%;font-size:13px;border-collapse:collapse">
+<tr style="border-bottom:1px solid #e5e7eb"><td style="padding:4px 0">AWS Infrastructure (compute, DB, storage)</td><td style="text-align:right;font-weight:600">$300-500</td></tr>
+<tr style="border-bottom:1px solid #e5e7eb"><td style="padding:4px 0">AI/Claude API (Bedrock) &mdash; predictions, chat, reports</td><td style="text-align:right;font-weight:600">$200-400</td></tr>
+<tr style="border-bottom:1px solid #e5e7eb"><td style="padding:4px 0">Data pipeline &amp; processing</td><td style="text-align:right;font-weight:600">$100-200</td></tr>
+<tr style="border-bottom:1px solid #e5e7eb"><td style="padding:4px 0">Monitoring, security, compliance tools</td><td style="text-align:right;font-weight:600">$50-100</td></tr>
+<tr><td style="padding:6px 0;font-weight:700">Total cost per customer</td><td style="text-align:right;font-weight:700;color:var(--red)">$650-1,200/mo</td></tr>
+</table>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<div class="stat"><div class="num" style="font-size:20px">$650-1.2K</div><div class="label">Cost / customer / mo</div></div>
+<div class="stat"><div class="num" style="font-size:20px;color:var(--green)">98%+</div><div class="label">Gross Margin</div></div>
+</div>
+<p style="font-size:12px;color:var(--gray);text-align:center;margin-top:6px">Revenue $62.5K/mo vs cost ~$1K/mo per customer</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 10: Traction -->
+<div class="slide" data-slide="10">
+<div class="slide-inner">
+<p class="section-tag">Traction &amp; Validation</p>
+<h2>Built, Validated, Ready to Scale</h2>
+<div class="grid2">
+<div>
+<ul>
+<li><strong>Working product</strong> with 20+ functional pages and real analytics engine</li>
+<li><strong>Live demo</strong> at kosiq.ai with comprehensive data</li>
+<li><strong>AI chat assistant</strong> powered by Claude (Anthropic)</li>
+<li><strong>8 clinical alert programs</strong> designed by practicing CMO</li>
+</ul>
+</div>
+<div>
+<ul>
+<li><strong>Dr. JD Suarez</strong> (CMO) actively managing 40,000+ patients &mdash; KOSIQ designed from his workflows</li>
+<li><strong>Built-in domain expertise</strong> from day one &mdash; not bolted on later</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 11: Dr. JD -->
+<div class="slide" data-slide="11">
+<div class="slide-inner">
+<p class="section-tag">Clinical Advisory</p>
+<h2>Dr. JD Suarez, CMO</h2>
+<div class="grid2">
+<div>
+<ul>
+<li>CMO of managed care healthcare group in South Florida</li>
+<li>Manages Medicare Advantage, Medicaid, and Commercial populations</li>
+<li>40,000+ patients under active management</li>
+<li>Designed all 8 clinical alert programs from real-world practice</li>
+<li>Domain expert ensuring clinical accuracy and relevance</li>
+</ul>
+</div>
+<div>
+<div class="quote">
+"Current tools show me what happened. KOSIQ tells me what to do about it."
+<div class="quote-author">&mdash; Dr. JD Suarez, CMO</div>
+</div>
+<p style="margin-top:16px;font-size:14px;color:var(--gray)">Dr. JD is not an advisor on paper. He is an active practitioner whose daily workflows shaped every feature in KOSIQ.</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 12: GTM -->
+<div class="slide" data-slide="12">
+<div class="slide-inner">
+<p class="section-tag">Go-To-Market Strategy</p>
+<h2>Land in South Florida, Expand Nationally</h2>
+<div class="phase">
+<h3>Phase 1 &mdash; Q1-Q2 2026</h3>
+<p>Beta with 3-5 South Florida practices through Dr. JD's network</p>
+</div>
+<div class="phase">
+<h3>Phase 2 &mdash; Q3-Q4 2026</h3>
+<p>Expand to Florida managed care market (1,200+ practices)</p>
+</div>
+<div class="phase">
+<h3>Phase 3 &mdash; 2027</h3>
+<p>National expansion targeting top MA markets: FL, CA, TX, NY, PA</p>
+</div>
+<div class="grid2" style="margin-top:20px">
+<div class="card">
+<h3>Direct Sales</h3>
+<p>Outreach to CMOs and Medical Directors + conference presence at HIMSS, AHIP</p>
+</div>
+<div class="card">
+<h3>Channel Partners</h3>
+<p>Health plan consultants and practice management companies as distribution</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 13: Tech & Security -->
+<div class="slide" data-slide="13">
+<div class="slide-inner">
+<p class="section-tag">Technology &amp; Security</p>
+<h2>HIPAA-Ready, Enterprise-Grade Architecture</h2>
+<div class="grid3">
+<div class="card">
+<h3>Infrastructure</h3>
+<p>AWS with BAA, encryption at rest and in transit, HIPAA-ready from day one</p>
+</div>
+<div class="card">
+<h3>AI Engine</h3>
+<p>Claude (Anthropic) via AWS Bedrock for HIPAA-compliant AI processing</p>
+</div>
+<div class="card">
+<h3>Modern Stack</h3>
+<p>Next.js, TypeScript, PostgreSQL &mdash; built for speed and reliability</p>
+</div>
+<div class="card">
+<h3>Compliance Roadmap</h3>
+<p>SOC 2 Type II certification planned within 18 months of funding</p>
+</div>
+<div class="card">
+<h3>Access Control</h3>
+<p>Role-based access, audit logging, session management built in</p>
+</div>
+<div class="card">
+<h3>Data Ingestion</h3>
+<p>Payer-agnostic &mdash; any claims format, any payer, normalized by AI</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 14: Compliance Roadmap -->
+<div class="slide" data-slide="14">
+<div class="slide-inner">
+<p class="section-tag">Compliance Roadmap</p>
+<h2>Path to Full HIPAA &amp; SOC 2 Certification</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:24px">
+<div class="card" style="border-top:4px solid var(--blue)">
+<h3 style="color:var(--blue)">Phase 1 — Launch</h3>
+<p style="font-weight:600;color:var(--dark);margin-bottom:8px">$25K-50K | Months 1-3</p>
+<p style="font-size:13px">HIPAA Security Risk Assessment<br>Written policies &amp; procedures<br>AWS migration with BAA<br>Encryption at rest + in transit<br>Compliance platform (Vanta)<br>Healthcare attorney engagement<br>Business Associate Agreements</p>
+</div>
+<div class="card" style="border-top:4px solid var(--green)">
+<h3 style="color:var(--green)">Phase 2 — Certification</h3>
+<p style="font-weight:600;color:var(--dark);margin-bottom:8px">$75K-125K | Months 4-9</p>
+<p style="font-size:13px">Penetration testing (annual)<br>SOC 2 Type I certification<br>Cyber liability insurance<br>E&amp;O professional liability<br>D&amp;O board insurance<br>HIPAA training for all staff<br>Vendor BAA chain complete</p>
+</div>
+<div class="card" style="border-top:4px solid #8b5cf6">
+<h3 style="color:#8b5cf6">Phase 3 — Enterprise</h3>
+<p style="font-weight:600;color:var(--dark);margin-bottom:8px">$120K-200K | Months 10-18</p>
+<p style="font-size:13px">SOC 2 Type II certification<br>State-by-state compliance (CA, NY, TX)<br>MFA enforcement<br>Data backup encryption &amp; DR plan<br>Annual security audit cycle<br>HITRUST readiness assessment<br>Enterprise sales enablement</p>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:20px;margin-top:24px">
+<div style="text-align:center;padding:16px;background:var(--light-gray);border-radius:12px">
+<div style="font-size:28px;font-weight:800;color:var(--blue)">$150K</div>
+<div style="font-size:13px;color:var(--gray)">Total Compliance Budget<br>(from seed round)</div>
+</div>
+<div style="text-align:center;padding:16px;background:var(--light-gray);border-radius:12px">
+<div style="font-size:28px;font-weight:800;color:var(--blue)">$30-60K</div>
+<div style="font-size:13px;color:var(--gray)">Annual Ongoing<br>(renewals + audits)</div>
+</div>
+<div style="text-align:center;padding:16px;background:var(--light-gray);border-radius:12px">
+<div style="font-size:28px;font-weight:800;color:var(--green)">12-18mo</div>
+<div style="font-size:13px;color:var(--gray)">Full SOC 2 Type II<br>Certification</div>
+</div>
+<div style="text-align:center;padding:16px;background:var(--light-gray);border-radius:12px">
+<div style="font-size:28px;font-weight:800;color:#8b5cf6">Massive Moat</div>
+<div style="font-size:13px;color:var(--gray)">Most startups skip this —<br>blocks enterprise sales</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 15: Compliance Timeline -->
+<div class="slide" data-slide="15">
+<div class="slide-inner">
+<p class="section-tag">Compliance Timeline</p>
+<h2>6 Months to HIPAA + SOC 2 Certification</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:20px">
+<div>
+<div style="display:flex;gap:16px;margin-bottom:20px">
+<div style="min-width:60px;text-align:center;padding:8px;background:var(--blue);border-radius:8px;color:#fff;font-weight:700;font-size:14px">Mo 1-2</div>
+<div>
+<h3 style="font-size:16px;margin-bottom:4px">Foundation</h3>
+<p style="font-size:13px">Hire HIPAA consultant ($10K) &bull; Sign up Vanta compliance platform &bull; Write all required policies &bull; Migrate to AWS with BAA &bull; Encryption at rest + in transit &bull; CloudTrail audit logging</p>
+</div>
+</div>
+<div style="display:flex;gap:16px;margin-bottom:20px">
+<div style="min-width:60px;text-align:center;padding:8px;background:var(--green);border-radius:8px;color:#fff;font-weight:700;font-size:14px">Mo 3-4</div>
+<div>
+<h3 style="font-size:16px;margin-bottom:4px">Implementation</h3>
+<p style="font-size:13px">Third-party penetration test ($10K) &bull; Fix vulnerabilities &bull; MFA for all users &bull; Encrypted backups &bull; Sign BAAs with all vendors &bull; HIPAA training for team</p>
+</div>
+</div>
+<div style="display:flex;gap:16px;margin-bottom:20px">
+<div style="min-width:60px;text-align:center;padding:8px;background:#8b5cf6;border-radius:8px;color:#fff;font-weight:700;font-size:14px">Mo 5-6</div>
+<div>
+<h3 style="font-size:16px;margin-bottom:4px">Certification</h3>
+<p style="font-size:13px">SOC 2 Type I audit ($25K) &bull; Cyber liability insurance &bull; E&amp;O insurance &bull; Cleared to handle real patient data &bull; Enterprise sales enabled</p>
+</div>
+</div>
+<div style="display:flex;gap:16px">
+<div style="min-width:60px;text-align:center;padding:8px;background:var(--dark);border-radius:8px;color:#fff;font-weight:700;font-size:14px">Mo 7-18</div>
+<div>
+<h3 style="font-size:16px;margin-bottom:4px">Enterprise Scale</h3>
+<p style="font-size:13px">SOC 2 Type II (6mo evidence collection) &bull; State-by-state compliance &bull; HITRUST readiness &bull; Annual audit cycle established</p>
+</div>
+</div>
+</div>
+<div>
+<h3 style="margin-bottom:16px">Who We Hire</h3>
+<div class="card" style="margin-bottom:12px;padding:16px">
+<p style="font-size:14px"><strong style="color:var(--blue)">HIPAA Compliance Consultant</strong> — $10-15K<br><span style="font-size:13px;color:var(--gray)">Clearwater Compliance or Compliancy Group. Writes policies, conducts risk assessment, guides implementation. Not a full-time hire.</span></p>
+</div>
+<div class="card" style="margin-bottom:12px;padding:16px">
+<p style="font-size:14px"><strong style="color:var(--blue)">Vanta (Compliance Automation)</strong> — $6-12K/yr<br><span style="font-size:13px;color:var(--gray)">Monitors infrastructure 24/7, auto-collects SOC 2 evidence, tells us exactly what to fix. Investors recognize the badge.</span></p>
+</div>
+<div class="card" style="margin-bottom:12px;padding:16px">
+<p style="font-size:14px"><strong style="color:var(--blue)">SOC 2 Auditor (CPA Firm)</strong> — $20-30K<br><span style="font-size:13px;color:var(--gray)">Prescient Assurance or Schellman. Startup-friendly, healthcare-recognized. Hired at month 5.</span></p>
+</div>
+<div class="card" style="margin-bottom:12px;padding:16px">
+<p style="font-size:14px"><strong style="color:var(--blue)">Healthcare Attorney</strong> — $5-10K retainer<br><span style="font-size:13px;color:var(--gray)">Reviews BAAs, state laws, payer contracts. 10-20 hours total. Not full-time until 20+ customers.</span></p>
+</div>
+<div style="background:var(--light-gray);border-radius:12px;padding:16px;text-align:center;margin-top:8px">
+<div style="font-size:28px;font-weight:800;color:var(--blue)">~$50K to launch</div>
+<div style="font-size:13px;color:var(--gray)">Full HIPAA + SOC 2 Type I in 6 months</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 16: Investor Returns + Elevance -->
+<div class="slide" data-slide="16">
+<div class="slide-inner">
+<p class="section-tag">Investor Returns</p>
+<h2>The Path to $1B &mdash; The Elevance Scenario</h2>
+<div class="grid2" style="margin-top:16px">
+<div>
+<h3 style="margin-bottom:12px">Why Elevance Changes Everything</h3>
+<div class="card" style="margin-bottom:12px;padding:14px;border-left:4px solid var(--blue)">
+<p style="font-size:14px"><strong style="color:var(--blue)">Elevance Health (NYSE: ELV)</strong></p>
+<p style="font-size:13px;color:var(--gray)">$175B+ revenue &bull; 40M+ members &bull; ~$70B market cap<br>Anthem Blue Cross, BCBS affiliates across 14 states<br>Medicare, Medicaid, Commercial &mdash; all lines of business</p>
+</div>
+<div class="card" style="margin-bottom:12px;padding:14px;border-left:4px solid var(--green)">
+<p style="font-size:14px"><strong style="color:var(--green)">One Elevance Deal = Game Over</strong></p>
+<p style="font-size:13px;color:var(--gray)">If Elevance mandates KOSIQ for even 10% of their contracted provider groups:<br><br><strong>4M members x $1 PMPM = $4M/mo = $48M ARR</strong><br><br>From a single partnership. That alone puts us at Cozeva's level.</p>
+</div>
+<div class="card" style="padding:14px;border-left:4px solid #8b5cf6">
+<p style="font-size:14px"><strong style="color:#8b5cf6">Why Payers Want This</strong></p>
+<p style="font-size:13px;color:var(--gray)">Payers lose money on avoidable hospitalizations. KOSIQ's predictive analytics identify at-risk patients BEFORE they end up in the ER. For Elevance, a 5% reduction in avoidable admits across 4M members saves them <strong>$200M+ annually</strong>. KOSIQ pays for itself 50x over.</p>
+</div>
+</div>
+<div>
+<h3 style="margin-bottom:12px">Path to $1B Valuation</h3>
+<div style="margin-bottom:16px">
+<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #e5e7eb">
+<div style="min-width:50px;font-weight:700;font-size:13px;color:var(--gray)">Year 1</div>
+<div style="flex:1">
+<p style="font-size:13px"><strong>Seed + first clients</strong><br>5 groups, 100K members, $1.5M ARR</p>
+</div>
+<div style="font-weight:800;color:var(--blue);font-size:14px">$20M val</div>
+</div>
+<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #e5e7eb">
+<div style="min-width:50px;font-weight:700;font-size:13px;color:var(--gray)">Year 2</div>
+<div style="flex:1">
+<p style="font-size:13px"><strong>Series A + Elevance pilot</strong><br>Elevance pilots with 500K members + 10 direct groups</p>
+</div>
+<div style="font-weight:800;color:var(--blue);font-size:14px">$200M val</div>
+</div>
+<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #e5e7eb">
+<div style="min-width:50px;font-weight:700;font-size:13px;color:var(--gray)">Year 3</div>
+<div style="flex:1">
+<p style="font-size:13px"><strong>Elevance full rollout + 2nd payer</strong><br>4M+ members, $50M+ ARR</p>
+</div>
+<div style="font-weight:800;color:var(--green);font-size:18px">$1B+ val</div>
+</div>
+</div>
+<div class="card" style="margin-bottom:12px;padding:14px;background:#f0f9ff;border:1px solid var(--blue)">
+<h3 style="margin-bottom:8px">Investor Returns on $3M Seed</h3>
+<table style="width:100%;font-size:13px;border-collapse:collapse">
+<tr style="border-bottom:1px solid #d0e8f7"><td style="padding:5px 0">At $200M (Series A)</td><td style="text-align:right;font-weight:700;color:var(--blue)">~8.5x return</td></tr>
+<tr style="border-bottom:1px solid #d0e8f7"><td style="padding:5px 0">At $500M (Series B)</td><td style="text-align:right;font-weight:700;color:var(--blue)">~21x return</td></tr>
+<tr><td style="padding:5px 0">At $1B (Elevance scenario)</td><td style="text-align:right;font-weight:700;color:var(--green)">~43x return</td></tr>
+</table>
+<p style="font-size:12px;color:var(--gray);margin-top:8px">13% seed stake x $1B = $130M on a $3M investment</p>
+</div>
+<p style="font-size:12px;color:var(--gray);text-align:center">Comparable: Innovaccer reached $3.2B in 6 years. Arcadia sold for $1.1B.</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 17: Financial Projections -->
+<div class="slide" data-slide="17">
+<div class="slide-inner">
+<p class="section-tag">Financial Projections</p>
+<h2>Path to $18.6M+ ARR in Three Years</h2>
+<div class="grid2">
+<div>
+<p style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">PMPM Revenue</p>
+<div class="proj-row"><div class="proj-label">Year 1 &mdash; 5 groups (~100K members)</div><div class="proj-val">$1.5M</div></div>
+<div class="proj-row"><div class="proj-label">Year 2 &mdash; 12 groups (~400K members)</div><div class="proj-val">$6M</div></div>
+<div class="proj-row"><div class="proj-label">Year 3 &mdash; 25 groups (~1M members)</div><div class="proj-val">$15M</div></div>
+<p style="font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-top:12px;margin-bottom:4px">Integration Services Revenue ($10K-$20K/mo per customer)</p>
+<div class="proj-row"><div class="proj-label">Year 1 &mdash; 2 integrations x $10K/mo</div><div class="proj-val" style="color:var(--green)">$240K</div></div>
+<div class="proj-row"><div class="proj-label">Year 2 &mdash; 6 integrations x $15K/mo avg</div><div class="proj-val" style="color:var(--green)">$1.08M</div></div>
+<div class="proj-row"><div class="proj-label">Year 3 &mdash; 15 integrations x $20K/mo avg</div><div class="proj-val" style="color:var(--green)">$3.6M</div></div>
+<p style="font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-top:12px;margin-bottom:4px">Combined ARR</p>
+<div class="proj-row" style="border-bottom:2px solid var(--blue)"><div class="proj-label"><strong>Year 1 Total</strong></div><div class="proj-val" style="color:var(--blue);font-size:18px"><strong>$1.74M</strong></div></div>
+<div class="proj-row" style="border-bottom:2px solid var(--blue)"><div class="proj-label"><strong>Year 2 Total</strong></div><div class="proj-val" style="color:var(--blue);font-size:18px"><strong>$7.08M</strong></div></div>
+<div class="proj-row" style="border-bottom:2px solid var(--blue)"><div class="proj-label"><strong>Year 3 Total</strong></div><div class="proj-val" style="color:var(--blue);font-size:20px"><strong>$18.6M+</strong></div></div>
+<!-- bars removed -->
+</div>
+<div>
+<div class="stat"><div class="num">98%+</div><div class="label">Gross Margin</div></div>
+<div class="stat"><div class="num">&lt;6 mo</div><div class="label">CAC Payback Period</div></div>
+<div class="stat"><div class="num">10:1+</div><div class="label">LTV:CAC Ratio Target</div></div>
+<div class="card" style="margin-top:16px;padding:14px;font-size:12px;color:var(--gray);border-left:4px solid var(--blue)">
+<p style="font-weight:700;color:var(--dark);font-size:13px;margin-bottom:6px">How We Got These Numbers</p>
+<table style="width:100%;font-size:12px;border-collapse:collapse">
+<tr style="border-bottom:1px solid #e5e7eb"><td style="padding:3px 0"><strong>Year 1:</strong> 5 groups x 20K avg members = 100K members</td><td style="text-align:right">100K x $1.25 PMPM x 12 = <strong>$1.5M</strong></td></tr>
+<tr style="border-bottom:1px solid #e5e7eb"><td style="padding:3px 0"><strong>Year 2:</strong> 12 groups x 33K avg members = 400K members</td><td style="text-align:right">400K x $1.25 PMPM x 12 = <strong>$6M</strong></td></tr>
+<tr><td style="padding:3px 0"><strong>Year 3:</strong> 25 groups x 40K avg members = 1M members</td><td style="text-align:right">1M x $1.25 PMPM x 12 = <strong>$15M</strong></td></tr>
+</table>
+<p style="margin-top:8px;font-size:11px">Avg PMPM of $1.25 is blended across tiers ($0.50-$2.24). Integration revenue assumes ~40-60% of customers opt for full integration services.</p>
+</div>
+</div>
+</div>
+<p style="text-align:center;font-size:12px;color:var(--gray);font-style:italic;margin-top:12px">These projections are intentionally conservative. They exclude integration services revenue, payer-level partnerships (e.g., Elevance), and assume organic group-by-group sales only. Actual results with a strategic payer deal could significantly exceed these estimates.</p>
+</div>
+</div>
+
+<!-- Slide 15: The Ask -->
+<div class="slide" data-slide="18">
+<div class="slide-inner">
+<p class="section-tag">The Ask</p>
+<h2>Raising $2M Seed Round</h2>
+<div class="grid2">
+<div>
+<h3 style="margin-bottom:16px">Use of Funds</h3>
+<div class="fund-row"><div class="fund-pct">50%</div><div><div class="fund-label">Engineering</div><div class="fund-desc">Expand team, HIPAA hardening, enterprise features</div></div></div>
+<div class="fund-row"><div class="fund-pct">30%</div><div><div class="fund-label">Sales &amp; Marketing</div><div class="fund-desc">2 sales reps, conferences, content marketing</div></div></div>
+<div class="fund-row"><div class="fund-pct">20%</div><div><div class="fund-label">Operations</div><div class="fund-desc">AWS infrastructure, SOC 2 audit, legal/compliance</div></div></div>
+</div>
+<div>
+<h3 style="margin-bottom:16px">18-Month Milestones</h3>
+<div class="milestone">25 Paying Customers</div>
+<div class="milestone">$1.5M ARR</div>
+<div class="milestone">SOC 2 Certified</div>
+<div style="margin-top:24px" class="card card-blue">
+<h3>Why Now</h3>
+<p>AI capabilities have reached the point where we can deliver what legacy tools never could. The managed care market is growing 8%+ annually. First mover with AI-native wins.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 16: Contact -->
+<div class="slide contact-slide" data-slide="19">
+<div class="slide-inner">
+<div class="title-logo" style="margin-bottom:24px"><span class="kos">KOS</span><span class="iq" style="color:var(--blue)">IQ</span></div>
+<p style="font-size:clamp(18px,2.2vw,28px);color:var(--dark);font-weight:300;margin-bottom:40px">The future of managed care intelligence</p>
+<div style="display:inline-block;text-align:left">
+<p class="contact-item"><strong>David Suarez</strong>, CTO &mdash; <a href="mailto:david@iamdivid.com">david@iamdivid.com</a></p>
+<p class="contact-item"><strong>Dr. JD Suarez</strong>, CMO &mdash; <a href="mailto:drjdsuarez@gmail.com">drjdsuarez@gmail.com</a></p>
+<p class="contact-item">Live Demo: <a href="https://kosiq.ai" target="_blank">kosiq.ai</a></p>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- Controls -->
+<div class="controls" id="controls"></div>
+<div class="slide-counter" id="counter"></div>
+<button class="fs-btn" id="fsBtn" title="Press F for fullscreen">Fullscreen (F)</button>
+
+<script>
+(function(){
+const slides=document.querySelectorAll('.slide');
+const total=slides.length;
+let current=0;
+const controls=document.getElementById('controls');
+const counter=document.getElementById('counter');
+
+// Create dots
+for(let i=0;i<total;i++){
+const d=document.createElement('button');
+d.className='dot'+(i===0?' active':'');
+d.addEventListener('click',()=>go(i));
+controls.appendChild(d);
+}
+const dots=controls.querySelectorAll('.dot');
+
+function go(n){
+if(n<0||n>=total)return;
+slides[current].classList.remove('active');
+dots[current].classList.remove('active');
+current=n;
+slides[current].classList.add('active');
+dots[current].classList.add('active');
+counter.textContent=(current+1)+' / '+total;
+}
+go(0);
+
+document.addEventListener('keydown',function(e){
+if(e.key==='ArrowRight'||e.key==='ArrowDown')go(current+1);
+else if(e.key==='ArrowLeft'||e.key==='ArrowUp')go(current-1);
+else if(e.key==='f'||e.key==='F'){
+if(!document.fullscreenElement)document.documentElement.requestFullscreen();
+else document.exitFullscreen();
+}else if(e.key==='Escape'&&document.fullscreenElement){
+document.exitFullscreen();
+}
+});
+
+document.getElementById('fsBtn').addEventListener('click',function(){
+if(!document.fullscreenElement)document.documentElement.requestFullscreen();
+else document.exitFullscreen();
+});
+
+// Touch/swipe
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX});
+document.addEventListener('touchend',e=>{
+const dx=e.changedTouches[0].clientX-tx;
+if(Math.abs(dx)>50){dx<0?go(current+1):go(current-1)}
+});
+})();
+</script>
+</body>
+</html>

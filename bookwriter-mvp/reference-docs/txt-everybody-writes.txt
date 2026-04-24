@@ -1,0 +1,1628 @@
+
+
+-- 1 of 360 --
+
+
+
+-- 2 of 360 --
+
+CONTENTS
+Cover
+Praise for Everybody Writes
+Title Page
+Copyright
+Dedication
+Foreword
+Acknowledgments
+Introduction
+Part I: Writing Rules: How to Write Better (and How to Hate Writing Less)
+Chapter 1: Everybody Writes
+Chapter 2: Writing Is a Habit, Not an Art
+Chapter 3: Shed High School Rules
+Chapter 4: Regard Publishing as a Privilege
+Chapter 5: Place the Most Important Words (and Ideas) at the Beginning of Each Sentence
+Chapter 6: Follow a Writing GPS
+Chapter 7: The More the Think, the Easier the Ink
+Chapter 8: Organize. Relax, You've Got This
+Chapter 9: Embrace The Ugly First Draft
+Chapter 10: Swap Places with Your Reader
+Chapter 11: Humor Comes on the Rewrite
+Chapter 12: Develop Pathological Empathy
+Chapter 13: ‘Cross Out the Wrong Words’
+Chapter 14: Start with Dear Mom . . .
+Chapter 15: If You Take a Running Start, Cover Your Tracks
+Chapter 16: Notice Where Words Appear in Relation to Others around Them
+Chapter 17: ‘A Good Lede Invites You to the Party and a Good Kicker Makes You Wish You Could Stay
+Longer’
+Chapter 18: Show, Don't Tell
+Chapter 19: Use Familiar Yet Surprising Analogies
+Chapter 20: Approach Writing Like Teaching
+Chapter 21: Keep It Simple—but Not Simplistic
+Chapter 22: Find a Writing Buddy
+Chapter 23: Avoid Writing by Committee
+Chapter 24: Hire a Great Editor
+Chapter 25: Be Rabid about Readability
+Chapter 26: End on an I-Can't-Wait-to-Get-Back-to-It Note
+Chapter 27: Set a Goal Based on Word Count (Not Time)
+Chapter 28: Deadlines Are the WD-40 of Writing
+Part II: Writing Rules: Grammar and Usage
+Chapter 29: Use Real Words
+Chapter 30: Avoid Frankenwords, Obese Words, and Words Pretending to Be Something They're Not
+Chapter 31: Don't Use Weblish (Words You Wouldn't Whisper to Your Sweetheart in the Dark)
+
+-- 3 of 360 --
+
+Chapter 32: Know the Difference between Active and Passive Voice
+Chapter 33: Ditch Weakling Verbs
+Chapter 34: Ditch Adverbs, Except When They Adjust the Meaning
+Chapter 35: Use Clichés Only Once in a Blue Moon
+Chapter 36: Avoid These Mistakes Marketers Make
+Chapter 37: Break Some Grammar Rules (At Least These Five)
+Chapter 38: Learn Words You're Probably Misusing or Confusing with Other Words
+Similar or Seemingly Interchangeable Words
+Usage Confusion
+Chapter 39: Scuse Me While I Kiss This Guy
+Chapter 40: Limit Moralizing
+Part III: Story Rules
+Chapter 41: Tell How You'll Change the World
+Chapter 42: Tell the Story Only You Can Tell
+Chapter 43: Voice and Tone
+Chapter 44: Look to Analogy instead of Example
+Part IV: Publishing Rules
+Chapter 45: Wait. What's Brand Journalism?
+But Is It Really Journalism?
+How Brand Journalism Works
+Chapter 46: Tell the Truth
+Chapter 47: See Content Moments Everywhere
+Chapter 48: Post News That's Really News
+Chapter 49: Biased and Balanced
+Chapter 50: Nonobvious Interview Tips
+Chapter 51: Fact-Check
+Chapter 52: Approach Content with ‘Mind Like Water’
+Chapter 53: Seek Out the Best Sources
+Chapter 54: Be Aware of Hidden Agendas
+Chapter 55: Cite as You Write
+Chapter 56: Curate Ethically
+Chapter 57: Seek Permission, Not Forgiveness
+Chapter 58: Understand the Basics of Copyright, Fair Use, and For Attribution
+Can I Just Link?
+What about Images?
+How about Logos and Screenshots?
+One Final Point
+Chapter 59: Ground Content in Data
+Part V: 13 Things Marketers Write
+Chapter 60: The Ideal Length for Blog Posts, Podcast, Facebook Posts, Tweets, and Other Marketing
+Content
+How Long Should a Blog Post Be?
+Chapter 61: Writing for Twitter
+
+-- 4 of 360 --
+
+Chapter 62: Writing with Hashtags
+Chapter 63: Writing Social Media with Humor
+Chapter 64: Writing for Facebook
+Chapter 65: Writing for LinkedIn
+Chapter 66: Writing Your LinkedIn Profile
+Chapter 67: Writing for Email
+Chapter 68: Writing Landing Pages
+Chapter 69: Writing Headlines
+Chapter 70: Writing a Home Page
+Chapter 71: Writing the About Us Page
+Chapter 72: Writing Infographics That Won't Make People Mock Infographics
+Chapter 73: Writing Better Blog Posts
+Chapter 74: Writing Annual Reports (or Annual Wrap-Ups)
+Part VI: Content Tools
+Research and Knowledge Management Tools
+Writing Tools
+Productivity Tools
+Editing Tools
+A Few Great Style Guides
+Non-Text Writing Tools
+Blog Idea Generators
+Google Authorship
+Image Sources (Or, Stock That Doesn't Stink)
+Acknowledgments for Tools
+Epilogue
+Index
+End User License Agreement
+
+-- 5 of 360 --
+
+
+
+-- 6 of 360 --
+
+Praise for Everybody Writes
+“Where was this book when I first started writing? Too many people think writing is easy: just put your
+thoughts down. Nope. Writing is much more dynamic in a world where content is everything and everywhere. In
+Everybody Writes, Ann Handley does the impossible: she teaches you (and me) how to not only tell better
+stories, but how to get those stories to connect with an audience. As usual, Handley does what she does best:
+she overdelivers. If you create content, buy this. If you run a team that creates content, buy everyone a copy.
+This is one of those books that will always sit within arm's reach of anyone who must come up with ideas.”
+—Mitch Joel
+President, Twist Image;
+Author of Six Pixels of Separation and CTRL ALT Delete
+“This book provides marketers from all functions with a deeper understanding of this new era of storytelling
+and content, and it empowers them to contribute as a creative.”
+—Tim Washer
+Senior Marketing Manager, Cisco
+“Many people talk about the need to create great content, and to tell better stories in order to win new business
+in this social and digital age. So after cowriting the definitive Content Rules, Ann Handley is back to help us all
+understand how to get it done. Ann shatters the myth that writing is only for trained journalists, and provides
+amazingly insightful tips on how everyone can tell great stories.”
+—Michael Brenner
+Head of Strategy, Newscred
+“Handley gets to the core of why most content doesn't work. More important, she offers real-world, pragmatic
+advice for fixing it. Everyone who creates content for the Web—text, audio, or video—should read this book.”
+—Sonia Simone
+Chief Content Officer, Copyblogger Media
+“In our newly connected world, who would have thought that writing skills would be critical to an individual's
+future success? Everybody Writes gives you all the tools you need to make writing a core part of your life (and it
+needs to be). Plus, Ann's stories are incredibly engaging, she makes complex themes simple to understand, and
+she's just one really nice person (if you needed another reason).”
+—Joe Pulizzi
+Founder, Content Marketing Institute;
+Author of Epic Content Marketing
+“Great content marketing can't happen without great writing. But way too many marketing teams settle for
+‘good enough.’ In this terrific book, Ann Handley shows why that's a fatal mistake and how to avoid making it. A
+fun, fast read that makes you want to run to your keyboard and tap out a masterpiece. But it's not just for
+writers, it's for anyone who commissions, edits, or works with writers.”
+—Doug Kessler
+Cofounder and Creative Director, Velocity UK
+“Everybody Writes is your guide to creating content you can be proud of and that customers will love you for.
+No one is going to win the content game with average, that's why Everybody Writes is a must-have guide for
+anyone that creates content.”
+—Lee Odden
+CEO, Top Rank Marketing;
+Author of Optimize
+“Writing is one of the most important skills in marketing today. We all nod along while secretly wondering,
+‘How DO we get better at writing?’
+Everybody Writes addresses this in an accessible way that no other book has. As always, Ann does this with
+equal parts humor and heart. You'll laugh as you learn.”
+
+-- 7 of 360 --
+
+—Nick Westergaard
+Chief Brand Strategist, Brand Driven Digital
+“Writing is not an easy task. Writing a book about writing is near impossible, but Ann has done it as only she
+can. Filled with valuable information, techniques, examples, and smiles—this is the book for anyone who wants
+their words to have more success.”
+—C. C. Chapman
+Author and storyteller
+“Throw the others away because this is the only guide you need to elevate your content to the level of
+awesomeness! With wisdom and an infective wittiness, Ann shows you how to take your writing from awkward
+or awful to electric or elegant. She's your favorite teacher, cracking you up while her tough love gets you to do
+the work to improve. Even though I've written 10 books, I still learned a great deal in these pages and now I'm
+eager to flex my newfound content creation muscles.”
+—David Meerman Scott
+Best-selling author of The New Rules of Marketing and PR
+“The alternate click-bait title of Ann's great new book could have been 73 Ways to Improve Your Writing and
+Conquer the World!…and it would have been an understatement. We're all publishers now, and the better
+writers connect, persuade, and win. Be one of them with this book.”
+—Brian Clark
+Founder and CEO, Copyblogger Media
+“All your shiny new channels, properties, and platforms are a waste of space without smart, useful content. Ann
+Handley's new book helps make every bit of content count—for your customers and your bottom line.”
+—Kristina Halvorson
+President, Brain Traffic
+“I just glanced at the table of contents and I'm already a better writer. Ann Handley might just single-handedly
+save the world from content mediocrity. Really, really ridiculously good-looking content just got an owner's
+manual.”
+—Jason Miller
+Senior Content Marketing Manager, LinkedIn
+“Let's face it, writing is not optional for today's marketer. Ann's witty take on what works and what doesn't will
+help you master business writing and—more importantly—have fun while you're doing it!”
+—Ardath Albee
+B2B Marketing Strategist;
+Author, eMarketing Strategies for the Complex Sale and Digital Relevance (coming in 2015)
+“Useful to the extreme, Everybody Writes is the first must-read book on the subject since Stephen King's On
+Writing. Bursting with ways to improve your short and long-form content, it's too good to be skimmed. This
+book should be included with every keyboard sold, like a combo pack of communication clarity. You'll be a
+better writer by page 15. By the end of this book, you're thinking about giving Steinbeck a run for his money. I
+passionately recommend Everybody Writes.”
+—Jay Baer
+President, Convince & Convert;Author, Youtility
+“Finally, a sensible writing guide for a digital age! Everybody Writes is a unique blend of how-to-write rules and
+what-to-write revelations. Whether you are overhauling your everyday communication or sitting down to write a
+book, Ann Handley's irreverent style and inspirational wisdom will transform the way you write. Move over
+Strunk & White, Everybody Writes is the creative resource for a new generation.”
+—Andrew M. Davis
+Author, Brandscaping
+
+-- 8 of 360 --
+
+
+
+-- 9 of 360 --
+
+Everybody Writes
+
+-- 10 of 360 --
+
+Your Go-To Guide to Creating Ridiculously Good Content
+Ann Handley
+
+-- 11 of 360 --
+
+Cover image: Evan WH Price (www.evanwhprice.com)
+Cover design: Wiley
+Copyright © 2014 by Ann Handley. All rights reserved
+Portions of Part 5: 13 Things Marketers Write contain excerpts of content authored by Ann Handley and originally published in Entrepreneur®
+magazine and are being reproduced with permission of Entrepreneur Media, Inc. ©2013-2014 by Entrepreneur Media, Inc. All rights reserved.
+Published by John Wiley & Sons, Inc., Hoboken, New Jersey.
+Published simultaneously in Canada.
+No part of this publication may be reproduced, stored in a retrieval system, or transmitted in any form or by any means, electronic, mechanical,
+photocopying, recording, scanning, or otherwise, except as permitted under Section 107 or 108 of the 1976 United States Copyright Act, without either
+the prior written permission of the Publisher, or authorization through payment of the appropriate per-copy fee to the Copyright Clearance Center, 222
+Rosewood Drive, Danvers, MA 01923, (978) 750-8400, fax (978) 646-8600, or on the Web at www.copyright.com. Requests to the Publisher for
+permission should be addressed to the Permissions Department, John Wiley & Sons, Inc., 111 River Street, Hoboken, NJ 07030, (201) 748-6011, fax
+(201) 748-6008, or online at www.wiley.com/go/permissions.
+Limit of Liability/Disclaimer of Warranty: While the publisher and author have used their best efforts in preparing this book, they make no
+representations or warranties with respect to the accuracy or completeness of the contents of this book and specifically disclaim any implied warranties
+of merchantability or fitness for a particular purpose. No warranty may be created or extended by sales representatives or written sales materials. The
+advice and strategies contained herein may not be suitable for your situation. Y ou should consult with a professional where appropriate. Neither the
+publisher nor the author shall be liable for damages arising herefrom.
+For general information about our other products and services, please contact our Customer Care Department within the United States at (800) 762-
+2974, outside the United States at (317) 572-3993 or fax (317) 572-4002.
+Wiley publishes in a variety of print and electronic formats and by print-on-demand. Some material included with standard print versions of this book
+may not be included in e-books or in print-on-demand. If this book refers to media such as a CD or DVD that is not included in the version you
+purchased, you may download this material at http://booksupport.wiley.com. For more information about Wiley products, visit www.wiley.com.
+ISBN: 978-1-118-90555-5 (cloth)
+ISBN: 978-1-118-90559-3 (ebk)
+ISBN: 978-1-118-90561-6 (ebk)
+
+-- 12 of 360 --
+
+
+
+-- 13 of 360 --
+
+Dedication
+To Evan, who always trusts his cape.
+And to Caroline, who does things that scare her.
+
+-- 14 of 360 --
+
+
+
+-- 15 of 360 --
+
+Foreword
+I came to writing reluctantly. My dirty little secret is that I got a D in college English.
+I know, I know…so why am I writing a foreword for a book about writing? Because if I can learn to write well, so
+can you! And as the author of three best-selling books about communicating, I know how powerful great
+communication can be.
+And anyway, do you really have a choice? Shouldn't you be writing better than you probably do now? There is a
+lot of barfy marketing content out there. It might be accurate, but it's often not interesting.
+When I was talked into writing my first book, I set two objectives for myself:
+1. To first believe I could do it, and…
+2. To devour as many books about writing as possible.
+That was in 2008. Man, I wish this book was around then.
+This book inspires you to become a stronger writer. And it does so with style. In typical Handley fashion, every
+page will make you laugh, or at least smile. Ann is one of very few writers who can make me feel a cocktail of
+emotions in a single paragraph.
+You should devour this book if you're a communicator, regardless of your title, position, years of experience, or
+job description. Because everybody writes.
+If Strunk and White's The Elements of Style and Stephen King's On Writing had a baby, this would be it.
+Be prepared to be delighted and to write better!
+—Nancy Duarte
+Owner, Duarte Design;
+Author of Slide:ology and Resonate
+Harvard Business Review Guide to Persuasive Presentations
+Mountain View, CA
+
+-- 16 of 360 --
+
+
+
+-- 17 of 360 --
+
+Acknowledgments
+Ah. So I see you, too, are one of those people who reads acknowledgments. Welcome, friend. You and I have a
+lot in common.
+Writing a book is like birthing a Volkswagen. The process is about as pretty as you'd imagine that to be: it's long
+and arduous and you sweat a lot, and most of the work is done while crying.
+My name might be on this book, but the following people helped—some of them considerably. You might call
+them midwives of sorts. But that might be taking the analogy a step too far.
+Most special thanks to…
+Kristina Halvorson, who gave me the title of this book and in exchange asks merely for all my love, money, and
+constant acknowledgment of her genius, which I gladly confer. With interest.
+Vahe Habeshian, who put almost as much heart into this as I did. He's the world's best editor, among other
+things. And no, you cannot have his phone number.
+My dear friend Nancy Duarte, for immediately saying yes to writing the foreword, which added a necessary,
+persistent pressure on me to get off the couch and finish this beast so she had something to actually write a
+foreword to.
+Artist and number-one-son Evan W. H. Price, for the cover and interior illustrations, and also for being exactly
+the kind of person I could ever want him to be.
+And also to…
+Joe Chernov, for collaborating on an early iteration of Publishing Rules years ago, and for his consistently sound
+advice, smart sensibilities, and his ability to write circles around me.
+Doug Kessler, for being an early reader of The Ugly First Draft—and still managing to say nice things about it.
+Also for his heart, soul, wisdom, and (especially) his humor.
+Dane Sanders, who deserves top seeding in the World Cup of Encouraging Friends Playoffs. (If that's not a
+tournament, it should be.)
+Andrew Davis, for his cheering and random emails that prodded me along when he probably didn't realize I
+needed it the most.
+Lee Odden, for his consistent and generous support, smarts, and friendship.
+Tim Washer, for being a great friend, conspirator, and collaborator for what seems like forever, or at least 20
+years.
+Kerry O'Shea Gorgone, for research help, legal expertise, high jinks, and shenanigans.
+David Meerman Scott, for talking me through the framework of this book in a way that suddenly made it seem
+doable—instead of amorphous and hopeless and terrible. (This is also a good time to point out that he's done
+this for the second time in as many books.)
+Jess Ostroff, for whatever the word is that means things would literally fall apart without your expertise,
+supreme organization, and help with all the things.
+Wiley's Shannon Vargo, Peter Knox, and Elizabeth Gildea, who manage to possess equal measures of patience
+and impatience, and who also seem to have an uncanny sixth sense of which to apply when.
+To Entrepreneur magazine, for permission to take bits and pieces of some of the material I wrote for my
+monthly column and reshape it here.
+To my MarketingProfs family: It seems weird to refer to people I work with as a “family.” But whatever. As my
+daughter Caroline tells me, “You be you, Mom. You be you.”
+To Facebook and Twitter, for making the writing of this book at least twice as long as it might have been
+otherwise.
+And to the following for sharing their feedback and ideas generously and without expectation:
+
+-- 18 of 360 --
+
+Jesse Noyes, Heidi Cohen, Jonathon Colman, Jason Miller, John Simmons, Richard Pelletier, Ahava Leibtag,
+Bernadette Jiwa, Andy Crestodina, Joe Pulizzi, Dan Lyons, Jay Baer, Ardath Albee, Sonia Simone, Brian Clark,
+Mitch Joel, Michael Brenner, Nick Westergaard, Paul Gillin, David B. Thomas, Corey O'Loughlin, Jill Foster, and
+the unparalleled C. C. Chapman.
+Finally, is it pretentious to thank E. B. White?
+The Elements of Style was a talisman to me when I was a college student learning to be a better writer; I clung to
+it like an infant lab monkey clings to its wire-frame mother, desperate to survive. (I still reread it every year or
+so.) White's quote in the Epilogue of Everybody Writes reminds me daily that anyone who waits for the perfect
+conditions to write won't ever actually create much of anything.
+So, thanking a great writer I never met might indeed be pretentious. But some things just have to be said.
+
+-- 19 of 360 --
+
+
+
+-- 20 of 360 --
+
+Introduction
+Last Tuesday, for the first time in my life, I did a push-up. That wouldn't be remarkable for most of you,
+probably. It might even seem pathetic to most of you. But for me it was an occasion to celebrate, because it
+capped five months of hard work that followed a lifetime of resolutely thinking of myself as spectacularly
+incapable.
+I hail from a stunningly unathletic family: most of us are more Eeyore than Seabiscuit; we are the ones picked
+last for the team, the ones who are afraid of the ball. And I was (quite literally) a 100-pound weakling. So the
+idea of my being capable of a push-up (or 5, or 10, or—maybe, eventually—50 or more!) seemed as improbable
+as my writing this in Russian.
+Why am I telling you about that pathetic-but-epic push-up…in a book about writing and content creation and
+publishing?
+Because learning to craft better content can involve nothing more than developing some necessary muscles.
+Right now you might not consider yourself much of a writer, or much of a content creator, just as I never
+considered myself someone who could drop and pump out a set of push-ups.
+In our world, many hold a notion that the ability to write, or write well, is a gift bestowed on a chosen few.
+Writing well is considered a kind of art, linked murkily to muse and mysticism. That leaves us thinking there are
+two kinds of people: the writing haves—and the hapless, for whom writing well is a hopeless struggle, like trying
+to carve marble with a butter knife.
+But I don't believe that, and neither should you. The truth is this: writing well is part habit, part knowledge of
+some fundamental rules, and part giving a damn. We are all capable of producing good writing. Or, at least,
+better writing. As David Carr of the New York Times says, “Writing is less about beckoning the muse than
+hanging in until the typing becomes writing.”
+So the two kinds of people are not the haves and the hapless. Instead, they are those who think they can write,
+and those who think they can't. (And, too often, both are wrong!)
+In reality, most of us fall somewhere in the middle, capable of shedding mediocre writing to reveal something
+more inspired and reader-centric. We just need to train the necessary muscles.
+
+-- 21 of 360 --
+
+But I'm Not a Writer
+If you have a website, you are a publisher. If you are on social media, you are in marketing. And that means we
+are all writers.
+Yeah, but who cares about writing anymore? In a time-challenged world dominated by short and snappy, by
+click-bait headlines and Twitter streams and Instagram feeds and gifs and video and Snapchat and YOLO and
+LOL and #tbt…does the idea of focusing on writing seem pedantic or ordinary?
+And maybe a little useless, considering that an article (or so-called listicle) titled “13 Potatoes That Look Like
+Channing Tatum” on BuzzFeed garners 2,000 tweets and 14,000 shares on Facebook?1
+Actually, writing matters more now, not less. In an online world, our online words are our emissaries; they tell
+the world who we are, as user experience expert Beth Dunn puts it.2
+Our writing can make us look smart or it can make us look stupid. It can make us seem fun, or warm, or
+competent, or trustworthy. But it can also make us seem humdrum or discombobulated or flat-out boring.
+That means you've got to choose words well, and write with economy and style and honest empathy for your
+reader. And it means you put a new value on an often-overlooked skill in content marketing: how to write, and
+how to tell a true story really, really well. That's true whether you're writing a listicle or the words on a
+SlideShare deck or the words I'm using right here, right now.…
+And so being able to communicate well in writing isn't just nice; it's a necessity. And it's also the oft-overlooked
+cornerstone of nearly all content marketing.
+
+-- 22 of 360 --
+
+What Is Content?
+So, yeah, what is content?
+Content isn't limited to the text on our Web pages or product pages or blogs or e-mail newsletters. It's broader
+than the things we think of as marketing. Content is essentially everything your customer or prospect touches
+or interacts with—including your own online properties and Web pages and the experiences they offer, but also
+everything on any social channel (like Instagram, Twitter, Facebook, LinkedIn, YouTube, and so on).
+Content is the entire user experience, says Kristina Halvorson, CEO of content strategy firm Brain Traffic and
+well-known speaker and author. Think of your content, then, as any medium through which you communicate
+with the people who might use your products or services.
+Or, to paraphrase Mufasa the Lion King as he and his son Simba survey their kingdom at Pride Rock:
+“Everything the light touches is content.”
+I'm kidding. Of course Mufasa wasn't talking about content in the original quote, which is actually “Everything
+the light touches is our kingdom.” But the concept loosely translates online as Everything Is Content.
+And very often the core of that content—that user experience—is writing. Sometimes it's literally the experience
+—in the case of a blog post, e-book, white paper, Twitter post, or website text. And sometimes it's the basis of a
+visual experience—like that video or that SlideShare or PowerPoint presentation that began its life as a script, or
+that infographic that likely knits together data and text.
+Yet in this content-driven environment, businesses often neglect or overlook words—much to their own
+detriment. Think of it this way: If a visitor came to your website without its branding in place (logo, tagline, and
+so on), would he or she recognize it as yours? If you stripped your branding from all your properties and lined
+up your words alongside a competitor's, would you recognize yourself? Would you stand out?
+Words are indeed our emissaries and ambassadors, carrying important messages for us. “Words are a proxy…a
+stand-in for the things that we as people and we as companies want to convey to the world,” Beth Dunn says.
+So the question becomes: Are you telling your story from your unique perspective, with a voice and style that's
+clearly all you?
+For businesses, good writing isn't merely any tool. It's the power tool they should be able to wield expertly, just
+as every respectable building contractor can use the Skilsaw he keeps in his truck.
+Good writing is…
+Often the foundation of good content that gets noticed, no matter what form that content ultimately takes.
+A mirror of good, clear, thinking that's an antidote to the complexity that can sometimes characterize our
+business world. Amazon's Jeff Bezos reportedly relies on writing to hold effective meetings, requiring senior
+executives to read six-page narrative memos prior to in-person meetings, according to Janet Choi of
+iDoneThis, writing in Fast Company.3
+Choi cites a 2012 interview with Charlie Rose in which Bezos says: “When you have to write your ideas out
+in complete sentences and complete paragraphs, it forces a deeper clarity of thinking.”4 Choi adds: “Writing
+with a narrative structure rather than relying on messaging by numbers or bullet points also pushes people
+to think through problems within a fuller context.”
+The key to a customer-centric, intuitive, empathic point of view. “Good writing…is a matter of developing
+the skills of intuitive psychology that are so important in every other aspect of social life: getting inside the
+heads of other people so that you can respect their needs and their wants,” writes psychologist Steven Pinker
+in a Harvard publication.5 (Thanks to Janet Choi for that link, too.)
+Words matter. Your words (what you say) and style (how you say it) are your most cherished (and, yet,
+undervalued) assets.
+
+-- 23 of 360 --
+
+Why We Need to Wage a War on Content Mediocrity (Or, Why This Book?)
+Why? Three reasons…
+1. We have become a planet of publishers. Content Rules, my first book (with C. C. Chapman), helped to ignite
+content-centric marketing, spreading the message of content as a cornerstone of marketing and championing
+its power to drive real business value. Content Rules became the best-selling book on content marketing, and
+(thus far) has been translated into nine languages.
+In the four years since that book's publication, an overwhelming number of businesses have adopted a
+content-centric marketing mind-set: 93 percent of business-to-business companies (and 90 percent of
+business-to-consumer companies) say they are using content in their marketing mix, according to the 2014
+annual survey produced by MarketingProfs and the Content Marketing Institute.6
+Best-in-class marketers have set up the necessary structures and processes to consistently produce content.
+They've linked those efforts with strategic goals. They're upping content budgets. They're applying a variety
+of tactics—blogs, videos, webcasts, podcasts, and the like—12 tactics on average for B2B companies, 13 for
+B2C. They're using, on average, six social media platforms.
+That's a lot of bustle over four years, isn't it?
+Still, almost half of those marketers we surveyed (51 percent of B2C companies, and 47 percent of B2B
+companies) still struggle with how to create the kind of content that engages. At a fundamental level, we're
+all still struggling with how to create the kind of content that attracts customers.
+Ours is a world where technology and social media have given us access and power: every one of us now has
+the awesome opportunity to own our own online publishing platforms—websites, blogs, email newsletters,
+Facebook pages, Twitter streams, and so on.
+I don't use the phrase awesome opportunity lightly. The opportunity to change how we communicate with
+the people we are trying to reach, and what we communicate, is tremendous—yet we aren't taking full
+advantage of it.
+Said another way: we are a planet of publishers, but many of us are littering the landscape with content
+crap, squandering the whopping opportunity we have to communicate directly with those we are trying to
+reach.
+The challenge has shifted: we now grok the notion of content as a cornerstone of an online presence. Google
+and other search engines have made it clear that they'll love up the good stuff more than the regurgitated
+pabulum. Now let's focus on creating relevant, quality content experiences that our customers and
+prospects can trust.
+We've embraced the idea of being publishers; the challenge that remains is the doing—the writing and
+publishing itself.
+2. Brevity and clarity matter more than ever. Your awesome opportunity is also your competitor's awesome
+opportunity. It's also your colleague's, your friend's, your rival's, and that of the guy in the next cube who's
+neck-and-neck with you for that promotion.
+In other words, that opportunity has put new pressure on marketers and layered new requirements onto the
+marketing department, because there's a lot of competition clamoring to be heard. That's why it's important
+to write clearly and succinctly: to communicate your ideas and thoughts in a way that doesn't meander
+maddeningly; to respect the reader; to ensure that any content we produce doesn't come off as indulgent.
+I know this will sound harsh, but as someone who's been editing marketers for almost 20 years (first at
+ClickZ, and now at MarketingProfs), I assure you…an awful lot of content meandering goes on in articles,
+posts, PR pitches, and emails. I'm sorry to tell you so, but I also assure you there's love in my heart as I do.
+3. What matters now isn't storytelling; what matters is telling a true story well. Marketing pundits
+increasingly talk up the importance of story and storytelling, and even I've crowed here about quality
+content.
+
+-- 24 of 360 --
+
+But those words all feel vague and amorphous, don't they? What's quality, exactly? And do we really want to
+be storytelling, with all the improvising and embellishing the word implies?
+Here's my take, after having been steeped in this new world of content marketing almost since its modern
+inception: quality, relevant content is less about storytelling; it's more about telling a true story well. Or, to
+paraphrase Jack Kerourac: “It ain't only whatcha write, it's also the way atcha write it.”
+In our world, quality content means content that is packed with clear utility and is brimming with
+inspiration, and it has relentless empathy for the audience:
+Utility means you clearly help your customers do something that matters to them—you help them
+shoulder their burdens, you ease their pain, or you help them make a decision.
+Inspiration means your content is inspired by data (more on this later) or it's creatively inspired (or
+both). It's fresh, different, well-written, well-produced, nicely designed—and it feels like it could come
+only from you.
+Empathy means you relentlessly focus on your customer. You view the entire world through his or her
+eyes—because, remember, everything the light touches is content.
+I'm not much of a mathematician, but here's a handy, memorable formula that captures the sweet spot of your
+quality content. The multiplication signs are important, because if the value of any one of these things (Utility,
+Inspiration, or Empathy) is zero, then the sum of your content is a big fat zero, too. (Thanks to my friend and
+marketer Doug Kessler for the multiplication inspiration.):
+Utility × Inspiration × Empathy = Quality Content
+This is a good time to mention that quality in the context of your business doesn't necessarily mean writing with
+all the beauty or gravitas or heft of Hemingway or Michael Chabon or Joan Didion or George R. R. Martin or any
+other writer whose work you happen to admire.
+Rather, I'm talking about getting to the essence of what makes those writers (or any writer!) great—whether you
+write novels or FAQ pages. And the key to that essence is a relentless empathy for your reader or audience.
+One of the best, quality bits of content I ever encountered was a neatly designed guide to dishwasher repair I
+downloaded from an appliance website, because it delivered exactly what I needed with clear utility, inspiration,
+and empathy for the pain of having shards of a drinking glass caught in the drain hose.
+
+-- 25 of 360 --
+
+Still Waiting. I Thought You Said You Were Going to Explain Why This
+Book?
+Oh, right.
+Although many excellent books on writing already exist, I've found that a lot of writing advice is really more
+aphorism than true advice. They're entertaining to read and they can be a kind of rallying cry, but they aren't
+very how-to or prescriptive. (Which is always my bias. I like how-to advice. I don't know what to do with high-
+level, other than to wish it were more how-to.)
+Alternatively, much of what passes for writing advice gets too deep in the weeds of writing construction. Great if
+you're looking to up your score on the SATs. Not so awesome if you just need some guidance on how not to
+sound like a total idiot when you craft this week's customer mailing.
+What's harder to find is a book that functions for marketers as part writing and story guide, part instructional
+manual on the ground rules of ethical publishing, and part straight talk on some muscle-building writing
+processes and habits.
+What's also hard to find is a book that distills some helpful ideas about the craft of content simply and (I hope)
+memorably, framed for the marketer and businessperson, as opposed to, say, the novelist or essayist or
+journalist.
+I wrote this book because I couldn't find what I wanted—part writing guide, part handbook on the rules of good
+sportsmanship in content marketing, and all-around reliable desk companion for anyone creating or directing
+content on behalf of brands.
+To that end, this book is separated into six sections; each deals with a different dimension of content:
+Part I, How to Write Better (and How to Hate Writing Less)—the latter for the recovering or traumatized
+writer—offers some handy scaffolding and blueprints for better thinking and writing.
+Part II, Grammar and Usage, discusses the stuff most people consider writing. It gives you some grammar
+rules and tools to help you choose better words and craft better sentences and paragraphs…to help you start
+flexing your content muscles.
+Next come Story Rules (Part III) and Publishing Rules (Part IV). The first provides some guidelines on
+elements that will infuse your content with heart and soul and integrity, and layer it with a warm blanket of
+trust. There's a lot to learn here from the ground rules of journalism and publishing, so those are covered in
+the part that follows.
+Next is 13 Things Marketers Write (Part V), which gives you a super tactical look at typical marketing tasks.
+And finally, Content Tools (Part VI) gives you a reference list of resources and paraphernalia to help you
+produce your best work.
+There's also a lot that's not in this book, because it's not meant to be an exhaustive resource for the business of
+writing. Rather, it's meant to be your practical go-to guide, offering the most important and useful guideposts on
+the path toward better writing.
+Content can be complex, but it's inherently easier to use your content as a driver of business when you start
+with a quality product, clear thinking, and good writing.
+Stephen King calls fear the root of poor writing. But he points out (in his memoir On Writing): “Dumbo got
+airborne with the help of a magic feather…Just remember before you do that Dumbo didn't need the feather; the
+magic was in him.”
+The same is true of you. Of me. Of all of us. Like Dumbo, we just require the will and the courage and the
+inspiration and the gumption and the wits to start.
+So, really, the question is not: Are you telling your story from your unique perspective, with a style that's
+clearly all you?
+The real question is Are you ready? Who's all in?
+
+-- 26 of 360 --
+
+Notes
+1. Lauren Yapalater, “13 Potatoes That Look Like Channing Tatum,” BuzzFeed, October 24, 2013,
+www.buzzfeed.com/lyapalater/potatoes-that-look-like-channing-tatum.
+2. Beth Dunn, “How to Be a Writing God,” YouTube video, Inbound Bold Talks (Inbound 2013 conference),
+January 8, 2014, www.youtube.com/watch?v=S8Q3vnPM6kk.
+3. Janet Choi, “The Simplest Way to Know What Everyone's Doing at Work,” Fast Company, November 21, 2013,
+www.fastcompany.com/3021980/dialed/the-simplest-way-to-know-what-everyones-doing-at-work.
+4. Jeff Bezos, interview by Charlie Rose, Charlie Rose, PBS, aired November 15, 2012,
+www.charlierose.com/watch/60148245.
+5. Steven Pinker, “Writing As Psychology,” Exposé (Essays from the Expository Writing Program at Harvard
+College), 2006–2007, www.jhcwp.com/wp-content/uploads/2013/09/Expose06_07.pdf.
+6. “B2B Content Marketing 2014: Benchmarks, Budgets, and Trends, North America,” slide presentation,
+Content Marketing Institute/MarketingProfs, October 1, 2013, www.slideshare.net/mprofs/b2b-content-
+marketing-2014-benchmarks-budgets-and-trendsnorth-america.
+
+-- 27 of 360 --
+
+
+
+-- 28 of 360 --
+
+Part I
+Writing Rules: How to Write Better (and How to Hate Writing Less)
+There is no one way to write—just as there is no one way to parent a child or roast a turkey. But there are
+terrible ways to do all three. And with each, you've got to have a basic understanding of the process before you
+begin. I'm going to assume you have that—you know enough, for example, to procure an oven and a pan before
+you begin to roast anything.
+In other words, this book assumes that you are equipped with some very basic tools: a working knowledge of
+English (that means basic levels of grammar, spelling, usage, and punctuation). And I mean very basic: if you
+recognize that this is a sentence and not, say, a rhinoceros…we're good, and you can safely proceed knowing you
+aren't out of your depth. (In Part II, we'll talk about sharpening those tools in your content tool shed.)
+It also assumes—or hopes is perhaps the better word—that you come with a bit of gung ho: an eagerness to
+become a better writer because you recognize that it matters, and because you've kicked to the curb the dumb
+notion that only an anointed few have the chops to be good writers.
+Ta-Nehisi Coates, a senior editor at the Atlantic, spent a year teaching writing to MIT students. He later wrote, “I
+felt that the rigor of math had better prepared these kids for the rigor of writing. One of my students insisted
+that whereas in math you could practice and get better, in writing you either ‘had it’ or you didn't. I told her that
+writing was more like math then [sic] she suspected.”1
+In other words, good writing can be learned—the way trigonometry or algebra or balancing a balance sheet is a
+skill most of us can master. In an essay at the Neiman Journalism Lab, “How I Faced My Fears and Learned to
+Be Good at Math,” Matt Waite writes: “The difference between good at math and bad at math is hard work. It's
+trying. It's trying hard. It's trying harder than you've ever tried before. That's it.”2
+The same is true about writing.
+What you will read in this section is everything I know to be most important about writing: everything I have
+learned, collected, curated, and discovered over 25 years of writing and editing professionally (and a lifetime of
+writing for fun), distilled into the most important perspectives that I think can help all of us up our writing
+game.
+This would be a good time to thank Neil Patel and Kathryn Aragon, coauthors of The Advanced Guide to Content
+Marketing (2013). Their guide helped me to conceptualize how I might present to you what I'd been doing—
+without putting much conscious thought into how I was doing it—for those 25 years. If you're looking for a
+handy reference for much more than writing, check it out in full at bit.ly/AdvancedGuide.
+I hope that the rules in this section will help you to better organize and develop your writing—and to choose
+better words, craft better sentences, and consider things like cadence and flow, and many others that I'll stop
+specifying right now so you can just get to it…!
+If you have never written—if you are an “adult-onset writer” who is perhaps recovering from some trauma that
+made you consider yourself an inept writer—this section provides some helpful processes and structures to help
+you get started.
+If you've been writing for a while, here is some collected wisdom that may help you write better or more
+effectively.
+And if you are an experienced writer, I hope you rediscover the glee and joy of honing a craft.
+One final thing: I've organized this book as a series of so-called rules because I wanted to offer useful and (I
+
+-- 29 of 360 --
+
+hope) memorable how-tos. I also wanted to differentiate these ideas from the general motivational aphorisms
+that pass for most writing advice. Part I is a gaggle of helpful how-tos specific to the writing process and
+organization of a piece (it's less boring than it sounds), as well as advice for livelier writing. Part II will cover
+grammar and usage, framed for a marketing audience.
+In any case, these “rules” are intended to be functional tools, not prescriptive rules. So, as we wrote (in a
+different context) in Content Rules, any rules here are less hard-and-fast writing rules than they are a handy set
+of guidelines. Think of them more as bumpers on a bowling lane that nudge the ball away from the gutter and
+greatly increase the odds that the ball you throw will land a strike.
+Of course, you can break the rules (or ignore the tools) as you wish. Isn't every rule made to be broken? Doesn't
+every rule have an exception? You might be a kind of content MacGyver who wackily crafts beautiful content
+out of a metaphorical paper clip and roll of Scotch tape. That's totally great—in fact, I hope you do! But, first, you
+have to know what rules to break (or what tools to ignore).
+
+-- 30 of 360 --
+
+Notes
+1. Ta-Nehisi Coates, “Notes from the First Year: Some Thoughts on Teaching at MIT,” Atlantic, June 11, 2013,
+www.theatlantic.com/national/archive/2013/06/notes-from-the-first-year-some-thoughts-on-teaching-at-
+mit/276743.
+2. Matt Waite, “Matt Waite: How I Faced My Fears and Learned to Be Good at Math,” Neiman Journalism Lab,
+November 13, 2013, www.niemanlab.org/2013/11/matt-waite-how-i-faced-my-fears-and-learned-to-be-good-
+at-math.
+
+-- 31 of 360 --
+
+
+
+-- 32 of 360 --
+
+1
+Everybody Writes
+I want to tell you that the key to taking your writing muscles from puny to brawny is to write every day. That
+writing is a habit, not an art. It is the former—and I'll talk about that in a minute. But before I do, let's reframe
+this business of writing.
+As you think of developing a writing habit, realize that you probably already do write every day. You write
+emails; you post to Facebook, Twitter, or Instagram; you comment on blogs. Recognize all that posting for what
+it is: writing. And reframe it as a legit aspect of your daily workout—in the same way always taking the stairs
+becomes, over time, part of a fitness regimen.
+I hope you'll consider this first rule a kind of call to arms to improve all of your communications, rather than
+just the stuff we traditionally think of as “content.” Embrace the idea (as I said in the Introduction) that your
+words are your Web currency: they are a proxy, a stand-in for the important things you want to convey to your
+customers, and the world.
+I want your readers and followers and audience to enjoy your words more, and I want you to maybe even feel a
+little proud of them.
+But getting to that point requires—in all of us—a crucial shift: viewing the words we use as an important piece of
+who we (and our companies) are online. First, though, we have to overcome what holds us back from being
+writers: a combination of fear, lethargy, and a lack of confidence or knowledge (or both).
+“If you want to be a writer you must do two things above all others: read a lot and write a lot,” Stephen King
+writes in his book On Writing. He is talking to those who want to make their living as he does, writing books.
+But, in our world, we're all already writing and reading a lot. Every day.
+I am a writer. You are a writer. Everybody writes.
+
+-- 33 of 360 --
+
+
+
+-- 34 of 360 --
+
+2
+Writing Is a Habit, Not an Art
+We're tempted to think that writing is an art, that only an anointed lucky few can do it well. But that's an excuse
+—a justification that lets the lazy among us off the hook for being the communication equivalent of a couch
+potato: flabby, unmotivated, inarticulate. But the truth is that the key to being a better writer is, essentially, to
+be a more productive one. Or more simply, the key to being a better writer is to write.
+You'd think that great writers would have special inspiration or contrived stimuli to boost their output—not
+unlike what poet, humorist, and educator Taylor Mali hilariously suggested in his deadpan response to a
+question about his favorite place to write:
+I'd love to say I have handmade Japanese paper and a 200-year-old fountain pen…and every morning,
+after making love, for the third time…I go running, for about five miles…if I'm feeling lazy.
+[At] the top of our house, there's an old cupola, and I watch the sunrise up there, in the nude, and I write
+my poems longhand. I'm right-handed but I force myself to use my left hand, because I find it makes me
+more creative. And I write, in Latin, because it forces the brain to work in a new way—backwards, like
+Hebrew…
+But, really, Mali adds,
+I just sit in front of my computer.1
+Many of the world's most brilliant writers stressed regular routines and schedules for writing. Maya Angelou,
+Ernest Hemingway, Charles Dickens, and Oliver Sacks kept regular hours to cultivate creative rhythms. They
+might've had certain quirks (it's true that Hemingway wrote standing up, and Maya Angelou kept a room in a
+budget hotel to escape the distractions of her domestic life), but many kept schedules and routines that look as
+ordinary and predictable as those in anyone else's life.2
+Here's a peek at what the prolific Ben Franklin called his daily scheme:
+Source: © Project Gutenberg.
+Ben's schedule looks an awful lot like everyday work. Like routine. Like a conventional pattern you'd see from
+someone punching a clock in a factory.
+Well…that's because it is. Becoming a better writer—working the muscle—takes some commitment to simply
+
+-- 35 of 360 --
+
+show up, not unlike the commitment I kept with my gym trainer, Dorothy. Both writing and strength training
+can feel awkward and a little painful at first: I felt like a total poser donning spandex and sneakers, and I felt
+idiotic grunting under the weight of barbells that seemed sized for an undernourished eight-year-old. But the
+point is to keep at it, even when it's uncomfortable and you'd rather quit.
+Simply put, the key to being a better writer is to write.
+Make a regular habit of it, because as author Gretchen Rubin writes, “Habits are the invisible architecture of
+everyday life.”3 In this case, habit lends the necessary scaffolding to support better writing.
+“Write like crap if you have to. But write every day. Keep the streak alive,” said Beth Dunn, a user-experience
+editor for HubSpot, during a talk on how to become a “writing god” at her company's 2013 user event in Boston.4
+So what kind of prescription works?
+Set aside time each day when you're freshest. I'm freshest first thing in the morning, before distractions hijack
+my day. For you it might be different. You've been living with yourself long enough to know what time of day
+would work for you, so I'll leave that in your hands.
+Don't write a lot. Just write often. The advice to write often is from author Jeff Goins, who points out on his
+site, GoinsWriter.com, “Spending five hours on a Saturday writing isn't nearly as valuable as spending 30
+minutes a day every day of the week. Especially when you're just getting started.”
+I love how Jeff talks about why that daily part is important: He says habits “practiced once a week aren't habits
+at all. They're obligations.”
+“And let's not kid ourselves here,” he adds. “If you're doing something once a week, it's probably only a matter of
+time before you stop doing it altogether.”5
+There are no shortcuts to becoming a better writer. So show up at your desk and get to it. Daily.
+
+-- 36 of 360 --
+
+Notes
+1. “Taylor Mali answers the question, ‘Where is your favorite place to write?’” YouTube video, posted by Taylor
+Mali, September 15, 2007, www.youtube.com/watch?v=O_POEIhEXRI.
+2. Mason Currey, Daily Rituals: How Artists Work (New York: Knopf Doubleday, 2013).
+3. Gretchen Rubin, “The Habits We Most Want to Foster,” Psychology Today, 21 February 2014,
+www.psychologytoday.com/blog/the-happiness-project/201402/the-habits-we-most-want-foster-or-the-
+essential-seven.
+4. INBOUND Bold Talks: Beth Dunn “How To Be a Writing God,” YouTube video, posted by HubSpot, 8 January
+2014, www.youtube.com/watch?v=S8Q3vnPM6kk.
+5. Jeff Goins, “Why You Need to Write Every Day,” Goins, Writer (blog), www.goinswriter.com/write-every-day.
+
+-- 37 of 360 --
+
+
+
+-- 38 of 360 --
+
+3
+Shed High School Rules
+This past spring, College Board officials announced sweeping revisions to the SAT college entrance exam. Key
+among the changes was that the dreaded five-paragraph essay portion of the test will become entirely optional
+in 2016.
+MIT professor Les Perelman has long been a harsh critic of the essay. In a New York Times Magazine piece,
+Perelman talked about research he conducted that highlighted the folly of the essay, finding that essay length,
+fancy words, and a sprinkling of random, esoteric facts all correlate with high essay scores. In that piece and in a
+subsequent interview on NPR, Perelman recalled how he coached 16 students who were retaking the test after
+having received mediocre scores on the essay section. The Times reporter Todd Balf writes:
+He told them that details mattered but factual accuracy didn't. “You can tell them the War of 1812 began in
+1945,” he said. He encouraged them to sprinkle in little-used but fancy words like “plethora” or “myriad”
+and to use two or three preselected quotes from prominent figures like Franklin Delano Roosevelt,
+regardless of whether they were relevant to the question asked.
+Perelman encouraged them to be long-winded and to fill up the entire test booklet—and the margins and back
+pages—if they could. The result: 15 of his 16 pupils scored higher than the ninetieth percentile on the essay
+when they retook the exam, Perelman said. And—most tellingly—he added (in a subsequent interview on
+Boston's WBUR): “and then I told them never to write that way again!” Because, he said, “no one is actually
+learning anything about writing.”1
+Many of us learned in high school to write what is commonly known as the five-paragraph essay, similar in
+format to the soon-to-be-former SAT test. It goes something like this:
+1. Introduction. The introduction is a thesis statement or a kind of mini-outline of what the essay will cover.
+2. Body Paragraph One. Body paragraph one should include the strongest argument, most compelling example,
+or cleverest point that dramatizes your thesis. The first sentence of this paragraph should include the so-
+called reverse hook, which ties in with the transitional hook at the end of the introductory paragraph. The
+topic for this paragraph should be covered in its first or second sentence. That topic should relate to the
+thesis statement in the introductory paragraph. The last sentence in this paragraph should include a
+transitional hook to tie into the second paragraph of the body.
+3. Body Paragraph Two. Body paragraph two should include the second-strongest argument, compelling
+example, or cleverest point.
+4. Body Paragraph Three. Body paragraph three should include the third (or weakest) argument, example, or
+point.
+5. Conclusion. Your conclusion should be a restatement of the thesis statement that uses some of the original
+words to echo—but not duplicate—the opening paragraph, as well as a summary of the three main points.
+This might be a perfectly fine structure to help guide a classroom of young writers in middle school. (Some
+educators actually debate its use, but that's a topic for them to debate, not me.) The problem with its use beyond
+that, though, is that it's so structured and formulaic that it's boring to write and boring to read. Worse still, it
+implies there is just one right way to write and that other approaches to writing are wrong.
+There is no one way to write—just as there is no one way to parent a child or roast a turkey.
+What you learned in school might've once been a helpful guidepost. But it's time to let go. As Janis says in the
+movie Mean Girls: “That's the thing with five-paragraph essays. You think everybody is in love with them when
+actually everybody HATES them!”
+Actually, Janis was talking about the school's mean girls—The Plastics. Not essays. But same dif.
+
+-- 39 of 360 --
+
+Note
+1. Todd Balf, “The Story Behind the SAT Overhaul,” New York Times Magazine, March 6, 2014,
+www.nytimes.com/2014/03/09/magazine/the-story-behind-the-sat-overhaul.html and “Revising the SAT,”
+WBUR, March 6, 2014, radioboston.wbur.org/2014/03/06/sat-changes.
+
+-- 40 of 360 --
+
+
+
+-- 41 of 360 --
+
+4
+Regard Publishing as a Privilege
+The best companies don't just churn out regular blog posts with the heavy-handedness of an orphanage doling
+out gruel. Rather, they put the needs of their audiences first; they regard the ability to create content as
+something of a privilege, as my friend Tom Fishburne of Marketoonist.com often notes.
+Does it sound quaint to suggest that publishing is a privilege instead of some kind of perceived right?
+I don't think so. Instead, I think it's a necessary mind-set that creates a breeding ground for great content.
+Inherent in that attitude is that you value your relationship with your audience, and that you put their needs
+first.
+I don't say that lightly: every bit of content you create should be to please the customer or prospect—not your
+boss or client. More on that in a few.
+We all have easy access to a publishing platform and a potential audience. We all have great power to influence,
+educate, entertain, and help—but also to annoy, irritate, and…sometimes…fritter away our opportunity entirely.
+So the challenge for companies is to respect their audiences and deliver what the audience needs in a way that's
+useful, enjoyable, and inspired. The challenge is to also keep it tight, as Tim Washer, who produces video for
+Cisco, espouses. That means clarity, brevity, and utility.
+Brevity doesn't mean bare bones or stripped down. Take as long as you need to tell the story. (The length of
+content is dictated by the kind of content you're creating.) The notion of brevity has more to do with cutting fat,
+bloat, and things that indulge the writer and don't respect the reader's time. Keep it tight.
+Make it clear. Don't make the reader work hard to understand you. Develop pathological empathy for the reader.
+(More on that in a minute too.) And finally, make it useful. Readers will read what you write only if something
+is in it for them.
+Write, rewrite, edit. As content strategist Jonathon Colman, who works for Facebook, told me: “Start with
+empathy. Continue with utility. Improve with analysis. Optimize with love.”
+
+-- 42 of 360 --
+
+
+
+-- 43 of 360 --
+
+5
+Place the Most Important Words (and Ideas) at the Beginning of Each
+Sentence
+We tend to junk up the beginning of our sentences with modifiers and qualifiers, making the reader work harder
+to discern what, exactly, we are saying. It might sound remedial to say that each sentence should begin with the
+subject (the actor) and verb (the action), but it's the easiest way to buff up bad writing to make it more
+appealing.
+The first words of every sentence should make a friendly first impression to encourage the reader to keep going
+—much the way a favorable first impression at a party encourages conversation (as opposed to, say, desperate
+glances around the room to find some other opportunity).
+Here's what I mean.
+This is the first sentence of an introductory paragraph of a Centers for Disease Control and Prevention style
+guide: “According to the National Assessment of Adult Literacy (NAAL), released in 2006 by the U.S.
+Department of Education, 30 million adults struggle with basic reading tasks.”1
+The primary idea in that sentence is that millions of people are not fully literate; everything else in it is
+secondary. The primary idea—the important words—should be placed at the beginning. So:
+“Thirty million adults struggle with reading, according to the National Assessment of Adult Literacy (NAAL)
+report, released in 2006 by the U.S. Department of Education.”
+(Ironically, the guide is titled Simply Put, though much of it is not put simply at all.)
+Also from Simply Put (ignore, for the moment, the incorrect use of the semicolon):
+“It is important to remember; however, that even those with higher health literacy skills want health
+information that is understandable, meaningful to them, and easy to use.”
+What happens when you scrap the stuff at the beginning of that sentence (“It is important to remember;
+however, that…”)? You eliminate distractions, and you highlight what's important—without changing the
+meaning: “Even those with higher health literacy skills want health information that is understandable,
+meaningful to them, and easy to use.”
+Here are some phrases to avoid at the start of a sentence:
+According to…
+There is a…
+It is [important, critical, advised, suggested, and so on]…
+In my opinion…
+The purpose of this [email, post, article] is…
+In 2014 [or any year]…
+I think [believe] that…
+You can tack them onto the end, or insert them somewhere in the middle—if you must use them at all.
+
+-- 44 of 360 --
+
+Note
+1. Simply Put: A Guide for Creating Easy-to-Understand Materials (Third Edition), Centers for Disease Control
+and Prevention, July 2010, www.cdc.gov/healthliteracy/pdf/simply_put.pdf
+
+-- 45 of 360 --
+
+
+
+-- 46 of 360 --
+
+6
+Follow a Writing GPS
+At times, writing can feel like birthing a Volkswagen to me (I've even used that metaphor on occasion to
+describe writing this book). The writer Andre Dubus (House of Sand and Fog) has described writing as inching
+your way along a very dark, very long tunnel: you can make out the next few feet in front of you, but you're not
+quite certain where you'll end up or when you'll get there.
+What helps with the uncertainty and enormity of the task is to start with some kind of process to guide the way.
+When I was in middle school and learning to be a better writer, though, the focus was purely on the end product.
+My teachers emphasized the final paper versus the rough drafts and scratch notes that preceded it. In other
+words, they were more interested in seventh-grade Ann's delivering an essay on The Red Badge of Courage's
+Henry Fleming than they were in how that essay came to be sitting on their desk at all.
+Or so it seemed at that time. Maybe process was part of the curriculum (Ms. Dolan, if you are reading this now,
+please clarify for me). But I don't recall much emphasis on the necessary checkpoints along the way to that final
+piece—the beacons that guide the entire effort.
+Process is one of those things that in many parts of life I consider hopelessly boring and mind-numbing. Like
+peeling the skins of raw tomatoes. Or scrubbing dirt from beets. But in writing, process is necessary, because
+you need a road map to get you to where you need to be.
+Essentially, it's a kind of writing GPS that gets you from discombobulated thoughts to a coherent, cogent piece
+of writing that others can understand and appreciate.
+What follows is the 12-step process for any new, longer text you might produce—blog posts, e-books, white
+papers, site content, and the like. It's the process I use to write any blog post that appears on MarketingProfs or
+AnnHandley.com, and I use it to create my monthly column in Entrepreneur magazine. Also, I've used it to
+cobble together the bones of video scripts and presentations, as well as longer memo-style emails.
+You'll notice that some of the themes here are also discussed elsewhere in this book. Serving the reader and not
+the writer, for one. Finding credible sources or data to support your point of view, for another. And creating The
+Ugly First Draft (TUFD).
+But having a big-picture view of the process, or an outline of it, is useful. As we'll talk about in The Ugly First
+Draft section, good writing takes planning and preparation; it doesn't just emerge, fully formed, out of the head
+of Zeus. Or your own head, for that matter.
+(You can dig further into some of the 12 steps, as noted. Or you can simply rely on this CliffsNotes version. Your
+call.)
+1. Goal. What's your business goal? What are you trying to achieve? Anything you write should always be
+aligned with a larger (business or marketing) goal—even an individual blog post.
+The key here is that you care about what you're writing: you can try to fake it, but your readers will be
+allergic to your insincerity. Why does that matter? Because if you don't care about what you're writing
+about, no one will.
+Let's say your goal is this: I want to drive awareness of and interest in the launch of our incredibly cool new
+collaborative editing software because we want to sell more of it.
+2. Reframe: put your reader into it. Reframe the idea to relate it to your readers. Why does it matter to them?
+What's in it for them? Why should they care? What's the clear lesson or message you want them to take
+away? What value do you offer them? What questions might they have? What advice or help can you
+provide?
+My friend Tim Washer of Cisco refers to this reframing as giving your audience a gift: how can you best
+serve them, with a mind-set of generosity and giving?
+To get to the heart of this reframing, I ask: so what? And then answer, because. Repeat the so what/because
+query and response string as many times as necessary, until you've exhausted any ability to come up with
+
+-- 47 of 360 --
+
+an answer. Or until you're questioning things best left to the philosophers. As in:
+I want to drive interest and awareness in the launch of our new collaborative editing software.
+So what?
+Because our new text editor makes it stupid easy in three specific ways for those of you without a geek
+gene to easily collaborate from remote locales, without overwriting each other's stuff or losing earlier
+versions.
+So what?
+Because that's a pain to deal with, and it causes a lot of frustration and suffering for collaborative, virtual
+teams.
+So what?
+Because pain…it hurts. And suffering is…umm…bad.
+You get the idea.
+Express your reframed idea as a clear message. In this case, something like this:
+Our new text editor makes it stupid easy in three specific ways for those of you without a geek gene to
+easily work together from remote locales, without overwriting each other's stuff or losing earlier
+versions, which makes for happier, less frustrated collaborators. And you'll get your work done faster,
+with less wasted effort.
+Then put that at the top of the page, like a bonfire on the beachhead, to remind you where you're headed.
+3. Seek out the data and examples. What credible source supports your main idea? Are there examples, data,
+real-world stories, relevant anecdotes, timely developments, or new stories you can cite? (See specific advice
+about using data in Part IV.)
+Don't discount your own experience; at the same time, don't rely exclusively on it. Use yourself as one of
+your sources if you have relevant experience (many writers in the New Yorker do so frequently; see Rule
+17). That works, because “the more personal you are, the more universal you become,” says Chip Scanlan,
+Poynter.org's writing advice columnist.
+“The writer who uses herself as a source and resource has the greatest chance of connecting with the largest
+audience,” Chip points out. “[A]sk yourself: What do I think about this story? What do I know about it?”
+You'll want to research your topic, of course. But “the smart writers I know start out by tapping into their
+own private stock first,” Chip says.1
+In our example, ask: Is there research that quantifies the problem? Who else has dealt with catastrophes or
+successes? Could you talk to those people or organizations to get their firsthand horror stories and advice?
+Also, what's been your own experience?
+4. Organize. What structure helps communicate your point? Some options are a list, a how-to guide, and a
+client narrative. Organize the outline or general architecture that suits that type of story best. (See Rule 8.)
+5. Write to one person. Imagine the one person you're helping with this piece of writing. And then write directly
+to that person (using you, as opposed to using people or they).
+Connect your reader to the issue you're writing about (again, why does it matter to him or her?), perhaps by
+relaying a scenario or telling a story. Put your reader (or someone just like him or her) into your story right
+up front—because you want the reader to recognize and relate to an issue. (See Rule 17 for more.)
+6. Produce The Ugly First Draft. Producing The Ugly First Draft is basically where you show up and throw up.
+Write badly. Write as if no one will ever read it. (Stephen King calls this “writing with the door closed.”)
+Don't worry about grammar, complete sentences, or readability. Don't fret about spelling or usage. You'll
+tackle all that later. For now, just get that TUFD down.
+By the way, this show-up-and-throw-up phase is often where many bloggers end the process. But you won't
+do that—because you have respect both for your writing and for your reader.
+
+-- 48 of 360 --
+
+7. Walk away. Walking away is self-explanatory. You don't need to actually go for a walk, of course. Just put
+some distance between your first draft and the second.
+How much distance depends on you. I try to put a day between my own (usually spectacularly ugly!) TUFD
+and the next step, because that amount of time seems to let my thinking season and mature. I feel better
+prepared to slap those words around a little, willing them to shape up on the page.
+I don't always have the luxury of that long a fermentation period—and if a piece is tied to a news story you
+might not either. So work with what you've got. But at least try to get out of the building—maybe grab a
+coffee or a slice of pie or something.
+8. Rewrite. Shape that mess into something that a reader wants to read. In your head, swap places with your
+reader as you do so. (See Rule 10.)
+9. Give it a great headline or title. See Rule 69 for more on writing irresistible headlines.
+10. Have someone edit. Ideally, the person who edits your piece will have a tight grip on grammar, usage, style,
+and punctuation. Like a bona fide editor. (See Rule 24.)
+11. One final look for readability. Does your piece look inviting, alluring, easy to scan? With short paragraphs
+and bold subheads? Are your lists numbered or bulleted? For the most part, chunky chunks of text feel
+impenetrable and don't convey energy and movement. In other words, bulky text doesn't look like much fun
+to read. (See Rule 25.)
+12. Publish, but not without answering one more reader question: what now? Don't leave your readers just
+standing awkwardly in the middle of the dance floor after the music stops. What do you want them to do
+next?
+Check out other resources?
+Sign up to hear more?
+Register for an event or a free trial?
+Buy something?
+Consider the order of the steps in this outlined writing process merely a suggestion. You can toss them around
+and follow them in any order you wish—perhaps you like to barf your first draft onto the page incoherently
+(Rule 6) and then organize your writing into something more cogent (Rule 4). That's fine; it's completely at your
+discretion. There is no one way to write, remember?
+(The only order I wouldn't suggest is backward, because that's just dumb.)
+
+-- 49 of 360 --
+
+Note
+1. Chip Scanlan, “Ten Paradoxes of the Writing Life,” Chip Scanlan, Poynter, August 2, 2002,
+www.poynter.org/uncategorized/1576/ten-paradoxes-of-the-writing-life.
+
+-- 50 of 360 --
+
+
+
+-- 51 of 360 --
+
+7
+The More the Think, the Easier the Ink
+“It's not the ink—it's the think,” wrote New Yorker cartoon editor Robert Mankoff, when asked about the secret
+to drawing the magazine's iconic cartoons.
+“As cartoon editor, I'm often asked how to get ideas for cartoons by people who want to submit them to the New
+Yorker,” Mankoff wrote on the New Yorker blog. “There really is no trick—you just have to think of them.”1
+Mankoff's think-before-ink mnemonic is easily applied to the first and second GPS checkpoints of writing too:
+distilling an idea, and reframing it for your reader. (An aside—it would also be a great tagline for a tattoo studio.)
+Mankoff's deliberately oversimplified answer reveals a fundamental truth about cartoons, and about any
+content: the more you think about what you want to say, and plan for it, the easier it is to say.
+Figuring out what you want to say before you figure out how to say it seems an obvious first step. But many
+writers tend to shortchange that step—they instead charge straight at the water and wade in, slogging through
+the surf until pretty soon they're out of their depth and they're flailing around wondering how they ended up
+there at all.
+“If I'm really struggling, it's usually not about the writing—it's about the thinking: I just don't really have the
+story down yet,” Doug Kessler told me. “So more research or groping with the outline can unstick me.
+“If I do know the story but I'm just dopey or sleepy or grumpy (my preferred dwarf-personas), I give it a rest, get
+some sleep or take a shower or pound some Diet Coke or take a walk,” Doug added. “An hour with a fresh mind
+is worth five hours of fog.”
+So, before you begin the writing, be sure you know the purpose or mission or objective of every piece of content
+that you write. What are you trying to achieve? What information, exactly, are you trying to communicate? And
+why should your audience care?
+A caveat: some writers—including me—write as a way to figure out what we think. You, too, might develop your
+thoughts through writing, and you might not always have a clear sense of what exactly you want to say until
+you're knee-deep in the water. In that case the think-before-ink idea might seem counterproductive, but it's not.
+I'm talking about having a general sense of the key point or direction of the piece, as well as how to relate to the
+audience, even if that general sense is not fully fleshed out in your own head before you start.
+Often the flailing comes about because we haven't thought about an idea enough to find that key point—in
+which case we haven't thought through the supporting arguments we want to make to shore up that point. So it
+helps to first jot down thoughts to try to find a focus and points in support of it (see Rule 8).
+Think before ink means finding your key point by asking three questions about every bit of content you're
+creating. We talked a lot about this process in Rule 6, but to recap:
+Why am I creating this? What's my objective?
+What is my key take on the subject or issue? What's my point of view?
+And, finally, the critical so what?-because exercise: why does it matter to the people you are trying to reach?
+In some cases that key point becomes the headline. Sometimes during the writing phase I think of something
+better to use as a headline. But, still, that exercise lends the necessary focus.
+And, by the way, this approach applies equally well to blog posts or presentations or books. You might have
+more supporting points in a book or longer piece of content, but you should still be able to describe the key
+point in a single sentence. As I'm writing now, the guiding sentence at the top of my page is this: A handbook
+for businesses to create better content with more care and discretion, because we live in a world where we are
+all writers. It's not very artful, but it's getting the job done.
+Shakespeare probably wrote Hamlet with this sentence at the top of his parchment: Angsty, brooding Danish
+prince goes nuts (or does he?) but murders many, including the creepy uncle who had killed his father and
+married his mother.
+
+-- 52 of 360 --
+
+Or maybe not. But it's fun to think he did.
+
+-- 53 of 360 --
+
+Note
+1. Robert Mankoff, “Inking and Thinking,” New Yorker blog, June 16, 2010,
+www.newyorker.com/online/blogs/cartoonists/2010/06/inking-and-thinking.html.
+
+-- 54 of 360 --
+
+
+
+-- 55 of 360 --
+
+8
+Organize. Relax, You've Got This
+Good writing is like math: it has logic and structure. It feels solid to the reader: the writer is in control, having
+taken on the heavy burden of making a piece of writing clear and accessible. It might not follow a formula,
+exactly. But there's a kind of geometric architecture to it.
+There's no single way to organize a piece of writing. What works for me (as I said previously) is a single line at
+the top of the page that sums up the main point I'm trying to make. Then I list some key points that relate to or
+support my bigger idea. Then I go back and expand on those ideas in another sentence or two, creating
+paragraphs. Then I move the paragraphs around, adding transitions between them to create a smooth flow.
+In other words, I make a list, because it feels less intimidating to make a list than it does to write. (Do you ever
+feel stumped about where to begin a shopping list? Me neither.)
+Your process might be different. Rather than a list, you might use mind mapping, a flowchart, note cards, sticky
+notes, a pen and paper, a whiteboard and some fat markers, or whatever. J. K. Rowling sussed out the first
+Harry Potter novel using graphing paper and a ball-point pen.
+Chicago-based marketer Andy Crestodina writes an outline of a piece and then makes the main points its
+headers. Then he fleshes out the outline in a kind of fill-in-the-blank exercise. For him, “great writing isn't
+written, as much as assembled,” Andy told me.
+“I almost always write an outline, even if it's only a scribble on a piece of paper,” Doug Kessler said in an
+interview with me. “It helps me plan the arc of the story and the flow, so I always know where I'm headed.”
+Similarly, Chris Penn, who writes prolifically (almost daily) about marketing and social media on his Awaken
+Your Superhero blog, showed me recently how he fleshed out nine sentence fragments into a 400-word blog
+post that related business to martial arts.
+So this:
+You understand what to do, unpack the bottle.
+A lot of frameworks and models are shorthand like the heart Sutra.
+To make the most of it you need to unpack it and take it apart.
+This is exactly what we do in the martial arts with our kata.
+Our routines are unpacked at each move study.
+By doing this with marketing frameworks and models as bottles we can understand what it is we are
+supposed to do with each individual portion of a funnel.
+This is operationalizing a big idea that you take apart until we understand how it actually works.
+This is also how to detect which are genuine big ideas and which are bullshit.
+You unpack an idea that is bullshit and you'll find nothing to operationalize.
+Became this when it was published later on his blog:
+
+-- 56 of 360 --
+
+How to Assess a Big Marketing Idea
+See if this sounds familiar: marketing thought leader X publishes a new paper with a grand Big Idea,
+complete with fancy infographic and a chart or framework that is both dazzlingly complex and slightly
+intimidating. Whether you like said thought leader or not, you wonder whether their Big Idea is actually
+worth pursuing, or whether it's just a bunch of hot air, and pursuing it would be a waste of time and
+resources.
+I've been in that situation plenty of times over the years. I've seen lots of Big Ideas, lots of fancy
+frameworks, lots of infographics whose design budget probably eclipsed some peoples' annual income. To
+figure out what's the real deal and what's BS, I borrowed an idea from the martial arts.
+In the martial arts tradition I practice, we have lots of Big Ideas called kata. Loosely translated from
+Japanese, the word means form or routine, in the sense of something you practice. Each one is a Big Idea,
+how to win in a certain way under a specific set of adverse circumstances.
+My teacher, Mark Davis of the Boston Martial Arts Center, taught us that to learn and master a kata, you
+have to break it apart and study each of the pieces. How does a wrist lock in the middle of Batsu Gi kata
+work outside of those particular circumstances? Can you make it work versus a punch? A knife? You
+operationalize each piece of the kata until you know how it works; when you put it back together, you
+truly understand it.
+This methodology, which has served me well for over two decades, is one you can use for evaluating any
+thought leader's Big Idea. If you read about some new framework or concept, see if you can break it apart
+into operational pieces. See if you can transform the Big Idea into little things that you can implement. If
+you can, then you know the Big Idea has wheels—it's something that can be tested, evaluated in
+components, and used to make change in your business at both tactical and strategic levels.
+If you try to take apart a Big Idea and find that there's little or nothing you can operationally implement,
+then you know the Big Idea is either a complete mismatch for your organization, or it might be full of hot
+air entirely. Try it with any of the Big Ideas of the day and see if you can turn them into Little Things To
+Do!
+Source: Christopher S. Penn, “How to Assess a Big Marketing Idea,” Awaken Your Superhero (blog), April 2, 2104,
+www.christopherspenn.com/2014/04/how-to-assess-a-big-marketing-idea.
+Your preferred method for organizing a piece doesn't matter. The point is to keep yourself focused and organized
+via some set framework so you don't meander all over the place.
+Working from a prescription offers some guideposts to follow and gives you momentum toward what's next.
+How can you organize a blog post or article? Whatever its substance, consider what form you want it to take.
+Here are 15 approaches to framing your writing, adapted from Boston-based writing coach Paul Gillin. Here he
+uses online privacy as a sample topic:
+
+-- 57 of 360 --
+
+Organizing a Blog Post or Article
+1. Quiz. Test Your Privacy IQ
+2. Skeptic. You Don't Control Your Privacy Anymore
+3. Explainer. The Online Privacy Debate in Plain English
+4. Case study. How One Person Got Control Over Privacy
+5. Contrarian. Why Online Privacy Concerns Are Overblown
+6. How-to. Five Steps to Improving Online Privacy
+6½. Quick How-to. Three Stupid Simple Things You Can Do to Keep Your Profile Private
+7. How NOT to. Five Ways to Compromise Your Online Privacy
+8. First person. My Personal Privacy Horror Story
+9. Comparison. How Privacy Protection Services Measure Up
+10. Q&A. Five Common Questions About Online Privacy with Edward Snowden
+11. Data. Are Privacy Problems Worsening? Yes, Says Survey
+12. Man on the street. Experts Offer Opinions on the State of Online Privacy
+13. Outrageous. Why Online Privacy Is an Oxymoron
+13½. BuzzFeed-style outrageous (not advised, but good for a laugh!). This Woman Insists Online
+Privacy Is a Joke, and You Won't Believe What Happened Next
+14. Insider secrets. The One Thing You Need to Know About Your Online Privacy
+15. Literary treatment. Online privacy haiku, epic narrative poem, comic book treatment, or whatever
+else your imagination can muster!
+Source: Paul Gillin, “Create Stuff They've Just Gotta Read: How to Write for #SocialNetworks,” presentation at MarketingProfs Digital
+Marketing World, December 13, 2013, www.marketingprofs.com/events/24/dec2013/545/.
+
+-- 58 of 360 --
+
+
+
+-- 59 of 360 --
+
+9
+Embrace The Ugly First Draft
+So now that you've figured out what to write—and generally how it'll go—just write. Or, rather, write badly and
+create a first draft: The Ugly First Draft (TUFD) I talked about earlier.
+TUFD isn't a pass you give yourself to produce substandard work. But it is a necessary part of the process of
+creating above standard work.
+In Greek mythology, the goddess Athena was the favorite daughter of Zeus. She was born not in the usual way;
+rather, she emerged from his forehead fully grown and armed.
+Much of writing paralysis is the result of expecting too much of ourselves the first time out. Sowing letters onto
+the blank page and expecting something strong and powerful and fully formed—the content version of Athena—
+to emerge is unrealistic. Unless you are some kind of deity, that's not going to happen.
+Very often, the people you think of as good writers are terrible writers on their first drafts. But here's their
+secret: They are excellent editors of their own work.
+So embrace The Ugly First Draft as necessary. As painful and depressing as it might be to write badly—at least
+you're writing, you're getting the mess out of your head and onto the screen or paper. Then, when you get back
+to it, you can start shaping it into something more respectable.
+Recognize that brilliance—or anything close to it—comes on the rewrite. That implies that there is a rewrite, of
+course. And there should be.
+As writing teacher Don Murray said, “The draft needs fixing, but first it needs writing.”1
+Here's a timeline to keep in mind:
+1. Barf up TUFD. Think about what you want to say (think before ink!) and add your guiding bullet points or
+sentences at the top of the page.
+Jot down your key ideas as they come to you in whatever order they come.
+Don't worry about forming full (or even coherent!) sentences. Don't worry about finding the right words.
+Lowercased words, misspelling, poor grammar, awkward phrasing, subject-verb disagreements so violent
+they are practically fistfights…Let it all happen. You can fix all that stuff later. You're unleashing ideas here
+as opposed to really writing.
+If you get stuck, think about what's sticking. Do you need more research? More examples? Another point?
+Inserting “need a better example here” or “could use a research stat” or “something-something that
+supports that point” or “funnier anecdote” is more than legit during this phase.
+Reread what you've written only to remind yourself of what else you wanted to say, or to add some flesh to
+the bones of your terrible writing. (Even if it's rotting, smelly, walking-dead flesh.)
+Ban self-slandering remarks. Don't beat yourself up by saying things like I'm a crappy writer or this is awful.
+TUFD isn't for anyone to see but you. It's the content equivalent of staying home alone in your jammies all
+day and eating peanut butter straight from the jar. Revel in it. There's no one around to judge.
+2. Walk away. You'll feel some relief at getting the first draft out—but you might also feel frustrated by your
+TUFD. So this is a good time to walk away from each other. Get some space so that you can both cool off a
+bit. Grab the dog's leash and go for a walk, meet friends for lunch, whatever. Just put some distance between
+you two. Then, when you get back to it, you'll be fresh and (hopefully) less agitated.
+As I said in Rule 6, I like to put a lot of distance between me and my ugliness. I try to not look at my TUFD
+again until the next day.
+3. Rewrite. When you do get back to it, you might be horrified. You might shield your eyes the way nineteenth-
+century London recoiled from John Hurt in the movie The Elephant Man. But you will find things you like
+that you can upcycle. In other words, take the best parts of the draft and use them in your final product. How
+to do that is covered next.
+
+-- 60 of 360 --
+
+Note
+1. Thomas Newkirk and Lisa C. Miller, eds., The Essential Don Murray: Lessons from America's Greatest
+Writing Teacher (Portsmouth, NH: Boynton-Cook Publishers, 2009).
+
+-- 61 of 360 --
+
+
+
+-- 62 of 360 --
+
+10
+Swap Places with Your Reader
+“The reader doesn't turn the page because of a hunger to applaud,” said longtime writing teacher Don Murray.1
+Good writing serves the reader, not the writer. It isn't self-indulgent. Good writing anticipates the questions that
+readers might have as they're reading a piece, and it answers them.
+Some writers adopt this mind-set during the initial writing phase. But this perspective is especially helpful on
+the rewrite or edit, once the first draft is out of your head and onto the page.
+Swap places with your reader. Be a skeptic of your own work. Get out of your own head, and into your reader's
+or your customer's. Relentlessly, unremittingly, obstinately think of things from your readers' point of view,
+with empathy for the experience you are giving them.
+In his essay “Politics and the English Language,” George Orwell wrote: “A scrupulous writer, in every sentence
+that he writes will ask himself at least four questions, thus: What am I trying to say? What words will express
+it? What image or idiom will make it clearer? Is this image fresh enough to have an effect?
+And he will probably ask himself two more: Could I put it more shortly? Have I said anything that is avoidably
+ugly?” (Hat tip to the Economist style guide for that one.2)
+You might notice that the idea of serving the reader in the realm of writing isn't unlike how the best content
+marketing serves the customer (or user, a word I hate to use to refer to people).
+Yet often in writing and in business we put ourselves first. Many writers, too, think sometimes that it's all about
+them. And many organizations—especially those with multiple points of review or layers of bureaucracy—tend
+to place other agendas above the interests of the reader. They hold a spot at the front of the line for the boss, the
+CEO, the exec, the legal department, whatever…
+But that's a mistake, because you (as a marketer or content creator) should be the customer advocate. The only
+people your content needs to please are your readers. Because ultimately you serve them, and not your boss or
+your CEO or your client.
+Why? If the customer loves your content, so will your boss or client. But the inverse isn't necessarily true: if
+only your boss loves it, it won't achieve what your organization needs it to.
+So create every bit of content to please just one person: your customer or prospect—not your boss (or client, if
+you're at an agency). Think of it this way: what would your content look like if your customer signed your
+paycheck? It's up to you to advocate for this point of view.
+Relentlessly, unremittingly, obstinately focus on the reader.
+So write your first draft as you usually would—then go back and rework it, swapping places with your readers to
+consider things from their point of view, with honest empathy for the experience you are giving them. Ask
+yourself:
+What experience is this creating for the reader?
+What questions might they have?
+Am I making them work too hard to figure out what I am trying to say?
+
+-- 63 of 360 --
+
+Notes
+1. Thomas Newkirk and Lisa C. Miller, eds., The Essential Don Murray: Lessons from America's Greatest
+Writing Teacher (Portsmouth, NH: Boynton-Cook Publishers, 2009).
+2. The Economist Style Guide, accessed June 6, 2014, www.economist.com/styleguide/introduction.
+
+-- 64 of 360 --
+
+
+
+-- 65 of 360 --
+
+11
+Humor Comes on the Rewrite
+Humor comes on the rewrite. So do the best analogies, the clearest construction, the best writing—period.
+I'm breaking this out as a separate rule for emphasis, because reworking the work is what separates us from the
+chimps. Or at least from self-indulgent writers who put their own needs above their audience's.
+
+-- 66 of 360 --
+
+
+
+-- 67 of 360 --
+
+12
+Develop Pathological Empathy
+Some people are naturally empathic. They easily understand another's point of view, and they immediately grok
+what another might be feeling in any scenario. If that is you, congrats: you're ahead of the game. The rest of us
+have to work a little harder, and a little more intentionally, to get into the customer mind-set.
+“Good writing (and therefore crafting good experiences) requires us to understand and have empathy for our
+audience, their situation, their needs and goals,” says Jonathon Colman of Facebook. “The best content
+experiences are pitched perfectly in the sweet spot, the nexus of all those human factors.”
+In other words, empathy for the customer experience should be at the root of all of your content, because having
+a sense of the people you are writing for and a deep understanding of their problems is key to honing your skill.
+Content created merely to further a search engine ranking is a waste of time and effort. What matters now is
+creating useful content that solves customer problems, shoulders their burdens, eases their pain, enriches their
+lives. We wrote that in Content Rules, but recent and various Google updates have seemed to finally make it
+permanent and official. (Sing hallelujah!)
+That means you have to meet people where they are, with an attitude of benevolence and largesse, to help them
+find answers to the problems they have. All of your content—your product pages, your landing pages, your
+customer support text, your About Us pages, and so on “need to use language to support people's needs and
+goals,” Colman told me. “And each of those experiences requires very thoughtful writing that's appropriate to
+what the audience needs from us in those situations. A listicle of 14 Cats Who Look Just Like Elvis just ain't
+gonna work when someone needs to figure out how our products work.”
+So how do you know what people need? That's where enormous, mammoth, almost pathological empathy
+comes in. Start by getting to know your customers.
+“It's hard to have real empathy for real people's experiences if we don't really get to know the people
+themselves,” Colman said. “Not just in aggregate, not just as a collection of Web analytics data, search queries,
+or spreadsheets…I mean the real deal: actually talking with them. Or, better still: listening to them.”
+Empathy—like writing—isn't a gift. It's a discipline. It takes some intentional effort and diligence to develop
+enormous empathy so that you can apply it to your writing. “You're not engaging in a one-time action,” Colman
+says. “You're building a long-term relationship.”
+Here are some first steps toward building enormous empathy, from Jonathon Colman (the quoted portions are
+his words from an interview I conducted with him):
+1. Spend time with your customers or prospects. Spending time with your customers sounds obvious, doesn't
+it? But it's surprising how few marketers actually interact with their customers; often, only customer service
+or sales teams do. Listen to customer service inquiries. Watch how customers behave. See what problems
+they have. “Look for patterns.”
+2. Understand their habitat. “Beyond putting together a focus group in an artificial setting or doing so-called
+user experience testing in a lab environment, arrange to visit the people who use your content or products in
+their natural habitat.…Talk with them in their homes, at their jobs; watch them as they browse your site or
+use your app on mobile while waiting in line at the coffee shop. This will give you an entirely new
+understanding of what people need from you and your content. You can't develop empathy without context.”
+3. Be a natural skeptic. A powerful question is, Why? Why do you do things that way? Why do you feel that
+way?
+4. Ask why they do it. “Never assume that you know the answer to why your readers or the people who use
+your products do what they do…You might be great at using analytics systems to measure every nuance of a
+person's behavior on your site or in your app. But analytics only tell us what people did, not why they did it.
+So ask. And then ask again. And keep asking until you understand the bigger picture of what people value
+and what they need from you.”
+5. Share story, not just stats. “A lot of companies build dashboards and monitors that they install all over the
+office that are filled with analytics data: How many concurrent users are on the site, the data throughput of
+
+-- 68 of 360 --
+
+the app, the number of transactions per hour, and so on.”
+But what about feedback from the people on your site or the people using your products? You can display
+that, too. And while you can build aggregate metrics around this feedback (sentiment, length, complaints
+per hour, etc.), it's even more powerful to display people's actual comments. Follow that up by building
+rapid workflows to solve problems and you're putting empathy into action!
+I'd add a simple shortcut—an empathy hack—to help you get into the customer mind-set:
+6. Use a customer-centric POV. Replace I or we with you to shift the focus to the customer's point of view.
+Then write (or rewrite) accordingly. For example:
+Company-centric: We offer accelerated application development.
+Customer-centric: Deploy an app to the cloud at lunch hour. And still have time to eat. (From the home
+page of Kinvey.com.)
+Company-centric: We are the leading global B2B research and advisory firm. We deliver actionable
+intelligence, strategic and operational frameworks and personal guidance from experienced
+practitioners. (From Sirius Decisions.1)
+Customer-centric: Make better business decisions based on actionable insight and years of experience
+placed at your disposal.
+Enormous empathy is especially important for sales copy or marketing landing pages, where you should be very
+specific about what your value offers to your customers—and not just what the offer is, Nadia Eghbal, co-owner
+of Feast, an online cooking school, told me in an interview.
+“Your customers don't buy your product to do your company a favor,” Eghbal said. “They're doing it because
+your product makes their lives better. So if you want to sell something, you need to explain how you're helping
+them.”
+On its home page, Feast shifted from company-centric to customer-centric writing, like this:
+Company-centric: A Better Way to Learn How to Cook. (This statement was too nonspecific, Nadia said.
+Better in what way? And according to whom?)
+Customer-centric: Become a Cook in 30 Days.
+Eghbal credits Feast's shift in messaging for a tenfold increase in sales, and she cites soul-filling anecdotal
+evidence, too (actual feedback, as Jonathon Colman advises). “We regularly get emails from people along the
+lines of ‘Wow, everything on your home page describes me to a T!’—which suggests we're resonating with
+customers in the right way,” she said.
+And more broadly: the best way to keep readers reading is to talk about them, not you.
+
+-- 69 of 360 --
+
+Note
+1. www.siriusdecisions.com/Who-We-Are.aspx.
+
+-- 70 of 360 --
+
+
+
+-- 71 of 360 --
+
+13
+‘Cross Out the Wrong Words’
+“Writing is easy,” said Mark Twain. “All you have to do is cross out the wrong words.”
+Revisiting a first draft to rework and rewrite it doesn't sound like much fun, does it? It sounds like drudgery and
+tedium, like alphabetizing canned goods.
+But it's not really, because there's a kind of freedom in it. You've already done the hard part of setting down the
+words. Now comes the easier (and, for some, less anxiety-inducing) part of distilling it to its essence—or,
+crossing out the wrong words and the unnecessary words, and sometimes finding better ones to use.
+Revising is my favorite part of writing—because it's when I (or you!) do the creative, fun part of writing. To me
+the first draft feels more like pure ball-and-chain drudgery. The editing is where you get to make some merry.
+I'm not talking here about having someone else edit your work, by the way. That comes later. First, you need to
+take a first pass at shaping your own work—essentially rewriting much of it.
+There are two approaches to self-editing:
+1. Developmental editing, which I call editing by chainsaw. Here's where you look at the big picture.
+2. Line editing, which I call editing by surgical tools. Here's where you look at paragraph and sentence flow,
+word choice, usage, and so on.
+I like to use both on the same piece, first one…and then the other.
+Editing by chainsaw. First, ignore the grammar and specific words you've used, and focus on the bigger stuff.
+State your key idea as clearly as you can near the start. You might've gotten bogged down by setting up an
+idea with too much introductory explanation, instead of just getting right into it. (See Rule 15.) If so, remove
+that introductory text, whittle it down, or (if it's really good) use it elsewhere.
+Slash anything that feels extraneous—if it doesn't support your main point or further your argument, or if
+it distracts from the key point. (Even if it's a good story or anecdote.)
+Make every paragraph earn its keep. Does every paragraph contain an idea that the one before or after it
+doesn't? It should. Are the paragraphs more like Frankenparagraphs—made up of disconnected sentences
+bolted awkwardly together, creating an ugly mess? They shouldn't be. The sentences should instead build on
+one another, furthering a single idea and creating a whole.
+Make every sentence earn its keep. Does it bring something unique to the paragraph? Or does it simply
+restate what its buddy before it already said? If so, kill it. Be ruthless. Adopt a less-is-more mind-set: many
+writers take too long to get to the point; they use too many words. Don't be that guy. Write concisely.
+Move things around. Are things in the right order? Does one point flow into the next?
+Think of the sentences in a paragraph as a conversation between an elderly, companionable couple. They
+don't talk over each other; they expand or elucidate what the other before them said.
+Editing with surgical tools. Next, turn off the chainsaw and turn back to the words.
+Trim the bloat and fat. Are you potentially using far too many words to say things that might be said more
+concisely?
+Shed the obvious. There's no need to include in this article, in this post, in regard to, I've always felt that,
+we are of the opinion that…You get the idea.
+Lose Frankenwords, word additives, clichés, and words pretending to be something they're not. (See Rules
+29 and 30.)
+Trim word bloat. Sub in single words for phrases (some samples: sub although for despite the fact that;
+when or in for when it comes to; when or at times for there will be times when; remains for continues to be;
+and about or regarding for in regard to).
+Ditch adverbs unless they are necessary to adjust the meaning. (Rule 34.)
+
+-- 72 of 360 --
+
+Ditch weakling verbs in favor of stronger, ripped ones. (Rule 33.)
+Create transitions between paragraphs. Good transitions greatly improve the feel and reader-friendliness of
+any work. The best writing flows from paragraph to paragraph, creating progression and cadence. Good
+transitions are like fine stitching, turning disconnected writing into a seamless whole.
+Draw natural connections between paragraphs. Again, don't merely rely on high school transitions like
+however, thus, therefore, and so on. Instead, pick up an idea from the previous paragraph and connect it to
+an idea in the next paragraph.
+Did you notice that I just wrote 700 words on editing but didn't once mention grammar? That's not because
+grammar isn't important. It is, as we'll talk about in Part II. But writers tend to equate editing with fixing the
+grammar, when it's so much more than that.
+Fixing the grammar is copyediting (also important), but it's more important to get the writing right first. You
+can then go get some help with the copyedit (see Rule 24).
+
+-- 73 of 360 --
+
+
+
+-- 74 of 360 --
+
+14
+Start with Dear Mom . . .
+What if you have trouble simply getting off the starting block?
+The fear of the blank page is the number one cliché in writing. “Some call it writer's block. Others call it
+procrastination,” photographer and author Dane Sanders told me. Whatever you call it, it stops people from
+writing even before they start.
+I don't believe in writer's block. “My father never got truck driver's block,” as the journalist Roger Simon has
+said.1 A house framer isn't daunted by the pile of two-by-fours. Nor was Edison intimidated by the blank
+lightbulb, points out Colin Nissan in a piece on the humor website McSweeney's.2
+More often than not, writer's block—or the reluctance to begin—is rooted in fear and anxiety about knowing
+where, exactly, to start. I get that, because I procrastinate, too.
+Before I begin to write, I pay all my bills. I catch up on any movies or TV series I might've never gotten around
+to seeing. I change the oil in my car. I waste an hour or two on Facebook. I descale the coffee maker. I decide to
+create something really complicated for dinner. Only then do I leash up my dog and decide on the walk what the
+first line I'm going to write will be when I get back home.
+So I might not believe in writer's block, but I do believe in writer's evasion. I believe in writer's difficulty and
+writer's procrastination and writer's I-wonder-if-there's-any-donuts-left?-I-should-go-check.
+A writing GPS can certainly help lubricate the start, as we've discussed. But at some point you just have to start
+writing.
+In a piece in the New Yorker, John McPhee suggests the trick of typing Dear Mother to neuter the fear of the
+blank page.3 You could do that, or adapt it to Dear Dad, Hi hon, or Hey you.
+If you're a marketing or business writer, you can adapt that approach by thinking of your favorite customer—and
+not some nameless, faceless market segment. Keep a real person you either know or you can imagine knowing
+in mind. Someone you like, too, because you want to help this person.
+McPhee's trick is also handy to use as a general approach, because it requires you to picture the reader on the
+receiving end of your writing as someone you know personally. Doing that helps relax your writing voice into
+sounding natural and loose and accessible.
+In other words, by framing your writing as a conversation with someone specific, you become more…well,
+conversational.
+
+-- 75 of 360 --
+
+Notes
+1. Chip Scanlon, “Being Blocked Is Part of the Process,” Poynter, March 2, 2011, www.poynter.org/how-
+tos/newsgathering-storytelling/chip-on-your-shoulder/21037/being-blocked-is-part-of-the-process/.
+2. Colin Nissan, “The Ultimate Guide to Writing Better Than You Normally Do,” Timothy McSweeney's Internet
+Tendency (McSweeneys.net), April 10, 2012, www.mcsweeneys.net/articles/the-ultimate-guide-to-writing-
+better-than-you-normally-do.
+3. John McPhee, “Draft No. 4,” New Yorker, April 29, 2013.
+
+-- 76 of 360 --
+
+
+
+-- 77 of 360 --
+
+15
+If You Take a Running Start, Cover Your Tracks
+At the beginning of a piece, many of us take too long to delve into the topic. We offer too much setup and
+background. In other words, we take a metaphorical running start on the page—before getting to the real
+starting point.
+It's a great way to warm up to a topic, and I do it all the time. But in most cases I go back and erase the running
+start, covering my tracks completely and getting to the key point more directly.
+One of my professors in college used to routinely lop off the first paragraph or two from our essays. Usually that
+barely affected the meaning—but greatly improved that first impression I talk about elsewhere here.
+Try it with the next piece you write: Can you trim the start, or lop it off completely? Does doing that help the
+reader get into the heart of things more quickly?
+Take a look at an example from MarketingProfs. Here are the unedited first few paragraphs of a submission we
+received recently about using YouTube to market a business:
+Simultaneous to the modern boom of Web 2.0 and along with the rise of social media, companies have
+projected their presence by utilizing social media giants (e.g., Facebook and Twitter) in attempts to market
+their businesses.
+And while companies have seen much success in tapping the vein of reaching the masses through the few
+quintessential social networks, only a fraction have explored the option of YouTube marketing.
+Let's take a look at the facts.
+YouTube is not only the second largest search engine, but also the third most visited website in the world,
+only behind Google and Facebook. It receives over 1 billion unique monthly visitors and has about 6 billion
+hours of videos watched each month. Let that sink in.
+Almost that entire first paragraph can be sliced off the top without losing much context. Doing so gets into the
+point of the piece more quickly and clearly, and with brevity. This is the same piece, post-editing:
+Though many companies have succeeded in reaching their audiences via social networks such as Facebook
+and Twitter, only a fraction have explored the option of marketing via YouTube.
+Yet, YouTube is not only the second-largest search engine but also the third most-visited website in the
+world, only behind Google and Facebook. It receives over 1 billion unique monthly visitors, and it has
+about 6 billion hours of videos watched each month.
+Let those numbers sink in for a minute…
+And here's another from Salon. These are the first two paragraphs of an article that ran Memorial Day weekend
+in 2014:
+
+-- 78 of 360 --
+
+With Memorial Day weekend, we finally have the traditional, though not technical, beginning of summer.
+(Given 2014 weather patterns, however, we will probably get at least 10 more Weather Channel-christened
+“Snowstorm Frodo” blizzards by July 4. How about that weather, eh?) But anyway. Memorial Day
+weekend is another great opportunity for the whole family to gather at a beach house or, if traffic's
+unmanageable, a makeshift interstate-median campsite. Or maybe you will be alone? Don't feel bad. Being
+alone during one of the year's most fun three-day weekends can be…good?
+So, you're at the barbecue, or the fake Disneyland picnic table, and everyone's having a good time noshing
+on cheeseburgers or chicken things or other meats or quinoa. Uncle Dingo's talking about his kids' (your
+cousins') mediocre peewee baseball performance this spring, and then that leads to discussion of the
+current Major League Baseball standings, maybe that leads to some light chatter about the weather, the
+accuracy of Thomas Piketty's data integration, the price of beans, etc. And then right when Cousin
+Tombert, who just graduated college with a B.A. in medieval poetry gender roles and is about to start a job
+leading the complex derivative trading desk at a Greenwich-based hedge fund, is walking out with Cool
+Whip and those poor-man's strawberry shortcake shells that the grocery stores sell in six-packs, Uncle
+Dingo, out of nowhere, goes, “…well, what do you expect, in a world where President Hussein Obama
+thinks he doesn't need Congress anymore.1
+Author Jim Newell is a good writer—and the style of the piece is breezy, intentionally meandering, and funny.
+But still Jim could've easily lopped off that first paragraph for a quicker start.
+
+-- 79 of 360 --
+
+Note
+1. Jim Newell, “How to Win Memorial Day: A Holiday Guide to Arguing with Right-Wing Relatives,” Salon, May
+26, 2014,
+www.salon.com/2014/05/26/how_to_win_memorial_day_a_holiday_guide_to_arguing_with_right_wing_re
+
+-- 80 of 360 --
+

@@ -22,6 +22,30 @@ model User {
   monthlyBooksUsed  Int       @default(0)
   monthlyResetDate  DateTime?
   isGenerating      Boolean   @default(false)
+  generationStartedAt DateTime?
+  revisionCount     Int       @default(0)
+  revisionResetDate DateTime?
+  monthlyNewslettersUsed Int  @default(0)
+  monthlyArticlesUsed    Int  @default(0)
+  freeBookUsed           Boolean @default(false)
+  freeRevisionsUsed      Int     @default(0)
+  freeTranslationsUsed   Int     @default(0)
+  freeNewslettersUsed    Int     @default(0)
+  freeArticlesUsed       Int     @default(0)
+  teamMembers TeamMember[] @relation("TeamMembers")
+  ownedTeam   TeamMember[] @relation("TeamOwner")
+  apiCosts    ApiCost[]
+}
+
+model TeamMember {
+  id        String   @id @default(cuid())
+  teamOwner String
+  email     String
+  userId    String?
+  role      String   @default("member")
+  createdAt DateTime @default(now())
+  user      User?    @relation("TeamMembers", fields: [userId], references: [id])
+  owner     User     @relation("TeamOwner", fields: [teamOwner], references: [id])
 }
 
 model Book {
@@ -33,6 +57,13 @@ model Book {
   audience    String?
   language    String?
   bookLength  String?
+  status      String          @default("complete")
+  progress    String?
+  seriesId    String?
+  seriesOrder Int?
+  contentType String          @default("book")
+  mature      Boolean         @default(false)
+  humanize    Boolean         @default(false)
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
   userId      String
@@ -60,6 +91,19 @@ model BookVersion {
   createdAt DateTime @default(now())
   bookId    String
   book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+}
+
+model ApiCost {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  type         String
+  inputTokens  Int      @default(0)
+  outputTokens Int      @default(0)
+  cost         Float
+  model        String   @default("claude-opus-4-20250514")
+  bookId       String?
+  createdAt    DateTime @default(now())
 }
 
 model BookCredit {

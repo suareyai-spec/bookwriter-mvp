@@ -1,0 +1,182 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String        @id @default(cuid())
+  email         String        @unique
+  password      String
+  name          String
+  credentials   String?
+  specialty     String?
+  licenseNumber String?
+  role          String        @default("student")
+  createdAt     DateTime      @default(now())
+  enrollments   Enrollment[]
+  quizAttempts  QuizAttempt[]
+  certificates  Certificate[]
+}
+
+model Course {
+  id              String       @id @default(cuid())
+  title           String
+  slug            String       @unique
+  description     String
+  longDescription String?
+  instructor      String
+  instructorBio   String?
+  price           Float
+  credits         Float
+  creditType      String
+  specialty       String
+  duration        String
+  thumbnail       String?
+  rating          Float        @default(4.5)
+  enrollmentCount Int          @default(0)
+  isPublished     Boolean      @default(true)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  modules         Module[]
+  enrollments     Enrollment[]
+}
+
+model Module {
+  id            String             @id @default(cuid())
+  courseId       String
+  course        Course             @relation(fields: [courseId], references: [id])
+  title         String
+  description   String
+  order         Int
+  videoDuration String
+  videoUrl      String?
+  content       String?
+  createdAt     DateTime           @default(now())
+  questions     Question[]
+  completions   ModuleCompletion[]
+}
+
+model Question {
+  id           String @id @default(cuid())
+  moduleId     String
+  module       Module @relation(fields: [moduleId], references: [id])
+  text         String
+  options      String
+  correctIndex Int
+  explanation  String
+  order        Int
+}
+
+model Enrollment {
+  id                String             @id @default(cuid())
+  userId            String
+  user              User               @relation(fields: [userId], references: [id])
+  courseId           String
+  course            Course             @relation(fields: [courseId], references: [id])
+  progress          Float              @default(0)
+  status            String             @default("active")
+  stripePaymentId   String?
+  createdAt         DateTime           @default(now())
+  completedAt       DateTime?
+  moduleCompletions ModuleCompletion[]
+
+  @@unique([userId, courseId])
+}
+
+model ModuleCompletion {
+  id           String     @id @default(cuid())
+  enrollmentId String
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
+  moduleId     String
+  module       Module     @relation(fields: [moduleId], references: [id])
+  quizScore    Float?
+  quizPassed   Boolean    @default(false)
+  completedAt  DateTime   @default(now())
+
+  @@unique([enrollmentId, moduleId])
+}
+
+model QuizAttempt {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  moduleId  String
+  score     Float
+  passed    Boolean
+  answers   String
+  createdAt DateTime @default(now())
+}
+
+model Certificate {
+  id                String    @id @default(cuid())
+  userId            String
+  user              User      @relation(fields: [userId], references: [id])
+  courseId           String
+  certificateNumber String    @unique
+  issuedAt          DateTime  @default(now())
+  status            String    @default("active")
+  revokedAt         DateTime?
+  revokeReason      String?
+}
+
+model Resource {
+  id          String   @id @default(cuid())
+  moduleId    String
+  title       String
+  description String
+  filename    String
+  type        String   @default("pdf")
+  order       Int
+  createdAt   DateTime @default(now())
+}
+
+model Coupon {
+  id            String    @id @default(cuid())
+  code          String    @unique
+  discountType  String
+  discountValue Float
+  maxUses       Int?
+  currentUses   Int       @default(0)
+  expiresAt     DateTime?
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+}
+
+model Transaction {
+  id              String    @id @default(cuid())
+  userId          String
+  courseId         String
+  amount          Float
+  currency        String    @default("usd")
+  status          String    @default("paid")
+  stripePaymentId String?
+  couponId        String?
+  refundedAt      DateTime?
+  refundAmount    Float?
+  createdAt       DateTime  @default(now())
+}
+
+model EmailTemplate {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  subject   String
+  body      String
+  variables String
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+model EmailLog {
+  id         String    @id @default(cuid())
+  templateId String?
+  recipient  String
+  subject    String
+  status     String    @default("pending")
+  sentAt     DateTime?
+  createdAt  DateTime  @default(now())
+}

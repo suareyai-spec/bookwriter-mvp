@@ -20,7 +20,13 @@ interface BookData {
   id: string;
   title: string;
   genre: string | null;
+  status: string;
+  progress: string | null;
+  mature: boolean;
   createdAt: string;
+  seriesId: string | null;
+  seriesOrder: number | null;
+  contentType: string | null;
   _count: { versions: number };
   latestVersion: { wordCount: number | null } | null;
 }
@@ -55,8 +61,16 @@ export default function LibraryPage() {
     }
   }, [status, router, fetchBooks, fetchUsage]);
 
+  // Poll for updates if any books are in progress
+  useEffect(() => {
+    const hasInProgress = books.some(b => b.status === "generating" || b.status === "revising");
+    if (!hasInProgress) return;
+    const interval = setInterval(() => { fetchBooks(); }, 5000);
+    return () => clearInterval(interval);
+  }, [books, fetchBooks]);
+
   async function deleteBook(id: string) {
-    if (!confirm("Are you sure you want to delete this book?")) return;
+    if (!confirm("Are you sure you want to delete this item?")) return;
     const res = await fetch(`/api/books/${id}`, { method: "DELETE" });
     if (res.ok) {
       setBooks((prev) => prev.filter((b) => b.id !== id));
@@ -112,19 +126,19 @@ export default function LibraryPage() {
       <div className="relative z-10">
         <Navbar />
 
-        <div className="max-w-5xl mx-auto px-6 py-8">
-          <div className="flex items-center justify-between mb-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
             <h1
-              className="text-3xl font-bold"
+              className="text-2xl sm:text-3xl font-bold"
               style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
             >
               Your Library
             </h1>
             <Link
-              href="/"
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold rounded-xl px-6 py-3 transition-all shadow-lg shadow-blue-500/20"
+              href="/create"
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold rounded-xl px-5 py-3 transition-all shadow-lg shadow-blue-500/20 text-sm sm:text-base w-full sm:w-auto text-center"
             >
-              Create New Book
+              Create New
             </Link>
           </div>
 
@@ -178,27 +192,108 @@ export default function LibraryPage() {
 
           {books.length === 0 ? (
             <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-12 text-center">
-              <p className="text-gray-400 text-lg mb-4">You haven&apos;t created any books yet. Create your first one!</p>
+              <p className="text-gray-400 text-lg mb-4">You haven&apos;t created anything yet. Create your first one!</p>
               <Link
-                href="/"
+                href="/create"
                 className="inline-block bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold rounded-xl px-6 py-3 transition-all"
               >
                 Get Started
               </Link>
             </div>
           ) : (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {books.map((book) => (
-                <div
+            (() => {
+              // Group books: series books grouped together, standalone books separate
+              const seriesMap = new Map<string, BookData[]>();
+              const standaloneBooks: BookData[] = [];
+              
+              for (const book of books) {
+                if (book.seriesId) {
+                  const existing = seriesMap.get(book.seriesId) || [];
+                  existing.push(book);
+                  seriesMap.set(book.seriesId, existing);
+                } else {
+                  standaloneBooks.push(book);
+                }
+              }
+
+              // Sort series books by order
+              for (const [, seriesBooks] of seriesMap) {
+                seriesBooks.sort((a, b) => (a.seriesOrder || 0) - (b.seriesOrder || 0));
+              }
+
+              const renderBookCard = (book: BookData, seriesLabel?: string) => (
+                <Link
                   key={book.id}
-                  className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-6 flex flex-col"
+                  href={`/library/${book.id}`}
+                  className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-6 flex flex-col hover:bg-white/[0.06] hover:border-white/[0.10] transition-all cursor-pointer"
                 >
+                  <div className="flex gap-2 mb-2">
+                    {seriesLabel && (
+                      <span className="text-xs bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 rounded-full px-2 py-0.5">
+                        {seriesLabel}
+                      </span>
+                    )}
+                    {book.contentType && book.contentType !== "book" && (() => {
+                      const badges: Record<string, { label: string; color: string }> = {
+                        comic: { label: "Comic", color: "bg-rose-500/20 text-rose-400 border-rose-500/30" },
+                        play: { label: "Play", color: "bg-amber-500/20 text-amber-400 border-amber-500/30" },
+                        thesis: { label: "Thesis", color: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30" },
+                        course: { label: "Course", color: "bg-violet-500/20 text-violet-400 border-violet-500/30" },
+                      };
+                      const b = badges[book.contentType];
+                      return b ? (
+                        <span className={`text-xs border rounded-full px-2 py-0.5 ${b.color}`}>{b.label}</span>
+                      ) : null;
+                    })()}
+                    {book.mature && (
+                      <span className="text-xs bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded-full px-2 py-0.5">
+                        18+
+                      </span>
+                    )}
+                  </div>
                   <h3
                     className="text-lg font-bold mb-1 line-clamp-2"
                     style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
                   >
                     {book.title}
                   </h3>
+                  
+                  {(book.status === "generating" || book.status === "revising") && (() => {
+                    let percent = 0;
+                    let progressText = book.status === "generating" ? "Generating..." : "Revising...";
+                    if (book.progress) {
+                      try {
+                        const p = JSON.parse(book.progress);
+                        percent = p.percent || 0;
+                        if (p.currentChapter && p.totalChapters) {
+                          progressText = `${book.status === "generating" ? "Writing" : "Revising"} ch. ${p.currentChapter}/${p.totalChapters}`;
+                        }
+                      } catch {}
+                    }
+                    return (
+                      <div className="mb-3">
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
+                          <span className="text-xs text-blue-400 font-medium">{progressText}</span>
+                          <span className="text-xs text-gray-500 ml-auto">{percent}%</span>
+                        </div>
+                        <div className="w-full h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
+                          <div
+                            className="h-full rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-700"
+                            style={{ width: `${percent}%` }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })()}
+
+                  {book.status === "failed" && (
+                    <div className="mb-3 flex items-center gap-2">
+                      <span className="w-2 h-2 bg-red-400 rounded-full" />
+                      <span className="text-xs text-red-400 font-medium">Generation failed</span>
+                    </div>
+                  )}
+
                   <div className="flex flex-wrap gap-2 text-xs text-gray-400 mb-4">
                     {book.genre && <span className="bg-white/[0.06] rounded-full px-2 py-0.5">{book.genre}</span>}
                     <span>{new Date(book.createdAt).toLocaleDateString()}</span>
@@ -208,35 +303,55 @@ export default function LibraryPage() {
                     )}
                   </div>
 
-                  <div className="mt-auto flex flex-wrap gap-2">
-                    <Link
-                      href={`/library/${book.id}`}
-                      className="text-sm bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-400 rounded-lg px-3 py-1.5 transition-all"
-                    >
-                      Read
-                    </Link>
+                  <div className="mt-auto flex flex-wrap gap-2" onClick={(e) => e.preventDefault()}>
                     <button
-                      onClick={() => downloadPdf(book.id, book.title)}
+                      onClick={(e) => { e.preventDefault(); downloadPdf(book.id, book.title); }}
                       className="text-sm bg-green-600/20 hover:bg-green-600/30 border border-green-500/30 text-green-400 rounded-lg px-3 py-1.5 transition-all"
                     >
                       PDF
                     </button>
                     <button
-                      onClick={() => downloadDocx(book.id, book.title)}
+                      onClick={(e) => { e.preventDefault(); downloadDocx(book.id, book.title); }}
                       className="text-sm bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/30 text-purple-400 rounded-lg px-3 py-1.5 transition-all"
                     >
                       .docx
                     </button>
                     <button
-                      onClick={() => deleteBook(book.id)}
+                      onClick={(e) => { e.preventDefault(); deleteBook(book.id); }}
                       className="text-sm bg-red-600/20 hover:bg-red-600/30 border border-red-500/30 text-red-400 rounded-lg px-3 py-1.5 transition-all"
                     >
                       Delete
                     </button>
                   </div>
+                </Link>
+              );
+
+              return (
+                <div className="space-y-8">
+                  {/* Series groups */}
+                  {Array.from(seriesMap.entries()).map(([seriesId, seriesBooks]) => (
+                    <div key={seriesId} className="bg-white/[0.02] border border-indigo-500/20 rounded-2xl p-5">
+                      <div className="flex items-center gap-2 mb-4">
+                        
+                        <h2 className="text-lg font-bold text-indigo-300" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+                          Series ({seriesBooks.length} books)
+                        </h2>
+                      </div>
+                      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        {seriesBooks.map((book) => renderBookCard(book, `Book ${book.seriesOrder}`))}
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* Standalone books */}
+                  {standaloneBooks.length > 0 && (
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      {standaloneBooks.map((book) => renderBookCard(book))}
+                    </div>
+                  )}
                 </div>
-              ))}
-            </div>
+              );
+            })()
           )}
         </div>
 

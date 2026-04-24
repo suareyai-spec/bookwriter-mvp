@@ -3,8 +3,13 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
+import { rateLimitByUser } from "@/lib/rate-limit";
 
 export async function POST(req: Request) {
+  // --- RATE LIMIT ---
+  const rl = await rateLimitByUser("stripe-portal", 10, 60 * 60 * 1000);
+  if (rl.blocked) return rl.blocked;
+
   const session = await getServerSession(authOptions);
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

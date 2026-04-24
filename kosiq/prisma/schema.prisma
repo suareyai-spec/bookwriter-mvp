@@ -1,0 +1,768 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String     @id @default(uuid())
+  email          String     @unique
+  passwordHash   String
+  name           String?
+  role           String     @default("admin")
+  systemRole     String     @default("user")
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @default(now()) @updatedAt
+  lastLoginAt    DateTime?
+  mfaEnabled     Boolean    @default(false)
+  mfaSecret      String?
+  auditLogs      AuditLog[]
+  orgMemberships OrganizationMember[]
+}
+
+model Organization {
+  id         String       @id @default(uuid())
+  name       String
+  type       String?
+  npi        String?
+  inviteCode String?      @unique
+  taxId      String?
+  address   String?
+  city      String?
+  state     String?
+  zip       String?
+  phone     String?
+  users         User[]
+  patients      Patient[]
+  claims        Claim[]
+  ensEvents     ENSEvent[]
+  reports       Report[]
+  uploads       DataUpload[]
+  pharmacyRecords PharmacyRecord[]
+  referrals     Referral[]
+  revenueRecords RevenueRecord[]
+  hospitalizationEvents HospitalizationEvent[]
+  aiReports     AIMonthlyReport[]
+  orgMembers    OrganizationMember[]
+  apiKey        String?      @unique
+  reportDay     Int?         @default(1)
+  reportEnabled Boolean      @default(true)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @default(now()) @updatedAt
+}
+
+model Patient {
+  id             String       @id @default(uuid())
+  externalId     String       @unique
+  firstName      String
+  lastName       String
+  dob            DateTime
+  gender         String
+  primaryPayer   String
+  pcpName        String
+  riskScore      Int
+  riskLevel      String
+  conditions     String
+  lob            String       @default("Medicare")
+  healthPlan     String       @default("Simply Health")
+  medicalCenter  String       @default("Main Center")
+  mraScore       Float        @default(1.0)
+  address        String?
+  phone          String?
+  predictiveRisk30 Float      @default(0)
+  predictiveRisk60 Float      @default(0)
+  predictiveRisk90 Float      @default(0)
+  laceScore      Int          @default(0)
+  costForecast6mo Float       @default(0)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  claims         Claim[]
+  ensEvents      ENSEvent[]
+  riskScores     RiskScore[]
+  pharmacyRecords PharmacyRecord[]
+  referrals      Referral[]
+  hospitalizationEvents HospitalizationEvent[]
+  createdAt      DateTime     @default(now())
+}
+
+model Claim {
+  id             String    @id @default(uuid())
+  patientId      String
+  patient        Patient   @relation(fields: [patientId], references: [id])
+  claimDate      DateTime
+  claimType      String
+  expenseType    String    @default("PRO")
+  providerName   String
+  payer          String
+  amount         Float
+  diagnosisCode  String?
+  procedureCode  String?
+  status         String    @default("paid")
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  createdAt      DateTime  @default(now())
+}
+
+model ENSEvent {
+  id             String    @id @default(uuid())
+  patientId      String
+  patient        Patient   @relation(fields: [patientId], references: [id])
+  hospitalName   String
+  admissionType  String
+  admitDate      DateTime
+  dischargeDate  DateTime?
+  diagnosis      String?
+  status         String
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  createdAt      DateTime  @default(now())
+}
+
+model Report {
+  id             String   @id @default(uuid())
+  period         String
+  title          String
+  summary        String
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  generatedBy    String?
+  pdfPath        String?
+  excelPath      String?
+  aiAnalysis     String?
+  generatedAt    DateTime @default(now())
+}
+
+model DataUpload {
+  id             String    @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  uploadedBy     String
+  fileName       String
+  fileType       String
+  status         String    @default("pending")
+  recordsTotal   Int       @default(0)
+  recordsParsed  Int       @default(0)
+  recordsFailed  Int       @default(0)
+  errors         String?
+  mappings       String?
+  filePath       String?
+  createdAt      DateTime  @default(now())
+  completedAt    DateTime?
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  action    String
+  resource  String?
+  details   String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+}
+
+model RiskScore {
+  id           String   @id @default(uuid())
+  patientId    String
+  patient      Patient  @relation(fields: [patientId], references: [id])
+  score        Float
+  level        String
+  factors      String
+  calculatedAt DateTime @default(now())
+}
+
+model PharmacyRecord {
+  id             String   @id @default(uuid())
+  patientId      String
+  patient        Patient  @relation(fields: [patientId], references: [id])
+  drugName       String
+  drugType       String   @default("Generic")
+  ndc            String?
+  rxCount        Int      @default(1)
+  totalCost      Float
+  prescriberName String
+  fillDate       DateTime
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+}
+
+model Referral {
+  id             String   @id @default(uuid())
+  patientId      String
+  patient        Patient  @relation(fields: [patientId], references: [id])
+  referralDate   DateTime
+  specialty      String
+  fromFacility   String
+  toFacility     String
+  fromProvider   String
+  toProvider     String
+  status         String   @default("Open")
+  priority       String   @default("Routine")
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+}
+
+model RevenueRecord {
+  id             String   @id @default(uuid())
+  month          String
+  netRevenue     Float
+  grossRevenue   Float
+  grossMedicare  Float
+  grossMedicaid  Float
+  grossCommercial Float
+  mlr            Float
+  mraScore       Float
+  premiumPmpm    Float
+  totalExpenses  Float
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+}
+
+model HospitalizationEvent {
+  id             String   @id @default(uuid())
+  patientId      String
+  patient        Patient  @relation(fields: [patientId], references: [id])
+  admitDate      DateTime
+  dischargeDate  DateTime?
+  los            Int      @default(0)
+  facility       String
+  diagnosis      String
+  diagnosisCode  String?
+  eventType      String   @default("Inpatient")
+  isAvoidable    Boolean  @default(false)
+  isReadmission  Boolean  @default(false)
+  isObservation  Boolean  @default(false)
+  payer          String
+  totalCost      Float    @default(0)
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+}
+
+model AIMonthlyReport {
+  id                String   @id @default(uuid())
+  period            String
+  title             String
+  executiveSummary  String
+  keyMetrics        String
+  costDrivers       String
+  riskAlerts        String
+  qualityGaps       String
+  referralPatterns  String
+  recommendations   String
+  generatedAt       DateTime @default(now())
+  organizationId    String?
+  organization      Organization? @relation(fields: [organizationId], references: [id])
+}
+
+// ── RBAC ──
+
+model OrganizationMember {
+  id            String       @id @default(uuid())
+  organizationId String
+  organization  Organization @relation(fields: [organizationId], references: [id])
+  userId        String
+  user          User         @relation(fields: [userId], references: [id])
+  role          String       @default("member")
+  productAccess String       @default("[]")
+  createdAt     DateTime     @default(now())
+
+  @@unique([organizationId, userId])
+}
+
+// ── CoreIQ Models ──
+
+model CorePatient {
+  id             String   @id @default(uuid())
+  mrn            String   @unique
+  firstName      String
+  lastName       String
+  dateOfBirth    DateTime
+  gender         String
+  email          String?
+  phone          String?
+  address        String?
+  city           String?
+  state          String?
+  zip            String?
+  ssn            String?
+  maritalStatus  String?
+  language       String?
+  race           String?
+  ethnicity      String?
+  emergencyContactName  String?
+  emergencyContactPhone String?
+  insuranceName  String?
+  insuranceId    String?
+  insuranceGroup String?
+  secondaryInsurance String?
+  secondaryInsuranceId String?
+  pharmacyName   String?
+  pharmacyPhone  String?
+  pharmacyAddress String?
+  status         String   @default("Active")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now()) @updatedAt
+  appointments   CoreAppointment[]
+  encounters     CoreEncounter[]
+  prescriptions  CorePrescription[]
+  labOrders      CoreLabOrder[]
+  claims         CoreClaim[]
+  messagesAbout  CoreMessage[] @relation("PatientMessages")
+}
+
+model CoreAppointment {
+  id          String   @id @default(uuid())
+  patientId   String
+  patient     CorePatient @relation(fields: [patientId], references: [id])
+  providerId  String?
+  providerName String
+  date        DateTime
+  time        String
+  duration    Int      @default(30)
+  type        String
+  status      String   @default("Scheduled")
+  reason      String?
+  notes       String?
+  roomNumber  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+}
+
+model CoreEncounter {
+  id              String   @id @default(uuid())
+  patientId       String
+  patient         CorePatient @relation(fields: [patientId], references: [id])
+  providerId      String?
+  providerName    String
+  date            DateTime
+  chiefComplaint  String
+  subjective      String?
+  objective       String?
+  assessment      String?
+  plan            String?
+  vitals          String?
+  diagnoses       String?
+  procedures      String?
+  status          String   @default("In Progress")
+  visitType       String?
+  templateUsed    String?
+  signedAt        DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now()) @updatedAt
+  claims          CoreClaim[]
+}
+
+model CorePrescription {
+  id                  String   @id @default(uuid())
+  patientId           String
+  patient             CorePatient @relation(fields: [patientId], references: [id])
+  providerName        String
+  medication          String
+  dosage              String
+  frequency           String
+  duration            String?
+  quantity            Int?
+  refillsRemaining    Int      @default(0)
+  pharmacy            String?
+  status              String   @default("Active")
+  controlledSubstance Boolean  @default(false)
+  deaSchedule         String?
+  prescribedDate      DateTime
+  expirationDate      DateTime?
+  notes               String?
+  createdAt           DateTime @default(now())
+}
+
+model CoreLabOrder {
+  id            String   @id @default(uuid())
+  patientId     String
+  patient       CorePatient @relation(fields: [patientId], references: [id])
+  providerName  String
+  orderDate     DateTime
+  tests         String
+  status        String   @default("Ordered")
+  results       String?
+  resultDate    DateTime?
+  abnormalFlags String?
+  priority      String   @default("Routine")
+  fasting       Boolean  @default(false)
+  notes         String?
+  createdAt     DateTime @default(now())
+}
+
+model CoreClaim {
+  id              String   @id @default(uuid())
+  patientId       String
+  patient         CorePatient @relation(fields: [patientId], references: [id])
+  encounterId     String?
+  encounter       CoreEncounter? @relation(fields: [encounterId], references: [id])
+  dateOfService   DateTime
+  diagnoses       String
+  procedures      String
+  totalCharge     Float
+  status          String   @default("Draft")
+  payer           String
+  payerClaimId    String?
+  payerResponse   String?
+  paidAmount      Float    @default(0)
+  adjustments     Float    @default(0)
+  patientBalance  Float    @default(0)
+  submittedDate   DateTime?
+  paidDate        DateTime?
+  createdAt       DateTime @default(now())
+}
+
+model CoreMessage {
+  id         String   @id @default(uuid())
+  fromName   String
+  fromRole   String
+  toName     String
+  toRole     String
+  patientId  String?
+  patient    CorePatient? @relation("PatientMessages", fields: [patientId], references: [id])
+  subject    String
+  body       String
+  read       Boolean  @default(false)
+  urgent     Boolean  @default(false)
+  category   String?
+  createdAt  DateTime @default(now())
+}
+
+// ── ChartIQ Models ──
+
+model ChartPatient {
+  id                  String              @id @default(uuid())
+  mrn                 String              @unique
+  firstName           String
+  lastName            String
+  dateOfBirth         DateTime
+  gender              String
+  roomNumber          String?
+  bedNumber           String?
+  admissionDate       DateTime
+  admissionDiagnosis  String
+  status              String
+  allergies           String?
+  codeStatus          String?
+  dietaryRestrictions String?
+  primaryPhysician    String?
+  insurance           String?
+  notes               ChartNote[]
+  vitals              ChartVital[]
+  medications         ChartMedication[]
+  labResults          ChartLab[]
+  orders              ChartOrder[]
+  problems            ChartProblem[]
+  images              ChartPatientImage[]
+}
+
+model ChartPatientImage {
+  id          String       @id @default(uuid())
+  patientId   String
+  patient     ChartPatient @relation(fields: [patientId], references: [id])
+  filename    String
+  filepath    String
+  category    String
+  description String?
+  uploadedBy  String
+  uploadedAt  DateTime     @default(now())
+}
+
+model ChartNote {
+  id         String       @id @default(uuid())
+  patientId  String
+  patient    ChartPatient @relation(fields: [patientId], references: [id])
+  authorName String
+  authorRole String
+  noteType   String
+  shiftType  String
+  content    String
+  createdAt  DateTime     @default(now())
+  department String?
+}
+
+model ChartVital {
+  id               String       @id @default(uuid())
+  patientId        String
+  patient          ChartPatient @relation(fields: [patientId], references: [id])
+  temperature      Float?
+  heartRate        Int?
+  bloodPressureSys Int?
+  bloodPressureDia Int?
+  respiratoryRate  Int?
+  oxygenSat        Float?
+  painLevel        Int?
+  recordedAt       DateTime
+  recordedBy       String
+}
+
+model ChartMedication {
+  id        String       @id @default(uuid())
+  patientId String
+  patient   ChartPatient @relation(fields: [patientId], references: [id])
+  name      String
+  dosage    String
+  route     String
+  frequency String
+  status    String
+  startDate DateTime
+  endDate   DateTime?
+  orderedBy String
+  notes     String?
+}
+
+model ChartLab {
+  id          String       @id @default(uuid())
+  patientId   String
+  patient     ChartPatient @relation(fields: [patientId], references: [id])
+  testName    String
+  value       String
+  unit        String?
+  normalRange String?
+  flag        String?
+  collectedAt DateTime
+  resultAt    DateTime
+}
+
+model ChartOrder {
+  id          String       @id @default(uuid())
+  patientId   String
+  patient     ChartPatient @relation(fields: [patientId], references: [id])
+  orderType   String
+  description String
+  status      String
+  priority    String
+  orderedBy   String
+  orderedAt   DateTime
+  completedAt DateTime?
+}
+
+// ── FraudIQ Models ──
+
+model FraudAlert {
+  id                  String    @id @default(uuid())
+  claimId             String
+  alertType           String
+  severity            String
+  provider            String
+  estimatedOverpayment Float
+  status              String    @default("Open")
+  investigationNotes  String?
+  detectedDate        DateTime  @default(now())
+  resolvedDate        DateTime?
+  createdAt           DateTime  @default(now())
+}
+
+model FraudInvestigation {
+  id              String    @id @default(uuid())
+  caseNumber      String    @unique
+  alerts          String    @default("[]")
+  investigator    String
+  status          String    @default("Open")
+  findings        String?
+  recoveryAmount  Float     @default(0)
+  openDate        DateTime  @default(now())
+  closeDate       DateTime?
+  createdAt       DateTime  @default(now())
+}
+
+// ── ClaimIQ Models ──
+
+model ClaimSubmission {
+  id              String    @id @default(uuid())
+  patient         String
+  provider        String
+  dateOfService   DateTime
+  cptCodes        String    @default("[]")
+  icdCodes        String    @default("[]")
+  charges         Float
+  payer           String
+  status          String    @default("Draft")
+  denialReason    String?
+  appealStatus    String?
+  paidAmount      Float     @default(0)
+  eraData         String?
+  createdAt       DateTime  @default(now())
+}
+
+// ── AuthIQ Models ──
+
+model PriorAuth {
+  id                    String    @id @default(uuid())
+  patient               String
+  provider              String
+  procedure             String
+  payer                 String
+  clinicalJustification String?
+  urgency               String    @default("Routine")
+  status                String    @default("Draft")
+  submitDate            DateTime  @default(now())
+  decisionDate          DateTime?
+  authNumber            String?
+  expirationDate        DateTime?
+  notes                 String?
+  createdAt             DateTime  @default(now())
+}
+
+// ── ComplianceIQ Models ──
+
+model ComplianceIncident {
+  id              String    @id @default(uuid())
+  type            String
+  severity        String
+  description     String
+  reportedBy      String
+  reportedDate    DateTime  @default(now())
+  status          String    @default("Open")
+  investigation   String?
+  correctiveAction String?
+  resolvedDate    DateTime?
+  createdAt       DateTime  @default(now())
+}
+
+model ComplianceTraining {
+  id          String    @id @default(uuid())
+  title       String
+  category    String
+  dueDate     DateTime
+  completedBy String    @default("[]")
+  required    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+}
+
+model ComplianceAudit {
+  id              String    @id @default(uuid())
+  type            String
+  date            DateTime
+  auditor         String
+  findings        String    @default("[]")
+  score           Float?
+  remediationPlan String?
+  status          String    @default("Scheduled")
+  createdAt       DateTime  @default(now())
+}
+
+model CompliancePolicy {
+  id              String    @id @default(uuid())
+  title           String
+  category        String
+  version         String
+  content         String?
+  lastReviewed    DateTime
+  nextReview      DateTime
+  acknowledgedBy  String    @default("[]")
+  createdAt       DateTime  @default(now())
+}
+
+model ChartProblem {
+  id        String       @id @default(uuid())
+  patientId String
+  patient   ChartPatient @relation(fields: [patientId], references: [id])
+  name      String
+  icdCode   String?
+  status    String
+  onsetDate DateTime?
+  notes     String?
+}
+
+// ── CoreIQ EMR Extensions ──
+
+model NoteTemplate {
+  id          String   @id @default(cuid())
+  name        String
+  category    String
+  subcategory String?
+  type        String
+  sections    String
+  isDefault   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model PatientFlow {
+  id              String    @id @default(cuid())
+  patientId       String
+  patientName     String
+  appointmentTime DateTime
+  provider        String
+  reason          String
+  status          String
+  roomNumber      String?
+  checkedInAt     DateTime?
+  vitalsAt        DateTime?
+  examRoomAt      DateTime?
+  providerAt      DateTime?
+  checkoutAt      DateTime?
+  completedAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model ClinicalDocument {
+  id          String   @id @default(cuid())
+  patientId   String?
+  patientName String?
+  type        String
+  title       String
+  content     String?
+  status      String
+  provider    String?
+  source      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SeniorCarePatient {
+  id              String    @id @default(cuid())
+  patientName     String
+  age             Int
+  medicareId      String
+  riskScore       Float
+  hccGaps         String
+  lastVisit       DateTime
+  nextAWVDue      DateTime
+  carePlanStatus  String
+  pcp             String
+  riskLevel       String
+  conditions      String
+  medications     Int
+  createdAt       DateTime  @default(now())
+}
+
+model ClinicalMessage {
+  id          String   @id @default(cuid())
+  fromName    String
+  toName      String
+  subject     String
+  body        String
+  category    String
+  priority    String   @default("normal")
+  isRead      Boolean  @default(false)
+  folder      String   @default("inbox")
+  patientId   String?
+  patientName String?
+  createdAt   DateTime @default(now())
+}
+
+model ClinicalReferral {
+  id                String    @id @default(cuid())
+  patientId         String
+  patientName       String
+  referringProvider String
+  specialist        String
+  speciality        String
+  reason            String
+  status            String
+  urgency           String
+  direction         String
+  notes             String?
+  scheduledDate     DateTime?
+  completedDate     DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}

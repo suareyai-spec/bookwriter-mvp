@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Narevo API — Pricing</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0f;color:#e0e0e0;line-height:1.6}
+  .container{max-width:1000px;margin:0 auto;padding:40px 24px;text-align:center}
+  h1{font-size:2.4rem;color:#fff;margin-bottom:8px}
+  .subtitle{color:#888;font-size:1.1rem;margin-bottom:48px}
+  .plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-bottom:48px}
+  .plan{background:#111118;border:1px solid #222;border-radius:12px;padding:32px 24px;text-align:left;position:relative;transition:border-color .2s}
+  .plan:hover{border-color:#444}
+  .plan.featured{border-color:#60a5fa}
+  .plan-badge{position:absolute;top:-12px;right:20px;background:#60a5fa;color:#000;font-size:.75rem;font-weight:700;padding:4px 12px;border-radius:12px;text-transform:uppercase}
+  .plan-name{font-size:1.3rem;color:#fff;font-weight:700;margin-bottom:4px}
+  .plan-price{font-size:2.5rem;color:#fff;font-weight:700;margin-bottom:4px}
+  .plan-price span{font-size:1rem;color:#888;font-weight:400}
+  .plan-features{list-style:none;margin:20px 0 28px}
+  .plan-features li{padding:6px 0;color:#bbb;font-size:.95rem}
+  .plan-features li::before{content:'✓ ';color:#4ade80;font-weight:700}
+  .btn{display:inline-block;width:100%;padding:12px 24px;border-radius:8px;font-size:1rem;font-weight:600;text-decoration:none;text-align:center;cursor:pointer;border:none;transition:opacity .2s}
+  .btn-primary{background:#60a5fa;color:#000}
+  .btn-outline{background:transparent;border:1px solid #444;color:#fff}
+  .btn:hover{opacity:.85}
+  a{color:#60a5fa;text-decoration:none}
+  .nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:48px}
+  .logo{font-size:1.2rem;font-weight:700;color:#fff;letter-spacing:2px;text-transform:uppercase}
+  .nav-links a{margin-left:24px;color:#888;font-size:.9rem}
+  .nav-links a:hover{color:#fff}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="nav">
+    <div class="logo">NAREVO API</div>
+    <div class="nav-links">
+      <a href="/docs">Docs</a>
+      <a href="/login">Login</a>
+      <a href="/signup">Sign Up</a>
+    </div>
+  </div>
+  <h1>Simple, Transparent Pricing</h1>
+  <p class="subtitle">Pay for what you need. Scale when you're ready. Cancel anytime.</p>
+  <div class="plans">
+    <div class="plan">
+      <div class="plan-name">Starter</div>
+      <div class="plan-price">$29<span>/mo</span></div>
+      <ul class="plan-features">
+        <li>5 social accounts</li>
+        <li>500 posts/month</li>
+        <li>50 AI captions/month</li>
+        <li>1 report/month</li>
+        <li>API key access</li>
+      </ul>
+      <a href="/signup?plan=starter" class="btn btn-outline">Get Started</a>
+    </div>
+    <div class="plan featured">
+      <div class="plan-badge">Popular</div>
+      <div class="plan-name">Growth</div>
+      <div class="plan-price">$79<span>/mo</span></div>
+      <ul class="plan-features">
+        <li>25 social accounts</li>
+        <li>2,500 posts/month</li>
+        <li>200 AI captions/month</li>
+        <li>5 reports/month</li>
+        <li>API key access</li>
+      </ul>
+      <a href="/signup?plan=growth" class="btn btn-primary">Get Started</a>
+    </div>
+    <div class="plan">
+      <div class="plan-name">Agency</div>
+      <div class="plan-price">$199<span>/mo</span></div>
+      <ul class="plan-features">
+        <li>Unlimited accounts</li>
+        <li>Unlimited posts</li>
+        <li>Unlimited AI captions</li>
+        <li>Unlimited reports</li>
+        <li>Priority support</li>
+      </ul>
+      <a href="/signup?plan=agency" class="btn btn-outline">Get Started</a>
+    </div>
+  </div>
+  <p style="color:#666;font-size:.9rem">All plans include full API access. AI caption costs are included — no extra charges.</p>
+</div>
+</body>
+</html>

@@ -41,13 +41,8 @@ export default function LoginPage() {
 
       <div className="relative z-10 w-full max-w-md">
         <div className="text-center mb-8">
-          <Link href="/">
-            <h1
-              className="text-3xl font-bold tracking-wide"
-              style={{ fontFamily: "var(--font-playfair), Georgia, serif", letterSpacing: "0.08em" }}
-            >
-              My Book
-            </h1>
+          <Link href="/" className="inline-block">
+            <img src="/logo.svg" alt="Plot Ghost" className="h-10 mx-auto mb-3" />
           </Link>
           <p className="mt-2 text-gray-400">Welcome back</p>
         </div>

@@ -1,0 +1,2295 @@
+
+
+-- 1 of 193 --
+
+
+
+-- 2 of 193 --
+
+Content Strategy for the Web
+Second Edition
+Kristina Halvorson
+Melissa Rach
+Foreword by Sarah Cancilla, Facebook
+
+-- 3 of 193 --
+
+Content Strategy for the Web, Second Edition
+Kristina Halvorson and Melissa Rach
+New Riders
+1249 Eighth Street
+Berkeley, CA 94710
+510/524-2178
+510/524-2221 (fax)
+Find us on the Web at: www.newriders.com
+To report errors, please send a note to errata@peachpit.com
+New Riders is an imprint of Peachpit, a division of Pearson Education.
+Copyright © 2012 by Kristina Halvorson
+Project Editor: Michael J. Nolan
+Development Editors: Tenessa Gemelke and Margaret Anderson
+Production Editor: Cory Borman
+Copyeditor: Gretchen Dykstra
+Proofreader: Rose Weisburd
+Interior Design and Composition: Kim Scott, Bumpy Design
+Cover Designer: Sean Tubridy
+Indexer: Joy Dean Lee
+Notice of Rights
+All rights reserved. No part of this book may be reproduced or
+transmitted in any form by any means, electronic, mechanical,
+photocopying, recording, or otherwise, without the prior written
+permission of the publisher. For information on getting permission for
+reprints and excerpts, contact permissions@peachpit.com.
+Notice of Liability
+The information in this book is distributed on an “As Is” basis without
+warranty. While every precaution has been taken in the preparation of the
+book, neither the authors nor Peachpit shall have any liability to any
+person or entity with respect to any loss or damage caused or alleged to
+be caused directly or indirectly by the instructions contained in this book
+or by the computer software and hardware products described in it.
+Trademarks
+Many of the designations used by manufacturers and sellers to
+distinguish their products are claimed as trademarks. Where those
+
+-- 4 of 193 --
+
+designations appear in this book, and Peachpit was aware of a trademark
+claim, the designations appear as requested by the owner of the
+trademark. All other product names and services identified throughout
+this book are used in editorial fashion only and for the benefit of such
+companies with no intention of infringement of the trademark. No such
+use, or the use of any trade name, is intended to convey endorsement or
+other affiliation with this book.
+ISBN 13: 978-0-321-80830-1
+ISBN 10: 0-321-80830-4
+9 8 7 6 5 4 3 2 1
+Printed and bound in the United States of America
+
+-- 5 of 193 --
+
+Advance Praise for Content Strategy for the Web,
+Second Edition
+“The first edition of Kristina Halvorson’s little book was like a rip in the
+Matrix through which light poured. In the space of a few chapters, she
+had changed our field forever, for the better. This second edition retains
+all that was wonderful in the first book, while yielding dazzling new
+insights into the hows and whys of content strategy.”
+— Jeffrey Zeldman, author, Designing With Web Standards
+“When I wanted to introduce content strategy as a ‘must’ for eBay
+Europe, I bought a copy of Content Strategy for the Web for everyone I
+needed to influence. Two years and a content strategy team later, it
+clearly worked! By far the most comprehensive and accessible book on
+content strategy available. Required reading for our entire team.”
+— Lucie Hyde, Head of Content, eBay Europe
+“Content Strategy for the Web is the most important thing to happen to
+user experience design in years.”
+— Peter Morville, author, Information Architecture for the World Wide Web and
+Ambient Findability
+“Marketers, take note: From mobile and social media to email and
+websites, killer content is central to your online success—but without a
+solid, centralized content strategy, you’re doomed from the start. Like
+no other book, Content Strategy for the Web gives you the tools you
+need to get the right content to the right people in the right place at the
+right time. Essential reading for marketers everywhere.”
+— Ann Handley, CMO, MarketingProfs and author, Content Rules
+“This is the go-to handbook for creating an effective content strategy.
+The Post-It® notes and dog-eared pages in my copy are evidence of
+that!”
+— Aaron Watkins, Director of Digital Strategy, Johns Hopkins Medicine
+“Kristina Halvorson and her company, Brain Traffic, are central to the
+emerging discipline of content strategy.”
+
+-- 6 of 193 --
+
+— James Mathewson, Search Strategy and Expertise Lead, IBM
+“Content Strategy for the Web touched off the explosive growth of
+content strategy and its recognition as a critical field of practice.
+Amazingly, this second edition doesn’t just keep up: it pushes content
+strategy in a more mature—and valuable—direction.”
+— Louis Rosenfeld, author, Information Architecture for the World Wide Web
+and Search Analytics for Your Site
+“Kristina Halvorson is a force to be reckoned with. In three short years,
+she has single-handedly brought content strategy to the forefront of the
+UX community’s attention. I’m in awe of how quickly she’s mobilized
+a small army of content strategists, and can’t wait to see where she goes
+next.”
+— Jared Spool, CEO and Founding Principal, User Interface Engineering
+“This little red book is responsible for changing the way I think about
+designing for the Web, and I don’t think I’m alone. After a decade of
+treating content like an afterthought, Content Strategy for the Web
+helped us fix our priorities, and gave us a better way forward.”
+— Ethan Marcotte, author, Responsive Web Design
+“The web isn’t about only your website anymore. What does that mean
+for your content strategy? Kristina and Melissa answer with sassy and
+sound advice.”
+— Colleen Jones, author, Clout: The Art and Science of Influential Web Content
+“If the loss of potential customers and brand degradation keep you up at
+night, good. There may not be monsters under your bed, but they’re in
+your web presence—and they’re coming to get you. Content Strategy
+for the Web offers practical, effective techniques to keep the monsters at
+bay, whether you’re waging war in a small business or on behalf of a
+corporate behemoth. Scared? Not anymore.”
+— Margot Bloomstein, Principal, Appropriate, Inc. and author, Content
+Strategy at Work
+“If you want your organization or your clients to be successful online,
+you need to help them think—and act—strategically about all their
+content. You need this book.”
+
+-- 7 of 193 --
+
+— Janice (Ginny) Redish, author, Letting Go of the Words: Writing Web
+Content that Works
+
+-- 8 of 193 --
+
+For the staff at Brain Traffic, whose hard work, brave
+insights, and shared sense of humor inspired every page
+that follows ... again.
+And for our families, whose loving patience and support
+made this book possible.
+
+-- 9 of 193 --
+
+“The best people are the ones that understand
+content.
+They’re a pain in the butt to manage, but you put up
+with
+it because they are so good.”
+— Steve Jobs
+
+-- 10 of 193 --
+
+Contents
+Foreword: The Rapid Rise of Content Strategy at Facebook and
+Beyond (Sarah Cancilla, Facebook)
+Before We Begin...
+REALITY
+1 NOW
+Hit the ground running.
+2 PROBLEM
+Why does your content (still) suck?
+3 SOLUTION
+Content strategy to the rescue.
+DISCOVERY
+4 ALIGNMENT
+Down with silos, up with people.
+5 AUDIT
+Take a close-up look at your current content.
+6 ANALYSIS
+Your content lives in a complicated world.
+STRATEGY
+7 CORE
+Core strategy: the center of it all.
+8 CONTENT
+Substance and structure: the stuff they come for.
+9 PEOPLE
+Workflow and governance: the path to victory.
+
+-- 11 of 193 --
+
+SUCCESS
+10 PERSUASION
+Making the case for content strategy.
+11 ADVOCACY
+Get out there and do something.
+12 HERO
+Save the content, save the world.
+Content strategy reading list
+Acknowledgments
+About the authors
+About Brain Traffic
+Index
+
+-- 12 of 193 --
+
+Foreword
+The Rapid rise of Content Strategy at Facebook and Beyond
+At Facebook, employees are empowered to be bold in the name of
+innovation. “Move Fast and Break Things,” “What Would You Do If
+You Weren’t Afraid?” and “Done Is Better Than Perfect” are a few of the
+mottos pasted on the walls at Facebook headquarters.
+Back in 2009, Facebook content was getting “done,” but it was far from
+perfect. Engineers, designers and product managers were writing most of
+the copy. If you had a keyboard, you were a copywriter. If you could
+commit code, you were a publisher. And there was a lot of content:
+menus, navigation text, product tours, multi-step forms, nomenclature,
+in-product education, help pages, blog posts, and much more. Less-than-
+perfect content meant confused and frustrated users, and it was taking its
+toll on the brand.
+The Facebook Design and User Experience team decided it was time to
+create a new role within the department. They called it “content
+strategist.”
+Just a few weeks before the job posting went up, the first edition of
+Content Strategy for the Web was published. Soon after, the Facebook
+team contacted author Kristina Halvorson for advice about the position,
+and she graciously offered suggestions about what to say in the posting
+and where to look for candidates. She also helped get the word out.
+I’d been working as a content strategist at eBay for several years when I
+spotted Kristina’s reference to the job posting. I tucked my already well-
+worn copy of Kristina’s book under my arm and headed off to interview
+at Facebook. They hired me.
+Soon after I started at Facebook, I discovered that most of my new
+coworkers thought “content strategist” was a highfalutin term for “copy
+editor.” They filled my inbox with questions like, “Is there a better word
+for this?” and “Should the period go inside or outside the quotation
+mark?” I even had an engineer free-type my rough copy ideas directly
+into the code for the live site. Thrilling, yes, but not exactly the
+methodical, holistic process I was hoping for.
+I needed to find a way to introduce real content strategy into a system
+that was hardwired to reject anything that might gunk up the works. In
+
+-- 13 of 193 --
+
+the past, I might have organized a meet-n-greet/dog-and-pony/brown-bag
+extravaganza to educate to my colleagues about the benefits of content
+strategy. But my usual approach wasn’t going to fly at a company that
+valued action far above talk. Instead, I heeded the “move fast” writing on
+the walls and focused on gaining quick wins.
+I first set my sights on a group of links in the lower corner of the
+Facebook homepage. These links offered people the chance to invite
+friends to Facebook, connect with friends already there, and try
+Facebook Mobile. The links didn’t drive a lot of traffic and weren’t an
+important piece of the team’s strategy, so they didn’t want to dedicate
+resources to improving them. But I was welcome to change the copy. So
+I did, relying completely on my content strategy intuition to guide my
+decisions (there was no time for testing, after all). At the very least, I
+knew I could make the calls to action clearer and more compelling.
+Mere hours after I made my quick-and-dirty changes, we rolled out the
+new version of the content module. The result? Net traffic to this area of
+the page rose 56%. Which is to say, six million more people found
+friends, invited friends, and tried Facebook Mobile every week, purely as
+a result of those tiny improvements.
+Over the next few months, I gained a few more quick wins for content.
+And each time I tackled a project or fulfilled a request, I carefully framed
+my proposals in the context of the larger Facebook content strategy that
+was beginning to evolve. I also tailored my recommendations to the
+audience at hand: When working with engineers, I tried to make things
+simple and empirical, often relying on spreadsheets and “if-then”
+statements. With designers, I went visual. And with executive
+stakeholders, I always made an effort to reference bigger-picture goals.
+When someone championed the cause of content strategy, that person
+became a “FOCS” (friend of content strategy), and was awarded a
+coveted FOCS tee. As in, “You know that guy Matt? He’s a total FOCS.”
+Soon, people started to solicit my help on more complex problems.
+Questions about tone, structure and site-wide consistency began to
+outnumber those about grammar and syntax. The company began giving
+enthusiastic support (and budget) for longer-term, content-driven
+initiatives.
+Today, a mere two years later, there are nine content strategists on the
+Facebook team, and we hope to welcome several more by the end of
+2012. We work alongside product managers, designers, engineers, and
+
+-- 14 of 193 --
+
+user researchers on every major product launch. We’ve developed a
+comprehensive set of content standards for the company. And we serve
+as a hub for the teams throughout Facebook that touch user-facing
+content, including product marketing, user operations, and the lawyers.
+In the two years since I started at Facebook and Content Strategy for the
+Web first came out, the discipline has come into its own. Meetup groups
+have formed all over the world. People are gathering at conferences
+dedicated exclusively to content. Not unlike Facebook itself, content
+strategy has spun into a spirited community of people who are excited to
+share new ideas and perspectives—allowing the discipline to advance at
+an amazing clip.
+Content Strategy for the Web has played a huge role in educating web
+practitioners and business leaders about why good content matters. Not
+only does the book champion a strategic approach to content, it also
+demystifies how to do it. Whether you’re a seasoned content strategist or
+it’s your first time at the rodeo, you’ve got everything you need to create,
+deliver, and govern useful, usable content right here.
+Facebook’s culture is unique, but what moved the cause of content
+strategy forward here could happen anywhere—including where you
+work.
+• Demonstrate value on your own terms. Be proactive, and identify
+tiny projects that will showcase the benefits of content strategy.
+Then get them done, with or without resources.
+• Apply content strategy to your content strategy. Frame each
+recommendation and each success within the context of the larger
+content strategy, even if the request was tactical in nature. And do it
+in a way that will appeal to your audience.
+• Friend everyone. Cultivate allies, find your FOCSes, and make
+them T-shirts.
+In 2009, the content strategy community was small. Now it’s vast, and
+eager to support you in your efforts to make a better web through better
+content. Today, when you tell people you’re a content strategist, the
+question is no longer, “What’s content strategy?” Now it’s, “When can
+you start?”
+Join us as we move toward a web where content strategy is not simply
+nice to have, but an essential part of what we make and imagine.
+
+-- 15 of 193 --
+
+Sarah Cancilla
+Content Strategist, Facebook
+
+-- 16 of 193 --
+
+Before We Begin...
+If you’re reading this book for the first time, then hello! It’s lovely to
+meet you. And if you’re familiar with the first edition, then hey,
+welcome back. Glad to see you again. Give us a hug.
+So. Things out there in the world of content strategy have changed pretty
+significantly since the first edition of Content Strategy for the Web was
+published. What used to be a niche topic discussed by only a few
+hardcore content nerds has become a worldwide movement in
+organizations of all shapes and sizes. Hooray! More hugs all around.
+As the conversation continues to gain momentum, the field of content
+strategy is evolving at lightning speed. And so, by necessity, this second
+edition of Content Strategy for the Web is a much different book from the
+first. But don’t worry. All new material has evolved directly from the
+methodology described in the first edition; all revisions are based on the
+shared knowledge of the wider content strategy community, and our own
+experiences at Brain Traffic, our Minneapolis-based content strategy
+firm.
+And now, a few things to note:
+What this Book Is
+This book is an introduction to the practice of content strategy. It
+describes some of the key benefits, roles, activities, and deliverables
+associated with content strategy.
+We wrote this book for people who want to understand what content
+strategy is, why it’s important, and how to go about getting it done.
+This book also makes the case for content strategy as a legitimate,
+necessary practice in any and all organizations that create and publish
+content online.
+Throughout the book, we describe processes and methodologies that may
+be applied to all kinds of content (not only text). And as you read,
+remember that just about everything we write about can be scaled and
+tailored to fit your needs.
+What this Book is Not
+This book is not The Complete Guide to Everything You Ever Need to
+Know About Content Strategy, Ever.
+
+-- 17 of 193 --
+
+We hope you find this book a valuable reference tool for a long time to
+come, but don’t mistake it as the only book you’ll ever need. In fact, here
+are a few specific topics this book intentionally does not cover (at all, or
+in detail):
+• Content management systems (CMS) strategy (software selection,
+design, and implementation)
+• Translation and localization
+• Personalization and behavioral targeting
+• Content marketing
+• Social media planning
+• Metadata strategy
+• SEO
+• Reuse and structured content (or “intelligent content”)
+• Single-channel strategy (e.g., mobile)
+Yes, a content strategist will often assume responsibility for the activities
+and deliverables associated with each of these. In many cases, there are
+already several solid resources available about these practices, both
+online and offline. We’re keeping our focus on an introduction to content
+strategy, so we’ve made it our job to synthesize this information and
+frame it up in ways that allow teams to tackle content challenges
+holistically.
+What’s New in this Edition
+When you set out to write a second edition, it’s awfully tempting to scrap
+everything and write an entirely different book. Instead, we’ve tried to
+strike a balance: plenty of new information for readers of the first
+edition, but a similar introductory flavor for our first-time readers.
+As the proud owner of this shiny new edition, here’s what you’ll get:
+• Expanded and restructured processes and tools for the research,
+development, and implementation phases of content strategy
+• Recent case studies examining the impact content strategy has had
+on a variety of small and large organizations
+• An examination of the ways content-focused disciplines and job
+roles work together
+• Discussion of the roadblocks you may encounter and ways the field
+of content strategy continues to evolve
+
+-- 18 of 193 --
+
+A Note about Content Strategy for the “Web”
+Content strategy. It’s not just for websites anymore.
+Actually, content strategy was never just for websites. In fact, it’s been
+around a lot longer than the web. So why all the recent attention?
+While organizations have struggled for decades—centuries, even—to
+make sense of their content, they were always able to keep the chaos
+(and the consequences) to themselves. Then came websites, which
+created the perfect content strategy storm. Suddenly, organizations had to
+put all of their content (product info, investor reports, press releases, etc.,
+etc.) in one place. For the first time. For all the world to see. And, it hurt.
+You can redesign a home page. You can buy a new CMS. But unless you
+treat your content with strategic consideration, you can’t fix your
+website. Once people started to accept this fact, the conversation took
+off. It’s a pain point everyone shares, and content strategy offers relief.
+Here’s the other thing: In our opinion, focusing on the web is still the
+easiest way to learn about content strategy. Once you “get” content
+strategy for the web, you can easily see its applications across
+platforms and throughout the enterprise.
+All that said: Throughout the book, when we use the phrases “web,”
+“online,” or “interactive” content, we’re often not just talking about
+websites. The overarching goals and approaches of content strategy are
+relevant across every medium, platform, and device. As evolving
+technology continues to throw us one curve ball after the next, keeping a
+handle on our content—no matter where it is and who it’s for—has
+become more critical than ever.
+And Now, the Book
+Okay, that should be everything. Thanks for your patience with all of this
+preamble stuff.
+You can go ahead and read the book now.
+Enjoy.
+
+-- 19 of 193 --
+
+Reality
+Behold, your content. Your business needs it. Your users want it. And yet
+no one seems quite sure what to do with it. A website redesign? A new
+CMS? Whatever the case, you’re ready for a change. Let’s put your
+content to work.
+
+-- 20 of 193 --
+
+1. Now
+YOU LIE AWAKE AT NIGHT thinking about your content. There’s so much to
+fix. So much to plan for. You want to get ahead, but you can barely keep
+up with what’s happening day-to-day. The last time you tried talking to
+someone about The Big Picture, the conversation was cut short by yet
+another “content emergency” that put you right back in reactive mode.
+And the content keeps coming. And coming. And coming.
+Wow, one paragraph in and you’re already crying a little?
+Wipe away your tears, dear reader. Because, just for you, we’ve written a
+very short, non-scary chapter that introduces a few great ways to tackle
+even your toughest content challenges. (In fact, when you’re finished,
+you’ll think, “Gee, that wasn’t so bad!” And that is our way of tricking
+you into reading the rest of the book.)
+Think Big, Start Small
+Good news: you can significantly improve your organization’s content in
+a fairly short amount of time by taking on any of the following efforts:
+1. Do less, not more.
+2. Figure out what you have and where it’s coming from.
+3. Learn how to listen.
+4. Put someone in charge.
+5. Take action ... now.
+Don’t worry about having your proverbial ducks in a row before you
+dive in to content strategy. You don’t need months of planning, a new
+staff, and a million dollars to do it. As Lao Tzu once said, “The journey
+of a thousand miles begins with one step.” So let’s get moving.
+(Requisite “Lao Tzu quote in a book about strategy”: check.)
+#1: Do Less, Not More
+Consultant David Hobbs once wrote, “Small websites are easier to
+manage than big ones. Since this is obvious, why don’t more sites choose
+to be smaller?”
+Of course, it’s rarely an intentional choice. A website tends to take on a
+life of its own, its growth fueled by new products and services, changing
+brand campaigns, multiple publishers, constantly-shifting executive
+
+-- 21 of 193 --
+
+priorities, user-generated content, and more. Beyond the website, there
+are company blogs, Twitter feeds, press releases, email communications,
+and so on. The Great River of Content flows freely, rapidly flooding our
+customers with too much information and drowning its keepers (web
+editors and content managers) in the process.
+Why do we need all this content? What’s the point?
+It seems that, in many organizations, more content is perceived as more
+selling opportunities, more user engagement, more help, more
+everything. But that’s rarely the case. Generally speaking, content is
+more or less worthless unless it does one or both of the following:
+• Supports a key business objective
+• Fulfills your users’ needs
+If you assessed all of your current content, how much of it would meet
+these two simple requirements? Ninety-five percent? Seventy-five
+percent? Less than half? Are you chuckling ruefully and nodding your
+head yet?
+Less content is easier to manage
+When we talk about content getting published online, we often refer to it
+as going “live.” Interestingly enough, we seem to think that our content
+will magically continue to maintain itself, without care and feeding. But
+spend 30 seconds tooling around almost any website, and you’ll find this
+is patently untrue. Dead blogs. Outdated product descriptions. Broken
+links. Irrelevant search engine results.
+The countless ways in which our web content dies on the vine are
+painful, and sometimes dangerous. It’s one thing to change our brand
+voice on one media channel but ignore our web content. It’s another to
+neglect content that may expose us to legal action by a customer or
+competitor.
+By publishing less content, you will have less content to keep track of
+over time. It’s a simple equation.
+Less content is more user-friendly
+Let’s say you’re ready to shop around for new auto insurance. You’ve
+written down a few top-of-mind insurance brands, including Geico and
+State Farm.
+For starters, you open a browser and type in www.geico.com. You scroll
+down the home page just a bit, and here is what you see:
+
+-- 22 of 193 --
+
+In the first three seconds of staring at this page, how confident do you
+feel that you’ll find the information you’re looking for?
+Now you decide you’ll give the Geico site search engine a try. You go to
+the search box and, type in types of insurance. Here are your results:
+Hmm. Pretty worthless. How do you feel now? Frustrated? Resentful?
+Like leaving?
+
+-- 23 of 193 --
+
+Too much content means information is harder to find, whether on the
+page or within your site. And that means it’s harder for a customer to
+make a decision in favor of your product or service.
+By contrast, take a look at State Farm’s home page:
+Clean. Concise. No-nonsense. You’re in, you’re out. And you’re happy.
+Less content costs less to create
+How’s that for a forehead-slapper?
+By prioritizing useful and relevant over “wouldn’t it be cool” and “just in
+case,” you will magically dismiss at least half of your web content
+projects. That means you’ll free up time and money for things like
+planning and measurement, two content-related tasks that often get short
+shrift in the race to do more online.
+How can you begin to scale back on content? Ensure that your website
+content maps back to key business objectives and user goals. Create a
+web editorial calendar that specifies when and why new content will be
+published. And, moving forward, stop creating so much “just-in-case”
+content.
+#2: Figure Out What you have and Where it’s Coming From
+You may dream of throwing out your old content and starting over.
+Reality would like to disagree with that idea. The content you have exists
+for one reason or another (even if they aren’t good reasons), so before
+you can do anything with it, you’re going to need to look at it. And the
+best way to accurately assess your current content woes is to conduct a
+
+-- 24 of 193 --
+
+content audit. An audit is an accounting of all currently published web
+content, with all the details recorded in a spreadsheet.
+There are two basic kinds of audits—quantitative inventories and
+qualitative assessments. As information architecture expert Christina
+Wodtke says, an inventory catalogs “what’s there” and an assessment
+answers the question: “is it any damn good?”* Depending on your
+situation you can do one or both.
+*http://www.contentcompany.biz/articles/content_audit.html
+Many people only think of audits when they are redesigning a website or
+migrating content to a new content management system (CMS), but
+audits are valuable at any time during the life of your content. In fact,
+doing a content audit can be a terrific first step in building a
+business case for content strategy. Simply putting everything together
+in one big, scary-looking document and saying, “Yes, hello, have you
+seen what a disaster our website is lately?” can often spur people to
+action.
+If you’re dealing with a few hundred pages of content, you can and
+should take on a content audit immediately. If you’re a larger
+organization with thousands of pages, a comprehensive content audit
+may simply be impossible to take on all at once. But that doesn’t mean it
+shouldn’t happen.
+Ready to dig in immediately? Head on over to Chapter 5, Audit.
+#3: Learn how to Listen
+In our experience, most content problems exist simply because no one
+has ever asked the right kinds of questions about it: specifically,
+questions that focus on the people and processes that have an impact on
+its lifecycle. But even when organizations are asking the right questions,
+it’s still only half of the equation. If you’re going to get the right
+answers, you need to learn how to listen.
+So who should you listen to? Your boss? The “experts”? That guy in the
+cube next to you who keeps reading over your shoulder and making
+comments about what you should do?
+Generally speaking, we encourage you to...
+• Listen to your colleagues. When it comes to content development
+and maintenance, people have specific needs and challenges that
+deserve to be acknowledged. Content ownership spans several roles
+and responsibilities: requesters, providers, creators,
+
+-- 25 of 193 --
+
+reviewers/approvers, and publishers. Their skills, tools, and
+perspectives must be assessed and considered as you develop your
+content strategy.
+• Listen to your users. It’s such an obvious statement, but it bears
+repeating (and repeating, and repeating): No one knows better what
+your customer needs than your customer. Although many of us truly
+believe we know exactly what our end users really want from us
+online, we can’t know unless we ask them.
+The best thing you can do is simply to stop assuming you already know
+the answers to the questions you’ve been asking. The harder you listen,
+the better you’ll understand the rationale, politics, emotions, and
+motivations behind the reasons content-related decisions are (or aren’t)
+being made. After all, you’re not creating plans for some alternate reality
+in which everything perfectly unfolds according to The Strategy. You’re
+planning for human beings and their ever-shifting needs and desires—
+also known as the real world.
+For more information on how to craft the right questions for your content
+discovery process, see Chapter 4, Alignment, and Chapter 6, Analysis.
+#4: Put Someone in Charge
+So. Who owns your web content?
+Because we are psychic (we’ll get to your love life and money issues
+later), we predict you will answer one of the following three ways:
+• Lots of people.
+• One person, except that person is mostly just in charge of fulfilling
+other people’s content requests.
+• Huh. I have no idea.
+In other words ... no one. No one owns the web content. That means no
+one has a real sense of what’s out there: Is it up to date? Accurate? Still
+relevant? Most importantly, though, there’s no one who actually gets to
+say “no.” And that, dear reader, is bad.
+Here’s where we turn to the world of print publishing for some insight.
+Have newspapers been coming together day after day, year after year
+under distributed publishing models with no executive editorial
+oversight? No. Does a magazine make it to press thanks to a staff of
+writers whose marching orders are to acquiesce to every “emergency”
+content request? No. Also? No.
+
+-- 26 of 193 --
+
+Your organization needs to have a person—or specific people—offically
+In Charge of All Things Web Content. This doesn’t mean they need to be
+solely responsible for all web content creation, delivery, and governance.
+It means that they are charged with the same duties as an editor-in-chief
+(or executive editor) is for a print publication—overseeing high-level
+processes, budgets, and policies.
+In a larger organization, it’s likely that a team will work together to
+oversee content production and maintenance. The most important point,
+here, is that specific individuals or teams must be empowered to make
+content-related decisions ... especially when it comes to saying “no.”
+For more information on content workflow and ownership, see Chapter
+9, People.
+#5: Take Action ... Now
+Still feeling overwhelmed? That’s okay. But we’re going to ask you to
+take a deep breath and get ready to “fake it ’til you make it”—that is, to
+dive in and start swimming.
+You have to start somewhere, sometime, so you might as well start now.
+There are lots of things you can do to get the ball rolling, whether or not
+you have approval or budget. For example, you can:
+• Ask your boss which part of the website drives her craziest, then
+talk about how to approach improving it.
+• Start asking specific questions about content—its purpose, the
+people who own it, and so on.
+• Educate yourself. Read articles, participate in group forums, and
+listen to podcasts to better arm yourself with the right ammunition
+when your ideas come under fire.
+• Take colleagues to coffee or lunch. Ask questions and listen
+carefully. Let them know you’re on their side, even when they’re at
+odds with each other. Start building trust by focusing people on the
+outcome: better content, less pain and suffering.
+Most of all, don’t be afraid to “fake it til you make it.” You don’t need to
+be an expert in content strategy to dive in and start getting things done.
+You Can Do It!
+Hey, check you out! Just a few pages in, and already you’re acquainted
+with some of the tried-and-true methods of successful content strategists
+
+-- 27 of 193 --
+
+everywhere. Do you feel smarter? You look smarter. Go walk around and
+see if anyone notices.
+Now comes the caveat. The reality is that, within most organizations,
+content has always been an afterthought—it’s considered a byproduct of
+people’s everyday efforts, rather than an asset that requires strategic
+consideration. No one accurately plans for it. No one has time to slow
+down and think about it. It’s last on the list of things to spend time,
+money, or effort on.
+You can handle this. You can make things right. But first, you need to
+understand what’s wrong.
+
+-- 28 of 193 --
+
+2. Problem
+GREAT CONTENT MEETS USERS’ NEEDS and supports key business objectives.
+It engages and informs. It’s well-written and intuitively organized. It
+keeps people coming back for more. But when content sucks—when it’s
+overwritten, redundant, hard to find, irrelevant—people come, look, and
+leave. And, sometimes, they never come back. Most of the content we
+find online is simply in the way—even outdated or straight-up
+inaccurate. It’s not doing what we need it to do. And somehow, we can’t
+seem to get it fixed. It’s always the elephant in the room, the one thing
+no one really wants to talk about. And man, that is one ugly elephant.
+So whose fault is this content crisis, anyway? And who’s going to clean
+up this mess?
+No Finger-Pointing Allowed
+It’s very unlikely that your content challenges are caused by a single
+person or department. Content is a complex, hairy beast that depends on
+myriad people, technologies, and processes. When you can find a shared
+language to discuss your content challenges, you’ll be better able to
+collaborate with your colleagues and identify solutions.
+In this chapter, we’ll look at some of the most common obstacles that
+keep us from turning bad content into better content:
+• We treat content like a commodity.
+• We don’t have time to make a plan.
+• We make deadly assumptions.
+• Content is political.
+• It’s all too much, and we’ll never move forward.
+And now, let’s take a few pages to bond together about our frustrations,
+hopes, and fears. You are not alone. It’s time for content therapy.
+
+-- 29 of 193 --
+
+copyright 2008 Kevin Cornell
+How do you eat the elephant in the room?
+We Treat Content Like a Commodity
+Delivering great content requires some kind of investment: user research,
+strategic planning, meaningful metadata, web writing skills, and editorial
+oversight. It requires real people and real resources to get it right, and it’s
+not easy. That’s why so many of our organizations are constantly looking
+for shortcuts to getting the content done. When we take that attitude, we
+start to see content as piles and piles of stuff that can be acquired at will.
+Here are some examples.
+Let’s Go Get Some Content
+To some, automatic aggregation of content (via RSS feeds or back-end
+algorithms) seems like a smart, painless alternative to the complicated,
+time-intensive, ongoing content creation process.
+Similarly, the idea that we can pay to publish syndicated content under
+our own brand umbrella is wholly appealing. Sign on the dotted line, and
+fresh content will be delivered daily to your customers, courtesy of
+Custom Publisher Number Nine.
+These aren’t inherently bad ideas. In fact, working with content that’s
+produced outside of your organization might be the right decision. But
+don’t mistake these tactics as your answers to a long-term content
+strategy. Quality, relevant content can’t be spotted by an algorithm. You
+
+-- 30 of 193 --
+
+can’t just license it and then walk away. You need people to create or
+curate it.
+Let’s Publish as Much Content as we Possibly Can
+There was once a client who was very interested in producing massive
+amounts of content on his website. His idea was that the more content he
+had:
+• The better his search engine rankings would be
+• The more value he would provide to his online audiences
+• The more chance he had of creating “competitive differentiation” in
+his industry
+Yes, content can do a lot. However, the website this client was hell-bent
+on creating would incur much greater costs than he could ever anticipate
+—in time, money, brand value, and customer satisfaction.
+The more content you have, the harder it is to keep up with: it ages
+quickly, breaks our navigation systems, and starts piling up in ways we
+never expected. Suddenly, we find our users are struggling to complete
+the tasks they came to do—gather information, make a decision, get
+help, share relevant content with friends. A user doesn’t want endless
+options. He wants the content he needs, when and where he needs it.
+Let’s Get Users to Generate the Content for us
+Although “user-generated content” may sound like “content you don’t
+have to create,” unfortunately there’s a catch: You can’t always depend
+on your audience to deliver the goods.
+Let’s say you own a technology company, and you’re looking for ways
+to save money on phone-based customer support. Your website support
+section has been sorely neglected for years. You decide to launch a
+forum so that your customers can help solve each other’s problems—a
+low-cost and, you believe, low-maintenance solution.
+The forum launches. A few customers show up and pose questions.
+Other customers don’t answer the questions, so your intern does. More
+questions trickle in. But with so few posts, and so few visitors, the forum
+feels like an empty restaurant, or a lame party that no one attended.
+Within a few months, the “last post” dates are looking old and tired. And
+your phone support costs haven’t decreased by a cent.
+What went wrong? Beyond the forum launch, there wasn’t a plan. No
+one considered how to advertise or seed the forum, let alone drive user
+
+-- 31 of 193 --
+
+adoption.
+If you’re considering ways in which user-generated content can help you
+achieve business objectives and meet your end users’ goals, be very
+realistic about the fact that it’s hard work to make it work well. It can
+happen. But it’s neither cheap nor automatic.
+Speaking of cheap...
+Let’s buy Content for $4
+In 2009, Elizabeth Saloka wrote a Brain Traffic blog post titled,
+“Bangalore, We Have a Problem,” that sums things up quite nicely:
+I’ve just stumbled on a company called Niche Writers India that offers
+web content for $4. Four. Dollars. That’s, like, a sandwich. A gas
+station sandwich.
+Since when did web content become a cheap commodity? We’re not
+talking about zipper togs and baby socks! We’re talking about
+communication. Often, very technical and advanced communication.
+A sample of what you can expect for your four dollars:
+“Niche Writers India is the core when it comes to writing and this is
+what our clients feel about our content writing services expanding to
+various domains and collaterals. We have bubbling, energetic and
+youthful warp and woof of writers!”
+... Niche Writers India, though not in the manner it intends, makes a
+compelling case for the value of a good web writer. Hopefully after
+seeing this site, would-be value shoppers will decide to invest (more
+than $4) in their content.*
+*http://blog.braintraffic.com/2009/01/bangalore-we-have-a-problem/
+Of course, if you’re comparison shopping based on price alone, you may
+think it’s no big deal to sacrifice some degree of quality in order to save
+money. Don’t do that. To truly differentiate yourself online, you must
+offer content that specifically and authentically embodies your brand.
+Your content must help your audience do something—better, smarter,
+and with greater ease.
+Content that works for your business and that matters to your users
+is not a commodity. Done well, content can engage your users, answer
+their questions, and motivate them to take action. Done poorly, it will
+cause you to lose your audiences’ attention and trust.
+
+-- 32 of 193 --
+
+We don’t have Time to Make a Plan
+Do any of these statements sound familiar?
+“This needs to go on the home page.”
+“We should be on YouTube.”
+“I need this series of brochures converted for the web.”
+“We have to put our new mission statement in the About Us section.”
+“Let’s write another dozen articles next month.”
+“We have to launch a blog.”
+Oh, really?
+Why?
+In your desire to deliver—to employers, clients, customers—you may
+tend to race right past strategy and into execution. It’s not that you’re not
+interested in doing the right thing. It’s simply that you’re under constant
+pressure to deliver, to do something you can show your boss (and your
+boss’s boss). You’re expected to churn out requests, tasks, initiatives, and
+documentation as quickly as possible. That leaves very little time to step
+back, take a breath, and ask: “Why are we doing all this in the first
+place?”
+Creating content might be a good tactic, but it isn’t something you
+should do just because you can.
+We Make Deadly Assumptions
+Let’s say you’re a subject matter expert at your company. There’s a
+website redesign project happening, and you’ve agreed to take
+responsibility for your department’s content. Hooray!
+You know the project kicked off sometime last quarter, but you haven’t
+heard much about it since then. Then one fine Tuesday around 2 p.m., an
+email pops up in your inbox...
+SUBJECT: Website content: It’s go time!
+Hey, you! [Project manager] here. We’re finally ready to have you
+start cracking on your share of the content. You should find all the
+information you need in the attachments:
+• Content inventory: Just look for your initials next to the pages
+you’re supposed to write.
+
+-- 33 of 193 --
+
+• Page templates: You can build your documentation off of these.
+• Source material: This is what we could come up with. Hopefully
+it’ll do.
+• SEO keyword guidelines: If you have any questions, just let me
+know.
+Okay! If we could see a first draft by A WEEK FROM TOMORROW
+(next Wednesday), that would be great. Just send it to me. Thank you!
+From where you sit, this email might as well have been written in
+Sanskrit and sent from a land of unicorns and fairy dust. What is all this
+stuff? What’s a page template? Why is your name next to random things
+in the “About Us” section?
+This is exactly the kind of email you’ll flag for review, then proceed to
+ignore for the rest of the week. Why? First, because it’s confusing and
+overwhelming, and it makes you feel stupid. Second, you’re fully
+booked through next week and the project manager is going to have to
+wait. And finally, you’re just straight up resentful that the project
+manager would assume you could drop everything and do this.
+Obviously, this situation sucks, as situations often do when our actions
+are based on assumptions and not reality. In this instance you (the subject
+matter expert) and the project manager made a tacit agreement at the
+beginning of the project: content shouldn’t be too hard, because it’s
+probably just some copywriting to support a bunch of content we already
+have. So let’s talk about it later when we’re closer to our deadlines.
+Gong.
+“Doing the Content” Isn’t Like Copywriting
+When people think about the content development process, they often
+think about it sort of like baking a cake. Get the ingredients (gather
+source content); stir them up (compile, write, edit); cook it (finalize and
+approve); then frost it (add it to the design).
+
+-- 34 of 193 --
+
+copyright 2011 Sean Tubridy
+This is exactly the kind of thinking that leads to eleventh-hour content
+catastrophes. Because, in reality, “doing the content” is a whole lot more
+like running a bakery. There are countless details to consider. You have
+to manage people. Equipment is expensive, and it breaks. And what if
+the recipes are wrong or the donuts burn or you’re losing money... you
+get the picture.
+copyright 2011 Sean Tubridy
+Getting your content right requires a whole lot more planning and
+upkeep than a print brochure. Helping others to understand this reality is
+a solid first step toward a successful content strategy.
+Content is Political
+
+-- 35 of 193 --
+
+Okay! After weeks of blood, sweat, and tears, you have a first draft of
+the content finished. Whew. Now, it’s time to circulate it to the folks who
+need to review it.
+Here’s what happens next:
+• The information architect hasn’t seen this copy since it was “lorem
+ipsum” in the wireframes, and if she’d known it was going to say
+THAT, she would have taken a totally different approach.
+• Marketing needs to sit down with you to ensure brand, messaging,
+and word usage are consistent with current campaign and style
+guidelines. (Which, didn’t you hear? Those changed again three
+weeks ago. Here’s the new 100-page manual.)
+• The business owners, by the way, aren’t too happy with the
+direction marketing is taking with this new campaign. They’re
+totally missing the boat on at least 14 key benefits, here. Can you
+take a stab at incorporating those benefits into your copy?
+• Legal is sick and tired of the way everyone seems to be willfully
+ignoring the fact that we are required by law to include this 800-
+word disclaimer on every page that mentions this one particular
+service. They would prefer to see it at the top of the page so that no
+one will miss it. While they’re at it, they have some input about the
+way you’ve phrased a few hundred sentences.
+• By the way, your CMS team is going to need two months to enter
+all this content into the CMS now, not two weeks. This is a lot more
+than they expected. Sorry.
+Um. Hey. Whoa.
+When it comes to web content, everyone has something to say. And
+when no one owns the content, priorities clash, and compromise can end
+up trumping best practices.
+Making decisions that are primarily driven by many opinions puts you in
+danger of a free-for-all that seriously threatens your content quality,
+consistency, and effectiveness. As the adage goes, you can’t make all the
+people happy all the time. Everyone has an agenda, but there’s
+something you can agree on: You want your content to succeed, both for
+your business and for your users. A solid content strategy helps align
+stakeholders on priorities and desired outcomes, which makes life easier
+for everyone. For more, see Chapter 4, Alignment.
+
+-- 36 of 193 --
+
+When it comes to content, no organizational unit stands alone. The table
+on page 24 shows how differing priorities and choices can impact
+content quality.
+EVERY ORGANIZATIONAL UNIT HAS AN IMPACT
+It’s All too Much and We’ll Never Move Forward
+Figuring out what exactly is wrong with your world of content isn’t
+always easy. But once you’ve identified and described the problems in
+detail, you have a whole new challenge on your hands: deciding what to
+do next. Of course, that’s going to require several conversations with all
+kinds of people, and those people are going to have questions like:
+• What is content strategy? How can it help me?
+• When does content strategy start? How?
+• Who does it? Where can we find these people? Who should they
+report to? Should we use outside firms to do the work?
+• What are the roles and responsibilities people need to assume during
+the content strategy process?
+
+-- 37 of 193 --
+
+• We have a website/mobile/CMS project looming (or already
+underway). Where exactly does content strategy fit in?
+And, the question you’ll hear the most will likely be the one that keeps
+you awake at night:
+• Why should we invest in content strategy?
+These are all excellent questions, and it’s very reasonable to expect lots
+of discussion around them. Depending on your role on a project or in
+your company, that might be pretty intimidating. But here’s what’s great:
+When the time comes, you’re going to be the expert everyone turns to for
+insight and information. You know why? Because you are going to keep
+reading this book. You are going to learn a whole lot about content
+strategy in not a whole lot of pages. And then you are going to put on
+your content strategy cape and get out there to save the content—to be
+the hero you were always meant to be.
+Let’s go! (Insert rousing orchestral music and confetti.)
+
+-- 38 of 193 --
+
+3. Solution
+WHAT IS CONTENT STRATEGY? Is it a practice? A document? What does it
+include? Who’s responsible for it? How is it implemented? Can we
+measure its success?
+Your enthusiasm is palpable. We like it. We share it. Let’s dig in.
+Re-Envisioning Content
+Once we recognize content as a valuable business asset, we start to see it
+as more than just pixels or PDFs. And once we can identify goals for our
+content that serve both our organizations and our users, we can start to
+align our efforts to form a cohesive strategy. That strategy will then help
+us prioritize our content initiatives, streamline our efforts, and use our
+resources as effectively as possible.
+In this chapter, we will:
+• Explain what content strategy is (and is not).
+• Examine the key elements of content strategy.
+• Explore who does this work.
+What is Content Strategy?
+Well, first of all, what is “content”? Content is what the user came to
+read, learn, see, or experience. From a business perspective, the content
+is the critical information the website, application, intranet, or any other
+delivery vehicle was created to contain or communicate.
+Depending on who you are and what you need to do, content strategy can
+mean a few different things.
+Content strategy:
+• Defines how you’re going to use content to meet your business (or
+project) goals and satisfy your users’ needs
+• Guides decisions about content throughout its lifecycle, from
+discovery to deletion
+• Sets benchmarks against which to measure the success of your
+content
+In summary: Content strategy guides your plans for the creation,
+delivery, and governance of content.
+
+-- 39 of 193 --
+
+Sometimes, content strategy may focus specifically on the editorial,
+structural, or technical aspects of content. And sometimes, it may be an
+enterprise-wide effort that’s directly tied to high-level business
+strategies. In either case, content strategy helps us find ways to better
+understand all aspects of our content, which means we can make smarter,
+more informed decisions about how we’re going to select and execute
+our tactics.
+What isn’t Content Strategy?
+When some people talk about their “content strategy,” they’re actually
+talking about what they plan to deliver online, and where. In this context,
+a content strategy may be described as:
+• A series of educational articles
+• A full-service, online knowledge base
+• An employee blog post series
+• A new tablet subscription service
+• Social media accounts
+These things, when combined, do not make up a strategy. They’re just a
+bunch of tactics.
+A strategy is an idea that sets the direction for the future. Once you’ve
+decided on your strategy, you can benchmark tactics against it simply by
+asking, “Will this help us get to where we’re going?” Imagine your
+strategy as a lighthouse that keeps you headed in the right direction, no
+matter how stormy the waters may become.
+How does Content Strategy Work?
+As anyone practicing content strategy will tell you, the answer to this
+question is never cut and dried. In fact, it’s what we’re tackling in this
+book, which is sort of meta but let’s move on.
+Before we can talk about how content strategy works, we need to
+introduce what we refer to as “the quad”—an image that displays the
+critical components of content strategy. These are the things that affect
+whether or not your content ends up usable and valuable, both to your
+users and your business.
+
+-- 40 of 193 --
+
+copyright 2010 Brain Traffic
+At the very center is the core content strategy. This defines how an
+organization (or project) will use content to achieve its objectives and
+meet its user needs.
+The core strategy informs what the content will be and how it will be
+structured:
+• Substance: What kinds of content do we need (topics, types,
+sources, etc.)? What messages does content need to communicate to
+our audience?
+• Structure: How is content prioritized, organized, formatted, and
+displayed? (Structure can include IA, metadata, data modeling,
+linking strategies, etc.)
+The core content strategy also informs how people (specifically content
+owners and overseers) will help drive the content lifecycle:
+• Workflow: What processes, tools, and human resources are
+required for content initiatives to launch successfully and maintain
+ongoing quality?
+• Governance: How are key decisions about content and content
+strategy made? How are changes initiated and communicated?
+One breakthrough people often have when looking at the quad for the
+first time is realizing how important it is to address the people
+components as well as the content components. The relationship between
+substance and structure is fairly implicit: when you add content to a
+
+-- 41 of 193 --
+
+website, for example, the structure of that website might change. But
+what about how that new content will impact workflow? Does anyone
+need to review changes before they can go live? What happens if the
+content goes live and it’s incorrect? Who’s responsible for maintaining
+the new content? You get the point: Content strategy connects real
+content to real people. That connection is key to getting your content
+right.
+Who does Content Strategy?
+The easy answer is, “lots of people.” And they do! Many people are
+practicing some type of content strategy in their current role ... probably
+even you. But for now, let’s look at the roles and responsibilities of a
+fully dedicated content strategist.
+The content strategist is the person who is responsible for your content—
+for one project or your entire content landscape. This person:
+• Is the advocate for the content throughout the team and organization
+• Provides the background research and analysis that stakeholders
+need to make smart decisions about content
+• Creates recommendations for the content based on business and
+user needs
+• Works with the organization to implement the content online
+Ideally, especially on large or complex projects, the content strategist
+solicits and synthesizes input from a variety of people, including web
+writers and editors, information architects, SEO practitioners, database
+managers, and subject matter experts. When needed, however, a good
+content strategist is often willing and able to embrace whatever role is
+necessary to deliver on the promise of useful, usable content.
+What Exactly does a Content Strategist do?
+What follows is a sample job description for a content strategist. Of
+course, depending on the structure and needs of your particular
+organization, roles and responsibilities will vary.
+The content strategist is responsible for overseeing the success of content
+initiatives.
+Collaborating closely with other key project stakeholders, the content
+strategist is critical to defining the content needs of websites and
+applications.
+For each project, the content strategist will:
+
+-- 42 of 193 --
+
+• Gather, audit, and analyze existing content relevant to project
+requirements.
+• Collaborate with project leads to examine and analyze the content
+“ecosystem”—internal and external factors that impact the content
+—during the project discovery phase.
+• Determine projects’ overall content requirements and potential
+content sources.
+• Ensure that the team aligns on content objectives, assumptions,
+risks, and success factors.
+• Develop content strategy and plans based on client business
+objectives and user needs.
+• Coordinate and collaborate with a team of experts in IA, SEO,
+social media, database management, metadata, and anyone else who
+is assigned ownership of an online initiative.
+• Work with the web editor or web writer to oversee the development
+of all content to be included in the solution.
+• Create taxonomies and metadata frameworks for grouping and
+tagging content.
+• Develop content indexes and mapping documentation for the site.
+• Understand and help implement content accessibility standards
+according to national law and organizational policy.
+• Shepherd content through the creation process.
+• Oversee content migrations and prepare documentation to do so.
+• Work with database administrators to make necessary changes and
+updates.
+• Ensure there is a plan for maintaining and governing content post-
+launch.
+How is Content Strategy Different from Other Disciplines?
+Well ... it might not be.
+A content strategist’s work isn’t necessarily separate or apart from user
+experience, technical, or communications professionals. In fact, you
+might say the content strategist can work within, between, or inclusive of
+any of these disciplines, which may include:
+Messaging and branding
+
+-- 43 of 193 --
+
+Messaging and branding professionals specialize in defining what the
+“story” is behind the content. They answer questions such as: What are
+your brand values and attributes, and how will they inform the content?
+What do you want the user to learn or know or believe after reading your
+content? Do we say different things to different users? Do we talk to the
+same user differently depending on his current task or length of
+relationship with the organization?
+Case Study: Becoming a Content Strategist
+In 2010, Shelly Wilson worked as the head of editorial in Northern Ireland’s national
+education body’s multimedia team, overseeing the content in the organization’s print, web,
+and A/V materials. Deciding she was ready for a change, she applied for a position as a
+“content editor” at a web strategy and design studio called Front, located in Belfast. That’s
+where she first encountered the concept of content strategy. With 15 years of experience in
+writing, editing, and marketing, both for print and for the Web, she thought it would be a
+fairly simple transition.
+Though Shelly’s skills and experience made her the perfect candidate for the job, she
+quickly realized there was a new skill she’d need to master as a content strategist:
+persuasion. Of course she had always persuaded authors to make changes, but she
+discovered that consultants use persuasion differently with clients. Many clients genuinely
+don’t understand content, and that made it difficult for her to do her job. So rather than
+being a gatekeeper for quality and accuracy, she was now an ambassador, reaching out to
+clients and stakeholders to advocate for content. She learned how important it was to
+deconstruct, document, and articulate her rationale for each suggestion. She also began to
+invest a lot more time in showing rather than telling. She continues to hone her consulting
+skills to better deliver the strategic recommendations she was hired to create.
+It’s always tough to shift careers, and Shelly is still adjusting. “I’m not entirely
+comfortable yet, but I think you just have to get comfortable with being uncomfortable.”
+And what’s the upside? “Content strategy is more collaborative. The benefit is the
+additional perspectives. Working with so many people brings to light things you hadn’t
+considered.” And there’s no greater thrill than getting all those people excited about good
+content.
+Web writing
+Web writing is the practice of writing useful, usable content specifically
+intended for delivery online. This is a whole lot more than smart
+copywriting. An effective web writer must understand the basics of user
+experience (UX) design, be able to translate information architecture
+documentation, write effective metadata, and manage an ever-changing
+content inventory.
+Information architecture
+Information architecture involves the design of organization and
+navigation systems to help people find and manage information more
+successfully. An information architect who also focuses deeply on the
+
+-- 44 of 193 --
+
+content substance will define the content requirements for pages or
+content components of a website. This includes structural issues,
+messaging hierarchy, source content, maintenance requirements, and so
+forth.
+Search engine optimization
+Search engine optimization is the process of creating, editing,
+organizing, and delivering content (including metadata) to increase its
+potential relevance to specific keywords on web and site search engines.
+Metadata strategy
+Metadata strategy identifies the type and structure of metadata, also
+known as the “data about data” (or content). Smart, well-structured
+metadata helps publishers to identify, organize, use, and reuse content in
+ways that are meaningful to key audiences.
+Content management strategy
+Content management strategy defines the technologies needed to
+capture, store, deliver, and preserve an organization’s content. Publishing
+infrastructures, content life cycles, and workflows are key considerations
+of this strategy.
+Call it What you Want ... Just Get it Done
+It’s utterly pointless to try and say, “This person isn’t a real content
+strategist because she only does a subset of the activities that fall under
+the content strategy umbrella.” Sure, there are content strategy
+generalists—professionals who can inform and perform the activities that
+affect every phase of the content lifecycle. But there are also
+professionals whose expertise runs deep in one specific area of content
+strategy, or whose work has direct impact on how a content strategy is
+created or executed.
+Ultimately, the important thing is simply that someone is paying close
+attention to the critical questions that will make or break your content:
+why, what, where, for whom, by whom, when, how much, and what’s
+next. It doesn’t matter what you call it or who does it ... as long as the
+work gets done!
+So, Now What?
+Now comes the fun part.
+
+-- 45 of 193 --
+
+The next six chapters will help you understand in depth how content
+strategy works. We’ll talk about preparing for strategy, creating your
+strategy, and putting together your action plans for world domination
+through content. Which is totally possible.
+Let’s go!
+
+-- 46 of 193 --
+
+Discovery
+Whether you know it or not, your current “world of content” extends far
+beyond what’s on your website. It’s made up of all the people, places and
+things that affect the way your content comes and goes. Let’s go
+exploring...
+
+-- 47 of 193 --
+
+4. Alignment
+BECAUSE CONTENT TOUCHES just about every area of an organization,
+strategies only work when everyone is aligned and on the same page.
+Alignment starts in the discovery process and continues, well, forever. At
+the beginning of the content strategy process, alignment is about
+providing your stakeholders with baseline information about the content,
+each other, and the strategy process. Then, for the rest of time, it means
+keeping people up to date, asking for input, and responding to questions.
+(Yes. Seriously. Forever.)
+C’mon, People Now
+Alignment isn’t necessarily about creating consensus. It’s about creating
+a common understanding. But how on earth are you supposed to
+accomplish that? In this chapter, you’ll learn how to:
+• Identify your stakeholders.
+• Convince them to participate.
+• Set the stage for alignment with a kickoff.
+• Get them engaged.
+• Keep them motivated throughout the project.
+Why is Alignment So Important?
+We’ve found that we can often predict how successful a content strategy
+will be within the first few weeks. How? We look at how receptive the
+project sponsors are to collaborating with others. It’s our experience that
+people who are open to input and opinions succeed far more often than
+those who try to keep their projects under wraps.
+Content strategy requires outreach and alignment. Why? Two
+reasons.
+Lots of people affect your content
+People throughout your organization are involved in content processes.
+The marketing and branding teams might be obvious players, but legal
+reviewers, subject matter experts, technologists, and many others have
+roles to play. Acknowledging and understanding their ideas, issues, and
+opinions will help you create a more informed, effective strategy.
+
+-- 48 of 193 --
+
+Your content strategy affects lots of people
+When you introduce a new content strategy, you’re asking all of those
+people to change their habits, opinions, and accountabilities. That’s a tall
+order. You’ll need more than a fancy PowerPoint™ presentation to
+change people’s behavior—you’ll need their trust.
+You’ll need to help them understand the big picture. Ask for input and
+respond to questions. Show them where they can contribute and how
+they will benefit. The earlier you start, the better. So, hey, let’s get
+started!
+First, Identify your Stakeholders
+When we talk about “stakeholders,” we simply mean “people who matter
+to your project.” Stakeholders can make or break your strategy project—
+so it’s important to think carefully about who is necessary to the health
+of your content.
+Types of Stakeholders
+When people think about picking stakeholders, they often try to get
+representatives from each of the departments in the organization. That’s
+a good way to start. Having the right departmental representation is
+important.
+However, as you create your list, you may want to think about functional
+categories, as well:
+• Strategic decision makers are people who will be most impacted
+by your strategy and, therefore, deserve to have a significant amount
+of impact and input during the process.
+• Money people are the folks that are funding your project. Maybe
+it’s your boss, and your boss’s boss. They are likely the ultimate
+decision makers on everything you do.
+• Champions are people who will advocate for your project
+regardless of their relationship to the content. They see the value of
+content strategy and go out of their way to get others interested and
+invested.
+• Showstoppers are individuals who have no “official” power, but
+could stop the project in its tracks (the CEO’s henchman, for
+example). This category includes people who are politically
+necessary. You have to invite them, because they’ll turn into
+showstoppers if they’re not involved.
+
+-- 49 of 193 --
+
+• Interested others are people who have tangential interests in your
+project. Maybe they have a very limited or indirect relationship to
+the content. Or, maybe they’re considering a similar project of their
+own.
+Considering these categories will make it easier for you to decide who
+needs to be involved, when, and in what capacity. Do they need to come
+to every meeting or just the big ones? Do you need to interview someone
+personally, or can you just send him a questionnaire?
+Categories like this are certainly not a caste system. People can move
+from one to another, and sometimes be in two categories at once. But,
+identifying your stakeholders by how they impact the project and
+not by their areas of expertise will help you understand how to
+involve them going forward.
+Your Day-to-Day Players
+The people in the “strategic decision maker” category often make up
+your core team. They come to all the meetings. They come up with the
+lion’s share of ideas. And, they are the most important people to keep
+aligned. (The money people can be part of the core team, too, depending
+on their accessibility and interest.)
+Of course, it’s important to limit the core team to a reasonable size. What
+that size is depends on your situation. But, if you have a “core team” of
+25 people, it’ll be hard to get anything done. If you’ve got a big number
+of strategic decision makers, you’ll have to decide who is most critical to
+have on the core team and who has the time to participate. Or, you can
+create several task forces that can work on different aspects of the project
+simultaneously.
+Just be sure no one is excluded from the process altogether. Even the
+“interested others” should still be respectfully involved—whether you
+invite them to the biggest meetings or simply send them a quarterly
+email update.
+No Elitism, Please
+It’s tempting to just invite managers to represent their teams. But, in
+reality, the managers don’t always know how things work in the content
+trenches. Be sure to include people who really know what’s up, even if
+they’re interns. A combination of people from all levels of the
+organizational hierarchy works best.
+
+-- 50 of 193 --
+
+Then, Get them Interested
+People are busy. They might not want to add anything else to their
+already triple-booked schedule. If you have key stakeholders you want to
+support or participate in your content initiatives, you may have to work
+at it.
+You need to tell a compelling story (you’re a content-savvy person, after
+all). Create a nice story arc, and present your case with the following
+elements:
+• The problem or opportunity: What’s going on with content—
+complete with some persuasive facts from the research or some
+particularly convincing examples on how content affects the
+stakeholder’s bottom line or area of responsibility.
+• The urgency: Why it’s urgent to work on the content problem right
+now. (Competitive advantage? User needs? Business opportunity?)
+• The request for help: Why you think they would be an asset to the
+team; what unique views they can provide. Make sure you tell them
+how much you respect their time, and outline your expectations for
+participation.
+• The players: A description of who is participating (direct them to
+some of your project champions, if you’ve identified them already).
+• The payoff: The benefits to them and the organization as a whole.
+Most people like to be helpful and will agree to participate at some level.
+If someone important turns you down, respectfully ask them why.
+Resistance is often about lack of clarity, so you may be able to change
+their minds if you clear things up. If they still say “no,” ask if they’d like
+occasional updates about content projects. Keeping them involved at any
+level is a win for you, if only a small one.
+Kick Off on the Right Foot
+Usually, there is a formal kickoff meeting at the beginning of any content
+strategy project. This is where all the agreed-upon stakeholders come
+together for the first time. We often wait to host that bonanza until we
+have some research and analysis (see Chapter 5, Audit, and Chapter 6,
+Analysis) under our belts. That way, we can use early findings to put the
+project in context and ask the stakeholder group to fill in any analysis
+gaps. So, from the beginning, people are learning and contributing—
+getting the information exchange off to a good start.
+
+-- 51 of 193 --
+
+As you’re working toward early alignment, here’s what should happen in
+the kickoff meeting.
+Explain Why you’re There and What you’ve Done So Far
+If you want to get people on board, you need to be sure they feel
+included in the conversation. Using lots of industry lingo and failing to
+tell them what to expect will burn you every time. You’ll need to:
+• Explain what content strategy is
+• Reiterate how content strategy will benefit the organization and the
+stakeholders
+And, if you’ve already completed any audit or analysis work, you can
+discuss:
+• What content exists today and what shape it’s in (your audit
+findings)
+• What the internal and external factors are that impact your content
+—highlighting user research, competitive research, and the content
+workflow process
+Help Everyone Get to Know Each Other and their Roles
+Probably the most important part of alignment in the discovery phase is
+to help stakeholders learn about each other. In large organizations, it’s
+not uncommon for people to meet each other for the first time on a
+content project. Even in small companies, people may see each other in a
+new light. Helping people understand and engage with one another is a
+huge part of the job.
+Set Clear Expectations for what Comes Next (And for Whom)
+Lastly, you need to set the stage for the rest of the work. People will
+want to know:
+• What is their role in the process?
+• How much and how often will you need them to participate?
+• What kinds of things will they be doing?
+• Who are the decision makers and what is the decision making
+process?
+• What are the immediate next steps?
+The more they know, the more they’ll feel some ownership in your
+content projects from day one. Remember, your stakeholders are your
+
+-- 52 of 193 --
+
+allies—or, if they’re not initially, it’s your job to find that common
+ground. You want them to trust you so they’ll share the stuff that matters.
+Engagement doesn’t Stop after the Kickoff
+At the beginning of a project, alignment is a major focus. But, it’s
+important to make sure you keep the momentum going. How and when
+you solicit stakeholder input during the remainder of the project is
+unique to your situation. But no matter what happens:
+• Communicate and encourage participation: Schedule regular
+meetings, host workshops, send regular updates, have Q&A
+sessions, etc. Be consistent as clockwork—it’s another way to
+inspire trust.
+• Listen and respond: Always take the stakeholders seriously.
+Respond to their ideas and insights in a respectful, timely way.
+• Distribute documentation: Make sure people always have
+documentation in hand—so they can follow along in meetings and
+have reference materials whenever they want to refresh their
+memories.
+• Celebrate milestones: Highlight milestones and other progress. Be
+sure everyone knows how he or she contributed in positive ways.
+• Set expectations: Make sure people always know where they stand.
+What is their role in the project? What do they have to do next?
+Alignment is a never-ending, but highly rewarding, process. Just think of
+the smart people in your stakeholder group. When you harness all that
+brainpower, you’re bound to meet—and exceed—your business and user
+goals.
+Go, Team, Go
+Alignment is a huge first step as you head into your discovery phase.
+Once you’ve rallied the players, you’re ready to tackle your content
+together.
+In the next two chapters, we’ll dig deep into your content (audits) and
+examine the world in which it lives (analysis).
+Are we aligned on this plan? Terrific. Onward.
+
+-- 53 of 193 --
+
+5. Audit
+SOMETIMES, WE’LL ASK a conference audience, “How many of you know
+exactly what you have on your website, where it lives, and who owns
+it?”
+Inevitably, even in rooms of several hundred people, only one or two
+people raise their hands.
+This, friends, is a problem. To make even the most basic decisions about
+your content—like deciding where to focus your resources and budget—
+it’s good to know how much content you have, where it lives, what it’s
+about, and whether it’s any good.
+And to know these things, you need to do a content audit.
+Seeing is Believing
+A web content audit is an accounting of the content your organization
+currently has online. More often than not, when you’re finished (or even
+midstream), the results are unbelievably valuable. As we said in the first
+chapter, an audit can be one of your most powerful tools when making a
+business case for any web content project.
+When you finish this chapter, you’ll understand:
+• Why audits are important
+• What kinds of audits are most common
+• How to record your audit findings
+• How much content you need to evaluate
+• How to share your results
+Let’s get to it.
+Thinking about Skipping this Chapter? Don’t
+“We know the basic gist of what’s on our site.” “Somebody else in our
+organization must have done this before.” “I hate spreadsheets and don’t
+want to waste my valuable time on this.”
+Here’s the deal. No matter how unnecessary or unpleasant an audit may
+look to you, don’t skip it. This process isn’t just about building up a nice
+spreadsheet of URLs and page titles. Audits can:
+• Help you scope and budget for a content project
+
+-- 54 of 193 --
+
+• Give you a clear understanding of what you have and where it lives,
+even if only to begin thinking about maintenance or content removal
+• Serve as a reference for source (or existing) content during content
+development, making it a highly efficient tool for writers and other
+content creators to keep track of what they have to work with
+Can’t Robots do this for Me?
+At this point you may be thinking, “An audit sounds awfully time-
+consuming. Surely there are widgets that can audit my website
+automagically!”
+The answer is yes—there are “audit tools” that can crawl sites and
+capture basic information, such as titles and links. Some CMSes have
+audit-like features, too. During the audit process, this kind of technology
+can be extremely helpful and, in some cases, necessary. But beware.
+Technology doesn’t replace the context provided by human review. If
+you really want an in-depth understanding of your content—substance,
+quality, accuracy—people power is the best way to go.
+Case Study: The Value of an Audit—Saving Time, Saving Money
+Carrie Hane Dennison works for a full-service web development firm called Balance
+Interactive in Springfield, Virginia. She says that her clients are starting to realize they
+need content strategy, even if they don’t know what it is.
+Although clients aren’t always looking for a line item called “strategy,” Carrie finds ways
+to address content strategy. She prefers to do so early in a site redesign, but sometimes
+works with clients after content requirements are already in place. At either stage, using an
+inventory is one way Carrie helps her clients understand and address strategy. She explains
+to clients that, for every 5 hours they spend auditing near to the beginning of a project,
+they might save 20 hours at a later stage, preventing project delays.
+After conducting an inventory of existing and needed content, Carrie asks her clients to
+spend time thinking about messaging, or considering the number of hours needed to
+complete the writing or content migration. She recalls one client who took one look at the
+inventory and said, “There’s no way I can get this all done.” Rather than setting up her
+own staff to fail, the client hired Carrie’s team to help migrate the content. The result was
+an on-time launch of the new website, rather than a month late.
+That’s really the point of an audit: You can anticipate problems before they arise, and
+avoid derailing your project. All of that time and money may seem daunting at the
+beginning, but Carrie’s clients are impressed when the investment means they’re able to
+launch a better site, on schedule.
+Technology can help you get:
+• Quick wins: When you have a very limited timeframe to build a
+business case or to prepare for an upcoming web project, technology
+can help. For example, if you want to understand the total volume of
+
+-- 55 of 193 --
+
+content on a website, an audit tool can give you a ballpark estimate
+in a hurry.
+• A head start: Auto-audit tools can save you tons of time by
+creating a complete list of all of your content, as well as some basic
+info about each content piece. Additionally, in sites without
+traditional navigation, CMS-driven tools may be the only way to get
+a complete list without going totally insane.
+• Neutral data: In organizations large and small, content discussions
+can get political. In this case, technologically generated, raw,
+undisputed data about your content can be your best friend.
+Even with all of the technical shortcuts available, many content
+strategists prefer to do audits by hand. There is simply no better way to
+fully comprehend all of your existing content.
+Common Types of Audits: Choose Your Own Adventure
+Here’s the single, most important thing you need to know about audits:
+The kind of audit you do depends on what you want to learn. There
+is no one perfect format, size, or timing for an audit; there are many
+different (and totally valid) ways to audit your content. What you pick
+depends on your goals.
+Here are a few of the most common content audits.
+Which Audit is Right for you?
+There’s no hard and fast rule, here. You can choose to do one of these
+audits, all three, or create your own audit format. No matter what you
+choose, doing a thorough audit will give you priceless information about
+your content.
+
+-- 56 of 193 --
+
+Start by setting clear goals for your audit. These will help you determine
+which audit(s) you choose and what information they capture. Think
+about:
+• What you want to learn (and why)
+• What you need to prove (and to whom)
+• How long you have to get the audit done (be realistic)
+• Where you are in the content strategy process (if you’re not sure,
+see the next five chapters ...)
+Let’s take a closer look at each of the audit types.
+Quantitative Inventory: Just the Facts
+The goal of a quantitative inventory is to learn what you have, where it
+lives, and a few other basic stats. No frills. Just objective facts.
+A quantitative inventory is the quickest and easiest way to get some
+insight into your content at the beginning of a project. BUT. By simply
+cataloging the number of pages, downloadable PDFs, dynamic content
+modules, video clips, and other “live” web content for which your
+organization is responsible, you can wake up stakeholders to the
+magnitude of your content—and the budget you need to
+create/maintain/fix it. Cha-ching.
+What to record
+Here’s a list of the most common bits of data recorded in quantitative
+inventories. Title/Topics is a must-have. The other factors you choose
+depend on—you guessed it—your audit goals:
+• ID: Assign an identification number or code to each piece of
+content. (See page 57 for more information.)
+• Title/Topics: For a web page, this is likely the title of the page. For
+a content module, you may choose to use the heading or subhead. If
+there is no title of the content piece or page, include a short
+description of the key topics or themes covered.
+• URL: Record only where applicable.
+• Format: Make a note of the technical format of the content, such as
+text, video, PDF, etc.
+• Source: Specify whether the content is created in-house, by a
+content partner (newsfeeds, articles, blog posts, and so on), or by
+your users. Note: For content created by your internal team, if you
+can, note who creates, approves, and publishes each piece of
+
+-- 57 of 193 --
+
+content. This information can be enormously helpful when you
+begin to ask questions about why certain content was done a certain
+way, or when you want to confirm it’s okay to change or remove the
+content. We’ll examine this topic in detail in Chapter 9, People.
+• Technical home: If you’re dealing with a very large site that’s
+hosted on a number of different servers or platforms, take note of
+where the content lives within your technical infrastructure. For
+example, is the content in a content management system (CMS),
+inventory system, or fed to the site via an API? Sometimes content
+may be stored in very strange places, so be prepared to do some
+digging.
+• Metadata: Metadata is “data about data.” In this case, we’re talking
+about attributes (such as keywords and tags) assigned to each piece
+of content. These valuable data nuggets help people find content on
+search engines, on your site, and in your CMS. When planning
+findable, functional content during the strategy phase, you’ll need to
+know what metadata exists. If you don’t know where to find your
+metadata, your friendly IT colleague, web developer, or SEO
+consultant should be able to help.
+• Traffic/usage statistics: There are analytics available for almost
+any kind of online content. If it’s feasible, get the skinny on how
+people are using (or not using) each piece of content. An internal
+analytics person or a representative from your analytics provider can
+often help you get the information you need.
+• Last update: When was the last time somebody in your
+organization paid attention to this piece of content? Most CMS
+systems record a “last update” date—and that information can give
+you hints about the significance of the content, the content
+workflow, and more. Just don’t make any drastic assumptions—
+keep it in context.
+• Language: If you have content in multiple languages, you’ll want
+to record the language or dialect used on each piece of content.
+Note: robots welcome here
+While it’s always helpful to review your content personally, quantitative
+inventories are where the robots really shine. Because quantitative
+inventories are about collecting raw data (no human judgment required),
+the right technical tools can save you time and energy.
+Qualitative Assessments: Deeper Dives
+
+-- 58 of 193 --
+
+Seeing what content you have and where it lives is helpful, but only to a
+point.
+Many a site map has been constructed based solely on page titles. But
+when it comes to qualifying the usefulness of content, a page title
+doesn’t tell you what the content actually says, or if it’s useful to your
+audience. That’s where a qualitative audit comes in.
+A qualitative audit analyzes the quality and effectiveness of the content.
+The key distinction between quantitative inventories and qualitative
+audits is human judgment. Qualitative audits are a robot-free zone. An
+actual human being has to look at each piece of content and evaluate it
+based on defined characteristics.
+In our chart on page 50, we listed two kinds of qualitative audits. Both
+take the quantitative inventory and go a few steps further:
+• Best practices assessment: Usually done early in the project, a best
+practices assessment looks at your content from an outsider’s point
+of view. It measures your content against best practices and user
+needs. It helps you understand if your content is useful, usable,
+enjoyable, and persuasive to your audience—or what you need to do
+to make it so.
+• Strategic assessment: A strategic assessment is the most full-
+featured of all audits. Once you have a strategy in place, a strategic
+assessment gives you an idea of how your existing content aligns
+with it. Where are the gaps? What needs to change? What’s terrific
+as it is? A strategic assessment can combine factors from a best
+practices assessment with strategy-specific criteria. Note that this is
+often informed by analysis and recommendations—we talk about a
+lot of this in the next chapter.
+Sample qualitative audit factors
+In addition to the information gathered in a quantitative audit, there are
+dozens (if not hundreds) of possible subjective factors you can review
+during a qualitative audit. We generally choose 5–6 factors based on the
+situation. The table on page 55 shows a few of our favorites.
+Create your own factors
+As we mentioned, the table only includes a few sample audit factors.
+Feel free to be creative and think of your own. Just be sure you can:
+• Evaluate the factor by looking at individual pieces of content (not
+groups or categories of content)
+
+-- 59 of 193 --
+
+• Use the factor to assess most or all of the content (i.e., not just one
+type of content)
+• Develop clear, specific guidelines for measurement (including
+ratings or categories)
+The More (Auditors) the Merrier
+If you’re auditing 1,500 pieces of content, one person can handle it. (Yes,
+really!) But if you’re looking at 10,000 pieces, you’re going to want
+some help.
+When you share audit responsibilities, it’s absolutely imperative that
+your audit criteria, ratings, etc., are crystal clear. In addition to defining
+and communicating the criteria, you may want to:
+• Have one person test the audit criteria before splitting up the work
+• Create some examples of each criterion or rating
+• Have regular check-ins with the audit team and spot-check each
+other’s work
+• Make sure that in addition to ratings and pre-defined lists, auditors
+have a notes field to jot down anything out of the ordinary or
+explain their thinking
+When it’s all over, you can commiserate about the agony of audit eyeball
+(where you can no longer look at the screen without seeing double).
+QUALITATIVE AUDIT FACTORS
+
+-- 60 of 193 --
+
+Audit Spreadsheets: Choose your Weapon
+Back in the old days (like, 2005), auditing was so easy. Web content =
+website pages. The format of audit findings was always the same: a
+simple list of pages, ordered by navigation, in a spreadsheet.
+Today, getting a handle on your content can be more complex. Content
+isn’t necessarily assigned to a single page on a website anymore—in
+fact, it might not be on a website at all. Even if it is, it might be displayed
+differently depending on the user’s behavior, preferences, or device
+(computer, phone, tablet, etc.).
+Spreadsheets are still the go-to format for most audits, but the tools are
+evolving to accommodate new kinds of content. Let’s take a look at a
+few of the more popular options and how they work.
+The Basic Spreadsheet: Old Faithful
+If you have a traditional website—where content is assigned to a specific
+page within a fixed navigation scheme (usually a home page with lots of
+neatly organized pages underneath)—a basic spreadsheet is the tool for
+you. Here’s an example of a basic spreadsheet for a fake plant nursery
+website:
+
+-- 61 of 193 --
+
+To audit your site, you simply click through every page of your site
+(usually in order) and record the information in an outline format. List
+major website sections as your top-level “parent” (or primary) sections.
+Then plug in pages and modules as “children” (or secondary, tertiary,
+and so on) sections or pages in each main section. Most of the time, the
+pages are numbered the same way you’d organize a document outline
+(1.0, 1.1, 1.1.1, and so on).
+A note about ID numbers
+If you don’t already have a numbering system for your web content, it’s
+a good idea to start one during the audit process. By assigning a unique
+ID to each page or component, you have an easy way to reference each
+piece of content, categorize content for analysis, and get an
+understanding of how pieces of content relate to each other. Lastly, a
+number system will help you link your audit findings to other web
+project documentation—the number of a specific piece of content can
+correspond to the content strategy recommendations for that content, etc.
+Spreadsheet 2.0: When Content Flexes and Changes
+As we mentioned above, today’s smarty-pants programmers have made it
+possible to customize website content based on who you are, your past
+
+-- 62 of 193 --
+
+behavior, or the device you’re using. (For example, people viewing a
+page on a mobile phone may only see half of the content available on a
+computer.)
+When your site has these bells and whistles, variations need to be
+included in your audit. If your site has a set structure (where the
+navigation is basically the same for everybody), you’re in luck. You can
+still do the inventory in an outline manner with some small adjustments.
+Start by choosing one version of the content to be the root of your
+inventory (the primary user group, the most common device, etc.) Then
+amend your ID system and spreadsheet to indicate variations.
+Back to our nursery example. Let’s say the nursery website has two
+audiences: the general public and professional landscapers. People who
+are logged in as professionals get expanded or different information. In
+this (very simple) example, we’ve added “:g” to the end of the ID
+numbers of pages targeted to the general public, and “:p” for versions of
+the pages for professionals.
+In these types of audits, consistency is key. Regardless of the numbering
+system you select, make sure it’s used correctly throughout the audit.
+Indexed Inventory: When Things Get Really Hairy
+Now come the sites, apps, and content channels that are so incredibly
+flexible it seems like there is no navigation at all. Or, there really isn’t
+any navigation. Just tags. Or facets. Or something.
+Whatever the situation, the content in question cannot be audited in an
+outline format. You can still use a spreadsheet for your audits, but you
+likely need to:
+
+-- 63 of 193 --
+
+• Get a list of content pieces from the backend. It’s really hard to get a
+complete list of content pieces by clicking around. So, if you’re
+unfamiliar with the backend system, it’s time to make friends with
+an IT or CMS-focused colleague.
+• Document (or find the documented) user characteristics or
+behaviors that cause the system to display each piece of content.
+Again, the backend people probably have this all worked out on a
+fancy model somewhere.
+• Categorize the content into groups for analysis such as topic,
+product type, audience segment, or internal content owner. Create a
+meaningful numbering/indexing system based on your
+categorization. (If the CMS does this for you, too, hooray! But,
+often the CMS numbering system is too abstract for the purposes of
+an audit analysis. Boo.)
+Our nursery audit might look like this:
+Now this is a simple example; things often get significantly more
+complicated. Indexing systems get tricky, and, in some cases, it’s easier
+to create an audit database instead of a spreadsheet. Make the choice
+based on your audit goals, the people working on the audit, and the size
+of the mess you might be in.
+Do you Really Need to Look at All of the Content?
+It depends. If you have less than 5,000 pages/pieces of content, you
+should probably look at all of it. Yep. All of it. Why? Because you can:
+it’s humanly possible to do so.
+
+-- 64 of 193 --
+
+But what happens if you have 25,000, 100,000, or 100,000,000 pieces of
+content? Or, you don’t have enough time to review 5,000 pages? When
+looking at every page is not an option, you have two choices: content
+sampling or rolling audits.
+Content Sampling
+One way to audit huge piles of content is to review a “representative
+sample” of your content.
+Choosing your sample
+The challenge with creating a sample is deciding what content should be
+included. Sure, you could just do a randomly generated selection of
+content items, but usually it’s better to make your sample more
+intentional by basing it on what you want to learn.
+Brain Traffic’s Christine Anameier suggests considering the following
+criteria when selecting your audit:
+• Content objectives: If 70% of the site content is designed to
+increase sales and 25% is dedicated to customer support, your
+sample set can reflect those percentages. The remaining 5% (such as
+job postings or corporate philanthropy information) can be sampled
+lightly or not at all.
+• User groups: Divide sample content by user group—ensuring
+content for each of your major user segments is represented. Better
+yet, prioritize the user groups and sample more pages for the highest
+priority users.
+• Traffic: Site analytics can show you which pages or sections get the
+most visits and which get the least. Depending on your business
+goals, you may choose to focus on the high-traffic content, low-
+traffic content, or a combination of all traffic levels.
+• Content ownership: It may not be possible to include work from
+all teams of content contributors, but it’s helpful to get a good mix
+from people that regularly create your content. If the sample consists
+mostly of one group’s work, it may not reflect the content as a
+whole and other teams may not embrace the audit findings.
+• Update or maintenance frequency: Some content is maintained
+lovingly. Other content is left to go stale. If either of these two
+scenarios is over-represented in your sample, the results of the audit
+will be skewed—creating a false sense of pride or doom.
+
+-- 65 of 193 --
+
+• Depth: It’s tempting to audit only top-level pages of a website, but
+with today’s search tools, customers may never even see your top-
+level pages. The “deeper” content is often where your customers run
+into major problems. In his book, Killer Web Content, Gerry
+McGovern writes, “I come across many websites where there is a
+well-designed top level with quality content. However, when you
+click down a few levels, everything changes—it’s like walking out
+of a plush hotel straight into a rubbish dump.” So you may want to
+look at a cross-section from all content levels.
+When choosing your sample, how much content is enough?
+There’s no rule or benchmark for picking the perfect sample size. It
+would seem like the more content you could review, the better off you’d
+be. That’s somewhat true, but mostly you just have to look at enough
+content to see patterns emerge, answer your questions, or reduce
+uncertainty.
+On a relatively small site (i.e., 10,000 pieces of content), you might need
+to look at half of the content before the patterns become obvious. For a
+million-page site, you might decide to look at only 0.01% of the content.
+That’s still 10,000 pages ... so you’re not exactly off the hook. But, you
+should begin to recognize some kind of valuable patterns. You won’t
+have the same level of certainty about your findings as you did with the
+smaller site audit, but you’ll have some ideas. And you probably aren’t
+going to learn anything else by auditing another 1,000 or 10,000 items—
+comparatively, the percentage of items reviewed is still so low that the
+change in the margin of error is microscopic.
+Here’s a rough table of suggested sample sizes (based on common
+market research sampling practices):
+
+-- 66 of 193 --
+
+If you can’t make these benchmarks or just want to ignore them, don’t
+sweat it. Adjust the sample size to your resources and time. Just about
+any sample will tell you something as long as you (and the people you
+show your results to) understand what content you reviewed and why.
+Rolling Audits
+Another effective way to audit large sites is a rolling audit—an audit that
+basically never ends. Lou Rosenfeld (Rosenfeld Media) says an audit or
+inventory “shouldn’t be something that you allocate the first two weeks
+of your redesign to; allocate 10 or 15 percent of your job to it instead.”
+It works like this: In January, you audit one area of a website. In
+February, you audit a different area. In March, you move onto a third,
+and so on. Eventually, when all of the content of the site is audited, you
+start over with the first category again. (It doesn’t have to be monthly,
+either.)
+The benefit of a rolling audit is that more content gets looked at, in a
+more careful manner, more often. This works best when stakeholders can
+agree to focus the first phases of the audit—and the content strategy—on
+a few discrete areas of the site.
+And, guess what? On a super huge site, you can do a rolling sample of
+each area of the site instead of a rolling audit. It’s like a dream come
+true, really.
+Tabulate Your the Results
+When you’ve finished evaluating all of your content, stop and celebrate.
+Just bask in the glory of that completed spreadsheet. Have a cupcake!
+Take a nap!
+Okay, that was fun. Back to work.
+By this time, the audit team likely has a good idea of where your content
+shines and flounders. But, there’s nothing like cold, hard numbers to
+drive home the point. So, take the time to tabulate the results and look
+for patterns. You’ll be able to answer questions like:
+• How much content do we have, exactly? Do we have more in some
+categories than we would have expected?
+• Which areas of content score especially high or especially low on
+any specific factor?
+• Do we have a disproportionate amount of content for one audience
+segment?
+
+-- 67 of 193 --
+
+• How much of our content is out of date or inaccurate?
+When you crunch the numbers, you often find some pretty insightful
+stuff.
+Share Your Findings
+At this point, you may be totally enamored with your spreadsheet and
+raw data—we are, too—but chances are your business stakeholders
+won’t share your devotion.
+For them, you’ll need an audit report. Prepare the report in whatever
+format suits your audience: it can be a presentation or a full-scale
+document. You just need to convey the results of the audit and provide a
+reference for future discussions.
+An audit report usually has three parts: an overview of the audit process,
+a path to access the raw data, and the findings report.
+Overview of the Process
+First, your report should provide a brief description of the audit process.
+This will help make your findings more understandable and believable.
+You might want to include:
+• Goals of the audit: Why you did the audit, what you hoped to
+learn, and what you want to do with the results.
+• Audit factors and measurement criteria: A brief overview of
+what was measured and how.
+• Scope: What areas of content were audited and why. If the content
+is particularly time-sensitive, you may need to include a date range
+as well.
+Path to Raw Data
+Some people who see your audit report are going to want to see the data.
+If you so choose, you can provide them with a link to the spreadsheet.
+But, don’t just let them loose with it. Provide a spreadsheet guide that
+explains how the spreadsheet works and alleviates any confusion.
+Findings Report
+Third, and most importantly, you’ll want to provide your audit findings.
+Your findings can include:
+• A summary of overall conclusions and recommendations
+• A description of each audit factor
+
+-- 68 of 193 --
+
+• Data summaries per factor
+• Factor-based themes or suggestions (with examples, when possible)
+The report you create depends on the people who will see it. How much
+do they need to know? How much do they want to know? You may have
+different reports for different groups of people for the same audit. Here
+are some examples of what you might see in an audit report.
+Formal detailed report
+In this example, the auditor pulls out all the stops. This is a formal report
+made for an audience that craves details. In this example, the audit
+examined types of content formats used throughout the site. On this page
+of the report, you have:
+1. A description of the audit factor
+2. Graphic depiction of the results
+3. Data cross-referencing site section and format
+4. Key findings and analysis about the factor
+
+-- 69 of 193 --
+
+Casual summary report
+This report is more casual—possibly directed at a core team who is
+familiar with the audit and the content. It doesn’t go into the details, but
+gets the high-level messages across. This page includes:
+1. Summary of the key finding for this factor
+2. A bit of detail that clarifies problem areas
+
+-- 70 of 193 --
+
+Presentation-style report
+This slide is from a presentation that might summarize a report or may
+be the report itself. The slide headline summarizes the key finding, and
+the image provides some data for backup.
+
+-- 71 of 193 --
+
+It’s very likely that conducting an audit will earn you a huge promotion,
+a ton more money, and a year’s vacation. Well, that might be a bit
+optimistic. At the very least, it will get people’s attention. And once you
+have people’s attention, you have the opportunity to present a business
+case for your next project or initiative.
+But Wait, there’s More
+With a completed audit under your belt, you should have a clear
+understanding of the content you have. It’s likely you have lots of ideas
+about what to do next. Why not jump right in?
+Hold on there, chief.
+There’s more juicy info to be had about user needs, competitors, and the
+content team within your organization.
+Next stop? Analysis.
+
+-- 72 of 193 --
+
+6. Analysis
+CONTENT DOESN’T EXIST IN A VACUUM. There are forces—both from within
+your organization and from the outside world—that shape what your
+content is and what it could be. Business goals, resource constraints, user
+needs, and competitor activities are just a few things that influence your
+content in a big, big way.
+To make effective recommendations about content, you need to analyze
+the wild, wide world in which your content lives. So, before jumping
+into strategy, take the time to ask pertinent, important questions about all
+the factors that impact your content’s creation, maintenance, and ongoing
+success.
+In this chapter, we’ll discuss different aspects of ecosystem analysis, and
+why they’re essential to your content strategy efforts:
+• Internal impact factors: How does your organization impact your
+content?
+• External impact factors: What effects do users, competitors, and
+influencers have?
+• Communicating the results: How do you document and share
+what you’ve learned?
+Please note that just because internal impact factors come first in this
+chapter doesn’t mean you need to do them first. Want to start with
+external impact factors? Need to do external and internal
+simultaneously? Go right ahead. The choice is yours.
+No Time or Budget for Analysis? Find It
+When you’re constantly being asked to deliver projects in less time with
+fewer resources and smaller budgets, how can you possibly slow down
+for content-focused analysis?
+The real question is ... how can you not?
+Analysis uncovers unrealized challenges, risks, and opportunities. With
+your analysis in hand, you can base your future recommendations on
+reality. And that’s not just a good idea, it’s crucial. It’s a step you can’t
+afford to skip.
+Bite off Only What You Can Chew
+
+-- 73 of 193 --
+
+Analysis doesn’t have to be some megalithic effort. Your analysis
+activities can be scaled according to project size and resource
+constraints. Please note that we said scaled, not skipped.
+If you’re short on time, figure out which activities and information are
+most valuable to your specific project. Just remember: Every hour you
+spend in analysis will likely save dozens, if not hundreds, of hours
+during content creation, delivery, and upkeep.
+Internal Impact Factors: Look Deep Within
+Looking inside the organization is an easy place to start. After all, you
+(or members of your client team) work there. But whether you work for
+an organization directly or as a consultant, it’s hard to convince people to
+do analysis on their own company. Why spend time, energy, and budget
+learning things they already know?
+Chances are, nobody’s ever sat down and taken a comprehensive look at
+the content’s purpose, process, and policy. And, even if someone has,
+how long ago did it happen? When internal analysis is ignored or out
+of date, entire strategies are built on un-researched assumptions and
+isolated opinions—costing everyone time and money.
+How Do You “Do” Internal Analysis?
+The best way to conduct an internal analysis—by far—is to talk to
+people inside the organization. Sure, you can spend some time digging
+through documentation, but at some point, human interaction is required.
+You can get perspectives from people in several ways, such as:
+• Interviews: One-on-one discussions are a great way to get the real
+dirt. You’re able to follow the interviewee’s specific interests and
+ask lots of follow-up questions. As an added benefit, interviews are
+a great way to start a personal relationship and develop trust. That’ll
+be helpful later, when you develop recommendations and try to
+implement them.
+• Group discussions: Talking to several people at once will get you
+more general information than interviews. However, it’s an efficient
+way to get information and help people learn about each other’s
+perspectives at the same time. Be sure to keep groups to a
+manageable size. Fewer than eight people is probably best.
+• Questionnaires or surveys: These aren’t ideal, but they can help
+you gather information from large groups of people, and help them
+
+-- 74 of 193 --
+
+feel included. Questionnaires and surveys work particularly well if
+everyone you’re surveying does the same job. (For example, a well-
+done email questionnaire to a group of sales reps could provide you
+with a lot of information about how they use content during sales
+calls.) Just be sure the questionnaires are short and easy to complete.
+It’s also helpful if someone with authority encourages participation.
+No matter what method you use, be sure to really listen to people—even
+if their perspective is different than the majority’s. There is nearly always
+something you can learn from everyone.
+Once you’ve completed your conversations, summarize the big themes
+and note discrepancies. You’ll want to include your interview results
+when you share your research later. (It probably goes without saying, but
+be careful not to betray any confidential information when reporting your
+findings. Nothing kills trust like telling tales out of school.)
+Listening: The Content Strategist’s Most Important Job
+Brain Traffic’s Erin Anderson says that when it comes right down to it, our most important
+job as content strategists isn’t content strategy. It’s listening.
+This means the kind of listening that demands our active attention and participation. The
+kind that leaves us with the information we need to recommend truly smart, thoughtful
+content solutions. The kind that requires complete focus on the content challenge at hand.
+Whether you’re scoping a project, clarifying user goals, or managing rounds of client
+feedback, Erin suggests holding fast to a few rules for active listening:
+1. Act like a journalist.
+“Open questions” start with “who,” “what,” “when,” “where,” “why,” “how,” “how
+much,” etc. If we’re only getting yes/no answers from a client, it means we’re being
+lazy reporters. And it means our conversation can only scratch the surface in terms of
+uncovering user needs and business goals.
+2. Get comfortable with silence.
+If a question we ask makes the interviewee pause or react emotionally, it’s natural to
+want to lighten the mood. But jumping in to fill the silence can kill a potentially
+illuminating discussion. Uncomfortable silences often signal an imminent
+breakthrough or moment of truth. It’s worth letting your interviewee collect his
+thoughts and respond candidly when he’s ready.
+3. Ask silly questions.
+We wouldn’t be doing anyone a favor by pretending we have all the answers. More to
+the point, asking “stupid” questions quickly exposes the big, ugly, chronic content
+problems nobody wants to tackle. A good goal is to ask at least one such question in
+each client meeting.
+4. Check your work.
+So we’ve done our job, asked our questions, and listened carefully to the answers. But
+only after we’ve agreed on the issues at hand can we proceed with a meaningful plan.
+That means organizing the resulting data into a document that can be discussed,
+aligned and signed off on, and used to guide the way forward.
+
+-- 75 of 193 --
+
+Factors that Matter
+When you start peeking under the covers of your organization, it’s easy
+to get overwhelmed. Seriously. It can be ugly in there. But you don’t
+have to tackle everything at once. When you’re designing your interview
+questions, start by focusing on these four topics:
+• Target audiences: Who do you want to engage in conversation?
+Why? (We’ll talk about actual users a little bit later.)
+• Messaging: What do you want those target users to know, learn, or
+“get” from your content?
+• Channels: What channels (on- and offline) are used to deliver
+content? How are they all connected? What is the business purpose
+of each one?
+• Workflow/Governance: How is content created, maintained, and
+managed? Who’s involved?
+In our experience, when you have answers to these questions, everything
+else gets a lot clearer. And although they might sound easy, answering
+these questions is deceptively difficult. Even if you can answer them off
+the top of your head, it’s likely that people in your organization will have
+different perspectives. And that’s where the fun begins.
+Let’s take a closer look at the “big four.”
+Target audiences: Who are you trying to reach?
+Who is your web content for, ideally? As you ask your stakeholders this
+question, people will have lots of different opinions. The marketers will
+say, “It’s all about the customer.” Human resources will want to please
+job seekers. Investor relations will want to talk to—surprise—the
+investors. This is to be expected. For right now, just find out as much as
+you can about each audience. Ask stakeholders to:
+• Define their target audiences clearly. For example, ask, “When you
+say ‘customers,’ which are you referring to: prospective customers,
+existing customers, or both?”
+• Describe why the audiences are important to them (the
+stakeholders) and to the business. It may seem obvious why an
+audience—like investors—is important, but hearing the stakeholder
+specifically answer this question can be pretty informative.
+• Arrange the target audiences in order of importance to them and to
+the business (and if the lists are different, have them explain why).
+
+-- 76 of 193 --
+
+Compile all of the information you gather in your analysis findings
+document so you can share it later. During the content strategy
+recommendations phase, you’ll need to get everyone together and
+negotiate some priorities and parameters. (See Chapter 8, Content.)
+Messaging: What are you saying?
+“Messaging” is one of those words that means something different to
+everyone. To some, messaging is about creating specific words and
+phrases in an approved copy bank. To others, it means defining a “brand
+promise” or voice and tone (e.g., “We want to sound friendly but
+sophisticated.”).
+To us, messages are simply bits of information (thoughts or ideas).
+Messaging is the art of deciding what information or ideas you want
+to give to—and get from—your users. Needless to say, messaging is an
+important part of defining your content requirements. You can use
+messaging to:
+• Prioritize content needs
+• Keep content consistent (over media and time)
+• Align content owners on content requirements
+During your analysis, you don’t have to define the messages you will use
+in your content going forward. But you do need to understand what
+messages exist in content today (whether it’s on purpose or not) and how
+(or if) stakeholders would like messaging to change in the future.
+If you’re in a large organization, there might be multi-million dollar
+projects devoted to creating established messaging hierarchies (present
+and future). If you’re in a smaller organization, a web project might be
+the first time anyone has really thought about messaging. Either way,
+you need to get input from all of the key stakeholders about what they
+want to say to their target audiences.
+Then, when you create content strategy recommendations, you will work
+with the stakeholders to narrow the field of possibilities—and choose the
+right combination of messages for the content.
+Channels: Everything’s connected
+A channel is a medium through which content is delivered. Users are
+likely going to use several channels (on- and offline) over the course of
+their relationship with you, so it’s important that everything is consistent
+and complementary. That means all of the content creators in the
+organization, regardless of the channels they focus on, need to work
+
+-- 77 of 193 --
+
+together. The first step to that collaboration utopia is just identifying
+what’s out there.
+What channels exist?
+Organizations are often stunned to realize how many content irons they
+have in the fire. It’s not uncommon for a large organization to have
+hundreds of websites all pointing to each other with no master plan. And
+don’t get us started on print materials or social media or mobile
+initiatives or SEO-focused content or ... are you cringing yet? Because
+we are.
+To get a handle on what exists, you can:
+• Talk to communications producers (marketing, PR, advertising,
+technical communications, etc.) and find out what they have and
+how it’s related to your content. For example, is someone creating a
+print brochure that will tell the user to go to your website for more
+information? If so, the website needs to have more information.
+Good to know.
+• Ask your friendly IT people for help compiling a list of all the
+URLs the company owns and stats on the traffic to each one. Are all
+the URLs still active? Have any sites been ignored or forgotten?
+How much traffic goes from one site to another?
+• Follow the links on your corporate website and see where they go.
+• Search for your organization on search engines and social media
+sites—you might be surprised at what you find created by (and
+about) your organization.
+Common channels you should watch for include:
+• Public website(s): What are all of your organization’s public
+websites? (There are likely more than you think.)
+• Social media activities: Where do you have active accounts? What
+types of content are being shared among social media participants,
+and where?
+• Mobile: Is there a mobile version of your website? Do you have
+proprietary applications delivering content to your mobile users?
+• Intranets/extranets: Are there intranets/extranets associated with
+the organization that your users may access?
+• Public relations and awareness: How does the PR team work? Are
+there other awareness campaigns or tactics? (For example, does
+your boss do a lot of public speaking?)
+
+-- 78 of 193 --
+
+• Print media: Do you communicate to your users with brochures,
+spec sheets, or similar? If so, are users likely to see those materials
+before or after they see your web content? Do they refer to your
+project content?
+• Email campaigns: Do you communicate regularly to your users via
+email? Will those emails link to your project content?
+• Advertisements/SEM: Are there advertising campaigns currently
+underway? What about paid search placements? Do they link to
+your project content?
+This undertaking, of course, is easier said than done in midsize to
+behemoth-size organizations. If you can’t get the whole picture, start
+with your highest priority channel or area of focus. Find out what it is
+connected to. Repeat with the next priority channel when time and
+resources allow.
+Once you know what exists, mapping everything out can help you (and
+your content partners) understand how things are interconnected. A map
+sheds light on how important it is not to publish, revise, or remove
+content without understanding what other sources may point to that
+content as a solution or reference for potential customers.
+Here’s a simple example. AwesomeCo is a growing software company.
+They’re planning to redo their website, so they’ve created a channel map
+with the website as the focus.
+
+-- 79 of 193 --
+
+How do users (ideally) interact with each channel?
+The next step is to define the role each content delivery channel plays in
+your target audiences’ relationship with your organization. When you
+understand why (and when) the target users access each channel, you’ll
+have a better grasp on what content belongs where.
+One way to do this is to compare your channels to a “user lifecycle.” A
+user lifecycle provides a step-by-step explanation of how the user
+relationship would work in an ideal situation. The most common
+lifecycles focus on a consumer purchase path (how we get a customer to
+buy something). But, you can also create lifecycles for other objectives,
+such as knowledge acquisition (how we get an audience to learn
+something) or loyalty (how we entice an audience to return to the content
+regularly). Check with your business strategy, communications, and
+marketing teams to see if any of these lifecycles have already been
+developed.
+When you’ve established a lifecycle, you can see how your content
+delivery channels fit into the overall process by assigning each channel
+
+-- 80 of 193 --
+

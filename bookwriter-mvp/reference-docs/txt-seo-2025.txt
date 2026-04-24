@@ -1,0 +1,2340 @@
+
+
+-- 1 of 174 --
+
+SEO 2025
+Learn Search Engine Optimization
+With Smart Internet Marketing Strategies
+Expanded & Updated – 2025 Edition
+Adam Clarke
+
+-- 2 of 174 --
+
+Simple Effectiveness Publishing, Publisher.
+Cover Design: Simple Effectiveness Publishing.
+Production and Composition: Simple Effectiveness Publishing.
+SEO 2025: Learn search engine optimization with smart internet marketing strategies. Copyright ©
+Adam Clarke. All rights reserved.
+This title, its contents, cover design, likeness, and associated marketing materials are the intellectual
+property of its copyright holders; the author, and the publishing company. Copyright infringement,
+reproductions, or translations of any part of this work without the permission of the copyright owner
+is unlawful, per Sections 107 and 108 of the 1976 United States Copyright Act.
+Adam Clarke completed a Digital Marketing certificate from Google’s Digital Garage accredited by
+the Interactive Advertising Bureau Europe and The Open University and is a member of the Digital
+Analytics Association.
+SEO 2025: Learn search engine optimization with smart internet marketing strategies.
+Adam Clarke
+Kindle ASIN B00NH0XZR0
+
+-- 3 of 174 --
+
+Table of contents.
+Table of contents.
+Introduction to the updated edition.
+Chapter 1: Introduction to how Google works.
+Old-school methods no longer work.
+Google updates and how to survive them.
+Authority, expertise, trust, relevance & user experience. Five powerful SEO strategies explained.
+How Google ranks sites right now—Google’s newest top 10 ranking factors revealed.
+Google's Mobile-First Index.
+Google’s use of machine learning technology to power the search results.
+Google understands how humans speak.
+Google speaks like a human.
+How to stay ahead of Google’s updates.
+Chapter 2: Keyword research. The most important step of SEO.
+Why is keyword research so important?
+What exactly is a keyword?
+Mastering keyword intent.
+Semantic keywords, entities, and ontologies.
+How to generate a massive list of keywords.
+How to find keywords that will send traffic to your site.
+How to find keywords for easy rankings.
+Chapter 3: On-page SEO. How to let Google know what your page is about.
+How to structure your site for easy and automatic SEO.
+How to get more people clicking on your rankings in Google.
+Load speed—Google magic dust.
+The usual suspects—sitemaps.xml and robots.txt.
+Duplicate content—canonical tags and other fun.
+Usability—the new SEO explained.
+Mobile support—important SEO explained in simple language.
+
+-- 4 of 174 --
+
+Google's Search Quality Guidelines — and how to use them to your advantage.
+Readability — SEO for the future.
+How to accelerate traffic and rankings with content marketing.
+HTTPS & SSL certificates.
+User Behavior Optimization—how to use Google’s machine learning technology to your advantage.
+Google's Core Web Vitals.
+Voice search optimization, how to target voice search results.
+Chapter 4: Link building. How to rank extremely high on Google.
+Why is link-building so important?
+The dirty little secret no one wants to tell you about link building.
+How to acquire links and what to avoid in link building.
+Anchor text. What's all the fuss?
+Simple to advanced link-building strategies.
+Harnessing the power of digital PR for SEO.
+Link outreach—scaling up high-quality link-building campaigns.
+How to get links from major news outlets for free.
+Additional link-building opportunities.
+Chapter 5: Social media & SEO.
+Is social media important for SEO?
+Twitter & SEO: harnessing the tweet.
+Facebook & SEO.
+Other social networks.
+Social media analytics.
+Chapter 6: Web analytics in a nutshell. How to measure your success.
+Tracking your search rankings.
+Why use Google Analytics?
+How to use Google Analytics.
+Acquisition.
+Organic Search.
+Segments.
+Common web analytics terms explained.
+Leveraging AI and machine learning for new insights.
+Web analytics in the era of user privacy.
+
+-- 5 of 174 --
+
+Other web analytics tools.
+Chapter 7: Troubleshooting common SEO problems & how to fix them.
+What to do when your site is not listed in Google at all.
+What to do when your business is not ranking for your own business name.
+What to do when your rankings have dropped off.
+How to seek professional help for free.
+Chapter 8: Local SEO. SEO for local businesses.
+Why use local SEO?
+How to rank high with local SEO.
+Getting started with local SEO.
+Building citations.
+Encouraging reviews.
+Supercharging local SEO with photos and videos.
+Local SEO ranking checklist & essential resources.
+Chapter 9: How to dominate search with rich results.
+What are rich results?
+Why you need to focus on rich results.
+Why use structured data and JSON-LD?
+How to get started with JSON-LD.
+How to target featured result rankings in Google’s search results.
+How to target “People also ask” and question-based rich results.
+Facebook Open Graph.
+Chapter 10: Technical SEO. Turbocharge Your Performance.
+Crawling, Indexing, and Accessibility.
+Site structure and URL optimization.
+SSL, meta tags, HTML optimization, and internal linking.
+Content and quality control.
+Mobile responsiveness and speed optimization.
+Enhancing crawlability: sitemaps, robots, and errors.
+Essential tools for SEO technical audits.
+Bonus chapter 1: Google's algorithm updates.
+Google's Gemini versus ChatGPT - the vicious battle of the AI chatbots.
+
+-- 6 of 174 --
+
+Google's 2024 bulk email sender guidelines: the new rules of email engagement.
+Google's March and June 2024 Spam Updates.
+Google’s August 2024 Core Update: Winners, Losers, and Everything in Between
+Keeping up-to-date with Google's updates.
+Google’s 2025 updates—what’s on the horizon?
+Bonus chapter 2: The quick and dirty guide to pay-per-click advertising with Google Ads.
+Why bother with pay-per-click advertising?
+Which is the best PPC provider to start with?
+Ensuring success with research and a plan.
+How to choose the right kind of keywords.
+Structuring your campaign with ad groups.
+How to crush the competition with killer text ads.
+How much to pay for keywords?
+Google Ads settings for getting started.
+Optimization tips for tweaking your campaign for better profit.
+Further Google Ads resources.
+Bonus: Free SEO for beginners video course.
+Get the free SEO checklist, link-building resources, and more...
+Final thoughts & tips.
+We've covered a lot of ground.
+Corrections, feedback & questions.
+What to do next.
+
+-- 7 of 174 --
+
+Free SEO for beginners video course, checklist
+and resources at the end of this book.
+The free SEO for beginners video course and SEO checklist are available
+for readers at the end of this book.
+I've also uploaded the following resources to my website (free for readers of
+this book), including...
+
+-- 8 of 174 --
+
+- SEO for beginners video course (worth $99).
+- SEO checklist (worth $99).
+- SSL upgrade checklist to hand to your developer.
+- Google review request card for local businesses.
+- List of business directories for local businesses.
+- Guest post opportunities for building links.
+And much more!...
+I recommend reading the book first, and accessing the resources when you
+finish reading. Don’t forget to download your resources when you finish
+reading the book.
+
+-- 9 of 174 --
+
+Introduction to the updated edition.
+So, you've picked up SEO 2025 and decided to learn search engine
+optimization. Congratulations! SEO marketing has changed my life, and it
+will change yours too.
+Over 20 years ago, I achieved my first number-one ranking in Google for
+my family's home business. The phone started ringing with new customers
+every day, and I was hooked.
+Since then, I have used search engine optimization to grow everything from
+small family-owned businesses to hotel chains and large international
+fashion brands. One thing that never ceases to amaze me is the power of
+SEO for growing any business. I have grown small businesses into giant
+companies in just one or two years, simply by working the site up to the top
+position in Google.
+Unfortunately, learning SEO and Internet marketing is difficult for many
+business owners, Internet marketers, and tech heads.
+I have a theory on why this is so...
+Sifting through the information flooding the Internet about SEO is
+overwhelming. In many cases, advice online is outdated or misleading. And
+the constant updates by Google make it hard for SEO beginners and gurus
+alike to keep up with what works.
+SEO can be simple and used by anyone to rank at the top of Google, grow
+their business, and make money online. It's a matter of having up-to-date
+information on how Google works, using effective techniques, and taking
+action.
+
+-- 10 of 174 --
+
+This book has been expanded and updated to cover how SEO works now
+and likely in the future. All of the resources and tools have been updated
+and made relevant for 2025. It includes broader coverage of the basics and
+is filled with more techniques for advanced users. And due to requests by
+readers, it has been loaded with more tools and resources to save time and
+get bigger results.
+If you are a beginner, there is a small amount of technical information
+included in this book. If you want to learn search engine optimization, this
+can't be avoided. We've made these areas as simple as possible while
+providing additional resources, including an SEO checklist, that will speed
+up your journey to SEO mastery.
+If you are an advanced SEO optimization professional, this SEO book
+covers Google's latest updates, new SEO marketing best practices to refresh
+your memory, solutions for common technical problems, and new tools and
+resources to sharpen your skillset—all written in an easy-to-read format, so
+refreshing your knowledge doesn't feel like a chore.
+Whether you're a complete SEO beginner or a seasoned Internet marketing
+veteran, SEO 2025 covers these areas and makes it as simple as possible to
+achieve rankings, traffic, and sales.
+Enjoy.
+Adam Clarke
+x.com/adamclarkeseo
+
+-- 11 of 174 --
+
+Chapter 1: Introduction to how
+Google works.
+You can feel like a dog chasing its tail trying to figure out how Google
+works.
+There are thousands of bloggers and journalists spreading volumes of
+information that simply isn't true. If you followed all the advice about SEO
+written on blogs, it's unlikely you would receive top listings in Google, and
+there’s a risk you could damage your site performance and find it difficult
+to rank at all.
+Let me tell you a secret about bloggers…
+Articles about the latest SEO updates, techniques, or tips are often written
+by interns, assistants, and ghostwriters. Their job is to write articles. The
+majority of blog posts about SEO are rarely written by experts or
+professionals with the day-to-day responsibility of growing site traffic and
+achieving top rankings in search engines.
+Can you learn from someone who doesn't know how to do it themselves?
+You can't. This is why you have to take the advice spread by blog posts
+with a grain of salt.
+Don't get me wrong. I love bloggers. There are bloggers out there who
+practice and blog about SEO and do it well. But it has become increasingly
+difficult to sort the wheat from the chaff.
+Fear not. This chapter will disperse common misconceptions about SEO,
+show you how to avoid falling into Google's bad books, and reveal how to
+stay up to date with how Google ranks sites.
+But first, to understand how Google works today, we must understand a
+little bit about Google's history.
+
+-- 12 of 174 --
+
+Old-school methods no longer work.
+In the early days of Google—around 25 years ago— Google started a
+smarter search engine and a better experience for navigating the World
+Wide Web. Google delivered on this promise by delivering relevant search
+results.
+Internet users discovered they could simply type what they were looking for
+into Google—and BINGO—users would find what they needed in the top
+results, instead of having to dig through hundreds of pages. Google's user
+base grew fast.
+It didn't take long for smart and entrepreneurially minded webmasters to
+catch on to sneaky little hacks for ranking high in Google.
+Webmasters discovered by cramming many keywords into the page, they
+could get their site to rank high for almost any word or phrase. It quickly
+spiraled into a competition of who could jam the most keywords into the
+page. The page with the most repeated keywords won and rose swiftly to
+the top of the search results.
+Naturally, more and more spammers caught on and Google's promise as the
+“most relevant search engine” was challenged. Webmasters and spammers
+became more sophisticated and found tricky ways of repeating hundreds of
+keywords on the page and completely hiding them from human eyes.
+All of a sudden, the unsuspecting Internet user looking for “holidays in
+Florida”, would find themselves arriving at a website about Viagra, Viagra,
+Viagra!
+
+-- 13 of 174 --
+
+How could Google keep its status as the most relevant search engine, if
+people kept on spamming the results with gazillions of spammy pages,
+burying relevant results to the bottom?
+Enter the first Google update. Google released a widespread update in
+November 2003, codenamed “Florida”, effectively stopping spammers in
+their tracks. This update leveled the playing field by rendering keyword
+stuffing useless and restoring balance to the force.
+And so began the long history of Google updates—making it hard for
+spammers to game the system, and making ranking in Google a little more
+complicated.
+Google updates and how to survive them.
+Fast forward 25 years and ranking in Google has become extremely
+competitive and complex.
+Simply put, everybody wants to be in Google. Google is fighting to keep its
+search engine relevant and must constantly evolve to stay on the cutting
+edge and always deliver great search results to users.
+And now, Google is progressively using AI to power the search results.
+Google even has an AI-powered spider called SpamBrain dedicated to
+finding spammy and insecure websites and filtering them out of the search
+results.
+And every couple of months, Google releases a game-changing update that
+often has website owners scrambling to fix their websites overnight or face
+the very real risk of completely disappearing.
+If it sounds cutthroat, that's because it is. But you can absolutely survive
+and thrive through Google's updates.
+How to recover from these updates, and how to avoid being penalized by
+updates, is covered in later chapters. But for now, I want you to focus on
+two things...
+1. If you want to stay at the top of Google, never rely on one tactic.
+2. Always ensure your search engine strategies rely on best practices.
+
+-- 14 of 174 --
+
+Authority, expertise, trust, relevance & user
+experience. Five powerful SEO strategies
+explained.
+Google considerably evolved from its humble origins in 1998.
+Eric Schmidt, the former CEO of Google, once reported Google considers
+over 200 factors to determine which sites rank higher in the results.
+Today, Google uses well over 200 factors. Google assesses how users are
+behaving on your site, how many links are pointing to your site, how
+trustworthy these linking sites are, how popular your brand is, how relevant
+your page is, how old your site is, how fast your site loads… the list goes
+on.
+Does this mean it's impossible or difficult to get top rankings in Google?
+No. In fact, you have the advantage.
+Google’s algorithm is complex, but you don’t have to be a rocket scientist
+to understand how it works. It can be ridiculously simple if you remember
+just five principles. With these five principles, you can determine why one
+site ranks higher than another or discover what you have to do to push your
+site higher than a competitor.
+Some of these principles have been around for donkey’s years, and others
+just added in the past year or so, but these five principles summarize what
+Google is focusing on in the algorithm now, and are the most powerful
+strategies SEO professionals currently use to rank high in search engines.
+The five principles are Trust, Authority, Expertise, Relevance, and User
+Experience.
+1. Trust.
+
+-- 15 of 174 --
+
+Trust is a common theme in Google's updates. Google wants to filter low-
+quality sites out of the search results and have legitimate and trustworthy
+sites showing up at the top. A site with well-researched, high-quality
+content, and backlinks from reputable sources is considered trustworthy.
+And having visible business details, contact information, and real personal
+profiles on your site will increase its chances of ranking high.
+It also helps if you make your website secure, adhere to national laws and
+regulations, and have easily accessible legal policies and customer service
+pages.
+2. Authority.
+Authority isn't just about how many social media followers and backlinks
+you have, but also the quality and relevance of these elements. A site that
+has a lot of links from authoritative sources and a lot of content by industry
+experts will have a higher chance of showing up high in the search results.
+3. Expertise.
+Expertise is about your qualifications or expertise in your topic. Are you
+credentialed, experienced, and have hands-on knowledge of your topics? If
+so, you should make it clear on your website and you will perform better in
+the search results.
+4. Relevance.
+Google awards the relevance of websites. It's why niche sites or local
+businesses often show up higher than generic giants like Wikipedia.
+For example, if you're an expert on pet training, you are probably going to
+find it difficult to show up for searches about travel deals or accounting.
+But you'll find it easy to show up for searches about anything related to
+training pets.
+Adding relevant content and relevant links to your site is a powerful tactic
+for achieving high rankings.
+5. User Experience.
+
+-- 16 of 174 --
+
+User experience isn't just about how users behave on your site. It includes
+technical things like having good site speed and mobile support. If your site
+offers a frictionless user experience, you're more likely to show up high in
+the search results.
+You can take advantage of this by improving your website’s user
+experience, techniques we’ll cover later in this book.
+How Google ranks sites right now—Google’s
+newest top 10 ranking factors revealed.
+You may have wondered if you can find out the exact factors in Google’s
+algorithm.
+Fortunately, there are a handful of industry leaders who have figured it out
+and regularly publish their findings on the Internet. With these publications,
+you can get a working knowledge of the factors Google uses to rank sites.
+These surveys are typically updated every couple of years, but the biggest
+factors don’t often change, so you can use them to your advantage by
+knowing which areas to focus on.
+Here's a handful of the strongest factors in Google's algorithm right now...
+- The content on your site.
+- The external links pointing to your website.
+- The internal links in your website.
+- The anchor text in your links.
+- Having good Core Web Vitals.
+- Having fresh content on your site.
+- H1 tags - and the keywords in those tags.
+- H2-H6 Tags - and the keywords in those tags.
+- Having HTTPS on your website.
+- Having a mobile-friendly site.
+- Having good page speed.
+- The relevance and distance of your business - if you are a local business.
+If some of the terminology seems a bit technical, don't be alarmed. We'll
+cover them later in this book.
+
+-- 17 of 174 --
+
+Simply, if your competitors have more of the above factors than you, they
+will rank higher in Google's search results. If you have more of these
+factors, you will rank higher.
+Combine this knowledge with an understanding of the Google updates
+covered in later chapters, and you will know what it takes to achieve top
+rankings.
+The above ranking factors are from the following industry survey. If you
+want a deeper look into recent studies, you can browse the full reports by
+searching for "Google Ranking Factors" in Google. I also cover the newest
+updates to Google’s algorithm in the Google Algorithm Updates chapter
+later in this book.
+The Google Algorithm Ranking Factors - Search Engine Journal
+https://www.searchenginejournal.com/ranking-factors/
+Google's Mobile-First Index.
+Historically, Google primarily used the desktop version of a page's content
+when calculating the search results. Since the majority of users now access
+Google via a mobile device, Google primarily relies on the mobile version
+of a page's content to calculate the results.
+Want simple language? Google uses the mobile version of your website as
+the first touchpoint in calculating the search results..
+It makes sense when you think about it. The vast majority of the Internet's
+users are mobile users. To ensure smartphone addicts are delivered with
+better results on the move, it makes sense for Google to make mobile the
+highest priority in the algorithm, with desktops the second priority for
+Google (and not the other way around).
+If you haven't jumped on the mobile bandwagon by now—with mobile
+traffic making up around 70%-80% of traffic for most websites—you're
+missing out on traffic this very second and you may find it hard to appear in
+the search results at all.
+
+-- 18 of 174 --
+
+Fortunately, there's an elegant solution discussed in the mobile SEO section
+in the on-page SEO chapter, but I'll let Google spokesperson Gary Illyes
+take the reins, with a direct quote from a discussion about this technology...
+"If you have a responsive site, then you're pretty much good to go. Why?
+Because the content on your desktop site will be pretty much the same as on
+your responsive site. The structured data on your desktop site will be the
+same.”
+In other words, if your site is responsive and supports mobile users, you can
+lie back and enjoy a Piña Colada, knowing your desktop-only competitors
+will find it difficult to get a leg up in the search results, while you bask in
+the glory of a mobile-first paradise.
+Google’s use of machine learning technology to
+power the search results.
+When Google announced its machine-learning technology named
+RankBrain, it had been secretly influencing the search results for several
+months. Does this mean super-intelligent robots created by the genius
+minds at Google are slowly taking over our search results?... Yes, it does.
+Over 15% of Google’s daily searches have never been searched before. On
+these never-before-seen types of searches, Google doesn’t have any
+historical data to ensure it is delivering the right answer. Understandably,
+Google needs a strong capability to understand the actual meaning behind a
+user’s query as they type it into the search box, even if it has never been
+searched.
+Enter RankBrain, RankBrain forms connections between words to get a
+better understanding of what a searcher wants, when the searcher only gives
+Google a small amount of information. It then delivers a relevant answer,
+even when the best answers don’t use the exact words the user searched for.
+
+-- 19 of 174 --
+
+In the above example, simply by searching “fastest runner” the first search
+result lists Usain Bolt at the top of the search results. That’s some solid
+guesswork from Google! We can see Google’s strong capability to infer the
+actual meaning behind our search, even though I only hinted at the person I
+am searching for. This is Google’s RankBrain technology at work, forming
+connections behind the scenes. As popular trends come and go, this
+matching technology is automatically applied in new searches and
+organically changes to adapt to the times.
+Ever since Google released RankBrain, Google has been gradually working
+new A.I. and machine learning technologies into the search results. The
+new technologies help Google to understand more complicated searches,
+deliver more relevant results to users' questions, and strengthen Google's
+status as the world's most advanced search engine.
+The overall impact on business and website owners has been positive,
+allowing websites to show up at the top of the search results for more
+searches.
+Google understands how humans speak.
+
+-- 20 of 174 --
+
+Let's face it, we're often lazy about how we use the Internet. Getting the
+laptop out feels like a drag and we're shouting shorthand voice searches into
+our phones like, "movie 1990s people experiment dying Kiefer Sutherland",
+expecting Google to do the heavy lifting...
+And it does! Displaying the Wikipedia entry for the 1990's film "Flatliners",
+a cult classic about medical students experimenting with near-death-
+experiences. On the Flatliners Wikipedia page, the word "experiment"
+appears only once, but Kiefer Sutherland appeared in over 29 movies in the
+1990s, in which lots of characters died. Notice how I accidentally typed in
+the 1980s and Google figured it out, anyway? Solid work by Google.
+To combat increasing ambiguity in searches that RankBrain can't handle—
+and just getting a better grasp on human language—Google developed the
+biggest leap forward in search technology called... BERT.
+Or for short, Bidirectional Encoder Representations from Transformers... A
+machine-learning technology to better understand human language.
+
+-- 21 of 174 --
+
+Before BERT, Google would previously struggle with searches like "can
+you get medicine for someone pharmacy", delivering a non-specific result
+about getting prescriptions filled. It could figure out the main topic of the
+search. But it had difficulty picking up the nuance.
+After BERT, Google understands the searcher's intent much better, now
+delivering a result about whether a patient can send a friend or family
+member to get their prescription filled.
+RankBrain and BERT round out Google's strong capability at
+understanding searches much like a human, powered mostly by AI
+technology.
+Google speaks like a human.
+
+-- 22 of 174 --
+
+Google's latest advancement, AI Overview, is changing how we search
+online. Now Google doesn't just understand like a human but speaks like a
+human too.
+For some searches, Google now presents an AI generated answer above the
+search results.
+AI overviews's core strength lies in its ability to reply to questions
+concisely. This allows us to ask complicated questions, and get clear
+answers that would be otherwise difficult to find with traditional search
+results.
+If you have no idea what I'm talking about, it's possible you haven't enabled
+AI overviews, because it's still an experimental feature. The following
+resource will tell you how to set it up.
+AI Overviews and more in Search Labs
+https://support.google.com/websearch/answer/13572151
+The impact on SEO strategies.
+This shift toward an human-like search experience has turned the SEO
+industry upside down.
+
+-- 23 of 174 --
+
+The focus of the SEO practitioner now goes beyond optimizing for
+keywords and backlinks. Instead, there's a growing emphasis on creating
+content that feels like it was written by a human, incorporating elements
+like expert opinions, well-researched content based on first-hand
+experiences, and compelling data. Great content delivered at a quality
+worth paying for is often rewarded with backlinks and search traffic. As a
+result, SEO professionals adapted and evolved into content marketers.
+AI technologies like ChatGPT and Gemini have become essential tools for
+every SEO and marketer, to get through their work faster, and with arguably
+better quality (when done well, of course).
+One thing is unlikely to change: Google's reliance on revenue from
+advertiser clicks. The majority of Google's ad revenue comes from people
+clicking on the sponsored links in Google's search results. Which means the
+traditional list of links in Google is unlikely to go away any time soon.
+Google’s Gemini.
+Gemini is Google's answer to competition from AI chatbots like ChatGPT.
+It's an AI assistant you can have a conversation with, get answers to
+complex questions, write code, and create content.
+Gemini goes understands not just words, but conversations, images, code,
+and audio. Gemini can reason, it can follow instructions—you can even get
+it to write blog posts. All in an easy chat interface.
+ChatGPT and Gemini are changing how we use the Internet. Search users
+are becoming multi-modal - using Google and other search engines for
+simple questions, and using chat assistants for complex multi-step
+questions, content creation, write code, and sometimes just to have a chat!
+How to stay ahead of Google’s updates.
+Now and then, Google releases a significant update to its algorithm, which
+can have a massive impact on businesses from any industry. To hone your
+SEO chops and make sure your site doesn't fall into Google's bad books, it's
+important to stay informed of Google’s updates as they are released.
+
+-- 24 of 174 --
+
+Fortunately, almost every time a major update is released, those updates are
+reported on by the entire SEO community and sometimes publicly
+discussed and confirmed by Google staff.
+A long-extended history of Google’s updates would fill this entire book.
+But with the resources below, you can stay abreast of new Google updates
+as they are rolled out. This is essential knowledge for anyone practicing
+SEO, at a beginner or advanced level.
+Keep your ear to the ground with these sources and you’ll often be
+forewarned of future updates.
+Search Engine Round Table
+https://www.seroundtable.com/
+Search Engine Round Table is a blog that covers the daily happenings in the
+world of SEO. The author, Barry Schwartz, provides breakdowns and
+summaries of Google's updates and is often one of the first places to break
+news on major changes in the SEO industry.
+List of Google Search Ranking Updates - Google Search Central
+https://developers.google.com/search/updates/ranking
+Wouldn't it be great if there was an official page where Google announces
+its major updates to Google search? Well, there is. Google maintains an
+official list of all the major updates (that Google wants us to know about).
+It's a good resource to visit because whenever Google releases a massive
+update, you can read the official documentation and guidelines about what
+to do instead of playing guessing games.
+The Keyword - Google
+https://blog.google/
+Google's public blog, The Keyword, publishes Google's major news and
+announcements. Often big changes are reported here by Google before they
+are rolled out, which makes it an important resource for staying up to date.
+
+-- 25 of 174 --
+
+Chapter 2: Keyword research. The
+most important step of SEO.
+Why is keyword research so important?
+Keyword research is the most important step of every SEO project for two
+reasons:
+1. To discover relevant keywords with traffic. Otherwise, you could waste
+lots of time and effort trying to rank for keywords that don’t generate any
+traffic.
+2. To identify high opportunity keywords. With many SEO tools available,
+you can often find keywords with low competition that are easy to rank
+high in the search results. This allows you to focus on securing easy-wins
+first, before tackling the more long-term high difficulty keywords.
+These two goals are the ultimate decider of how successful an SEO project
+is.
+This chapter will cover how to find the best keywords and how to avoid
+spending time on the wrong keywords. First, we must define what a
+keyword is.
+What exactly is a keyword?
+If you are an SEO newbie, you may be wondering—what is a keyword?
+A keyword is any phrase you would like your site to rank for in Google's
+search results. A keyword can be a single word, or a keyword can also be a
+combination of words.
+If you are trying to target a single word, look out! You will have your work
+cut out for you. Single-word keywords are extremely competitive and
+difficult to rank highly for in the search results.
+
+-- 26 of 174 --
+
+Head-term keywords are keywords with one to two words, i.e. classic
+movies.
+And long-tail keywords are keywords with three or more phrases, i.e.
+classic Akira Kurosawa movies.
+Mastering keyword intent.
+The underlying reason behind a search is also known as the search intent.
+It's about why that person is searching in the first place. If you can establish
+the reason someone is searching and what they're looking for, and then go
+out and create content that aligns perfectly with why that person is
+searching, you're much more likely to show up higher in the search results.
+If this sounds a little complicated, it's really quite simple if we look at the
+different types of intent...
+Informational intent.
+These searchers are looking for information. Their queries are like “How to
+bake a cake” or “What is the blockchain?”. They want to understand
+something.
+For informational keywords, your content should provide answers. Start
+with a direct answer to the question and expand with thorough, easy-to-
+understand explanations or instructions. Answer frequently asked or
+common questions about your topic. And provide unique insights, data, or
+references.
+Navigational intent.
+Users with navigational intent are using Google to navigate somewhere.
+They are looking for things like “Instagram login” or “Download Zoom.”
+
+-- 27 of 174 --
+
+Customers often use Google to find a particular page on your site. You can
+make things easier for Google by having a page that covers all the major
+touchpoints on your site. A simple way to do this is to have a sitemap page
+in your footer - an actual sitemap page built from HTML. And have it point
+to the important pages on your site. You should also have a sitemap.xml
+file, which we'll cover in later sections.
+Commercial investigation.
+Commercial investigation searchers are almost ready to buy but are still at
+the research stage. They search for “best gaming laptops” or “Airpods Pro
+reviews”.
+Offer detailed, unbiased reviews and comparisons. Provide all the
+information a buyer would need to make a good decision, including pros
+and cons, user testimonials, and expert opinions.
+Transactional intent.
+This is when the searcher is ready to buy something. They're searching for
+things like “Chuck Taylors free delivery” or “flowers same day delivery.”
+They’re ready to buy and your content should make that as easy as possible.
+Make the buying process simple and make the features and benefits of
+shopping with you clear in the content. Answer burning questions - such as
+shipping times, product features, warranty information, returns and refund
+policies, and so on.
+Semantic keywords, entities, and ontologies.
+Times have changed since SEO was about cramming as many keywords
+into a page as humanly possible.
+Now, Google's algorithms look at the words on your page, and the
+relevancy of those words to the user's search, to determine how well your
+page covers the topic.
+
+-- 28 of 174 --
+
+To be specific, Google is looking at the semantic keywords and entities
+covered in your content, to get an idea of what your page is really about.
+And behind the scenes, Google has an understanding of the ontologies,
+which is effectively an understanding of how the persons, places and things
+relate to each other.
+If jargon sometimes makes you feel dizzy, don't sweat it. I'll make it simple.
+Entities are things. Ontologies are relationships. And semantic keywords
+are words related to your topic.
+Entities, ontologies, and semantic keywords help search engines understand
+the meaning of your content.
+What do semantic keywords mean?
+Semantic keywords are the 'friends and family' of your main keyword.
+For example, if your main keyword is 'coffee', semantic keywords might
+include 'latte', 'espresso', 'coffee beans', 'fair trade', 'arabica', and so on. They
+paint a clearer picture of what your content is really about, and how
+extensive its coverage is. A page that really covers this topic should
+naturally have those words on the page somewhere.
+What are entities?
+Entities are the 'who', 'what', 'when', and 'where' in your content. They are
+the nouns and proper nouns—people, places, things, and concepts—that are
+essential to the topic you're covering.
+Search engines, like Google, use entities in their knowledge graph, which is
+a big giant database of 'factual things'. It helps Google to provide factual
+and instantaneous answers to informational-type searches.
+Ontologies and how they relate.
+
+-- 29 of 174 --
+
+Ontologies are the relationships between entities. The natural connections
+that occur between the things in your content.
+This isn't really something you consciously target. The main thing to keep
+in mind is that Google has a working understanding of the hierarchies and
+relationships of the things that you cover in your website.
+How to include the keywords into your content.
+Naturally, finding semantic keywords and entities for your content is easier
+when you use tools. You can use inspiration straight from the "People Also
+Ask" or "Related Searches" sections in Google's search results to discover
+semantic keywords. Or use a tool like AlsoAsked. And you can do a deep
+dive on Wikipedia and Wikidata for ideas for the entities.
+After you've identified your entities and semantic keywords, you want to
+weave them naturally into your content. Don't force them; let them flow as
+they would in a natural conversation. It's often easiest to keep a list of the
+keywords visible while writing the article.
+If you dial things up a notch, paid tools such as SurferSEO will go out and
+find all of the semantic keywords and entities on competing pages, and it
+will even write the article for you.
+Semantic SEO resources
+https://alsoasked.com/
+https://www.wikipedia.org/
+https://www.wikidata.org/
+https://surferseo.com
+How to generate a massive list of keywords.
+There are many ways to skin a cat. The same is true for finding the right
+keywords. Before you can find keywords with loads of traffic in Google,
+you must first develop a list of potential keywords relevant to your
+business.
+Relevance is vital.
+
+-- 30 of 174 --
+
+If you spend your time trying to cast too wide a net, you can end up
+targeting keywords irrelevant to your audience. For example, if you are an
+online football jacket retailer in the United States, examples of relevant
+keywords might be:
+Buy football jackets
+Buy football jackets online
+Online football jackets store USA
+Irrelevant keywords might be:
+Football jacket photos
+How to make your own football jacket
+Football jacket manufacturers
+How to design a football jacket
+You can see how the first pool of keywords is more relevant to the target
+audience of football jacket retailers, and the second pool of keywords is
+related but unlikely to lead to customers.
+Keeping relevance in mind, you must develop a list of potential keyword
+combinations to use as a resource, so you can then go and uncover the best
+keywords with a decent amount of traffic each month in Google.
+Here are some powerful strategies you can use to generate this list.
+1. Steal keywords from competitors.
+If you're feeling sneaky, you can let your competitors do the heavy lifting
+for you and snatch up keywords from their sites.
+There are many tools out there created for this purpose. A simple, free tool
+is the Keyword Extractor. If you enter a page into this tool, within seconds,
+it will scrape a list of the keywords your competitor has optimized into their
+page. You can then use this to bulk out your keyword list.
+Keyword Extractor - Wordcount
+https://wordcount.com/keyword-extractor
+
+-- 31 of 174 --
+
+While the Keyword Extractor is a lightweight tool for revealing keywords
+your competitors have optimized into the page, a more robust tool is
+Ahrefs’ Organic Keywords report. This tool estimates the keywords that are
+sending the largest amount of traffic to competitors' websites. The estimates
+are reasonably accurate and are a valuable resource for bulking keyword
+lists.
+While Ahrefs’ reports are powerful, they come at a cost. Monthly plans
+start at $99 per month.
+Ahrefs
+https://ahrefs.com
+2. Use AI chat tools like Gemini and ChatGPT to generate keyword
+ideas.
+When it comes to generating keyword ideas, AI chat tools Gemini and
+ChatGPT can save a lot of time and effort.
+These tools can churn out relevant and unique keyword ideas lightning-fast,
+making your SEO game plan much easier to execute.
+Let's put Gemini to the test with NFL merchandise as our focus.
+When we type in "Give me a list of 30 core keywords for an NFL
+merchandise store, that sells NFL Jerseys, NFL jackets, and so on," Gemini
+flexes its AI muscles and returns this list of NFL-related keywords...
+General NFL merchandise:
+NFL merchandise
+Football gear
+Team apparel
+Sports memorabilia
+Fan clothing
+Official team wear
+NFL shop
+Football fanwear
+Game day gear
+Team spirit
+
+-- 32 of 174 --
+
+Specific NFL clothing:
+NFL jerseys
+NFL jackets
+NFL hats
+NFL accessories
+NFL t-shirts
+Football jerseys
+Custom NFL jerseys
+NFL sweatshirts
+NFL caps
+Player jerseys
+Other NFL items:
+NFL collectibles
+NFL gifts
+NFL tailgating gear
+NFL scarves
+NFL bags
+Football equipment
+NFL team flags
+NFL home decor
+Licensed NFL products
+Additional keywords:
+NFL for [Team name] fans
+Women's NFL clothing
+Men's NFL clothing
+Kids' NFL clothing
+Plus size NFL clothing
+NFL clearance sale
+New arrivals NFL merchandise
+NFL combine apparel
+NFL draft apparel
+NFL playoffs merchandise
+While the keyword suggestions are nothing short of excellent, the one thing
+you have to keep in mind with generative AI chat tools is you can't trust the
+accuracy of the data.
+
+-- 33 of 174 --
+
+By all means, get keyword ideas, just don't trust any traffic or SEO
+difficulty estimates that come out of these tools—we'll cover how to get
+those in a minute anyway.
+3. Brainstorm a master list of keywords.
+Assuming competitors have been thorough with their research isn't always
+the best strategy. By brainstorming combinations of keywords, you can
+generate a giant list of potential keywords.
+To do this, sketch out a grid of words your target customer might use. Split
+the words into different prefixes and suffixes. Next up, combine them into
+one giant list using the free Mergewords tool. With this strategy, you can
+quickly and easily build up a massive list of relevant keywords.
+Mergewords
+https://www.toptal.com/marketing/mergewords
+Prefix
+- buy
+- where do I buy
+Middle word
+- NFL jerseys
+- NFL uniforms
+- NFL jackets
+Suffixes
+- online
+Combined keywords
+- NFL jerseys
+- NFL jerseys online
+- NFL uniforms
+- NFL uniforms online
+- NFL jackets
+- NFL jackets online
+- buy NFL jerseys
+- buy NFL jerseys online
+- buy NFL uniforms
+
+-- 34 of 174 --
+
+- buy NFL uniforms online
+- buy NFL jackets
+- buy NFL jackets online
+- where do I buy NFL jerseys
+- where do I buy NFL jerseys online
+- where do I buy NFL uniforms
+- where do I buy NFL uniforms online
+- where do I buy NFL jackets
+- where do I buy NFL jackets online
+- NFL jerseys
+- NFL jerseys online
+- NFL uniforms
+- NFL uniforms online
+- NFL jackets
+- NFL jackets online
+4. Going undercover and researching your niche.
+With 5.3 billion active Internet users, there's a community of people
+floating around on the web interested in what you’re selling—even if you're
+selling leopard print dog watches!.. You've just got to go and find them.
+Open up a few tabs and browse through online communities like Reddit,
+Quora, Facebook Groups, Slack communities, and Twitter hashtags, going
+through popular threads. Keep a close eye on popular and trending topics,
+and questions with a tendency to resurface. You'll find burning questions
+needing to be answered, generating the best kind of keyword ideas—ideas
+directly from customers’ keyboards. You can discover additional niche-
+specific forums with the following search queries:
+"keyword" forums
+"keyword" discussion board
+"keyword" community
+5. Use tools that reveal hidden trends on the web.
+
+-- 35 of 174 --
+
+Researching Internet trends and getting insights behind Google's search box
+isn't a new idea, and fortunately, clever people have built powerful tools to
+make this job easy. Add these tools to your keyword research arsenal. Not
+only will you save precious time researching, but you'll also receive a ton of
+relevant suggestions you wouldn't discover otherwise.
+Ubersuggest.
+https://neilpatel.com/ubersuggest/
+No SEO guide would be complete without mentioning Ubersuggest. This
+handy tool reveals autocomplete suggestions behind Google's search box. It
+provides region-specific data for countries and languages all around the
+globe, and the best part—it's free.
+Answer The Public
+https://answerthepublic.com/
+Answer The Public crawls the Internet and generates automatic lists of
+customers burning questions related to your keyword. Answer The Public
+starts with phrases starting with common question-type words, such as
+“how”, “when”, “can”, and so on, followed by your keyword. It provides
+long lists of phrases containing prepositions, such as "can", "is", "with", and
+"without", preceded by your keyword. And topping things off, it lists
+common questions users type in Google, from a-to-z, after your keyword
+(postpositions, if you want to talk fancy). In other words, it’s a giant
+database of questions customers are asking about your topic.
+Buzzsumo
+https://buzzsumo.com/
+Sometimes, ideas become popular on the Internet before being typed into
+Google’s search box. You can get ahead of these trends with content
+discovery tools like Buzzsumo. Buzzsumo lists content going viral over the
+Internet right now. You can keep your finger on the pulse of what's hot
+across the web even when other tools haven’t picked it up yet.
+Use the above tools and you’ll have more than enough keywords, and
+you’ll be ready to start finding which keywords have solid amounts of
+traffic to send to your site.
+
+-- 36 of 174 --
+
+How to find keywords that will send traffic to
+your site.
+Now you have a list of keywords, you need to understand how much traffic
+these keywords receive in Google. Without search traffic data, you could
+end up targeting keywords with zero searches. Armed with the right
+knowledge, you can target keywords with hundreds or thousands of
+potential visitors every month.
+Unfortunately, in recent years Google restricted access to the data behind
+Google's search box, leaving us with two options for finding keyword
+traffic data.
+Firstly, if you have a Google Ads campaign running with Google and are
+already spending a modest amount, then you’re in the clear, you can access
+this info for free in their Keyword Planner tool. If this isn’t you, the other
+option is to use a paid keyword research tool for a small monthly fee. Either
+way, you need the traffic data behind your keywords otherwise you are
+running blind.
+1. Estimating keyword traffic data with Google’s Keyword Planner.
+Google Ads Keyword Planner
+https://ads.google.com/home/tools/keyword-planner/
+As mentioned, to access all the juicy traffic data provided by the Google
+Ads Keyword Planner tool, you need an active Google Ads campaign
+running and must be spending a modest amount of money regularly. If this
+is you, sign in, click on Tools in the top menu, click on “Keyword Planner”
+then click on “Get search volume data and forecasts”, and copy and paste
+your keywords into the box. Select your country, and then click the blue
+“Get started” button. When finished, you will have the exact amount of
+times each keyword was searched for in Google.
+Mmm. Fresh data. This is just the kind of data we need.
+Now we know which keywords receive more searches than others, and
+more importantly, we know which keywords receive no searches at all.
+
+-- 37 of 174 --
+
+2. Estimating keyword traffic data with a paid tool like KWFinder or
+Ahrefs.
+KWFinder
+https://kwfinder.com/
+If you want a research tool with a stronger SEO focus, then you can use a
+paid tool such as KWFinder or Ahrefs. You're not limited to these tools,
+many alternatives are floating around that you can find with a couple of
+Google searches.
+
+-- 38 of 174 --
+
+Using KWFinder as an example, after creating an account, simply log in,
+select the local area you are targeting (i.e. Los Angeles, California, if that is
+your focus), enter your keyword ideas, and download the juicy data. Now
+you can ensure you spend time focusing on keywords with traffic potential,
+as opposed to chasing after keywords with no traffic and no opportunity for
+growing your business.
+How to find keywords for easy rankings.
+Now you need to find out how competitive your desired keywords are.
+Armed with an understanding of the competitiveness of your keywords, you
+can discover keywords you can rank high for in Google.
+Let’s say you are a second-hand bookseller and you want to target “book
+store online.” It's unlikely you are going to beat Amazon and Barnes and
+Noble.
+But, maybe there’s a gem hiding in your keyword list few people are
+targeting. Something like “antique book stores online.”
+You have the advantage if your competitors haven't thought of targeting
+your keyword. You simply have to do better SEO than they are doing and
+you have a really good chance of beating their rankings. Part of this
+includes having a large keyword list for your research.
+Next, you need to wash this list and separate the ridiculously competitive
+keywords from the easy keywords no one is aggressively targeting.
+There are many schools of thought on how to find the competitiveness of
+your keywords. The most popular practices are listed below, with my
+thoughts on each.
+1. Manually going through the list, looking at the rankings, and
+checking if low-quality pages are appearing in the top results.
+This is good for a glance to see how competitive a market is. However,
+unreliable and you need real data to rely on.
+2. Using the competition score from the Google Ads Keyword Planner
+tool.
+
+-- 39 of 174 --
+
+Don't be tempted. This is a common beginner's mistake, and sometimes
+recommended as an easy way to judge SEO competitiveness for keywords
+on some blogs, and it just simply doesn't work!
+The competition score included in the Google Ads Keyword Research tool
+is intended for Google Ads advertising campaigns only. It is an indication
+of how many advertisers are competing for a particular keyword through
+paid advertising. Completely irrelevant to SEO.
+2. Using an SEO analysis tool, such as KWFinder ’ s SEO Difficulty
+report or Ahref’s SEO Difficulty Score.
+Now we’re talking. To get a realistic idea of your chances of ranking high
+for a particular keyword, you need to understand the strength of the pages
+currently ranking in the top 10 search results for that keyword.
+A great tool for this is KWFinder ’ s SEO Difficulty report. With
+KWFinder ’ s SEO Difficulty report, enter your keyword into their tool,
+click “check difficulty”, and it will show vital stats for pages appearing in
+the top 10.
+Of these stats, the most important are Domain Authority, Page Authority,
+Links, and Facebook Shares … If you don ’ t have high Domain Authority
+or Page Authority—don ’ t freak out. If your site is more relevant to the
+topic, you can often nudge your way up the results by creating great
+content, focusing on building backlinks to your page, and improving your
+social media activity.
+
+-- 40 of 174 --
+
+Alternatively, Ahrefs has a great keyword difficulty score with its keyword
+tool. Enter your keywords into the Ahrefs keyword tool, and you can get a
+general idea of how difficult it will be to rank high for those keywords, by
+looking at the SEO difficulty score for each keyword.
+You can also enter your website into Ahref’s Site Explorer tool, enter your
+competitor's sites into Ahref's Site Explorer, and set targets for beating the
+competition. This a great strategy for more difficult keywords.
+Ahrefs
+https://ahrefs.com/
+You can find keywords competitors are using, how much traffic they are
+getting from those keywords, and even where they get their links from!
+Many keyword tools and site analysis tools can be found with a couple of
+Google searches. Every SEO professional ultimately has a different favorite
+tool they prefer, but in general, you'll find that Ahrefs is used for
+intermediate to advanced SEO professionals, and Moz's Keyword Explorer
+and KW Finder are used by beginners.
+When finished reading this book, you can work through the keyword
+research points in the free SEO checklist included at the end of the book,
+with the process outlined in a step-by-step approach.
+
+-- 41 of 174 --
+
+Chapter 3: On-page SEO. How to let
+Google know what your page is about.
+On-page SEO is the process of ensuring your site is readable to search
+engines. Learning correct on-page SEO is important in ensuring Google
+picks up the keywords you want, and an opportunity to achieve easy wins
+and improve your site’s overall performance.
+On-page SEO has the following goals or actions:
+1. Ensuring your site content is visible to search engines.
+2. Ensuring your site is not blocking search engines.
+3. Ensuring search engines pick up the keywords you want.
+4. Ensuring site visitors are having a positive user experience.
+You can do most on-page SEO yourself if you have experience working on
+websites.
+If you are not technically inclined, please note there are technical sections
+in this chapter. You should read these so you understand what has to be
+done to achieve rankings in Google. You can easily hire a web designer or
+web developer to implement the techniques in this chapter after you know
+what needs to be done.
+How to structure your site for easy and automatic
+SEO.
+These best practices will ensure your site is structured for better recognition
+by Google and other search engines.
+1. Search engine-friendly URLs.
+Have you ever visited a web page and the URL looked something like this:
+https://www.examplesite.com/~articlepage21/post-entry321.asp?q=3
+
+-- 42 of 174 --
+
+What a mess!
+These kinds of URLs are a quick way to confuse search engines and site
+visitors. Clean URLs are more logical, user-friendly and search engine
+friendly.
+Here is an example of a clean URL:
+https://www.examplesite.com/football-jerseys
+Much better.
+Take a quick look at Google's search engine results. You will see a very
+large portion of sites in the top 10 have clean and readable URLs like the
+above example. And by a very large portion… I mean the vast majority.
+Most site content management systems have search engine-friendly URLs
+built into the site. It is often a matter of simply enabling the option in your
+site settings. If your site doesn't have search engine-friendly URLs, it's time
+for a friendly chat with your web developer to fix this up.
+2. Internal navigation
+There is no limit on how to structure the navigation of your site. This can
+be a blessing or a curse.
+Some people force visitors to watch an animation or intro before they can
+access the site. And in the process, make it hard for visitors, and confusing
+for search engines, to read the actual content on the site.
+Other sites keep it simple by having a menu running along the top of the
+site or down the left-hand side of the browser window. This has pretty much
+become an industry standard for most sites.
+By following this standard, you make it significantly easier for visitors and
+search engines to understand your site. If you intend to break this
+convention, you must understand it is likely you will make it harder for
+search engines to pick up all of the pages on your site.
+As a general rule, making it easier for users makes it easier for Google.
+
+-- 43 of 174 --
+
+Above all else, your website navigation must be made of real text links, not
+images.
+If your main site navigation is currently made up of images, call your web
+designer and change them to text now! If you do not have the main
+navigation featured in the text, your internal pages will almost be invisible
+to Google and other search engines.
+For an additional SEO boost, include links to pages you want visible to
+search engines and visitors on the home page.
+By placing links specifically on the home page, Google's search engine
+spider can come along to your site and quickly understand which pages on
+your site are important and worth including in the search results.
+How to make Google pick up the keywords you
+want.
+Many misconceptions are being circulated about what to do, and what not
+to do when it comes to optimizing keywords on your page.
+Some bloggers are going so far as telling their readers to not put keywords
+in the content of targeted pages at all. These bloggers—I'm not naming
+names—do have the best intentions and have taken the worry about
+Google's spam detection to the next level. But it is madness.
+Not having keywords on your page makes it difficult for Google to match
+your page with the keyword you want to rank high for. If Google
+completely devalued having keywords on the page, Google would be a
+crappy search engine.
+Think about it. If you search for “Ford Mustang 65 Auto Parts” and arrive
+on pages without those words on the page at all, it's highly unlikely you've
+found what you’re looking for.
+
+-- 44 of 174 --
+
+Google needs to see the keywords on your page, and these keywords must
+be visible to your users. The easy approach is to either create content
+around your keyword or naturally weave your keyword into the page. I'm
+not saying your page should look like the following example.
+“Welcome to the NFL jersey store. Here we have NFL jerseys galore, with
+a wide range of NFL jerseys including women’s NFL jerseys, men's NFL
+jerseys, children's NFL jerseys, and much, much more.”
+This approach may have worked 20 years ago, but not now. The keyword
+should appear naturally on your page. Any attempts to go bonkers with
+your keywords will look horrible and may set off spam filters in search
+engines. Use your keyword naturally throughout the content. Repeating
+your keyword once or twice is more than enough.
+It's really that simple.
+Next, you need to ensure you have a handful of variations of your keyword
+on your page. Google believes a page is more naturally written if it has
+variations of your keyword. And this helps your visibility because
+sometimes different customers will type different words in Google to find
+the same thing. And you want to appeal to these customers too.
+And finally, you need to have some semantic keywords on the page. What
+do I mean by semantic keywords? Well, if you're targeting a keyword like,
+"dentist san francisco", then semantic keywords are words that should
+naturally appear on a page that really does a great job of covering that
+topic, words like "dentist", "root canal", "dental checkup", "dental
+procedure", "teeth whitening", "SF, "CA", "California", and so on.
+To successfully optimize a page, you need to have your main keywords,
+keyword variations, and semantic keywords on the page. Make sure
+they’re all naturally covered in your content. Naturally, this process is a bit
+easier if you use tools. Ahrefs (ahrefs.com) and SurferSEO (surferseo.com)
+are two great tools for finding main keywords, keyword variations, and
+semantic keywords, that you should be adding to the page.
+Areas you can weave keywords into the page include:
+- Meta description and meta title tags.
+- Navigation anchor text.
+
+-- 45 of 174 --
+
+- Navigation anchor title tags.
+- Headings (h1, h2, h3, and h4 tags).
+- Content text.
+- Bolded and italicized text.
+- Internal links in the content.
+- Image filename, image alt tag, and image title tag.
+- Video filename, video title.
+How to get more people clicking on your rankings
+in Google.
+Meta tags have been widely misunderstood as mysterious pieces of code
+SEO professionals mess around with, and “the secret” to attaining top
+rankings. This couldn't be further from the truth.
+The function of meta tags is quite simple. Meta tags are bits of code on
+your site that control how your site appears in Google.
+If you don't fill out your meta tags, Google will automatically use text from
+your site to create your search listing. This is exactly what you don't want
+Google to do, otherwise, it can end up looking like gibberish! Fill out these
+tags correctly, and you can increase the number of people clicking on your
+site in the search engine results.
+Below is an example of the meta tag code.
+<title>Paul’s NFL Jerseys</title>
+<meta description="Buy NFL jerseys online. Wide range of colors and
+sizes. Free delivery and free returns. We accept international orders!"/>
+Below is an example of how a page with the above meta tag should appear
+as a search engine result in Google:
+Paul's NFL Jerseys
+Buy Paul's NFL jerseys online. Wide range of colors and sizes. Free
+delivery and free returns. We accept international orders!
+https://www.yoursite.com/
+Pretty simple, huh?
+
+-- 46 of 174 --
+
+The title tag has a character limit of roughly 55-60 characters in Google.
+Use any more than 55-60 characters and Google will likely truncate your
+title tag in the search engine results.
+The meta description tag has a character limit of roughly 155-160
+characters. Just like the title tag, Google will shorten your listing if it has
+any more than 155-160 characters in the tag.
+To change these tags on your site you have three options:
+1. Use the software your site is built on. Most content management systems
+have the option to change these tags. If it doesn't, you may need to install an
+SEO plugin to change these tags.
+2. Speak with your web designer or web developer to manually change your
+meta tags for you.
+3. If you are a tech-savvy person and familiar with HTML, you can change
+the tags in the code yourself.
+Load speed—Google magic dust.
+If your site is as slow as a dead snail, then it’s likely your site is not living
+up to its potential in the search engines and is disappointing website
+visitors. Improving your site's load speed is an opportunity for an easy SEO
+boost. Why? Because when visitors browse your website and it's blazing
+fast, they stick to it like glue instead of clicking back to the search results.
+And the positive user behavior associated with your website gets sent to
+Google and you get rewarded with higher rankings.
+Not only is load speed important for having great performance in search
+engines, but extensive industry reports have also shown for each second
+shaved off a site, there is an average increase of 7% to the site conversion
+rate. In other words, the faster your site loads, the more people you will
+have completing a sale. Simply put, load speed is not an aspect of your site
+to overlook.
+
+-- 47 of 174 --
+
+Every site is built differently, with an endless variation of server
+configurations, which means improving your load speed isn't as simple as
+following a checklist. However, the following techniques will work on most
+sites.
+Common load speed improvements.
+1. Host your site in the city where your customers reside and load speeds
+will increase.
+2. Alternatively, use a CDN (Content Delivery Network) to host your site
+on servers all over the world. Visitors will get super-fast load speeds
+regardless of location. Popular CDN services include CloudFlare and
+Amazon CloudFront.
+3. Enable load speed technologies like caching, compression, minification,
+and HTTP/2. Most platforms have plugins for this, e.g. W3 Total Cache is a
+popular plugin offering most of these features on WordPress.
+4. Find large files on your site and shrink them. Use software like Adobe
+Photoshop and you can compress image file sizes from 3MB down to
+250KB without visual loss in quality, by using Photoshop's "save for web"
+feature. An easy win for image-heavy sites.
+The above are just a handful of the infinite possibilities for improving a
+site’s load speed. Fortunately, several tools are making it easy to identify
+speed improvements and speed bottlenecks, irrespective of the technology
+your site is built on.
+Load speed analysis tools.
+1. Google Page Speed Insights
+https://pagespeed.web.dev/
+Google's great free tool, Page Speed Insights, will give you a page load
+score out of 100. You can see how well your load speed compares to other
+sites. You can also see how well your site loads on mobile and desktop.
+Scores closer to 100 are near perfect.
+After running a test on your site, the tool will give you a list of high-
+priority, medium-priority, and low-priority areas for improvement. You can
+forward these to your developer to speed up your site, or if you are a bit of a
+tech-head, you can have a crack at fixing these up yourself.
+
+-- 48 of 174 --
+
+2. GTmetrix
+https://gtmetrix.com/
+Gtmetrix is the cream of the crop when it comes to load speed tools,
+providing detailed breakdowns of files and resources slowing your site
+down, listing file sizes of individual files, server load times, and much
+more. It goes into greater depth than the other tools, though probably best
+suited for a web developer or someone with a basic level of experience
+building websites.
+Large images are easy targets for load speed improvements. If you have any
+images over 200kb, these can usually be compressed in Photoshop and
+shrunk down to a fraction of the size without any quality loss. Take note of
+any large files, send them to your web developer or web designer, and ask
+them to compress the files to a smaller file size.
+3. Lighthouse – Tools For Web Developers – Google
+https://developer.chrome.com/docs/lighthouse/overview/
+For advanced developers working on complicated projects or sites—i.e.
+programmers who know what a Node module is—Google released a
+powerful Chrome extension called Lighthouse. Lighthouse provides reports
+on website performance, accessibility, adherence to programming best
+practices, SEO, and more—with actionable steps on improving each of
+these areas. While owners of basic websites probably won't get additional
+insights from this tool, on top of recommendations provided by earlier
+tools, programming ninjas looking for a well-rounded tool to enhance their
+performance chops will find Google's Lighthouse is the Swiss Army knife
+of site performance analysis.
+The usual suspects—sitemaps.xml and robots.txt.
+Sitemaps.xml
+Search engines automatically look for a special file on each site called the
+sitemaps.xml file. Having this file on your site is a must for making it easy
+for search engines to discover pages on your site. Sitemaps are essentially a
+giant map of all of the pages on your site. Fortunately, creating this file and
+getting it on your site is straightforward.
+
+-- 49 of 174 --
+
+Most CMS systems have a sitemap file automatically generated. This
+includes systems like WordPress, Magento, and Shopify. If this is not the
+case on your site, you may need to install a plugin or use the free XML
+Sitemaps Generator tool. The XML Sitemaps Generator will automatically
+create a sitemaps.xml file for you.
+XML Sitemaps Generator
+https://www.xml-sitemaps.com/
+Next, ask your web developer or web designer to upload it into the main
+directory of your site or do it yourself if you have FTP access. Once
+uploaded, the file should be publicly accessible with an address like the
+below example:
+https://www.yoursite.com/sitemaps.xml
+Once you have done this, you should submit your sitemap to the Google
+Search Console account for your site.
+If you don’t have a Google Search Console account, the following article
+by Google gives simple instructions for web developers or web designers to
+set this up.
+Add a website property – Search Console Help
+https://support.google.com/webmasters/answer/34592
+Login to your account and click on your site. Under “site configuration”
+click “sitemaps” and submit your sitemap.
+Robots.txt
+Another must-have for every site is a robots.txt file. This should sit in the
+same place as your sitemaps.xml file. The address to this file should look
+the same as the example below:
+http://www.yoursite.com/robots.txt
+The robots.txt file is a simple file that exists so you can tell the areas of
+your site you don’t want Google to list in the search engine results.
+
+-- 50 of 174 --
+
+While there is no boost from having a robots.txt file on your site, it’s
+essential to check you don’t have a robots.txt file blocking areas of your site
+you want search engines to find.
+The robots.txt file is just a plain text document, its contents should look
+something like the below example:
+# robots.txt - a good example
+User-agent: *
+Disallow: /wp-admin
+If you want your site to tell search engines to not crawl your site, it should
+look like the next example. If you do not want your entire site blocked,
+make sure it does not look like the example below. It is always a good idea
+to double-check check it is not set up this way, just to be safe.
+# robots.txt - example blocking the entire site
+User-agent: *
+Disallow: /
+The forward slash in this example tells search engines their software should
+not visit the home directory.
+To create your robots.txt file, simply create a plain text document with
+Notepad if you are on Windows, or TextEdit if you are on Mac OS. Make
+sure the file is saved as a plain text document, and use the “robots.txt good
+example” as an indication of how it should look. Take care to list any
+directories you do not want search engines to visit, such as internal folders
+for staff, admin areas, CMS back-end areas, and so on.
+If there aren’t any areas you would like to block, you can skip editing your
+robots.txt file altogether, but just double check you don’t have one blocking
+important areas of the site like the above example.
+Duplicate content—canonical tags and other fun.
+In later chapters, I will describe how Google Panda penalizes sites with
+duplicate content. Unfortunately, many site content management systems
+will sometimes automatically create multiple versions of one page.
+
+-- 51 of 174 --
+
+For example, let’s say your site has a product page on socket wrenches, but
+because of the system your site is built on, the same page can be accessed
+from multiple URLs from different areas of your site:
+http://www.yoursite.com/products.aspx?=23213
+http://www.yoursite.com/socket-wrenches
+http://www.yoursite.com/tool-kits/socket-wrenches
+In the search engine’s eyes, this is confusing as hell and multiple versions
+of the page are considered duplicate content.
+To account for this, you should always ensure a special tag is placed on
+every page of your site, called the canonical tag.
+The canonical tag indicates the original version of a web page to search
+engines. By telling Google the page you consider the “true” version of the
+page with the tag, you can control which page is listed in the search results.
+Choose the most straightforward URL for users, the URL that reads like
+plain English.
+Using the earlier socket wrenches example, by using the tag below, Google
+would be more likely to display the best version of the page in the search
+engine results.
+<link rel="canonical
+" href="http://www.yoursite.com/socket-wrenches
+"/>
+As a general rule, include this tag on every page on your site, shortly before
+the </head> tag in the code.
+Usability—the new SEO explained.
+Mobiles and tablets have overtaken desktops in the vicious battle for
+Internet market share, with mobile devices now making up more than 60%
+of all traffic. To ensure a great search experience for users, Google gives
+advantages to sites with great support for users on all devices. As a result,
+many SEO pundits found you can get an advantage simply by improving
+your mobile support.
+
+-- 52 of 174 --
+
+For example, let’s say a mobile user is searching for late-night pizza
+delivery in Los Angeles. One local business has a site with a large number
+of backlinks but no special support for mobile users, it’s difficult for the
+user to navigate, the layout doesn’t automatically fit the screen, and the
+menu text is small and hard to use on a touch screen.
+Another competing local business has low amounts of backlinks, but great
+support for mobile users. Its design fits perfectly to the screen and has
+special navigation designed for mobile users, making it easy to use.
+In most cases, the second site will now rank higher than the first, for mobile
+users. This is just one example of how usability can impact your rankings.
+While a term like "usability" can seem vague, let’s look at practical steps to
+improve your usability and the SEO strength of your site.
+1. Make your site accessible for all devices.
+Make your site accessible and easy for all users: desktop, mobile, and
+tablet. The simple way is to make your site responsive, which means it
+automatically resizes across all devices and has mobile-friendly navigation
+for mobile users. Mobile support is covered in more detail later in this
+chapter, but you can enter your site into the following tool quickly to see if
+Google registers your site as mobile-friendly.
+Mobile friendly Test - Google
+https://search.google.com/test/mobile-friendly
+2. Increase your content quality.
+Gone are the days of hiring a bunch of low-quality writers to bulk out the
+content on your site. It needs to be proofread and edited, and the more
+“sticky” you make your content, the better results you will get. If you
+provide compelling content, users will spend more time on your site and are
+less likely to bounce back to the search results. Users will also be more
+likely to share your content. Google will see this and give your rankings a
+boost.
+3. Use clean code on your website.
+
+-- 53 of 174 --
+
+There’s a surprisingly high amount of sites with dodgy code, difficult for
+both search engines and Internet browsers to read. If there are HTML code
+errors in your site, which means, it hasn’t been coded according to industry
+best practices, your design may break when your site is viewed on different
+browsers, or worse, confuse search engines when they come along and look
+at your site. Run your site through the below tool and ask your web
+developer to fix any errors.
+Web standards validator
+https://validator.w3.org/
+4. Take it easy on the popups and advertisements.
+Sites with spammy and aggressive ads are often ranked poorly in search
+results. The SEO gurus have reached no consensus on the number of ads
+leading to a penalty from Google, so use your common sense. Ensure
+advertisements don’t overshadow your content or occupy the majority of
+screen real estate.
+5. Improve the overall “operability” of your site.
+Does your site have slow web hosting or a bunch of broken links and
+images? Simple technical oversights like these contribute to a poor user
+experience.
+Make sure your site is with a reliable web hosting company and doesn’t go
+down in peak traffic. Even better, make sure your site is hosted on a server
+in your local city, and this will make it faster for local users.
+Next up, chase up any 404 errors with your web developer. 404 errors are
+errors indicating users are clicking on links in your site and being sent to an
+empty page. It contributes to a poor user experience in Google’s eyes.
+Fortunately, these errors are easily fixed.
+You can find 404 errors on your site by logging into your Google Search
+Console account, clicking on your site, then clicking on “Crawl” and
+“Crawl Errors.” Here you will find a list of 404 errors. If you click on the
+error and then click “Linked From” you can find the pages with the broken
+links. Fix these yourself, or discuss them with your web developer.
+
+-- 54 of 174 --
+
+Google Search Console
+https://search.google.com/search-console/about
+If you want external tools to speed up improving your site’s usability, I’ve
+found the following two resources helpful:
+BrowserStack - Free to try, plans start at $29 per month.
+https://www.browserstack.com
+BrowserStack allows you to test your site on over +20,000 different
+browsers and devices at once. You can preview how your site works on
+tablets, mobile devices, and all the different browsers such as Chrome,
+Firefox, Safari, Internet Explorer, and so on. It helps make sure it displays
+correctly across many different devices.
+Trymata - Free to try, test results start from $333 monthly
+https://trymata.com/
+Trymata provides videos, audio narration, surveys of users going through
+your site, and reports on any difficulties they uncover. Usability tests are
+good for larger projects requiring objective feedback from normal users.
+Mobile support—important SEO explained in
+simple language.
+Whether we like it or not, mobile users are here to stay and Google is
+driving the mobile revolution. With the largest mobile app store in the
+world, the largest mobile operating system in the world, and the largest
+amount of mobile search users, it’s safe to say mobile users are a high
+priority for Google.
+If you are not supporting mobile users, it’s important to implement mobile
+support, not just for better search engine results, but for better sales and
+conversions. Simply put, the majority of your traffic is coming from mobile
+users. So let’s take a look at how to support mobile users.
+How to best support mobile users.
+If you want to increase support for mobile devices and be more search
+engine friendly, you have three options:
+
+-- 55 of 174 --
+
+1. Create a responsive site.
+Responsive sites are the cream of the crop when it comes to sites that
+support both desktop and mobile devices. With responsive sites, both
+mobile and desktop users see the same pages and same content, and
+everything is automatically sized to fit the screen. It’s also becoming more
+common for WordPress templates and new sites to feature a responsive
+layout.
+2. Dynamically serve different content to mobile and desktop users.
+You can ask your web developer to detect which devices are accessing your
+site and automatically deliver a different version of your site catered to the
+device. This is a complicated setup, better suited for large sites with
+thousands of pages, with complicated infrastructure, when a responsive
+approach is not possible.
+3. Host your mobile content on a separate subdomain, e.g.
+m.yoursite.com
+While Google stated this implementation is supported, I recommend against
+it. You need a lot of redirects in place and must jump through giant hoops to
+ensure search engines recognize your special mobile subdomain as a copy
+of your main site. Responsive sites are popular for good reason: it’s easier
+and cheaper to maintain one site, than both maintaining a desktop copy of
+your site and a separate mobile copy of your site on a mobile subdomain.
+Improving performance in the mobile search results.
+Google stated mobile support is straightforward, either your site supports
+mobile devices or it doesn’t... Well, it’s not straightforward. You can get an
+edge over competitors by using a handful of tools to improve your mobile
+usability and make your site faster for mobile users.
+
+-- 56 of 174 --
+
+Run your site through Google's Mobile-Friendly Test Tool to confirm if you
+support mobile users, and review the Mobile Usability report in Google
+Search Console and check for any errors worth fixing. For advanced
+insights, you can use Chrome’s Lighthouse reports, which will give you
+detailed reports on the best practices and performance of your website. And
+if you're lazy like me, delegate. Send the reports and errors over to your
+web developer and get them fixed.
+Who doesn't like a competitive advantage? Work through these tools, make
+your mobile support better than competitors, and you will crush it in the
+search results.
+Google PageSpeed Insights
+https://pagespeed.web.dev/
+Mobile Usability – Google Search Console
+https://www.google.com/webmasters/tools/mobile-usability
+Lighthouse – Google Chrome
+https://developer.chrome.com/docs/lighthouse/overview
+The technical details of building a responsive site are beyond the scope of
+this book and could fill an entire book. In fact, it does, I counted close to 17
+responsive web design books on Amazon as I wrote this paragraph… That
+said, mobile SEO can be ridiculously simple.
+If you have a responsive site that delivers the same content to mobile and
+desktop users, automatically resizes content to the screen, and is fast and
+user-friendly, all you have to do is follow the SEO recommendations in this
+book, and your mobile results will be top-notch from an SEO perspective.
+Alternatively, follow one of the recommended implementations discussed
+earlier in this section.
+For guidelines, direct from the horse’s mouth so to speak, you can read
+Google’s mobile support documentation for webmasters and web
+developers.
+Mobile Friendly Sites – Google Developers
+https://developers.google.com/search/mobile-sites/get-started
+
+-- 57 of 174 --
+
+Google's Search Quality Guidelines — and how to
+use them to your advantage.
+Search quality is a popular topic in the SEO industry because it has a
+massive impact on the search results. Why is this so? Making sure users are
+sent to high-quality and trustworthy search results is critical for Google to
+safeguard its position as providing the best all-around search experience.
+While this sounds a little vague, you can use Google's search quality
+guidelines to your advantage and get an edge over competitors. Did you
+know that Google’s search quality team published their “Search Quality
+Evaluator Guidelines ” publicly? If you didn't, now you do.
+The document's 168 pages long, so presuming you don't consider a
+whitepaper leisurely reading, I'll list the most important and actionable
+takeaways, so you can use them to your advantage.
+Google Search Quality Evaluator Guidelines - Most Important Factors
+Google's whitepaper lists the holy grail of important factors when it comes
+to search quality. And here it is …
+EEAT... That's right, E.E.A.T. Experience, Expertise, Authority, and Trust.
+Acronym choice aside, to establish quality, Google is looking at the
+experience, expertise, authority, and trustworthiness on the page and across
+the website. This includes things like the content quality, the reputation of
+the website and its authors, publicly-listed information about site
+ownership, contact details, first-hand experience, and several other factors.
+Now we know what's important from a top-level perspective, let's zoom
+into actionable and practical takeaways that will affect the average Joe
+trying to nudge his way up the search results.
+Search Quality Evaluator Guidelines—Key Takeaways
+1. Does the writer have first-hand experience? If the author of the page has
+first-hand experience with the product, place, or topic they are discussing,
+they are likely to provide real value and insights for the reader, as opposed
+to an article written by someone with no experience at all.
+
+-- 58 of 174 --
+
+2. Real name, company name, and contact information listed on an about
+page. If you don't have this information listed on your website, why should
+Google, or anyone else for that matter, trust you? Better make sure you
+include it.
+3. Excessive and unnatural internal structural links across sidebars and
+footers. If you've got 150 links in your footer, it's obvious to Google you're
+trying to do something sneaky, so be conservative with the footer and
+sidebar links. Keep it restricted to the most important pages on your site or
+what's useful for your users.
+4. Over monetization of content. Specifically, if you are disguising
+advertisements as the main content or your advertisements occupy more
+real estate than the main content, then one of Google's search evaluators
+will probably flag your site as spam. Take a common-sense approach with
+your ads, don't overdo it!
+5. List editors & contributors. Are you publishing a bunch of articles under
+pseudonyms or generic usernames? Listing editors and contributors, i.e. real
+people, is more trustworthy and will increase the perceived quality of your
+page.
+6. Provide sources. Publishing generic articles en masse without any
+reputable sources? You'll get a better-quality assessment, and a higher
+ranking if you list sources for your articles. Listing sources shows the writer
+has performed diligence in their research and increases the credibility of the
+page.
+7. Financial transaction pages. All you drop-shippers and ecommerce
+retailers out there stand up and take note—pages associated with financial
+transactions (shopping cart, checkout, product pages, etc.) must link to
+policy pages for refunds, returns, delivery information, and the terms and
+conditions of your site. Think about it from the user's perspective, if you are
+an average Joe shopper thinking about buying something and the page
+doesn't list any of this information, how safe would you feel checking out?
+
+-- 59 of 174 --
+
+8. Pages offering financial information must be of the highest quality.
+Google is stricter with these types of pages, as they fall into the “Your
+Money or Your Life” category—meaning it could affect the financial well-
+being of the user. If you're publishing this kind of content, make sure you're
+doing everything you can to provide high-quality, detailed articles, citing
+sources, fully disclosing financial relationships, and making it clear what
+author or company is behind the content.
+That sums up the most important takeaways from the Google Search
+Evaluator Guidelines. If you haven't got them on your site, work ‘ em in
+and you'll get a leg up over your competitors, or worse, your rankings could
+suffer. And if you really, really want to sit down and read through the 168-
+page whitepaper on page-quality assessment, here it is for your enjoyment.
+Search Quality Evaluator Guidelines – Google
+https://static.googleusercontent.com/media/guidelines.raterhub.com/en//sea
+rchqualityevaluatorguidelines.pdf
+Readability — SEO for the future.
+One of the strongest ranking factors has been flying under the radar,
+overlooked by many SEO professionals in their optimization checklists,
+leaving a golden opportunity for those who know about it. I ’ m talking
+about readability.
+Google has been outspoken about readability as an important consideration
+for webmasters. Google ’ s former head of web spam, Matt Cutts, publicly
+stated that poorly researched and misspelled content will rank poorly, and
+clarity should be your focus. And by readability, this means not just
+avoiding spelling mistakes, but making your content readable for the widest
+possible audience, with simple language and sentence structures.
+Flesch readability surfaced in the Searchmetrics Google ranking factors
+report, showing a high correlation between high-ranking sites and easy-to-
+read content. The Searchmetrics rankings report discovered sites appearing
+in the top 10 showed an average Flesch reading score of 76.00—content
+that is fairly easy to read for 13-15-year-old students and up.
+
+-- 60 of 174 --
+
+It makes sense readability is important for Google. By encouraging search
+results to have content readable to a wide audience, Google maximizes
+advertising revenues. If Google were to encourage complicated results that
+mostly appeal to a smaller demographic, such as post-graduates, it would
+lower Google's general appeal and its market share.
+You can achieve an on-page SEO boost, while increasing your user
+engagement, by making your content readable to a wide audience. Run your
+content through a Flesch readability test. It will look at your word and
+sentence usage, and give you a score on how readable it is. Scores between
+90-100 are easily understood by an 11-year-old student, 60-70 are easily
+understood by 13 to 15-year-old students, and 0-30 are best understood by
+University graduates.
+You can use the free tool below and should aim for a readability score
+between 60-100. To improve your score, edit your content to use fewer
+words per sentence, and use words with a smaller number of syllables.
+Readability Score
+https://readable.com/
+How to accelerate traffic and rankings with
+content marketing.
+One of the most powerful on-page SEO strategies is adding more unique,
+fresh content to your site. If you consistently add new pages to your site,
+you are going to receive more traffic. In fact, not only can you increase
+your traffic, but you can receive an exponential traffic increase as you
+publish more content.
+It’s a no-brainer when you think about it. This is why blogs, publishing, and
+news-type sites consistently get good results in search engines. More
+content means more rankings, more visitors, and more sales. Let’s look at
+getting started with improving your traffic by adding fresh content.
+1. Post new content on a regular schedule.
+
+-- 61 of 174 --
+
+If you are going to add new content to your site, you need to decide on a
+schedule and stick to it. This might seem obvious, but you would be
+surprised at the large number of businesses that talk about starting a blog
+and never get around to it. It’s the businesses with a regular roster of adding
+content to their site that see regular increases in search rankings, increases
+in overall search engine performance, and a growing loyal audience.
+Without a dedicated roster or schedule, it will never get done.
+If you can’t create content yourself or don't have a budget to hire a full-time
+marketing assistant, try hiring a ghostwriter.
+Good quality writers can be sourced between $25-$75 US per article and
+you can regularly churn out fresh content to your heart’s content.
+Textbroker and the Problogger job board are two popular services that can
+put you in touch with talented writers.
+Textbroker
+https://www.textbroker.com
+ProBlogger Job Board
+https://problogger.com/jobs/
+2. Leverage your social media accounts.
+It almost goes without saying, but you should be leveraging social media to
+drive traffic to new posts or pages added to your site.
+Whenever you post new content, post it across all of your social media
+accounts. Then post it again in a couple of days and you will expose your
+content to a different segment of fans. You’ll increase your social activity
+and as a result, get higher rankings.
+3. Reach out to bloggers writing roundup posts on your blog’s topic.
+
+-- 62 of 174 --
+
+Bloggers often write roundup posts listing their hottest must-read blogs or
+articles on a particular topic. Reach out to authors, with a personalized
+message and links to your best blog posts. Take it to the next level by
+making it easier for the author to update their post—with a short blog
+description, image, and link to your social channels. Ensure you have a base
+level of high-value content to start, then start reaching out to bloggers. You
+can start seeing links to your blog in a week or two, with enough outreach
+efforts.
+Here’s a handful of search queries to find relevant roundup posts and
+digests of blogs in your industry, replace “keyword” with your blog’s topic:
+“keyword” blogs you should follow
+“keyword” blogs you should read
+“keyword” blogs in 2025
+“keyword” trends in 2025
+“keyword” give their tips in 2025
+best “keyword” blogs
+HTTPS & SSL certificates.
+Google has publicly admitted site encryption is a positive ranking factor in
+its algorithm. This means if you haven't already, it’s a good idea to install
+an SSL security certificate on your site.
+If that isn’t motivation enough, Google Chrome shows security warnings to
+users visiting sites without SSL-enabled. The security notice shows up
+before the user tries to visit the website stating that the website is “Not
+Secure”.
+If you’re wondering what the hell I am talking about, you have seen
+website encryption in action when you log in to your Internet banking or
+Gmail account. When you see a padlock at the start of the web address, this
+means the connection is encrypted and the site owner has installed a
+security certificate and verified ownership of the site.
+
+-- 63 of 174 --
+
+Website encryption provides a direct connection between the user and the
+website server, a bit like a tunnel. Because it’s encrypted if anybody tries to
+eavesdrop on this connection any information intercepted will look like
+gibberish. The only parties who can read the information are the web server
+and the user. Pretty neat, huh?
+Unfortunately, installing a security certificate isn’t enough to get an extra
+boost to your rankings. There is a migration process required to ensure
+Google picks up everything correctly if your website doesn't have one
+installed.
+I’ve listed basic steps below for upgrading your website without any loss in
+rankings or SEO juice. But this process is more technically involved than
+weaving a few keywords into the page, you should read the supporting
+documentation by Google, ask your developer to do this, and possibly
+consider using professional SEO help before completing this process.
+What if you already have SSL installed? Then you don't have anything to
+worry about. You're good from a security standpoint. And you only have to
+proceed through this checklist if you're upgrading a website that doesn't
+have an SSL certificate installed or enabled.
+1. Contact your web host or domain registration provider to install a
+security certificate. Common fees can range from $50 to $500 per year,
+depending on the type of certificate.
+2. Make sure both HTTPS and HTTP versions of your site continue to run.
+3. Upgrade all internal resources and internal links in your HTML code to
+use relative URLs. This includes references to HTML files, CSS files,
+Javascript files, images, and all other files referenced in your HTML code.
+This means instead of referring to internal resources in the website code
+with an absolute address (e.g. http://www.yourwebsite.com/logo.jpg), it
+should use a relative address (e.g. ./logo.jpg).
+4. Update all of your canonical tags to point to the new HTTPS version of
+your site.
+5. Upload 301 redirects for all HTTP URLs to point to the new HTTPS-
+secured URLs.
+6. Verify the new HTTPS version of your site in a new profile in Google
+Search Console.
+
+-- 64 of 174 --
+
+7. Upload an XML sitemap to the new HTTPS Google Search Console
+profile. This sitemap should include all of the old HTTP pages from your
+site and the new HTTPS pages. We are submitting the old pages to
+encourage Google to crawl the old pages and register the redirects.
+8. Update all links on your social media accounts and other marketing
+materials to point to the new URLs.
+If you want a downloadable copy of this checklist, the SSL upgrade steps
+for SEO are covered in the free SEO checklist at the end of the book.
+Before working through the SSL upgrade steps, make sure you or your
+developer read through the support guides by Google on performing this
+upgrade.
+Enabling HTTPS on your servers - Google Developers
+https://web.dev/enable-https/
+How to move a site – Google Search Central
+https://developers.google.com/search/docs/crawling-indexing/site-move-
+with-url-changes
+User Behavior Optimization—how to use Google’s
+machine learning technology to your advantage.
+Ever heard of Project Pigeon, the top-secret World War 2 U.S. military
+project for developing missiles guided by pigeons tapping on transparent
+screens?
+Project Pigeon was developed by famous Harvard behavioral psychologist
+B. F. Skinner in the 1940s, and later decommissioned, because in Skinner's
+words, "no one would take us seriously." Later, Skinner's more notable
+work on behavioral analysis was taken seriously, establishing behavioral
+psychology as a legitimate field of psychology.
+
+-- 65 of 174 --
+
+How we behave online—tapping on screens—has become a point of focus
+for Google, with user behavior signals, such as bounce rate, time-on-site,
+and click-through rate positioned strongly in Google's top 10 ranking
+factors. Google's machine learning algorithm RankBrain observes these
+behavior signals, recalculating search results in real-time. Fortunately, you
+can use this to your advantage and get higher rankings with user behavior
+optimization.
+Improving user behavior on your site is no longer a 'nice-to-have'… It's a
+serious requirement for any SEO practitioner and a powerful technique for
+anyone who wants to rank in the top 10 results.
+Read on for actionable techniques for leveraging Google's machine-
+learning algorithm to shoot your pages to the top of the rankings faster than
+a pigeon-guided missile.
+Boosting Click-Through Rates.
+Your click-through rate (CTR) is the percentage of people who see your
+search listing and click on it. If more people click on your search result than
+others, this tells Google your page is appealing to users. Get higher click-
+through rates with these 7 techniques.
+1. Fill out the meta title and meta description tags on your target pages.
+Unfilled meta tags lead to automatically generated snippets by Google,
+which generally receive low CTRs. For every page on your site with
+unfilled meta tags, an SEO technician silently weeps.
+2. Make meta tags compelling. Think actionable, descriptive, and specific.
+Sell your page and make it clear why the user should click on your result
+instead of competing pages.
+3. Use numbers and special characters to stand out. Specific numbers
+naturally attract higher click-through rates. Special characters such as pipes,
+em-dashes, and brackets make your rankings more eye-catching and gain
+more clicks.
+4. Use keywords in URLs. URLs with keywords indicate your page is
+relevant at a glance, getting automatic clicks.
+
+-- 66 of 174 --
+
+5. Use short URLs. Both users and Google like short URLs, and so do I.
+Case closed.
+6. Target featured snippets and rich snippets. Rich results can gain up to
+30% more clicks. The rich snippets chapter later in this book details these
+types of rankings.
+7. Improve low-performing pages. Look through your Google Search
+Console keyword report for keywords with low CTRs. Improve the meta
+tags and URLs on those pages and make them more click-worthy.
+Here’s an example of a title tag and URL that has been expertly written to
+attract clicks:
+How to Save Money: 20 Simple Tips | DaveRamsey.com
+https://www.daveramsey.com/blog/the-secret-to-saving-money
+Boosting Time On Site.
+Time-on-site, bounce rates, pages-per-visit... These metrics measure similar
+things—are users sticking to your content like glue, or are they immediately
+clicking the back button to find a better result?
+How users engage with your content is considered super important by
+Google's machine learning algo RankBrain, if you can improve your time
+on site, you can improve your rankings. Let’s look at 4 simple techniques
+for getting users hooked to your content.
+1. Increase internal links in your content. Creating relevant internal links
+within your content encourages users to open up more tabs and browse
+more pages on your site, 2 to 3 internal links per blog post is enough
+without becoming annoying.
+2. Make your content readable. Use large font sizes, preferably 16px-18px
+so people don't need to fetch the magnifying glass to read your content. Use
+short and simple words. Break your content down into subheadings,
+numbered lists, short paragraphs, and sentences.
+3. Use longer word counts. It stands to reason it takes longer for users to
+read long articles. And according to a study by Ahrefs, content with long
+word counts attracts more links automatically. Nice.
+
+-- 67 of 174 --
+
+4. Use videos. Video is 65% of all Internet traffic according to several
+studies. Simply put, Internet users love video. Every user who watches
+videos on your pages boosts your time-on-site metric in heavenly ways.
+5. Use interactive media. Interactive media such as slideshows and online
+tools are time-tested techniques to boost time on-site and user engagement.
+Google's Core Web Vitals.
+Ever waited for a slow page to load on your mobile, moved your finger to
+tap where you want to go—and BAM—an annoying ad appeared under
+your finger and you've accidentally tapped to a page you never wanted to
+visit?... Annoying, right? Well, thank goodness Google decided to send the
+Page Experience Police to put an end to this ghastly behavior.
+Google HQ laid out the master plans for the "Page Experience Update", a
+major update to the algorithm, on the Google Search Central Blog, which
+confirmed three new signals into Google’s algorithm known as the "Core
+Web Vitals", which measure a user’s experience when they visit your page.
+Google announcing a change to the algorithm is rare. It’s time to sit up and
+pay attention when this happens. It is something that will affect all websites
+and is an opportunity to get an easy rankings boost.
+These ranking factors focus on mobile and desktop. So when working
+through your site, make sure these areas are improved for both mobile and
+desktop users, and you'll be two steps ahead of competitors. Read on for
+details on taking advantage of the web vitals to boost your rankings.
+What are the Core Web Vitals?
+The Core Web Vitals are three metrics that measure how positive (or how
+annoying) a user's experience is. Here they are:
+- Loading. How long it takes for most of your content to load?
+- Interactivity. How quickly does the page respond to user interactions?
+- Visual Stability. How visually stable your page is while loading—does
+everything stay in the same place or does it look like a popcorn machine
+about to explode?
+
+-- 68 of 174 --
+
+How to Improve the Core Web Vitals.
+If you're a technical newbie, there's some tech jargon ahead. Forward the
+links to your tech team or developer, ask them to improve the following
+areas, then skip on to the next section. This is a technical update and there's
+no way around it. Just ask for screenshots of the performance, before and
+after any changes, so you can measure results.
+If you're a JavaScript ninja or a tech junkie like myself, read on for easy
+wins for improving the vitals, and official documentation from the smart
+lads at Google.
+1. Improving Loading.
+The first Core Web Vital, Largest Contentful Paint, is all about making your
+main content show up faster. Having your Largest Contentful Paint occur
+within 2.5 seconds is a good range according to Google’s guidelines. Fixing
+the following easy wins should be more than enough to make your content
+load blazingly fast, but if you want to do a deep dive, read the developer's
+guide below.
+- Slow server response times.
+- Optimize your server.
+- Route users to a nearby CDN.
+- Cache assets.
+- Serve HTML pages cache-first.
+- Establish third-party connections early.
+Optimizing Largest Contentful Paint - Web.Dev
+https://web.dev/optimize-lcp/
+2. Improving Interactivity.
+
+-- 69 of 174 --
+
+The second Core Web Vital, Interaction to Next Paint (INP), is all about
+how fast your page responds to user input. Overall, the biggest cause for
+slow responsiveness is heavy JavaScript clogging up the page. Ensuring
+your pages respond to user interactions within 200 milliseconds is a good
+range, according to Google’s technical guide. The following easy wins will
+speed up page responsiveness; for more details, check out the developer's
+guide below.
+- Break up Long Tasks.
+- Optimize your page for interaction readiness.
+- Use a web worker.
+- Reduce JavaScript execution time.
+Optimize Interaction to Next Paint - Web.Dev
+https://web.dev/articles/optimize-inp
+3. Improving Visual Stability.
+The third Core Web Vital, Cumulative Layout Shift, is all about how much
+your page bounces around while loading, less is better (well, duh!). Making
+sure less than 10% of your layout shifts while loading is a good goal,
+according to Google’s guidelines. Fix the following low-hanging fruit and
+your page will be visually stable while it loads. If you still experience
+issues, read the following technical documentation.
+- Images without dimensions.
+- Ads, embeds, and iframes without dimensions.
+- Dynamically injected content.
+- Web Fonts causing flashes of invisible or unstyled text.
+- Actions waiting for a network response before updating DOM.
+Optimize Cumulative Layout Shift - Web.Dev
+https://web.dev/optimize-cls/
+Core Web Vitals Tools.
+The following tools will help you measure the Core Web Vitals on your
+website, find opportunities to improve them, and track results.
+Chrome Web Vitals – Google Chrome Extension
+
+-- 70 of 174 --
+
+https://github.com/GoogleChrome/web-vitals-extension
+Core Web Vitals Report – Google Search Console
+https://support.google.com/webmasters/answer/9205520
+Lighthouse – Google Chrome
+https://github.com/GoogleChrome/lighthouse
+Core Web Vitals Resources.
+Again, if you’re not very technical, don’t be overwhelmed, forward the
+above links to your web developer, the three areas of improvement are
+easily fixed on most sites. If you’re a developer or technical person like
+myself, the above easy-wins are more than enough to ensure the Core Web
+Vitals perform well on most websites. For the detail-a-holics out there
+wanting all the official details from Google HQ, check out the links below.
+Evaluating Page Experience For a Better Web – Google Search Central
+https://developers.google.com/search/blog/2020/05/evaluating-page-
+experience
+Learn Web Vitals
+https://web.dev/learn-core-web-vitals/
+Voice search optimization, how to target voice
+search results.
+We're literally living in the future. We’re living in the age where you can
+ask your car where the nearest coffee shop is and instantly get a perfect
+answer. Voice search has been quietly, or not so quietly, changing the search
+industry for a number of years. And in this section, we're going to take a
+look at strategies and techniques to improve your visibility for voice
+searches.
+Understanding voice search.
+
+-- 71 of 174 --
+
+Voice search is not just a fad. It began as a handy way to search without
+typing and evolved into a fully fledged AI powered assistants that are
+always in the background. Having some awareness of voice searches is
+pivotal for SEO because voice search results are often drawn from the very
+top of the search results. Voice searches are typically more conversational
+and can be significantly longer than text queries. Targeting voice searches
+takes a slightly different approach than traditional search results.
+1. Setting up for voice search.
+The foundation of voice search optimization is making sure your page
+loads fast and has great mobile support. Your mobile support needs to get a
+pass, and your Core Web Vitals and load speed metrics need to be
+performing well, optimally, faster than competitors if you want to rank at
+the top. Make sure you get these basic elements in place, because they are
+prerequisites for achieving a voice search result.
+And a great starting point for getting a handle on your Core Web Vitals and
+load speed performance is Google’s PageSpeed Insights. Pagespeed
+Insights is Google's free tool for getting a handle on how you are
+performing in these areas.
+2. Creating content for voice search.
+When it comes to voice search, your content should be conversationally
+written. Clear and concise answers perform well in voice search results.
+Creating 'snippet bait' – content designed to be picked up and featured as a
+direct answer – can give you an edge. Use FAQ's and How to type outlines
+for your content results in natural language question and answer type
+content, naturally.
+For instance, a page answering “How do I change a tire?” with clear and
+practical step-by-step instructions, summarized in brief short paragraphs,
+around 30 words in length each, naturally results in an article designed to
+be picked up for voice search answers.
+
+-- 72 of 174 --
+
+Here's an example outline:
+Main Heading (H1): "Quick Garden Salad Recipe"
+Subheading (H2): "What Ingredients Do I Need for a Simple Garden
+Salad?"
+Bulleted list of essential ingredients - 30 words
+Subheading (H2): "How to Make a Garden Salad Dressing?"
+Easy-to-follow dressing recipe - 30 words
+Subheading (H2): "How to Toss a Garden Salad"
+Step-by-step instructions for assembling the salad - 30 words
+Subheading (H2): "What to Add to Your Garden Salad for Extra Crunch?"
+List of crunchy toppings with short descriptions - 30 words
+Subheading (H2): "Can I Make a Garden Salad Ahead of Time?"
+Tips for preparing a salad in advance without losing freshness - 30 words
+By crafting content that's short and sweet, and by making your content and
+subheadings conversational, you're much more likely to be picked up for a
+voice search result.
+3. Use speakable structured data.
+Adding schema markup can significantly improve your chances of
+appearing for voice searches. The Speakable schema, in particular, is
+designed for voice search, labeling sections of your content that are great
+for audio playback. Add this in addition to any regular schema markup you
+have on the page. Here's an example of Speakable schema markup.
+<script type="application/ld+json">
+{
+...
+"speakable": {
+"@type": "SpeakableSpecification",
+"xpath": [
+"/html/body/main/article/h2[1]",
+
+-- 73 of 174 --
+
+"/html/body/main/article/p[1]",
+"/html/body/main/article/h2[2]",
+"/html/body/main/article/p[2]",
+"/html/body/main/article/h2[3]",
+"/html/body/main/article/p[3]",
+"/html/body/main/article/h2[4]",
+"/html/body/main/article/p[4]",
+"/html/body/main/article/h2[5]",
+"/html/body/main/article/p[5]"
+]
+}
+...
+</script>
+Voice search optimization is no longer optional. Start by improving your
+site’s mobile responsiveness and load speeds. Create voice search-ready
+content. Finally, add structured data to your page. With these steps, you'll
+be well on your way to showing up high on the voice search results.
+~
+That sums it up for the on-page SEO chapter.
+If you have a small business, the optimization factors mentioned earlier in
+this chapter are what will make a difference—such as ensuring your site has
+the right keywords and is accessible to all users.
+What’s most important is you act. On-page SEO is often the easiest part of
+SEO. The power is in your hands to fix these areas on your site. Remember
+small changes can lead to big results. Put these methods into practice and
+start improving your rankings.
+Just like the keyword research steps, for readers who want to put the theory
+into practice, all on-page optimization tips from this chapter are included in
+the SEO checklist. I recommend finishing the book before downloading the
+checklist and the on-page SEO steps, so you are familiar with the theory
+behind the practical steps.
+
+-- 74 of 174 --
+
+Chapter 4: Link building. How to
+rank extremely high on Google.
+Why is link-building so important?
+The previous chapter described how to make your site more visible to
+search engines with on-page SEO. But if you want to show up at the top of
+the search results your site needs links.
+You may have wondered what makes links so important, especially when
+there are so many factors Google uses to rank sites. The truth is, that links
+are such a strong factor, that it is unlikely you will rank high for a keyword
+if you are competing against sites with more backlinks.
+When you think about it, links are the currency of the web. Each time a
+page links to another, it is a vote for the value of the page being linked to. If
+a page provides massive value to Internet users, it stands to reason it will
+get links from other websites. This is why links are such a strong factor in
+Google's algorithm.
+Link building is the key to ranking your site high in search engine results.
+The dirty little secret no one wants to tell you
+about link building.
+There are a lot of opinions circulating the Internet about the best kind of
+links to build to your site. So much so, that they often escalate into heated
+discussions.
+What is the best link? A link from a government site or a high-trafficked
+blog? Is it better to get a link from a highly relevant site or a site with a lot
+of social media activity?
+
+-- 75 of 174 --
+
+The dirty secret no one wants to tell you about link building is there is no
+single best kind of link.
+If this weren’t the case, Google wouldn't work. Everyone would go out and
+find a way to spam their way to the top of the rankings very quickly.
+Having thousands of one type of link pointing to a page is suspicious and a
+clear sign the site owner is gaming the system.
+That said, as a rule, you should try to build links on authoritative, relevant,
+and high-quality sites. High-quality, relevant links are much stronger than
+links from low-quality, unrelated sites.
+How to acquire links and what to avoid in link
+building.
+Many stories are floating around about business owners being slammed by
+Google for no good reason. Don't let the horror stories mislead you.
+In most cases, what happened is the webmaster was doing something
+suspicious or outdated, like building thousands of links to their site from
+link directories, and then their rankings suddenly dropped off from Google's
+top 10 search results.
+If you don't exhibit overly spammy behavior in your link building, as a
+general rule you will be OK.
+These best practices will ensure you acquire links correctly and don't break
+Google's terms of service:
+1. Acquire links naturally and evenly over time. Your links should be
+attained consistently and organically.
+Google has made its approach to assessing link acquisition with time public
+knowledge. Patent US8407231B2 outlines how Google analyzes the age of
+links and the rate they are acquired and then uses this information to
+calculate the search results.
+
+-- 76 of 174 --
+
+If you don’t fancy reading up on patents in your spare time, then just
+remember to gradually build up your links over time, so Google sees that
+your website is acquiring links organically. Don't go out and buy one
+thousand links pointing to your site overnight or you’re sure to set off a red
+flag in Google’s system and get into its bad books.
+2. Don't purchase links unless you know what you are doing. Buying links
+to boost your rankings is against Google's spam policies and you risk being
+penalized. These kinds of links may work but are generally not worth the
+potential damage unless you are confident you know what you are doing.
+3. Forget about link-swapping or link-trading. These schemes are
+completely obvious to Google, and either no longer work or may harm your
+site. This goes against common knowledge, but I've achieved countless
+number-one rankings for ridiculously competitive keywords without ever
+swapping links. Link-swapping is extremely time-consuming and
+completely unnecessary. Get by without it.
+4. Don't spam message boards, article sites, or blog comments with crappy
+content. This might work temporarily, but strategies such as these are
+outdated very quickly.
+5. There are paid networks out there offering to build new links to your site
+for a low monthly fee each month. Never use them. These networks are
+against Google’s spam policies and using them is a quick way to ensure you
+find yourself in hot water with Google.
+Anchor text. What's all the fuss?
+There has been some controversy around anchor text, as touched on in a
+previous chapter. Anchor text is the text contained in a link. Anchor text
+was one of the strongest factors for achieving top rankings.
+If you had one thousand links to your site with “NFL football jerseys” as
+the link text, and competitors only had a handful of links with the same
+anchor text, it was likely you would rank number one. That is until
+Google’s Penguin update effectively put an end to SEOs using “exact
+match” anchor text as their strategy. Now it is just simply too risky.
+
+-- 77 of 174 --
+
+Not only is it no longer as effective as it once was, but building hundreds of
+“exact match” links to a site actually can prevent it from ranking for that
+keyword.
+So then, you might wonder, what is the best way to build up anchor text?
+It should be natural.
+It is OK to have your targeted keyword in your anchor text, but it should
+not be the only keyword or the main keyword in all of your links, and there
+should be a mix of related keywords.
+If you think about it, this is a pattern all legitimate sites naturally attract. It
+defies logic that a quality site would automatically be linked with the same
+text throughout the entire World Wide Web.
+Look over the below examples to see a bad anchor text profile compared to
+a natural anchor text profile:
+Bad anchor text – text in external links
+http://www.examplefootballbrand.com/football-jerseys.html
+NFL football jerseys - 200 links
+Good anchor text - text in external links
+http://www.examplefootballbrand.com/football-jerseys.html
+examplefootballbrand - 50 links
+NFL football jersey store - 10 links
+NFL football jerseys - 5 links
+http://www.examplefootballbrand.com - 25 links
+football jersey store - 5 links
+football jerseys online - 5 links
+football jacket store - 15 links
+click here - 7 links
+website - 15 links
+The above good anchor text example illustrates the natural way sites
+accumulate links over time. Your target keyword should not be the most
+linked phrase to the page.
+
+-- 78 of 174 --
+
+You can learn a lot by looking at the search engine results ranking in
+Google, entering high-ranking sites into Link Explorer, and looking at their
+anchor text. You'll notice almost every top-ranking page has natural anchor
+text, like the good example above.
+Track your link-building efforts and keep them in a spreadsheet. This way
+you can monitor your anchor text and make sure it fits in with best
+practices.
+Link Explorer
+https://moz.com/link-explorer
+Simple to advanced link-building strategies.
+The link-building strategies below will help you build up quality links
+pointing to your site, and give Google a nudge to rank your site higher,
+ranging from simple tactics for the small business, right up to the
+enterprise-level SEO agency looking to roll out links on a large scale.
+Business directories.
+Business directories are a tried and true form of link building that received
+some flack in recent years. This is due to Google penalizing spammers who
+built ridiculous amounts of low-quality directory links to their sites.
+But there is another type of directory links that every business or website
+should have. I'm talking about trusted, industry standard websites like Yelp,
+Better Business Bureau, and Yellow Pages. Business directories that screen
+and vet applications and list legitimate businesses.
+Business directories shouldn’t be overlooked. In fact, directory links should
+be the first place to start with any link-building project. If you think about it
+fundamentally, how legitimate is a business if it doesn't have a listing on
+Yellow Pages, Yelp, and so on? And the great news is there’s a solid
+amount of high-quality business directories where you can get powerful
+backlinks with a minimum of effort.
+
+-- 79 of 174 --
+
+But just to be safe, these types of links should not make up much more than
+10-20% of your total links. They must also be relevant and quality sites, i.e.
+not sites with web addresses like seolinksdirectory.com or
+freelinksdirectory.com. Sites like these just smell like spam! Before
+building a link on a directory, ask yourself, “Does this look like a legitimate
+and trustworthy website?” If the answer is no, then move on and focus on
+legitimate, quality sites only.
+To find relevant directories, use the below search terms in Google,
+replacing “keyword” with your targeted keyword or industry, and you can
+find relevant directories for your niche:
+keyword + submit
+keyword + add URL
+keyword + add link
+keyword + directory
+Here is a short list of business directories to get started:
+https://www.linkedin.com/
+https://www.bingplaces.com/
+http://www.yelp.com/
+https://www.mapquest.com/
+https://www.yellowpages.com/
+https://www.manta.com/
+https://www.local.com/
+https://www.citysearch.com/
+https://www.merchantcircle.com/
+Stealing competitor’s links.
+Stealing competitor's links is an old-school tactic receiving a resurgence in
+recent times, due to Google’s increased focus on links from quality sites,
+making it more difficult to find easy link opportunities.
+
+-- 80 of 174 --
+

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Narevo API — Dashboard</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0f;color:#e0e0e0;line-height:1.6}
+  .container{max-width:800px;margin:0 auto;padding:40px 24px}
+  .nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px}
+  .logo{font-size:1.2rem;font-weight:700;color:#fff;letter-spacing:2px;text-transform:uppercase}
+  .nav-links a{margin-left:20px;color:#888;font-size:.9rem;text-decoration:none}
+  .nav-links a:hover{color:#fff}
+  h1{font-size:1.8rem;color:#fff;margin-bottom:24px}
+  .card{background:#111118;border:1px solid #222;border-radius:12px;padding:24px;margin-bottom:20px}
+  .card h2{font-size:1.1rem;color:#fff;margin-bottom:12px}
+  .plan-badge{display:inline-block;padding:4px 12px;border-radius:6px;font-size:.8rem;font-weight:700;text-transform:uppercase;background:#1a3a2a;color:#4ade80}
+  .plan-badge.past_due{background:#3a1a1a;color:#f87171}
+  .plan-badge.canceled{background:#2a2a2a;color:#888}
+  .api-key{background:#0a0a0f;border:1px solid #333;border-radius:6px;padding:10px 14px;font-family:monospace;font-size:.85rem;color:#a5b4fc;display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+  .api-key button{background:#222;border:1px solid #444;color:#fff;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:.8rem}
+  .usage-item{margin-bottom:16px}
+  .usage-label{display:flex;justify-content:space-between;font-size:.9rem;margin-bottom:4px}
+  .usage-label span:first-child{color:#bbb}
+  .usage-label span:last-child{color:#888}
+  .progress{height:8px;background:#1a1a2a;border-radius:4px;overflow:hidden}
+  .progress-bar{height:100%;background:#60a5fa;border-radius:4px;transition:width .3s}
+  .progress-bar.warning{background:#facc15}
+  .progress-bar.danger{background:#f87171}
+  .btn{display:inline-block;padding:10px 20px;border-radius:8px;font-size:.9rem;font-weight:600;text-decoration:none;cursor:pointer;border:none;margin-right:8px;margin-top:8px}
+  .btn-primary{background:#60a5fa;color:#000}
+  .btn-outline{background:transparent;border:1px solid #444;color:#fff}
+  .btn:hover{opacity:.85}
+  #loading{text-align:center;padding:60px;color:#888}
+  #content{display:none}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="nav">
+    <div class="logo">NAREVO API</div>
+    <div class="nav-links">
+      <a href="/docs">Docs</a>
+      <a href="/pricing">Pricing</a>
+      <a href="#" onclick="localStorage.clear();location='/login'">Logout</a>
+    </div>
+  </div>
+  <div id="loading">Loading...</div>
+  <div id="content">
+    <h1>Dashboard</h1>
+    <div class="card">
+      <h2>Your Plan</h2>
+      <p><span id="plan-name"></span> <span id="plan-status" class="plan-badge"></span></p>
+      <div style="margin-top:12px">
+        <button class="btn btn-primary" id="manage-btn" onclick="manageSubscription()">Manage Subscription</button>
+        <a href="/docs" class="btn btn-outline">View Docs</a>
+      </div>
+    </div>
+    <div class="card">
+      <h2>API Key</h2>
+      <div id="api-keys"></div>
+    </div>
+    <div class="card">
+      <h2>Usage This Month</h2>
+      <div id="usage"></div>
+    </div>
+  </div>
+</div>
+<script>
+  const token = localStorage.getItem('token');
+  if (!token) { location.href = '/login'; }
+
+  const PLANS = {
+    starter: { accounts: 5, posts: 500, captions: 50, reports: 1 },
+    growth: { accounts: 25, posts: 2500, captions: 200, reports: 5 },
+    agency: { accounts: -1, posts: -1, captions: -1, reports: -1 },
+  };
+
+  async function load() {
+    try {
+      const res = await fetch('/api/customers/me', { headers: { Authorization: `Bearer ${token}` } });
+      if (!res.ok) { localStorage.clear(); location.href = '/login'; return; }
+      const data = await res.json();
+
+      document.getElementById('plan-name').textContent = data.plan ? data.plan.charAt(0).toUpperCase() + data.plan.slice(1) : 'No Plan';
+      const statusEl = document.getElementById('plan-status');
+      statusEl.textContent = data.subscriptionStatus || 'free';
+      if (data.subscriptionStatus === 'past_due') statusEl.className = 'plan-badge past_due';
+      else if (data.subscriptionStatus === 'canceled') statusEl.className = 'plan-badge canceled';
+
+      // API keys
+      const keysDiv = document.getElementById('api-keys');
+      keysDiv.innerHTML = data.apiKeys.map(k =>
+        `<div class="api-key"><span>${k.key}</span><button onclick="navigator.clipboard.writeText('${k.key}');this.textContent='Copied!'">Copy</button></div>`
+      ).join('');
+
+      // Usage
+      const limits = PLANS[data.plan] || PLANS.starter;
+      const usageDiv = document.getElementById('usage');
+      const fields = ['posts', 'captions', 'reports', 'accounts'];
+      usageDiv.innerHTML = fields.map(f => {
+        const used = data.usage[f] || 0;
+        const max = limits[f];
+        const unlimited = max === -1;
+        const pct = unlimited ? 0 : Math.min((used / max) * 100, 100);
+        const cls = pct > 90 ? 'danger' : pct > 70 ? 'warning' : '';
+        return `<div class="usage-item">
+          <div class="usage-label"><span>${f.charAt(0).toUpperCase() + f.slice(1)}</span><span>${used}${unlimited ? '' : ' / ' + max}</span></div>
+          <div class="progress"><div class="progress-bar ${cls}" style="width:${unlimited ? 0 : pct}%"></div></div>
+        </div>`;
+      }).join('');
+
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('content').style.display = 'block';
+    } catch (e) { document.getElementById('loading').textContent = 'Error loading dashboard.'; }
+  }
+
+  async function manageSubscription() {
+    const res = await fetch('/api/billing/portal', { headers: { Authorization: `Bearer ${token}` } });
+    const data = await res.json();
+    if (data.portalUrl) window.location.href = data.portalUrl;
+    else alert(data.error || 'Could not open billing portal');
+  }
+
+  load();
+</script>
+</body>
+</html>

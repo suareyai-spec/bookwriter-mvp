@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KOSIQ - Investor Presentation 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#26acf7;--dark:#231f20;--gray:#6b7280;--light-gray:#f3f4f6;--white:#ffffff;--green:#10b981;--red:#ef4444;--amber:#f59e0b}
+html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:#000;color:var(--dark)}
+.deck{position:relative;width:100%;height:100%}
+.slide{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .5s ease,transform .5s ease;transform:scale(.97);background:var(--white)}
+.slide.active{opacity:1;pointer-events:auto;transform:scale(1);z-index:2}
+.slide-inner{width:min(1120px,90%);max-height:90%;overflow-y:auto}
+
+/* Typography */
+h1{font-size:clamp(28px,4vw,52px);font-weight:800;line-height:1.1;color:var(--dark);margin-bottom:.4em}
+h2{font-size:clamp(22px,3vw,38px);font-weight:700;line-height:1.2;color:var(--dark);margin-bottom:.5em}
+h3{font-size:clamp(15px,1.6vw,22px);font-weight:600;color:var(--dark);margin-bottom:.3em}
+p,.desc{font-size:clamp(13px,1.3vw,17px);color:var(--gray);line-height:1.6}
+.subtitle{font-size:clamp(15px,1.8vw,22px);color:var(--gray);font-weight:400;line-height:1.5}
+.accent{color:var(--blue)}
+.section-tag{font-size:12px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:10px}
+
+/* Logo */
+.logo{font-weight:900;letter-spacing:-1px}
+.logo .kos{color:var(--dark)}.logo .iq{color:var(--blue)}
+.title-logo{font-size:clamp(56px,8vw,96px);font-weight:900;letter-spacing:-3px;margin-bottom:16px}
+
+/* Layouts */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+
+/* Cards */
+.card{background:var(--light-gray);border-radius:14px;padding:22px}
+.card h3{margin-bottom:6px}
+.card p{font-size:14px}
+.card-blue{background:linear-gradient(135deg,var(--blue),#1a8fd4);color:#fff}
+.card-blue h3,.card-blue p,.card-blue .icon-circle{color:#fff}
+
+/* Icon circles */
+.icon-circle{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:20px}
+.icon-circle svg{width:22px;height:22px}
+.ic-blue{background:rgba(38,172,247,.12);color:var(--blue)}
+.ic-green{background:rgba(16,185,129,.12);color:var(--green)}
+.ic-amber{background:rgba(245,158,11,.12);color:var(--amber)}
+.ic-red{background:rgba(239,68,68,.12);color:var(--red)}
+.ic-dark{background:rgba(35,31,32,.08);color:var(--dark)}
+
+/* Stats */
+.stat{text-align:center;padding:16px}
+.stat .num{font-size:clamp(24px,3vw,40px);font-weight:800;color:var(--blue);line-height:1}
+.stat .label{font-size:13px;color:var(--gray);margin-top:4px}
+
+/* Metric cards */
+.metric-card{background:var(--light-gray);border-radius:14px;padding:20px;text-align:center}
+.metric-card .num{font-size:clamp(22px,2.5vw,36px);font-weight:800;color:var(--blue);line-height:1}
+.metric-card .label{font-size:12px;color:var(--gray);margin-top:6px;line-height:1.3}
+
+/* Tier rows */
+.tier{display:flex;align-items:center;gap:16px;padding:14px 18px;background:var(--light-gray);border-radius:10px;margin-bottom:10px}
+.tier-price{font-size:24px;font-weight:800;color:var(--blue);white-space:nowrap;margin-left:auto}
+.tier-name{font-weight:700;font-size:15px;color:var(--dark)}
+
+/* Fund allocation */
+.fund-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.fund-pct{font-size:26px;font-weight:800;color:var(--blue);width:65px;text-align:right}
+.fund-label{font-weight:600;font-size:15px}
+.fund-desc{font-size:13px;color:var(--gray)}
+
+/* Projection rows */
+.proj-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #e5e7eb}
+.proj-row:last-child{border:none}
+.proj-label{font-weight:600;font-size:14px}
+.proj-val{font-size:22px;font-weight:800;color:var(--blue)}
+
+/* Quote */
+.quote{font-size:clamp(15px,1.6vw,20px);font-style:italic;color:var(--dark);line-height:1.5;border-left:3px solid var(--blue);padding-left:20px;margin:20px 0}
+
+/* Flow connector */
+.flow{display:flex;align-items:center;gap:0;margin:24px 0}
+.flow-step{flex:1;text-align:center;padding:18px 12px;background:var(--light-gray);border-radius:14px;position:relative}
+.flow-step h3{font-size:14px;margin-bottom:4px}
+.flow-step p{font-size:12px;color:var(--gray)}
+.flow-arrow{width:32px;display:flex;align-items:center;justify-content:center;color:#d1d5db;font-size:20px;flex-shrink:0}
+
+/* Milestone pills */
+.milestone{display:inline-block;background:var(--light-gray);border-radius:10px;padding:10px 18px;margin:5px;font-weight:600;font-size:14px}
+
+/* Controls */
+.controls{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;z-index:100}
+.dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:all .2s;border:none;padding:0}
+.dot.active{background:var(--blue);transform:scale(1.3)}
+.slide-counter{position:fixed;bottom:22px;right:24px;font-size:13px;color:rgba(0,0,0,.35);font-weight:500;z-index:100}
+.fs-btn{position:fixed;bottom:20px;left:24px;background:rgba(0,0,0,.06);border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12px;color:var(--gray);font-family:'Inter';z-index:100}
+.fs-btn:hover{background:rgba(0,0,0,.1)}
+
+/* Title slide */
+.title-slide{background:linear-gradient(160deg,#fff 60%,#e8f6fe 100%)}
+.title-slide .slide-inner{text-align:center}
+
+/* Contact slide */
+.contact-slide{background:linear-gradient(160deg,#fff 40%,#e8f6fe 100%)}
+.contact-slide .slide-inner{text-align:center}
+.contact-item{font-size:17px;color:var(--gray);margin:10px 0}
+.contact-item a{color:var(--blue);text-decoration:none;font-weight:500}
+
+/* Print */
+@media print{
+.controls,.slide-counter,.fs-btn{display:none!important}
+.slide{position:relative!important;opacity:1!important;transform:none!important;pointer-events:auto!important;page-break-after:always;break-after:page;height:100vh;z-index:auto!important}
+body{overflow:visible}
+.deck{position:static}
+}
+@media(max-width:768px){
+.grid2,.grid3{grid-template-columns:1fr}
+.flow{flex-direction:column}
+.flow-arrow{transform:rotate(90deg);width:auto;height:24px}
+}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<!-- SLIDE 1: Title -->
+<div class="slide title-slide active" data-slide="0">
+<div class="slide-inner">
+<!-- logo mark removed -->
+<div class="title-logo"><span class="kos" style="color:#231f20">KOS</span><span class="iq" style="color:#26acf7">IQ</span></div>
+<h1 style="font-size:clamp(20px,2.8vw,36px);font-weight:600;color:var(--dark);margin-bottom:16px">The Operating System for Value-Based Care</h1>
+<p class="subtitle" style="max-width:720px;margin:0 auto 24px">AI-powered execution infrastructure transforming population health and medical economics into real-time clinical and financial performance.</p>
+<p style="color:#9ca3af;font-size:14px;margin-top:32px">Investor Presentation &nbsp;·&nbsp; 2026</p>
+<p style="margin-top:12px"><a href="https://kosiq.ai" style="color:var(--blue);text-decoration:none;font-weight:600;font-size:15px">kosiq.ai</a></p>
+</div>
+</div>
+
+<!-- SLIDE 2: The Problem -->
+<div class="slide" data-slide="1">
+<div class="slide-inner">
+<p class="section-tag">The Problem</p>
+<h2>Value-Based Care Is Growing — Execution Is Broken</h2>
+<div class="grid3" style="margin-bottom:24px">
+<div class="card">
+<div class="icon-circle ic-red">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l18 18M21 3L3 21"/></svg>
+</div>
+<h3>Volatile Financial Performance</h3>
+<p>Provider groups swing wildly between surplus and deficit with no visibility into why.</p>
+</div>
+<div class="card">
+<div class="icon-circle ic-amber">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+</div>
+<h3>Missed Risk Adjustment &amp; Quality</h3>
+<p>Revenue left on the table from undocumented HCCs, missed HEDIS measures, and gaps in care.</p>
+</div>
+<div class="card">
+<div class="icon-circle ic-dark">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+</div>
+<h3>Analytics Fail to Drive Action</h3>
+<p>Dashboards show what happened — they do nothing to change what happens next.</p>
+</div>
+</div>
+<div class="grid2">
+<div class="card">
+<div class="icon-circle ic-blue">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+</div>
+<h3>Increasing Administrative Burden</h3>
+<p>Staff drowning in manual chart reviews, spreadsheets, and payer reporting requirements.</p>
+</div>
+<div class="card">
+<div class="icon-circle ic-red">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="8" height="8" rx="1"/><rect x="14" y="2" width="8" height="8" rx="1"/><rect x="2" y="14" width="8" height="8" rx="1"/><rect x="14" y="14" width="8" height="8" rx="1"/></svg>
+</div>
+<h3>Fragmented Systems &amp; Siloed Data</h3>
+<p>Clinical, financial, and operational data trapped in disconnected systems with no unified view.</p>
+</div>
+</div>
+<div class="quote" style="margin-top:24px">
+"The healthcare industry's challenge is not a lack of data, but a failure in execution."
+</div>
+</div>
+</div>
+
+<!-- SLIDE 3: Market Timing / Why Now -->
+<div class="slide" data-slide="2">
+<div class="slide-inner">
+<p class="section-tag">Why Now</p>
+<h2>The Macro Shift — Structural and Inevitable</h2>
+<div class="grid2" style="margin-bottom:28px">
+<div class="card" style="border-left:4px solid var(--blue)">
+<div class="icon-circle ic-blue">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+</div>
+<h3>Provider Risk Contracts Accelerating</h3>
+<p>CMS pushing 100% of Medicare into value-based arrangements. Providers must perform or lose revenue.</p>
+</div>
+<div class="card" style="border-left:4px solid var(--green)">
+<div class="icon-circle ic-green">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+</div>
+<h3>Regulatory Pressure Intensifying</h3>
+<p>HEDIS, Stars, risk adjustment accuracy — regulators demand measurable outcomes, not just reporting.</p>
+</div>
+<div class="card" style="border-left:4px solid var(--amber)">
+<div class="icon-circle ic-amber">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+</div>
+<h3>Demand for Operational Intelligence</h3>
+<p>Healthcare organizations need real-time decision support, not retrospective analytics that arrive too late.</p>
+</div>
+<div class="card" style="border-left:4px solid #8b5cf6">
+<div class="icon-circle" style="background:rgba(139,92,246,.12);color:#8b5cf6">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+</div>
+<h3>Expansion of Managed Care</h3>
+<p>Medicare Advantage enrollment surging past 33M. Every new enrollee needs value-based infrastructure.</p>
+</div>
+</div>
+<div class="quote">
+"Billions in value-based contracts hinge on operationalizing data for real-time decisions."
+</div>
+</div>
+</div>
+
+<!-- SLIDE 4: The Solution -->
+<div class="slide" data-slide="3">
+<div class="slide-inner">
+<p class="section-tag">The Solution</p>
+<h2>Financial Performance Happens in Workflow, Not Dashboards</h2>
+<p class="desc" style="max-width:700px;margin-bottom:8px;font-weight:600;color:var(--dark);font-size:16px">The Missing Layer in Healthcare Technology Is Execution Infrastructure</p>
+<div class="flow">
+<div class="flow-step" style="border-top:3px solid var(--blue)">
+<div class="icon-circle ic-blue" style="margin:0 auto 10px">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+</div>
+<h3>Real-Time Action</h3>
+<p>Interventions delivered at the point of care — not weeks later in a report</p>
+</div>
+<div class="flow-arrow">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+</div>
+<div class="flow-step" style="border-top:3px solid var(--green)">
+<div class="icon-circle ic-green" style="margin:0 auto 10px">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>
+</div>
+<h3>Alignment</h3>
+<p>Bridging clinical and financial decision-making into a single workflow</p>
+</div>
+<div class="flow-arrow">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+</div>
+<div class="flow-step" style="border-top:3px solid var(--amber)">
+<div class="icon-circle ic-amber" style="margin:0 auto 10px">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+</div>
+<h3>Behavior Change</h3>
+<p>Facilitated by integrated workflow design — not training manuals</p>
+</div>
+</div>
+<div class="grid3" style="margin-top:20px">
+<div class="metric-card">
+<div class="num">20+</div>
+<div class="label">Analytics Dashboards</div>
+</div>
+<div class="metric-card">
+<div class="num">8</div>
+<div class="label">Clinical Intelligence Programs</div>
+</div>
+<div class="metric-card">
+<div class="num">AI</div>
+<div class="label">Predictive Models &amp; Chat</div>
+</div>
+</div>
+<div class="quote" style="margin-top:20px">
+"True value-based success requires integrated workflow design and execution infrastructure."
+</div>
+</div>
+</div>
+
+<!-- SLIDE 5: Business Model & Financial Projections -->
+<div class="slide" data-slide="4">
+<div class="slide-inner">
+<p class="section-tag">Business Model &amp; Projections</p>
+<h2>Path to $18.6M+ ARR in Three Years</h2>
+<div class="grid2">
+<div>
+<h3 style="margin-bottom:12px;color:var(--blue)">PMPM Pricing — Scales with Population</h3>
+<div class="tier">
+<div><div class="tier-name">60,000+ members</div></div>
+<div class="tier-price">$0.50<span style="font-size:13px;font-weight:400"> PMPM</span></div>
+</div>
+<div class="tier">
+<div><div class="tier-name">20,000–60,000 members</div></div>
+<div class="tier-price">$1.25<span style="font-size:13px;font-weight:400"> PMPM</span></div>
+</div>
+<div class="tier">
+<div><div class="tier-name">Under 20,000 members</div></div>
+<div class="tier-price">$2.24<span style="font-size:13px;font-weight:400"> PMPM</span></div>
+</div>
+
+<h3 style="margin:16px 0 8px;color:var(--green)">Integration Services</h3>
+<div class="tier">
+<div><div class="tier-name">EHR integration, data feeds, white-glove onboarding</div></div>
+<div class="tier-price" style="color:var(--green)">$10–20K<span style="font-size:13px;font-weight:400">/mo</span></div>
+</div>
+</div>
+<div>
+<p style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Combined ARR Projections</p>
+<div class="proj-row"><div class="proj-label">Year 1</div><div class="proj-val">$1.74M</div></div>
+<div class="proj-row"><div class="proj-label">Year 2</div><div class="proj-val">$7.08M</div></div>
+<div class="proj-row" style="border-bottom:2px solid var(--blue)"><div class="proj-label">Year 3</div><div class="proj-val" style="font-size:26px">$18.6M+</div></div>
+
+<div class="card" style="margin-top:16px;padding:14px;font-size:12px;color:var(--gray);border-left:3px solid var(--blue)">
+<p style="font-weight:700;color:var(--dark);font-size:12px;margin-bottom:6px">How We Derived These Numbers</p>
+<table style="width:100%;font-size:11px;border-collapse:collapse">
+<tr style="border-bottom:1px solid #e5e7eb"><td style="padding:3px 0"><strong>Y1 PMPM:</strong> 5 groups × 20K avg = 100K members</td><td style="text-align:right">100K × $1.25 × 12 = <strong>$1.5M</strong></td></tr>
+<tr style="border-bottom:1px solid #e5e7eb"><td style="padding:3px 0"><strong>Y1 Integration:</strong> 2 customers × $10K/mo</td><td style="text-align:right">= <strong>$240K</strong></td></tr>
+<tr style="border-bottom:1px solid #e5e7eb"><td style="padding:3px 0"><strong>Y2 PMPM:</strong> 12 groups × 33K avg = 400K members</td><td style="text-align:right">400K × $1.25 × 12 = <strong>$6M</strong></td></tr>
+<tr style="border-bottom:1px solid #e5e7eb"><td style="padding:3px 0"><strong>Y2 Integration:</strong> 6 customers × $15K/mo</td><td style="text-align:right">= <strong>$1.08M</strong></td></tr>
+<tr style="border-bottom:1px solid #e5e7eb"><td style="padding:3px 0"><strong>Y3 PMPM:</strong> 25 groups × 40K avg = 1M members</td><td style="text-align:right">1M × $1.25 × 12 = <strong>$15M</strong></td></tr>
+<tr><td style="padding:3px 0"><strong>Y3 Integration:</strong> 15 customers × $20K/mo</td><td style="text-align:right">= <strong>$3.6M</strong></td></tr>
+</table>
+<p style="margin-top:8px;font-size:10px">Blended PMPM of $1.25 across tiers ($0.50–$2.24). ~40–60% of customers opt for full integration.</p>
+</div>
+<p style="font-size:11px;color:var(--gray);font-style:italic;margin-top:10px;text-align:center">These projections are intentionally conservative.</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 6: Team & Traction -->
+<div class="slide" data-slide="5">
+<div class="slide-inner">
+<p class="section-tag">Team &amp; Traction</p>
+<h2>Built, Validated, Ready to Scale</h2>
+<div class="grid2">
+<div>
+<div class="card" style="margin-bottom:16px;border-left:4px solid var(--blue)">
+<div style="display:flex;align-items:center;gap:14px;margin-bottom:10px">
+<div class="icon-circle ic-blue" style="margin:0;flex-shrink:0">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+</div>
+<div>
+<h3 style="margin:0">David Suarez</h3>
+<p style="font-size:13px;color:var(--blue);font-weight:600;margin:0">Chief Technology Officer</p>
+</div>
+</div>
+<p style="font-size:12px;line-height:1.5">Technology entrepreneur building scalable, AI-powered systems that transform how companies operate and grow. Bridges technology and brand execution with expertise in AI integration, automation architecture, and SaaS product strategy.</p>
+<p style="font-size:13px;margin-top:6px"><a href="mailto:david@iamdivid.com" style="color:var(--blue);text-decoration:none">david@iamdivid.com</a></p>
+</div>
+<div class="card" style="border-left:4px solid var(--green)">
+<div style="display:flex;align-items:center;gap:14px;margin-bottom:10px">
+<div class="icon-circle ic-green" style="margin:0;flex-shrink:0">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+</div>
+<div>
+<h3 style="margin:0">Dr. JD Suarez</h3>
+<p style="font-size:13px;color:var(--green);font-weight:600;margin:0">Chief Medical Officer</p>
+</div>
+</div>
+<p style="font-size:13px">CMO of a managed care provider group in South Florida. Actively managing <strong>40,000+ patients</strong> across Medicare Advantage, Medicaid, and Commercial populations. Designed all 8 clinical intelligence programs from real-world practice.</p>
+<p style="font-size:13px;margin-top:6px"><a href="mailto:drjdsuarez@gmail.com" style="color:var(--blue);text-decoration:none">drjdsuarez@gmail.com</a></p>
+</div>
+</div>
+<div>
+<h3 style="margin-bottom:14px">Traction</h3>
+<div class="card" style="margin-bottom:12px;padding:16px;border-top:3px solid var(--blue)">
+<div style="display:flex;align-items:center;gap:12px">
+<div style="width:40px;height:40px;border-radius:50%;background:rgba(38,172,247,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#26acf7" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>
+</div>
+<div>
+<p style="font-weight:700;color:var(--dark);font-size:14px;margin:0">Platform Built &amp; Live</p>
+<p style="font-size:12px;margin:0">20+ functional pages, real analytics engine at <strong>kosiq.ai</strong></p>
+</div>
+</div>
+</div>
+<div class="card" style="margin-bottom:12px;padding:16px;border-top:3px solid var(--green)">
+<div style="display:flex;align-items:center;gap:12px">
+<div style="width:40px;height:40px;border-radius:50%;background:rgba(16,185,129,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+</div>
+<div>
+<p style="font-weight:700;color:var(--dark);font-size:14px;margin:0">AI-Native Architecture</p>
+<p style="font-size:12px;margin:0">Predictive analytics, AI chat assistant, automated recommendations</p>
+</div>
+</div>
+</div>
+<div class="card" style="margin-bottom:12px;padding:16px;border-top:3px solid var(--amber)">
+<div style="display:flex;align-items:center;gap:12px">
+<div style="width:40px;height:40px;border-radius:50%;background:rgba(245,158,11,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+</div>
+<div>
+<p style="font-weight:700;color:var(--dark);font-size:14px;margin:0">Built-In Domain Expertise</p>
+<p style="font-size:12px;margin:0">Every feature designed from active managed care practice — not bolted on</p>
+</div>
+</div>
+</div>
+<div class="card" style="padding:16px;border-top:3px solid #8b5cf6">
+<div style="display:flex;align-items:center;gap:12px">
+<div style="width:40px;height:40px;border-radius:50%;background:rgba(139,92,246,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+</div>
+<div>
+<p style="font-weight:700;color:var(--dark);font-size:14px;margin:0">8 Clinical Intelligence Programs</p>
+<p style="font-size:12px;margin:0">SMI, HIV, ESRD, CKD, HbA1c&gt;9, COPD/Asthma, Unengaged, Age-Provider Mismatch</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 7: The Ask -->
+<div class="slide contact-slide" data-slide="6">
+<div class="slide-inner">
+<p class="section-tag">Investment Opportunity</p>
+<h2>Two Paths to Market</h2>
+<div class="grid2" style="text-align:left">
+<div>
+<!-- Lean -->
+<div class="card" style="border-left:4px solid var(--green);margin-bottom:16px">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+<h3 style="margin:0;font-size:16px">Lean Launch</h3>
+<span style="font-size:22px;font-weight:800;color:var(--green)">$500K–$1M</span>
+</div>
+<div style="font-size:12px;color:var(--gray);line-height:1.7">
+<div style="display:flex;justify-content:space-between;border-bottom:1px solid #e5e7eb;padding:4px 0"><span>HIPAA + SOC 2 certification</span><span style="color:var(--dark);font-weight:600">$75–150K</span></div>
+<div style="display:flex;justify-content:space-between;border-bottom:1px solid #e5e7eb;padding:4px 0"><span>1 enterprise sales rep</span><span style="color:var(--dark);font-weight:600">$125–200K</span></div>
+<div style="display:flex;justify-content:space-between;border-bottom:1px solid #e5e7eb;padding:4px 0"><span>AWS infrastructure</span><span style="color:var(--dark);font-weight:600">$36–60K/yr</span></div>
+<div style="display:flex;justify-content:space-between;padding:4px 0"><span>Legal + healthcare attorney</span><span style="color:var(--dark);font-weight:600">$10–20K</span></div>
+</div>
+<p style="font-size:11px;color:var(--gray);margin-top:10px">12-month runway. Land 3–5 clients through South Florida managed care networks. Prove revenue, then raise Series A.</p>
+</div>
+
+<!-- Sweet Spot -->
+<div class="card" style="border-left:4px solid var(--blue);background:rgba(38,172,247,.03)">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+<div>
+<h3 style="margin:0;font-size:16px">Recommended</h3>
+<p style="font-size:11px;color:var(--blue);margin:2px 0 0;font-weight:600">SWEET SPOT</p>
+</div>
+<span style="font-size:22px;font-weight:800;color:var(--blue)">$2–3M</span>
+</div>
+<div style="font-size:12px;color:var(--gray);line-height:1.7">
+<div style="display:flex;justify-content:space-between;border-bottom:1px solid #e5e7eb;padding:4px 0"><span>Full compliance (HIPAA + SOC 2)</span><span style="color:var(--dark);font-weight:600">$150K</span></div>
+<div style="display:flex;justify-content:space-between;border-bottom:1px solid #e5e7eb;padding:4px 0"><span>2 enterprise sales reps</span><span style="color:var(--dark);font-weight:600">$400K/yr</span></div>
+<div style="display:flex;justify-content:space-between;border-bottom:1px solid #e5e7eb;padding:4px 0"><span>Marketing (HIMSS, AHIP, content)</span><span style="color:var(--dark);font-weight:600">$100K/yr</span></div>
+<div style="display:flex;justify-content:space-between;border-bottom:1px solid #e5e7eb;padding:4px 0"><span>Engineering expansion</span><span style="color:var(--dark);font-weight:600">$300K/yr</span></div>
+<div style="display:flex;justify-content:space-between;padding:4px 0"><span>AWS + operations</span><span style="color:var(--dark);font-weight:600">$100K/yr</span></div>
+</div>
+<p style="font-size:11px;color:var(--gray);margin-top:10px">18-month runway. Hit $1.74M+ ARR, 25 customers, and raise Series A from a position of strength.</p>
+</div>
+</div>
+<div>
+<h3 style="margin-bottom:14px">18-Month Milestones</h3>
+<div style="margin-bottom:8px">
+<div class="milestone">25 Paying Customers</div>
+<div class="milestone">$1.74M+ ARR</div>
+<div class="milestone">SOC 2 Type II Certified</div>
+<div class="milestone">HIPAA Compliant</div>
+<div class="milestone">EHR Integrations Live</div>
+</div>
+
+<div class="metric-card" style="margin-top:16px;text-align:center">
+<div class="num" style="font-size:20px">$15–20M</div>
+<div class="label">Pre-Money Valuation</div>
+</div>
+
+<div class="card card-blue" style="margin-top:16px;text-align:center">
+<h3 style="font-size:18px;margin-bottom:8px">Let's Talk</h3>
+<p style="font-size:15px;margin-bottom:4px"><strong>David Suarez</strong>, CTO — <a href="mailto:david@iamdivid.com" style="color:#fff;text-decoration:underline">david@iamdivid.com</a></p>
+<p style="font-size:15px;margin-bottom:4px"><strong>Dr. JD Suarez</strong>, CMO — <a href="mailto:drjdsuarez@gmail.com" style="color:#fff;text-decoration:underline">drjdsuarez@gmail.com</a></p>
+<p style="font-size:15px;margin-top:12px"><a href="https://kosiq.ai" style="color:#fff;font-weight:700;text-decoration:none">kosiq.ai</a></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- Controls -->
+<div class="controls" id="controls"></div>
+<div class="slide-counter" id="counter"></div>
+<button class="fs-btn" id="fsBtn" title="Press F for fullscreen">Fullscreen (F)</button>
+
+<script>
+(function(){
+const slides=document.querySelectorAll('.slide');
+const total=slides.length;
+let current=0;
+const controls=document.getElementById('controls');
+const counter=document.getElementById('counter');
+for(let i=0;i<total;i++){
+const d=document.createElement('button');
+d.className='dot'+(i===0?' active':'');
+d.addEventListener('click',()=>go(i));
+controls.appendChild(d);
+}
+const dots=controls.querySelectorAll('.dot');
+function go(n){
+if(n<0||n>=total)return;
+slides[current].classList.remove('active');
+dots[current].classList.remove('active');
+current=n;
+slides[current].classList.add('active');
+dots[current].classList.add('active');
+counter.textContent=(current+1)+' / '+total;
+}
+go(0);
+document.addEventListener('keydown',function(e){
+if(e.key==='ArrowRight'||e.key==='ArrowDown')go(current+1);
+else if(e.key==='ArrowLeft'||e.key==='ArrowUp')go(current-1);
+else if(e.key==='f'||e.key==='F'){
+if(!document.fullscreenElement)document.documentElement.requestFullscreen();
+else document.exitFullscreen();
+}else if(e.key==='Escape'&&document.fullscreenElement){document.exitFullscreen();}
+});
+document.getElementById('fsBtn').addEventListener('click',function(){
+if(!document.fullscreenElement)document.documentElement.requestFullscreen();
+else document.exitFullscreen();
+});
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX});
+document.addEventListener('touchend',e=>{
+const dx=e.changedTouches[0].clientX-tx;
+if(Math.abs(dx)>50){dx<0?go(current+1):go(current-1)}
+});
+})();
+</script>
+</body>
+</html>

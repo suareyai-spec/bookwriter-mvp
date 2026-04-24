@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ApiKey {
+  id         String   @id @default(uuid())
+  key        String   @unique
+  name       String
+  allowedIps Json?    // array of allowed IPs, null = allow all
+  customerId String?
+  customer   Customer? @relation(fields: [customerId], references: [id])
+  usage      UsageTracker[]
+  createdAt  DateTime @default(now())
+}
+
+model Customer {
+  id                 String   @id @default(uuid())
+  email              String   @unique
+  name               String?
+  passwordHash       String
+  stripeCustomerId   String?  @unique
+  plan               String   @default("starter")
+  subscriptionId     String?
+  subscriptionStatus String?
+  apiKeys            ApiKey[]
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model UsageTracker {
+  id        String   @id @default(uuid())
+  apiKeyId  String
+  apiKey    ApiKey   @relation(fields: [apiKeyId], references: [id])
+  month     String
+  posts     Int      @default(0)
+  captions  Int      @default(0)
+  reports   Int      @default(0)
+  accounts  Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([apiKeyId, month])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  apiKeyId  String?
+  action    String
+  resource  String?
+  ip        String?
+  userAgent String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+}
+
+model Account {
+  id                String   @id @default(uuid())
+  platform          String   // facebook | instagram | youtube | tiktok
+  platformAccountId String
+  accountName       String
+  accessToken       String
+  refreshToken      String?
+  tokenExpiresAt    DateTime?
+  metadata          Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  posts             Post[]
+  analytics         Analytics[]
+  reports           Report[]
+}
+
+model Post {
+  id              String    @id @default(uuid())
+  accountId       String
+  account         Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  platform        String
+  content         String
+  mediaUrls       Json?
+  thumbnailUrl    String?
+  scheduledAt     DateTime?
+  publishedAt     DateTime?
+  platformPostId  String?
+  status          String    @default("draft") // draft | scheduled | publishing | published | failed
+  errorMessage    String?
+  metadata        Json?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Analytics {
+  id          String   @id @default(uuid())
+  accountId   String
+  account     Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  platform    String
+  date        DateTime
+  followers   Int      @default(0)
+  impressions Int      @default(0)
+  reach       Int      @default(0)
+  engagement  Float    @default(0)
+  likes       Int      @default(0)
+  comments    Int      @default(0)
+  shares      Int      @default(0)
+  clicks      Int      @default(0)
+  metadata    Json?
+  createdAt   DateTime @default(now())
+}
+
+model OAuthState {
+  id          String   @id @default(uuid())
+  state       String   @unique
+  platform    String
+  apiKeyId    String?
+  redirectUri String?
+  createdAt   DateTime @default(now())
+
+  @@index([state])
+}
+
+model Report {
+  id          String   @id @default(uuid())
+  accountId   String
+  account     Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  period      String   // e.g. "2026-02"
+  generatedAt DateTime @default(now())
+  filePath    String?
+  metadata    Json?
+}
