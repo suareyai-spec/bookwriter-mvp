@@ -1,4 +1,4 @@
-export const ADMIN_EMAILS = ["suarey@gmail.com", "suareyai@gmail.com", "drjdsuarez@gmail.com", "support@iamdivid.com"];
+export const ADMIN_EMAILS = ["suarey@gmail.com", "suareyai@gmail.com", "drjdsuarez@gmail.com", "support@iamdivid.com", "dsuarey@gmail.com"];
 
 export function isAdmin(email: string): boolean {
   return ADMIN_EMAILS.includes(email.toLowerCase());

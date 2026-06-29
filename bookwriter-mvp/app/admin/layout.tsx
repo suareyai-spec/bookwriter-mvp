@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const ADMIN_EMAILS = ["suarey@gmail.com", "suareyai@gmail.com"];
+const ADMIN_EMAILS = ["suarey@gmail.com", "suareyai@gmail.com", "dsuarey@gmail.com"];
 
 const NAV_ITEMS = [
   { label: "Overview", href: "/admin" },
@@ -17,6 +17,7 @@ const NAV_ITEMS = [
   { label: "Coupons", href: "/admin/coupons" },
   { label: "Refunds", href: "/admin/refunds" },
   { label: "Activity", href: "/admin/activity" },
+  { label: "Usage Insights", href: "/admin/insights" },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
