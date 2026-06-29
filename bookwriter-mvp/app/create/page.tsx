@@ -84,6 +84,7 @@ function HomeContent() {
   const [tone, setTone] = useState("Professional & Authoritative");
   const [audience, setAudience] = useState("");
   const [bookLength, setBookLength] = useState("50,000 words (~200 pages)");
+  const [format, setFormat] = useState<"book" | "course">("book");
   const [language, setLanguage] = useState("English");
   const [result, setResult] = useState("");
   const [error, setError] = useState("");
@@ -270,7 +271,7 @@ function HomeContent() {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description, genre, tone, audience, bookLength, language, references, mature, matureLevel: mature ? matureLevel : undefined, subGenre: subGenre || undefined, romanceSubGenre: isRomance && romanceSubGenre ? romanceSubGenre : undefined, relationshipDynamic: isRomance && relationshipDynamic ? relationshipDynamic : undefined, leadOne: isRomance && (leadOneName || leadOneTraits) ? { name: leadOneName, traits: leadOneTraits } : undefined, leadTwo: isRomance && (leadTwoName || leadTwoTraits) ? { name: leadTwoName, traits: leadTwoTraits } : undefined }),
+        body: JSON.stringify({ title, description, genre, tone, audience, bookLength, language, references, mature, format, matureLevel: mature ? matureLevel : undefined, subGenre: subGenre || undefined, romanceSubGenre: isRomance && romanceSubGenre ? romanceSubGenre : undefined, relationshipDynamic: isRomance && relationshipDynamic ? relationshipDynamic : undefined, leadOne: isRomance && (leadOneName || leadOneTraits) ? { name: leadOneName, traits: leadOneTraits } : undefined, leadTwo: isRomance && (leadTwoName || leadTwoTraits) ? { name: leadTwoName, traits: leadTwoTraits } : undefined }),
         signal: controller.signal,
       });
       clearTimeout(timeout);
@@ -325,7 +326,7 @@ function HomeContent() {
               } else {
                 const ch = event.chapter as number;
                 setCurrentChapter(ch);
-                setStatusText(`Writing Chapter ${ch}: ${event.title}...`);
+                setStatusText(`Writing ${format === "course" ? "Module" : "Chapter"} ${ch}: ${event.title}...`);
                 chapterStartTime = Date.now();
                 setChapters(prev => {
                   const updated = [...prev];
@@ -348,14 +349,15 @@ function HomeContent() {
               setStatusText("Outline complete. Starting chapters...");
               // Try to extract chapter titles from outline
               const titles: string[] = [];
-              const regex = /chapter\s+\d+[:\s]+(.+)/gi;
+              const regex = /(?:chapter|module)\s+\d+[:\s–\-]+(.+)/gi;
               let m;
               while ((m = regex.exec(event.content as string)) !== null) {
                 titles.push(m[1].trim().replace(/\*+/g, "").trim());
               }
+              const unitLabel = format === "course" ? "Module" : "Chapter";
               const initial: ChapterInfo[] = [];
               for (let i = 0; i < tc; i++) {
-                initial.push({ number: i + 1, title: titles[i] || `Chapter ${i + 1}`, status: "pending" });
+                initial.push({ number: i + 1, title: titles[i] || `${unitLabel} ${i + 1}`, status: "pending" });
               }
               setChapters(initial);
               break;
@@ -618,6 +620,30 @@ function HomeContent() {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
+              </div>
+
+              {/* Format toggle */}
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Format</label>
+                <div className="flex gap-2">
+                  {(["book", "course"] as const).map((f) => (
+                    <button
+                      key={f}
+                      type="button"
+                      onClick={() => setFormat(f)}
+                      className={`flex-1 py-2.5 rounded-lg border text-sm font-medium transition-colors ${
+                        format === f
+                          ? "bg-blue-600/20 border-blue-500/50 text-blue-300"
+                          : "bg-white/[0.03] border-white/[0.08] text-gray-400 hover:border-white/20 hover:text-gray-200"
+                      }`}
+                    >
+                      {f === "book" ? "📖 Book" : "🎓 Course"}
+                    </button>
+                  ))}
+                </div>
+                {format === "course" && (
+                  <p className="text-xs text-gray-500 mt-1.5">Generates modules with introductions, core content (3–5k words), key takeaways, exercises, and summaries.</p>
+                )}
               </div>
 
               {/* Genre + Tone Row */}
@@ -1059,7 +1085,7 @@ function HomeContent() {
                 </div>
                 <div className="text-right mt-1 text-xs text-gray-600">
                   {totalChapters > 0
-                    ? `${doneCount} / ${totalChapters} chapters`
+                    ? `${doneCount} / ${totalChapters} ${format === "course" ? "modules" : "chapters"}`
                     : "Generating outline..."}
                 </div>
               </div>

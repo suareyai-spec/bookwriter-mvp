@@ -32,6 +32,7 @@ const Body = z.object({
   mature: z.boolean().optional(),
   matureLevel: z.enum(["steamy", "explicit", "nolimits"]).optional(),
   humanize: z.boolean().optional(),
+  format: z.enum(["book", "course"]).optional(),
   subGenre: z.string().max(50).optional(),
   romanceSubGenre: z.string().max(100).optional(),
   relationshipDynamic: z.string().max(100).optional(),
@@ -58,13 +59,13 @@ The author has provided the following reference materials. Use these to inform t
 ${parts.join("\n\n")}`;
 }
 
-function getChapterPlan(bookLength: string): { chapters: number; totalWords: number } {
-  if (bookLength?.includes("10,000")) return { chapters: 5, totalWords: 10000 };
-  if (bookLength?.includes("25,000")) return { chapters: 8, totalWords: 24000 };
-  if (bookLength?.includes("50,000")) return { chapters: 10, totalWords: 50000 };
-  if (bookLength?.includes("75,000")) return { chapters: 12, totalWords: 72000 };
-  if (bookLength?.includes("100,000")) return { chapters: 15, totalWords: 97500 };
-  return { chapters: 5, totalWords: 10000 };
+function getChapterPlan(bookLength: string): { chapters: number; totalWords: number; wordsPerChapter: number } {
+  if (bookLength?.includes("10,000")) return { chapters: 5, totalWords: 10000, wordsPerChapter: 2000 };
+  if (bookLength?.includes("25,000")) return { chapters: 10, totalWords: 25000, wordsPerChapter: 2500 };
+  if (bookLength?.includes("50,000")) return { chapters: 12, totalWords: 60000, wordsPerChapter: 5000 };
+  if (bookLength?.includes("75,000")) return { chapters: 15, totalWords: 90000, wordsPerChapter: 6000 };
+  if (bookLength?.includes("100,000")) return { chapters: 18, totalWords: 108000, wordsPerChapter: 6000 };
+  return { chapters: 12, wordsPerChapter: 5000, totalWords: 60000 };
 }
 
 function countChaptersInOutline(outline: string): number {
@@ -240,16 +241,26 @@ function getCitationInstructions(style: string): string {
   }
 }
 
-async function callClaude(prompt: string, maxTokens: number): Promise<{ text: string; inputTokens: number; outputTokens: number }> {
-  const resp = await anthropic.messages.create({
-    model: "claude-opus-4-8",
-    max_tokens: maxTokens,
-    messages: [{ role: "user", content: prompt }],
-  });
+async function callClaude(prompt: string, maxTokens: number, longOutput = false): Promise<{ text: string; inputTokens: number; outputTokens: number }> {
+  let resp: any;
+  if (longOutput) {
+    resp = await anthropic.beta.messages.create({
+      model: "claude-opus-4-8",
+      max_tokens: maxTokens,
+      betas: ["output-128k-2025-02-19"],
+      messages: [{ role: "user", content: prompt }],
+    } as any);
+  } else {
+    resp = await anthropic.messages.create({
+      model: "claude-opus-4-8",
+      max_tokens: maxTokens,
+      messages: [{ role: "user", content: prompt }],
+    });
+  }
   const { inputTokens, outputTokens } = getTokensFromResponse(resp);
-  const text = resp.content
+  const text = (resp.content as any[])
     .filter((b) => b.type === "text")
-    .map((b) => (b as { type: "text"; text: string }).text)
+    .map((b) => b.text as string)
     .join("\n");
   return { text, inputTokens, outputTokens };
 }
@@ -393,6 +404,7 @@ export async function POST(req: Request) {
     const isMatureRomance = body.mature === true && isRomanceGenre(genre, body.description);
     const matureContext = isMatureRomance ? getMatureInstructions(body.matureLevel) : "";
     const isReligious = isReligiousPhilosophy(genre, tone, body.description);
+    const isCourse = body.format === "course";
 
     // Build romance details context
     let romanceContext = "";
@@ -430,7 +442,27 @@ Language: ${lang} — Write EVERYTHING in ${lang}.
 Author's Vision:
 ${body.description}${refContext}${revisionContext}${previousContentContext}${romanceContext}${matureContext}`;
 
-    let outlinePrompt = isReligious
+    const courseOutlinePrompt = `You are an expert online course designer and educator creating a comprehensive, professional course.
+
+${bookContext}
+
+Create a detailed COURSE OUTLINE with ${plan.chapters} modules.
+
+For each module, provide:
+- MODULE NUMBER and TITLE (e.g., "Module 1: Title Here")
+- Learning objectives: 2-3 bullet points of what students will know/can do after this module
+- Overview: 1-2 sentence summary of what the module covers
+- Core content sections: 4-6 subsections with brief descriptions
+- Exercises/action steps: 2-3 practical activities students will complete
+
+The course should flow logically from foundational concepts to advanced application and mastery.
+Each module should build on the previous one, creating a coherent learning journey.
+
+Write the entire outline in ${lang}. ALL text must be in ${lang}.`;
+
+    let outlinePrompt = isCourse
+      ? courseOutlinePrompt
+      : isReligious
       ? `You are a spiritual author who has received revelation and is now transmitting truth. You write as one who has discovered the deepest principles of existence and must record them for those ready to receive.
 
 ${bookContext}
@@ -540,6 +572,49 @@ For each chapter, provide:
 
 Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter titles, descriptions, everything. Never use English unless ${lang} IS English.`;
 
+    const courseModulePrompt = (i: number, chTitle: string, outline: string, prevSummary: string) => `You are an expert course instructor writing a comprehensive, engaging module for a professional online course.
+
+${bookContext}
+
+Full course outline:
+${outline}
+${prevSummary}
+
+Write MODULE ${i} in full: "${chTitle}"
+
+REQUIRED STRUCTURE — follow this exactly, using these headings:
+
+## Module Introduction (300–500 words)
+Hook the learner on why this topic matters. Preview what they will learn and achieve. Connect to the previous module if applicable. Make them eager to continue.
+
+## Core Content (3000–5000 words)
+Deep, substantive teaching on this module's topic. Organize with clear subheadings. Include:
+- Detailed explanation of each concept — the WHY and HOW, not just the WHAT
+- Real-world examples, case studies, and specific applications
+- Relevant research, frameworks, expert perspectives, or data where appropriate
+- Step-by-step guidance where the topic calls for it
+- Analogies and comparisons that make complex ideas concrete
+Every section should teach something specific and actionable. No filler or padding.
+
+## Key Takeaways
+5–7 bullet points capturing the most important lessons from this module. Each takeaway should be specific and memorable — something a learner could immediately explain to someone else.
+
+## Exercises & Action Steps
+3–5 specific, practical exercises or assignments. Each exercise should:
+- Have a clear objective
+- Include specific instructions for completing it
+- Connect directly to the core content of this module
+Include at least one reflection question that deepens understanding.
+
+## Module Summary (200–300 words)
+Concise recap of what was covered. Reinforce the most critical concepts. Bridge naturally to the next module, creating momentum to continue.
+
+---
+
+Write this ENTIRE module in ${lang}. Use an engaging, educational voice — authoritative but accessible. The learner should feel they are being taught by a world-class expert who genuinely wants them to succeed.
+
+Write Module ${i} now:`;
+
     // Create book record early for background tracking
     const earlyBook = await prisma.book.create({
       data: {
@@ -550,6 +625,7 @@ Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter tit
         audience: body.audience,
         language: body.language,
         bookLength: body.bookLength,
+        contentType: isCourse ? "course" : "book",
         userId,
         mature: body.mature || false,
         humanize: true,
@@ -561,14 +637,20 @@ Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter tit
 
     const stream = new ReadableStream({
       async start(controller) {
+        const enc = new TextEncoder();
+        // Heartbeat every 15 s — prevents proxy/Vercel from closing an idle SSE connection
+        const heartbeat = setInterval(() => {
+          try { controller.enqueue(enc.encode(": heartbeat\n\n")); } catch { clearInterval(heartbeat); }
+        }, 15000);
+
         try {
           // Send bookId to client so it can navigate away
-          controller.enqueue(new TextEncoder().encode(sseEvent({ type: "bookId", bookId: earlyBookId })));
+          controller.enqueue(enc.encode(sseEvent({ type: "bookId", bookId: earlyBookId })));
 
           // Step 0 (religious + refs): Extract core laws/framework from source texts before outlining
           let extractedFramework = "";
           if (isReligious && body.references?.length) {
-            controller.enqueue(new TextEncoder().encode(sseEvent({ type: "progress", chapter: 0, totalChapters: 0, title: "Analyzing source framework...", status: "outline" })));
+            controller.enqueue(enc.encode(sseEvent({ type: "progress", chapter: 0, totalChapters: 0, title: "Analyzing source framework...", status: "outline" })));
             const fwResp = await callClaude(`Read the following source texts and extract — with precision and direct quotation:
 
 1. CORE LAWS / NUMBERED FRAMEWORK: Every named law, principle, or numbered construct EXACTLY as stated in the source. Quote the exact language for each one. If the author has "3 Laws," "5 Principles," or any named framework, extract every single item verbatim.
@@ -620,32 +702,33 @@ Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter tit
           }
 
           // Step 1: Generate outline
-          controller.enqueue(new TextEncoder().encode(sseEvent({ type: "progress", chapter: 0, totalChapters: 0, title: "Generating outline...", status: "outline" })));
-          const outlineResp = await callClaude(outlinePrompt, 3000);
+          controller.enqueue(enc.encode(sseEvent({ type: "progress", chapter: 0, totalChapters: 0, title: "Generating outline...", status: "outline" })));
+          const outlineResp = await callClaude(outlinePrompt, 4000);
           const outline = outlineResp.text;
           trackApiCost({ userId, type: "book", inputTokens: outlineResp.inputTokens, outputTokens: outlineResp.outputTokens, bookId: earlyBookId }).catch(() => {});
           // Extract chapter titles from outline to determine actual count
           const chapterTitles: string[] = [];
-          const titleRegex = /chapter\s+\d+[:\s]+(.+)/gi;
+          const titleRegex = /(?:chapter|module)\s+\d+[:\s–\-]+(.+)/gi;
           let match;
           while ((match = titleRegex.exec(outline)) !== null) {
             chapterTitles.push(match[1].trim().replace(/\*+/g, "").trim());
           }
+          const unitLabel = isCourse ? "Module" : "Chapter";
           const actualChapters = chapterTitles.length > 0 ? chapterTitles.length : plan.chapters;
-          const wordsPerChapter = Math.round(plan.totalWords / actualChapters);
+          const wordsPerChapter = plan.wordsPerChapter;
 
-          controller.enqueue(new TextEncoder().encode(sseEvent({ type: "outline", content: outline, totalChapters: actualChapters })));
+          controller.enqueue(enc.encode(sseEvent({ type: "outline", content: outline, totalChapters: actualChapters })));
           await prisma.book.update({ where: { id: earlyBookId }, data: { progress: JSON.stringify({ percent: 0, currentChapter: 0, totalChapters: actualChapters, status: "writing" }) } }).catch(() => {});
 
-          // Step 2: Generate each chapter
+          // Step 2: Generate each chapter / module
           const chapters: string[] = [];
           for (let i = 1; i <= actualChapters; i++) {
-            const chTitle = chapterTitles[i - 1] || `Chapter ${i}`;
-            controller.enqueue(new TextEncoder().encode(sseEvent({ type: "progress", chapter: i, totalChapters: actualChapters, title: chTitle, status: "writing" })));
+            const chTitle = chapterTitles[i - 1] || `${unitLabel} ${i}`;
+            controller.enqueue(enc.encode(sseEvent({ type: "progress", chapter: i, totalChapters: actualChapters, title: chTitle, status: "writing" })));
             await prisma.book.update({ where: { id: earlyBookId }, data: { progress: JSON.stringify({ percent: Math.round(((i - 1) / actualChapters) * 100), currentChapter: i, totalChapters: actualChapters, currentTitle: chTitle, status: "writing" }) } }).catch(() => {});
 
             const prevSummary = chapters.length > 0
-              ? `\nSummary of previous chapters:\n${chapters.map((c, idx) => `Chapter ${idx + 1}: ${c.slice(0, 500)}...`).join("\n\n")}`
+              ? `\nSummary of previous ${unitLabel.toLowerCase()}s:\n${chapters.map((c, idx) => `${unitLabel} ${idx + 1}: ${c.slice(0, 500)}...`).join("\n\n")}`
               : "";
 
             const chapterPrompt = isReligious
@@ -800,17 +883,21 @@ ${/horror|thriller|dark|supernatural|gothic|psychological/i.test(genre) ? `HORRO
 ${isMatureRomance ? getMatureInstructions(body.matureLevel) : ""}
 Write Chapter ${i} now:`;
 
-            const chapterResp = await callClaude(chapterPrompt, 8192);
+            const activePrompt = isCourse
+              ? courseModulePrompt(i, chTitle, outline, prevSummary)
+              : chapterPrompt;
+
+            const chapterResp = await callClaude(activePrompt, 32000, true);
             let chapter = chapterResp.text;
             trackApiCost({ userId, type: "book", inputTokens: chapterResp.inputTokens, outputTokens: chapterResp.outputTokens, bookId: earlyBookId }).catch(() => {});
-            
+
             // Always run humanizer pass for natural voice
-            controller.enqueue(new TextEncoder().encode(sseEvent({ type: "progress", chapter: i, totalChapters: actualChapters, title: `Humanizing Chapter ${i}...`, status: "humanizing" })));
+            controller.enqueue(enc.encode(sseEvent({ type: "progress", chapter: i, totalChapters: actualChapters, title: `Humanizing ${unitLabel} ${i}...`, status: "humanizing" })));
             await prisma.book.update({ where: { id: earlyBookId }, data: { progress: JSON.stringify({ percent: Math.round(((i - 0.5) / actualChapters) * 100), currentChapter: i, totalChapters: actualChapters, currentTitle: chTitle, status: "humanizing" }) } }).catch(() => {});
             chapter = await humanizeChapter(chapter, { userId, bookId: earlyBookId });
             
             chapters.push(chapter);
-            controller.enqueue(new TextEncoder().encode(sseEvent({ type: "chapter", chapter: i, totalChapters: actualChapters, title: chTitle, content: chapter })));
+            controller.enqueue(enc.encode(sseEvent({ type: "chapter", chapter: i, totalChapters: actualChapters, title: chTitle, content: chapter })));
           }
 
           const fullBook = `${outline}\n\n${"━".repeat(50)}\n\n${chapters.join("\n\n" + "━".repeat(50) + "\n\n")}`;
@@ -834,14 +921,16 @@ Write Chapter ${i} now:`;
           }
           await prisma.book.update({ where: { id: earlyBookId }, data: { status: "complete", progress: null } });
           
-          controller.enqueue(new TextEncoder().encode(sseEvent({ type: "complete", fullText: fullBook, bookId: earlyBookId })));
+          controller.enqueue(enc.encode(sseEvent({ type: "complete", fullText: fullBook, bookId: earlyBookId })));
           await prisma.user.update({ where: { id: userId }, data: { isGenerating: false, generationStartedAt: null } });
+          clearInterval(heartbeat);
           controller.close();
         } catch (err) {
           const message = err instanceof Error ? err.message : "Failed";
-          controller.enqueue(new TextEncoder().encode(sseEvent({ type: "error", message })));
+          controller.enqueue(enc.encode(sseEvent({ type: "error", message })));
           await prisma.user.update({ where: { id: userId }, data: { isGenerating: false, generationStartedAt: null } }).catch(() => {});
           await prisma.book.update({ where: { id: earlyBookId }, data: { status: "failed", progress: JSON.stringify({ error: message }) } }).catch(() => {});
+          clearInterval(heartbeat);
           controller.close();
         }
       },
