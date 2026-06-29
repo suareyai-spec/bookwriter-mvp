@@ -3,6 +3,8 @@ import { Inter, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import SessionProvider from "@/components/SessionProvider";
 import Footer from "@/components/Footer";
+import { Suspense } from "react";
+import { AffiliateTracker } from "@/app/_components/AffiliateTracker";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -36,6 +38,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" className="dark">
       <body className={`${inter.variable} ${geistMono.variable} ${playfair.variable} antialiased`}>
         <SessionProvider>
+          <Suspense fallback={null}>
+            <AffiliateTracker />
+          </Suspense>
           <div className="min-h-screen flex flex-col">
             <div className="flex-1">
               {children}

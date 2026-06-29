@@ -135,3 +135,32 @@ model BookCredit {
   usedAt          DateTime?
   stripePaymentId String?
 }
+
+model Affiliate {
+  id                String   @id @default(cuid())
+  code              String   @unique
+  ownerName         String
+  ownerEmail        String
+  commissionPercent Int      @default(20)
+  totalClicks       Int      @default(0)
+  totalConversions  Int      @default(0)
+  totalEarned       Float    @default(0)
+  payoutStatus      String   @default("unpaid")
+  isActive          Boolean  @default(false)
+  notes             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  conversions       AffiliateConversion[]
+}
+
+model AffiliateConversion {
+  id              String    @id @default(cuid())
+  affiliateId     String
+  userEmail       String?
+  stripeSessionId String?
+  plan            String?
+  amountUsd       Float
+  commissionUsd   Float
+  createdAt       DateTime  @default(now())
+  affiliate       Affiliate @relation(fields: [affiliateId], references: [id], onDelete: Cascade)
+}

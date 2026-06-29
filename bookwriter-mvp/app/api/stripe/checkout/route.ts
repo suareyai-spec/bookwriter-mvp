@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { stripe, PLANS, CREDIT_PRICES, REVISION_PRICES, PlanKey } from "@/lib/stripe";
 import { rateLimitByUser } from "@/lib/rate-limit";
+import { cookies } from "next/headers";
 
 export async function POST(req: Request) {
   // --- RATE LIMIT ---
@@ -43,6 +44,10 @@ export async function POST(req: Request) {
 
   const origin = req.headers.get("origin") || "http://localhost:3000";
 
+  // Read affiliate code from cookie
+  const cookieStore = await cookies();
+  const affiliateCode = cookieStore.get('plotghost_ref')?.value || null;
+
   if (type === "subscription" && plan && PLANS[plan]) {
     const planConfig = PLANS[plan];
 
@@ -63,7 +68,7 @@ export async function POST(req: Request) {
           quantity: 1,
         },
       ],
-      metadata: { userId: user.id, plan },
+      metadata: { userId: user.id, plan, ...(affiliateCode ? { affiliateCode } : {}) },
       success_url: `${origin}/pricing?success=true`,
       cancel_url: `${origin}/pricing?canceled=true`,
     });
@@ -99,7 +104,7 @@ export async function POST(req: Request) {
           quantity: 1,
         },
       ],
-      metadata: { userId: user.id, creditSize, type: "credit" },
+      metadata: { userId: user.id, creditSize, type: "credit", ...(affiliateCode ? { affiliateCode } : {}) },
       success_url: `${origin}/library?credit_purchased=true`,
       cancel_url: `${origin}/pricing?canceled=true`,
     });
@@ -152,7 +157,7 @@ export async function POST(req: Request) {
           quantity: 1,
         },
       ],
-      metadata: { userId: user.id, type: "revision", revisionType, revisionCount: String(revisionCount) },
+      metadata: { userId: user.id, type: "revision", revisionType, revisionCount: String(revisionCount), ...(affiliateCode ? { affiliateCode } : {}) },
       success_url: `${origin}/library?revision_purchased=true`,
       cancel_url: `${origin}/pricing?canceled=true`,
     });

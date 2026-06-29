@@ -18,6 +18,7 @@ const NAV_ITEMS = [
   { label: "Refunds", href: "/admin/refunds" },
   { label: "Activity", href: "/admin/activity" },
   { label: "Usage Insights", href: "/admin/insights" },
+  { label: "Affiliates", href: "/admin/affiliates" },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

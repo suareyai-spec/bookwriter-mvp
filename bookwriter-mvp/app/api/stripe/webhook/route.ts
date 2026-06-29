@@ -48,6 +48,37 @@ export async function POST(req: Request) {
           },
         });
       }
+
+      // Affiliate conversion tracking
+      if (session.metadata?.affiliateCode) {
+        try {
+          const code = session.metadata.affiliateCode;
+          const amountUsd = (session.amount_total || 0) / 100;
+          const affiliate = await prisma.affiliate.findUnique({ where: { code } });
+          if (affiliate && affiliate.isActive) {
+            const commissionUsd = parseFloat((amountUsd * affiliate.commissionPercent / 100).toFixed(2));
+            await prisma.affiliateConversion.create({
+              data: {
+                affiliateId: affiliate.id,
+                userEmail: session.customer_email || session.customer_details?.email || null,
+                stripeSessionId: session.id,
+                plan: session.metadata?.plan || null,
+                amountUsd,
+                commissionUsd,
+              },
+            });
+            await prisma.affiliate.update({
+              where: { id: affiliate.id },
+              data: {
+                totalConversions: { increment: 1 },
+                totalEarned: { increment: commissionUsd },
+              },
+            });
+          }
+        } catch (err) {
+          console.error('[webhook] affiliate conversion error:', err);
+        }
+      }
       break;
     }
 
