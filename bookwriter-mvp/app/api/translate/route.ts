@@ -8,7 +8,7 @@ import { rateLimitByUser } from "@/lib/rate-limit";
 import { humanizeChapter } from "@/lib/humanizer";
 import { trackApiCost, getTokensFromResponse } from "@/lib/cost-tracker";
 
-export const maxDuration = 600;
+export const maxDuration = 900;
 export const dynamic = "force-dynamic";
 
 const Body = z.object({
@@ -83,7 +83,7 @@ ${sectionContent}`;
 
 async function callClaude(prompt: string, maxTokens: number): Promise<{ text: string; inputTokens: number; outputTokens: number }> {
   const resp = await anthropic.messages.create({
-    model: "claude-opus-4-20250514",
+    model: "claude-opus-4-8",
     max_tokens: maxTokens,
     messages: [{ role: "user", content: prompt }],
   });

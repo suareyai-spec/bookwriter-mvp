@@ -77,7 +77,7 @@ ${prompt}`;
   }
 
   const resp = await anthropic.messages.create({
-    model: "claude-opus-4-20250514",
+    model: "claude-opus-4-8",
     max_tokens: 8192,
     messages: [{ role: "user", content: prompt + chapterText }],
   });

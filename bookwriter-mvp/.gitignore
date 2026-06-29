@@ -40,3 +40,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 mission-control/
+
+# SQLite database files
+prisma/*.db
+prisma/*.db-journal
+
+# Route backup files
+app/api/**/*.backup

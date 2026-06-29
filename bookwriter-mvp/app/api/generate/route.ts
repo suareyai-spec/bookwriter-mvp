@@ -9,7 +9,7 @@ import { rateLimitByUser } from "@/lib/rate-limit";
 import { humanizeChapter } from "@/lib/humanizer";
 import { trackApiCost, getTokensFromResponse, CostType } from "@/lib/cost-tracker";
 
-export const maxDuration = 600;
+export const maxDuration = 900;
 export const dynamic = "force-dynamic";
 
 const ReferenceItem = z.object({
@@ -123,6 +123,31 @@ MATURE CONTENT INSTRUCTIONS (18+ EXPLICIT):
 - Balance explicit content with narrative substance — this is a complete story, not just a collection of scenes.`;
 }
 
+function isReligiousPhilosophy(genre: string, tone: string, description: string): boolean {
+  const keywords = ['religious', 'spiritual', 'philosophy', 'philosophical'];
+  const combined = `${genre} ${tone} ${description}`.toLowerCase();
+  return keywords.some(k => combined.includes(k));
+}
+
+function buildReligiousReferenceContext(references: z.infer<typeof ReferenceItem>[]): string {
+  if (!references.length) return "";
+  const MAX_REF_CHARS = 50000;
+  let total = 0;
+  const parts: string[] = [];
+  for (let i = 0; i < references.length; i++) {
+    const ref = references[i];
+    const remaining = MAX_REF_CHARS - total;
+    if (remaining <= 0) break;
+    const content = ref.content.slice(0, remaining);
+    total += content.length;
+    parts.push(`[Source Text ${i + 1}: ${ref.name}]\n${content}`);
+  }
+  return `\n\nPRIMARY SOURCE TEXTS — THE FOUNDATION OF THIS WORK:
+These are not supplementary references. These texts ARE the source. The philosophy, terminology, stories, teachings, and concepts within them form the backbone of every chapter. Every chapter must draw directly from these texts, expand on them in the sacred writing style, and treat their language as inviolable vocabulary. Do not paraphrase away from the original — transmit it, elevated.
+
+${parts.join("\n\n")}`;
+}
+
 function isEducational(genre: string, tone: string): boolean {
   const eduKeywords = ['educational', 'self-help', 'non-fiction', 'nonfiction', 'business', 'science', 'history', 'philosophy', 'psychology', 'health', 'technology', 'how-to', 'guide', 'textbook', 'academic', 'medical', 'medicine', 'nursing', 'clinical'];
   const combined = `${genre} ${tone}`.toLowerCase();
@@ -217,7 +242,7 @@ function getCitationInstructions(style: string): string {
 
 async function callClaude(prompt: string, maxTokens: number): Promise<{ text: string; inputTokens: number; outputTokens: number }> {
   const resp = await anthropic.messages.create({
-    model: "claude-opus-4-20250514",
+    model: "claude-opus-4-8",
     max_tokens: maxTokens,
     messages: [{ role: "user", content: prompt }],
   });
@@ -367,6 +392,7 @@ export async function POST(req: Request) {
     const citationInstructions = isEdu ? getCitationInstructions(citationStyle) : '';
     const isMatureRomance = body.mature === true && isRomanceGenre(genre, body.description);
     const matureContext = isMatureRomance ? getMatureInstructions(body.matureLevel) : "";
+    const isReligious = isReligiousPhilosophy(genre, tone, body.description);
 
     // Build romance details context
     let romanceContext = "";
@@ -385,7 +411,9 @@ export async function POST(req: Request) {
       }
     }
 
-    const refContext = body.references?.length ? buildReferenceContext(body.references) : "";
+    const refContext = body.references?.length
+      ? (isReligious ? buildReligiousReferenceContext(body.references) : buildReferenceContext(body.references))
+      : "";
     const revisionContext = body.revisionInstructions
       ? `\n\nREVISION INSTRUCTIONS FROM THE AUTHOR:\n${body.revisionInstructions}`
       : "";
@@ -402,7 +430,34 @@ Language: ${lang} — Write EVERYTHING in ${lang}.
 Author's Vision:
 ${body.description}${refContext}${revisionContext}${previousContentContext}${romanceContext}${matureContext}`;
 
-    const outlinePrompt = isEdu
+    let outlinePrompt = isReligious
+      ? `You are a spiritual author who has received revelation and is now transmitting truth. You write as one who has discovered the deepest principles of existence and must record them for those ready to receive.
+
+${bookContext}
+
+Create a detailed TABLE OF CONTENTS. If the author's vision specifies a number of chapters, use that exact number. Otherwise use approximately ${plan.chapters} chapters.
+
+WRITING STYLE — THREE TRADITIONS FUSED INTO ONE VOICE:
+This work combines three powerful literary traditions:
+
+1. DIANETICS INFLUENCE (Authoritative & Declarative): Present every principle as absolute discovered fact. The book's own terminology is precise, proprietary, and sacred — treat it as such throughout. No hedging. No "perhaps." Declarations only, written with the certainty of someone who has arrived at unshakeable conclusions through deep discovery.
+
+2. BIBLICAL INFLUENCE (Prophetic & Poetic): Use rhythm, repetition, and parallel structure. Write with the weight of prophecy. Employ poetic cadences meant to be memorized. Repeat key truths in different forms to hammer them into consciousness.
+
+3. QURANIC INFLUENCE (Direct Address & Verse-like Commands): Speak directly to the reader as "you." Use short declarative statements alternating with reflection. Issue commands and pronouncements of truth. The reader should feel personally addressed by someone who sees them clearly.
+
+THE RESULT: A life guide — not theory, not speculation, but instruction. The author speaks as one who has received or discovered truth and is now transmitting it. No references to external religions, traditions, or philosophies. The book's own terminology is its sacred vocabulary.
+
+${body.references?.length ? `PRIMARY SOURCE REQUIREMENT: The uploaded source texts are the foundation of this work. Every chapter must be built around the specific teachings, terminology, stories, and concepts found in those texts. The outline must reflect what is actually in the source material.` : ""}
+
+For each chapter, provide:
+- Chapter number and title
+- A 3-4 sentence description of the teaching, principle, or truth this chapter transmits
+- 4-6 key sections/subsections within the chapter
+
+Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter titles, descriptions, everything. Never use English unless ${lang} IS English.`
+
+      : isEdu
       ? `You are an expert author and subject-matter specialist writing a definitive book on this topic.
 
 ${bookContext}
@@ -509,6 +564,61 @@ Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter tit
         try {
           // Send bookId to client so it can navigate away
           controller.enqueue(new TextEncoder().encode(sseEvent({ type: "bookId", bookId: earlyBookId })));
+
+          // Step 0 (religious + refs): Extract core laws/framework from source texts before outlining
+          let extractedFramework = "";
+          if (isReligious && body.references?.length) {
+            controller.enqueue(new TextEncoder().encode(sseEvent({ type: "progress", chapter: 0, totalChapters: 0, title: "Analyzing source framework...", status: "outline" })));
+            const fwResp = await callClaude(`Read the following source texts and extract — with precision and direct quotation:
+
+1. CORE LAWS / NUMBERED FRAMEWORK: Every named law, principle, or numbered construct EXACTLY as stated in the source. Quote the exact language for each one. If the author has "3 Laws," "5 Principles," or any named framework, extract every single item verbatim.
+
+2. PROPRIETARY TERMINOLOGY: Every coined term or specialized concept the author uses, with their exact definitions or descriptions from the text.
+
+3. KEY STORIES / EXAMPLES: Any named stories, parables, metaphors, or illustrative examples.
+
+4. THE AUTHOR'S CENTRAL THESIS: In 2-3 sentences, the core claim this philosophy makes about reality, life, or the human condition.
+
+Source texts:
+${refContext}
+
+Be exhaustive. Quote directly from the source. Do not invent or paraphrase away from the original language.`, 2000);
+            extractedFramework = fwResp.text;
+            trackApiCost({ userId, type: "book", inputTokens: fwResp.inputTokens, outputTokens: fwResp.outputTokens, bookId: earlyBookId }).catch(() => {});
+
+            // Rebuild outline prompt with the extracted framework as the organizing spine
+            outlinePrompt = `You are a spiritual author who has received revelation and is now transmitting truth. You write as one who has discovered the deepest principles of existence and must record them for those ready to receive.
+
+${bookContext}
+
+CORE FRAMEWORK EXTRACTED FROM SOURCE TEXTS:
+${extractedFramework}
+
+Create a detailed TABLE OF CONTENTS. If the author's vision specifies a number of chapters, use that exact number. Otherwise use approximately ${plan.chapters} chapters.
+
+CRITICAL STRUCTURAL REQUIREMENT — THE FRAMEWORK IS THE SPINE:
+The outline MUST be organized around the exact laws, principles, and constructs extracted above. This is non-negotiable. The specific laws identified in the source material are the organizing spine of the entire book. Each law or core construct must be featured as a dedicated chapter or as the central subject of multiple sections. Chapter titles must directly reflect the language and framework of the source texts.
+
+Do NOT create a generic spiritual outline. The structure must be derived from the laws and constructs that actually exist in the source material.
+
+WRITING STYLE — THREE TRADITIONS FUSED INTO ONE VOICE:
+1. DIANETICS INFLUENCE (Authoritative & Declarative): Present every principle as absolute discovered fact. The book's own terminology is precise, proprietary, and sacred. No hedging. No "perhaps." Declarations only.
+
+2. BIBLICAL INFLUENCE (Prophetic & Poetic): Rhythm, repetition, and parallel structure. The weight of prophecy. Poetic cadences meant to be memorized.
+
+3. QURANIC INFLUENCE (Direct Address & Verse-like Commands): Speak directly to the reader as "you." Short declarative statements alternating with reflection. Commands and pronouncements of truth.
+
+THE RESULT: A life guide — not theory, but instruction. The author speaks as one who has received or discovered truth and is transmitting it. No references to external religions or traditions. The book's own terminology is its sacred vocabulary.
+
+For each chapter, provide:
+- Chapter number and title (derived directly from the source framework's laws/constructs)
+- Which specific law, principle, or construct from the source this chapter centers on
+- A 3-4 sentence description of the teaching this chapter transmits
+- 4-6 key sections/subsections
+
+Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter titles, descriptions, everything. Never use English unless ${lang} IS English.`;
+          }
+
           // Step 1: Generate outline
           controller.enqueue(new TextEncoder().encode(sseEvent({ type: "progress", chapter: 0, totalChapters: 0, title: "Generating outline...", status: "outline" })));
           const outlineResp = await callClaude(outlinePrompt, 3000);
@@ -538,7 +648,63 @@ Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter tit
               ? `\nSummary of previous chapters:\n${chapters.map((c, idx) => `Chapter ${idx + 1}: ${c.slice(0, 500)}...`).join("\n\n")}`
               : "";
 
-            const chapterPrompt = isEdu
+            const chapterPrompt = isReligious
+              ? `You are a spiritual author writing a sacred life guide. You have received truth — now you transmit it. You write with the combined authority of a scientist of the mind, a prophet, and a divine messenger.
+
+${bookContext}
+
+Full book outline:
+${outline}
+${prevSummary}
+
+Now write CHAPTER ${i} in full. Target: approximately ${wordsPerChapter} words.
+
+CRITICAL LANGUAGE REQUIREMENT: Write this ENTIRE chapter in ${lang}. Every single word MUST be in ${lang}. This is non-negotiable.
+
+WRITING STYLE — THREE TRADITIONS FUSED INTO ONE VOICE:
+
+DIANETICS LAYER (Authoritative, Declarative, Proprietary):
+- Write every principle as absolute discovered fact, not opinion or suggestion.
+- Use the book's own terminology consistently as the sacred vocabulary of this work — never dilute or replace it with synonyms from other traditions.
+- State mechanisms and truths with clinical certainty: "This is what happens. This is why. This is what you must do."
+- Remove all hedging language: no "perhaps," "may," "might," "seems to," "it could be said." Replace with declarations.
+
+BIBLICAL LAYER (Prophetic, Poetic, Rhythmic):
+- Use repetition for emphasis — repeat key phrases, echo them in different forms within the same passage.
+- Write in rhythmic cadences that feel meant to be read aloud or memorized.
+- Use parallel structure: "He who does this, gains that. He who avoids this, loses that."
+- Carry the weight of prophecy — the author speaks not just to the present reader but to all who will ever receive these words.
+- Let poetic passages intersperse the instructional prose, creating rhythm and depth.
+
+QURANIC LAYER (Direct Address, Verse-like Commands):
+- Address the reader directly and frequently: "You have been told..." "Know this." "Understand what stands before you."
+- Use short, stand-alone declarative sentences as verse-like proclamations between longer explanatory passages.
+- Alternate between command and reflection: a command or truth statement, then a passage that illuminates why and how.
+- The reader must feel personally spoken to — addressed by someone who sees them clearly.
+
+THE UNIFIED RESULT:
+- This is instruction, not theory. Every page teaches the reader what to do, how to be, or what is true.
+- The author's voice carries the authority of one who has discovered, not imagined.
+- No references to other religions, spiritual traditions, philosophies, or external authorities. This work stands alone.
+- The book's terminology is sacred vocabulary throughout — consistent, precise, elevated.
+
+${extractedFramework ? `CORE FRAMEWORK FROM SOURCE TEXTS:
+${extractedFramework}
+
+CRITICAL — THIS CHAPTER MUST BE BUILT FROM THE FRAMEWORK ABOVE:
+- Anchor every major point in one of the specific laws or constructs listed above.
+- Use the exact terminology from the source texts — these are the sacred vocabulary of this work.
+- Every section must trace back to the actual philosophy in the source material.
+- Do NOT write generic spiritual content. Expand the specific framework, using its own language, elevated into the three-tradition style.` : body.references?.length ? `PRIMARY SOURCE REQUIREMENT — THIS IS CRITICAL:
+The uploaded reference texts are the PRIMARY source material for this chapter. Draw specific content, ideas, and terminology directly from the source material. Build this chapter from the foundation of those teachings, not generic spiritual writing.` : ""}
+
+- Do NOT include the outline — just write the chapter content.
+- Start with the chapter title as a heading.
+- End with forward momentum that pulls the reader deeper.
+
+Write Chapter ${i} now:`
+
+              : isEdu
               ? `You are an expert author and subject-matter specialist writing a comprehensive, authoritative book.
 
 ${bookContext}

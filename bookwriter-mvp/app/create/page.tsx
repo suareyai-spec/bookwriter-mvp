@@ -18,7 +18,7 @@ const GENRES = [
   "Non-Fiction", "Fantasy", "Sci-Fi", "Mystery", "Romance",
   "Thriller", "Self-Help", "Business", "Biography", "Historical",
   "Horror", "Literary Fiction", "Children's", "Poetry", "Cookbook",
-  "Travel Guide", "Memoir", "Health & Wellness", "Other",
+  "Travel Guide", "Memoir", "Health & Wellness", "Religious", "Other",
 ];
 
 const GENRE_SUBTOPICS: Record<string, string[]> = {
@@ -199,7 +199,11 @@ function HomeContent() {
   const [generatingBookId, setGeneratingBookId] = useState<string | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
 
-  const progressPercent = totalChapters > 0 ? Math.round((chapters.filter(c => c.status === "done").length / totalChapters) * 100) : 0;
+  const doneCount = chapters.filter(c => c.status === "done").length;
+  const writingCount = chapters.filter(c => c.status === "writing").length;
+  const progressPercent = totalChapters > 0
+    ? Math.min(99, Math.round(((doneCount + writingCount * 0.5) / totalChapters) * 100))
+    : 0;
 
   const estimatedRemaining = useCallback(() => {
     const done = chapterTimes.length;
@@ -1047,12 +1051,16 @@ function HomeContent() {
                 </div>
                 <div className="w-full h-3 bg-white/[0.06] rounded-full overflow-hidden">
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 transition-all duration-700 ease-out"
-                    style={{ width: `${progressPercent}%` }}
-                  />
+                    className="h-full rounded-full relative overflow-hidden bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 transition-all duration-700 ease-out"
+                    style={{ width: `${Math.max(progressPercent, 4)}%` }}
+                  >
+                    <div className="animate-progress-shimmer absolute inset-0" />
+                  </div>
                 </div>
                 <div className="text-right mt-1 text-xs text-gray-600">
-                  {chapters.filter(c => c.status === "done").length} / {totalChapters} chapters
+                  {totalChapters > 0
+                    ? `${doneCount} / ${totalChapters} chapters`
+                    : "Generating outline..."}
                 </div>
               </div>
 

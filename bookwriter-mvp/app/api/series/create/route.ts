@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { isAdmin } from "@/lib/config";
 import { randomUUID } from "crypto";
 
-export const maxDuration = 600;
+export const maxDuration = 900;
 export const dynamic = "force-dynamic";
 
 const Body = z.object({
@@ -27,7 +27,7 @@ const Body = z.object({
 
 async function callClaude(prompt: string, maxTokens: number): Promise<string> {
   const resp = await anthropic.messages.create({
-    model: "claude-opus-4-20250514",
+    model: "claude-opus-4-8",
     max_tokens: maxTokens,
     messages: [{ role: "user", content: prompt }],
   });

@@ -47,3 +47,19 @@ option {
   background-color: #111118;
   color: #ffffff;
 }
+
+/* Progress bar shimmer */
+@keyframes progress-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.animate-progress-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 80%
+  );
+  background-size: 200% 100%;
+  animation: progress-shimmer 1.6s infinite linear;
+}

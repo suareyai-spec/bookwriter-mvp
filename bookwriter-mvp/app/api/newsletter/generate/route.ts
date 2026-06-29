@@ -54,7 +54,7 @@ function sseEvent(data: Record<string, unknown>): string {
 
 async function callClaude(prompt: string, maxTokens: number): Promise<{ text: string; inputTokens: number; outputTokens: number }> {
   const resp = await anthropic.messages.create({
-    model: "claude-opus-4-20250514",
+    model: "claude-opus-4-8",
     max_tokens: maxTokens,
     messages: [{ role: "user", content: prompt }],
   });

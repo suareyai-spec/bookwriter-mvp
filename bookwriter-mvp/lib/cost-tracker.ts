@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 // Input: $15 per 1M tokens
 // Output: $75 per 1M tokens
 const PRICING: Record<string, { input: number; output: number }> = {
-  "claude-opus-4-20250514": { input: 15, output: 75 },
+  "claude-opus-4-8": { input: 15, output: 75 },
   default: { input: 15, output: 75 },
 };
 
@@ -36,7 +36,7 @@ export async function trackApiCost(params: {
   bookId?: string;
 }): Promise<void> {
   try {
-    const model = params.model || "claude-opus-4-20250514";
+    const model = params.model || "claude-opus-4-8";
     const cost = estimateCost(params.inputTokens, params.outputTokens, model);
     await prisma.apiCost.create({
       data: {
