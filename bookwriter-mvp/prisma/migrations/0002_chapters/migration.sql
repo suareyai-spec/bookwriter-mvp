@@ -1,11 +1,11 @@
 -- AlterTable: add new Book columns
-ALTER TABLE "Book" ADD COLUMN "currentChapter" INTEGER NOT NULL DEFAULT 0;
-ALTER TABLE "Book" ADD COLUMN "totalChapters" INTEGER NOT NULL DEFAULT 0;
-ALTER TABLE "Book" ADD COLUMN "storyBible" TEXT;
-ALTER TABLE "Book" ADD COLUMN "outline" TEXT;
+ALTER TABLE "Book" ADD COLUMN IF NOT EXISTS "currentChapter" INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE "Book" ADD COLUMN IF NOT EXISTS "totalChapters" INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE "Book" ADD COLUMN IF NOT EXISTS "storyBible" TEXT;
+ALTER TABLE "Book" ADD COLUMN IF NOT EXISTS "outline" TEXT;
 
 -- CreateTable: Chapter
-CREATE TABLE "Chapter" (
+CREATE TABLE IF NOT EXISTS "Chapter" (
     "id" TEXT NOT NULL,
     "bookId" TEXT NOT NULL,
     "number" INTEGER NOT NULL,
@@ -18,7 +18,8 @@ CREATE TABLE "Chapter" (
 );
 
 -- UniqueIndex
-CREATE UNIQUE INDEX "Chapter_bookId_number_key" ON "Chapter"("bookId", "number");
+CREATE UNIQUE INDEX IF NOT EXISTS "Chapter_bookId_number_key" ON "Chapter"("bookId", "number");
 
 -- ForeignKey
+ALTER TABLE "Chapter" DROP CONSTRAINT IF EXISTS "Chapter_bookId_fkey";
 ALTER TABLE "Chapter" ADD CONSTRAINT "Chapter_bookId_fkey" FOREIGN KEY ("bookId") REFERENCES "Book"("id") ON DELETE CASCADE ON UPDATE CASCADE;
