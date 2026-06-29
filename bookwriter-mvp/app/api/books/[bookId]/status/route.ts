@@ -14,17 +14,40 @@ export async function GET(req: Request, { params }: { params: Promise<{ bookId: 
 
   const book = await prisma.book.findFirst({
     where: { id: bookId, userId },
-    select: { status: true, progress: true },
+    select: {
+      status: true,
+      progress: true,
+      currentChapter: true,
+      totalChapters: true,
+      outline: true,
+      title: true,
+      chapters: {
+        select: { number: true, title: true, wordCount: true },
+        orderBy: { number: 'asc' },
+      },
+    },
   });
 
   if (!book) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  let progress = null;
+  let progressObj: any = null;
   if (book.progress) {
-    try { progress = JSON.parse(book.progress); } catch {}
+    try { progressObj = JSON.parse(book.progress); } catch {}
   }
 
-  return NextResponse.json({ status: book.status, progress });
+  const currentTitle = progressObj?.currentTitle || (book.chapters.length > 0 ? book.chapters[book.chapters.length - 1].title : null);
+  const percentComplete = book.totalChapters > 0 ? Math.round((book.currentChapter / book.totalChapters) * 100) : 0;
+
+  return NextResponse.json({
+    status: book.status,
+    currentChapter: book.currentChapter,
+    totalChapters: book.totalChapters,
+    currentTitle,
+    percentComplete,
+    chapters: book.chapters,
+    outline: book.outline,
+    progressStatus: progressObj?.status || null,
+  });
 }

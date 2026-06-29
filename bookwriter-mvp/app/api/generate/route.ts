@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { after } from "next/server";
 import { anthropic } from "@/lib/openai";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
@@ -96,7 +97,7 @@ MATURE CONTENT INSTRUCTIONS (STEAMY):
 - This is tasteful but HOT. Think bestselling romance novel, not erotica.
 - Every intimate moment should advance the relationship and reveal character.`;
   }
-  
+
   if (level === "nolimits") {
     return `
 MATURE CONTENT INSTRUCTIONS (NO LIMITS — MAXIMUM INTENSITY):
@@ -110,7 +111,7 @@ MATURE CONTENT INSTRUCTIONS (NO LIMITS — MAXIMUM INTENSITY):
 - Push every scene to its maximum erotic potential while maintaining narrative coherence.
 - This content is for adults who want the most intense, unrestrained reading experience possible.`;
   }
-  
+
   // Default: explicit
   return `
 MATURE CONTENT INSTRUCTIONS (18+ EXPLICIT):
@@ -163,7 +164,7 @@ function isMedical(genre: string, tone: string, description: string): boolean {
 
 function detectCitationStyle(genre: string, tone: string, description: string): string {
   const combined = `${genre} ${tone} ${description}`.toLowerCase();
-  
+
   // Medical/Health → AMA
   if (['medical', 'medicine', 'clinical', 'healthcare', 'nursing', 'pharmacy', 'surgical', 'pathology', 'oncology', 'cardiology', 'neurology', 'biomedical', 'anatomy', 'physiology', 'patient care'].some(k => combined.includes(k))) {
     return 'ama';
@@ -265,8 +266,335 @@ async function callClaude(prompt: string, maxTokens: number, longOutput = false)
   return { text, inputTokens, outputTokens };
 }
 
-function sseEvent(data: Record<string, unknown>): string {
-  return `data: ${JSON.stringify(data)}\n\n`;
+async function extractBibleUpdate(chapterText: string, num: number, title: string, isEdu: boolean): Promise<string> {
+  const prompt = isEdu
+    ? `From this chapter, extract a brief continuity reference (150 words max). Include:
+• Concepts/terms defined
+• Key arguments made
+• Frameworks or models introduced
+• Conclusions established
+
+Chapter (first 5000 chars):
+${chapterText.slice(0, 5000)}
+
+Output only bullet points.`
+    : `From this chapter, extract a brief continuity reference (150 words max). Include:
+• Characters: name, current state, key decisions made
+• Events: what happened
+• New locations or world details
+• Rules, facts, or terminology established
+• Unresolved tensions or open threads
+
+Chapter (first 5000 chars):
+${chapterText.slice(0, 5000)}
+
+Output only bullet points.`;
+  const resp = await callClaude(prompt, 350);
+  return `\n[${num}. ${title}]\n${resp.text}`;
+}
+
+function buildChapterPrompt(
+  i: number,
+  chTitle: string,
+  outline: string,
+  prevSummary: string,
+  biblePart: string,
+  wordsPerChapter: number,
+  lang: string,
+  genre: string,
+  bookContext: string,
+  isRelig: boolean,
+  isEdu: boolean,
+  isMatureRomance: boolean,
+  extractedFramework: string,
+  body: z.infer<typeof Body>,
+  citationInstructions: string,
+  matureLevel: string | undefined,
+  refContext: string
+): string {
+  if (isRelig) {
+    return `You are a spiritual author writing a sacred life guide. You have received truth — now you transmit it. You write with the combined authority of a scientist of the mind, a prophet, and a divine messenger.
+
+${bookContext}
+
+Full book outline:
+${outline}
+${prevSummary}
+
+Now write CHAPTER ${i} in full. Target: approximately ${wordsPerChapter} words.
+
+CRITICAL LANGUAGE REQUIREMENT: Write this ENTIRE chapter in ${lang}. Every single word MUST be in ${lang}. This is non-negotiable.
+
+WRITING STYLE — THREE TRADITIONS FUSED INTO ONE VOICE:
+
+DIANETICS LAYER (Authoritative, Declarative, Proprietary):
+- Write every principle as absolute discovered fact, not opinion or suggestion.
+- Use the book's own terminology consistently as the sacred vocabulary of this work — never dilute or replace it with synonyms from other traditions.
+- State mechanisms and truths with clinical certainty: "This is what happens. This is why. This is what you must do."
+- Remove all hedging language: no "perhaps," "may," "might," "seems to," "it could be said." Replace with declarations.
+
+BIBLICAL LAYER (Prophetic, Poetic, Rhythmic):
+- Use repetition for emphasis — repeat key phrases, echo them in different forms within the same passage.
+- Write in rhythmic cadences that feel meant to be read aloud or memorized.
+- Use parallel structure: "He who does this, gains that. He who avoids this, loses that."
+- Carry the weight of prophecy — the author speaks not just to the present reader but to all who will ever receive these words.
+- Let poetic passages intersperse the instructional prose, creating rhythm and depth.
+
+QURANIC LAYER (Direct Address, Verse-like Commands):
+- Address the reader directly and frequently: "You have been told..." "Know this." "Understand what stands before you."
+- Use short, stand-alone declarative sentences as verse-like proclamations between longer explanatory passages.
+- Alternate between command and reflection: a command or truth statement, then a passage that illuminates why and how.
+- The reader must feel personally spoken to — addressed by someone who sees them clearly.
+
+THE UNIFIED RESULT:
+- This is instruction, not theory. Every page teaches the reader what to do, how to be, or what is true.
+- The author's voice carries the authority of one who has discovered, not imagined.
+- No references to other religions, spiritual traditions, philosophies, or external authorities. This work stands alone.
+- The book's terminology is sacred vocabulary throughout — consistent, precise, elevated.
+
+${extractedFramework ? `CORE FRAMEWORK FROM SOURCE TEXTS:
+${extractedFramework}
+
+CRITICAL — THIS CHAPTER MUST BE BUILT FROM THE FRAMEWORK ABOVE:
+- Anchor every major point in one of the specific laws or constructs listed above.
+- Use the exact terminology from the source texts — these are the sacred vocabulary of this work.
+- Every section must trace back to the actual philosophy in the source material.
+- Do NOT write generic spiritual content. Expand the specific framework, using its own language, elevated into the three-tradition style.` : body.references?.length ? `PRIMARY SOURCE REQUIREMENT — THIS IS CRITICAL:
+The uploaded reference texts are the PRIMARY source material for this chapter. Draw specific content, ideas, and terminology directly from the source material. Build this chapter from the foundation of those teachings, not generic spiritual writing.` : ""}
+
+- Do NOT include the outline — just write the chapter content.
+- Start with the chapter title as a heading.
+- End with forward momentum that pulls the reader deeper.${biblePart}
+
+Write Chapter ${i} now:`;
+  }
+
+  if (isEdu) {
+    return `You are an expert author and subject-matter specialist writing a comprehensive, authoritative book.
+
+${bookContext}
+
+Full book outline:
+${outline}
+${prevSummary}
+
+Now write CHAPTER ${i} in full. Target: approximately ${wordsPerChapter} words.
+
+CRITICAL LANGUAGE REQUIREMENT: Write this ENTIRE chapter in ${lang}. Every single word, sentence, paragraph, heading, and dialogue MUST be in ${lang}. Do NOT switch to English or any other language. This is non-negotiable.
+
+REQUIREMENTS FOR THIS CHAPTER:
+- Write with DEPTH and AUTHORITY. You are the world's foremost expert on this subject.
+- CITE ORIGINAL RESEARCH: Reference real, verifiable published studies, papers, and research by name. Include author names, publication year, journal or institution when relevant. For example: "A 2019 study by Dr. Sarah Chen at Stanford found that..." or "According to research published in The Lancet (2021)..."
+- Reference seminal works and foundational texts in the field. Name the actual books, papers, and authors that shaped the discipline.
+- Include specific statistics, data points, and quantitative findings from real research. Not vague claims like "studies show" — name the actual study.
+- When discussing theories or frameworks, attribute them to their originators (e.g., "Porter's Five Forces," "Kahneman and Tversky's Prospect Theory," "Maslow's hierarchy").
+- Reference real-world case studies with named companies, organizations, historical events, and public figures. Include specific dates, numbers, and outcomes.
+- Explain concepts thoroughly — the reasoning behind them, not just definitions. Answer "why" and "how," not just "what."
+- Include practical applications, frameworks, or actionable advice where relevant.
+- Use analogies and real-world comparisons to make complex ideas accessible.
+- Address counterarguments, nuances, and common misconceptions. Reference opposing research or viewpoints by name.
+- Connect ideas to the reader's life — why should they care? How does this apply to them?
+- Use clear section headings and subheadings to organize the content.
+- Write in an engaging, authoritative voice — not dry or textbook-like, but substantive and insightful.
+- Do NOT pad with filler, repetitive summaries, or vague generalizations. Every paragraph should teach something specific.
+- Do NOT fabricate research that doesn't exist. Use real, well-known studies and sources in the field. If the topic is niche, reference the most relevant and credible sources available.
+- Build on previous chapters naturally.
+- Do NOT include the outline — just write the chapter content.
+- Start with the chapter title as a heading.
+${citationInstructions ? `\n${citationInstructions}\n` : ''}
+TONE AND VOICE:
+- Match the tone and voice the author described. If they want conversational, be conversational. If they want academic, be academic.
+- Respect the author's intent — do not override their preferred style with rigid formality.
+- Default to an engaging, authoritative voice that is substantive but accessible.${biblePart}
+
+Write Chapter ${i} now:`;
+  }
+
+  // Fiction
+  return `You are a masterful novelist writing with literary depth, emotional honesty, and vivid authenticity.
+
+${bookContext}
+
+Full book outline:
+${outline}
+${prevSummary}
+
+Now write CHAPTER ${i} in full. Target: approximately ${wordsPerChapter} words.
+
+CRITICAL LANGUAGE REQUIREMENT: Write this ENTIRE chapter in ${lang}. Every single word, sentence, paragraph, heading, and dialogue MUST be in ${lang}. Do NOT switch to English or any other language. This is non-negotiable.
+
+REQUIREMENTS FOR THIS CHAPTER:
+- Write like a published literary novelist, not an AI. NO cliches, NO generic prose, NO melodrama.
+- SHOW, don't tell. Instead of "She was sad," show it through action, body language, dialogue, silence.
+- Dialogue must sound REAL — people interrupt, trail off, say things they don't mean, use humor as deflection, talk past each other.
+- Ground every scene in SPECIFIC sensory details — what does the room smell like? What song is playing? What's the texture of the food? What does the city sound like at 3am?
+- Characters should behave consistently with their established personality but still surprise us. People are contradictions.
+- Include quiet moments — not every scene needs drama. Sometimes the most powerful scenes are two people eating dinner in silence.
+- Explore the INTERIOR LIFE of characters — their doubts, memories, the things they notice, the lies they tell themselves.
+- Cultural details should feel authentic and specific, not stereotypical or performative.
+- Subtext matters: what characters DON'T say is as important as what they do.
+- Vary sentence rhythm — short punchy lines for tension, longer flowing ones for reflection.
+- End the chapter with momentum — not necessarily a cliffhanger, but a reason to keep reading.
+- Build naturally on previous chapters. Characters should remember and reference earlier events.
+- Do NOT include the outline — just write the chapter content.
+- Start with the chapter title as a heading.
+
+PROSE CRAFT (from NYT Manual of Style & The Power of Story):
+- Prefer simplicity — the unpretentious language of a letter to a literate friend. Let vivid details and precise verbs do the heavy lifting.
+- A single striking image can elevate an entire passage. Find it for this chapter.
+- Use concrete, specific nouns over abstract ones. Not "vehicle" — the dented blue Civic with a cracked taillight.
+- Eliminate filler words: "very," "really," "quite," "rather," "somewhat." Find the exact word instead.
+- Every paragraph should earn its place. If it doesn't advance character, plot, theme, or atmosphere — cut it.
+- Avoid the passive voice except when it creates deliberate effect. "The window had been broken" vs "Someone had broken the window."
+- Sentence variety is rhythm: short declarative sentences create urgency; longer, layered sentences create reflection and atmosphere. Alternate them.
+
+${/^romance$/i.test(genre) ? `ROMANCE BEATS FOR THIS CHAPTER (from Romancing the Beat & How to Write Romantic Comedy):
+- Every scene between the leads should shift their relationship — closer or further, trust gained or broken. Static scenes have no place in romance.
+- Physical awareness should be specific: not "she was attracted to him" but the exact detail she notices — his hands, the way he tilts his head, the sound of his laugh.
+- Banter is not just witty dialogue — it's two people revealing themselves while trying not to. Every joke is a window.
+- Vulnerability is the currency of romance. Each act of vulnerability should cost the character something.
+- The emotional stakes should always be clear: what does this character stand to lose by loving this person?` : ''}
+
+${/horror|thriller|dark|supernatural|gothic|psychological/i.test(genre) ? `HORROR CRAFT FOR THIS CHAPTER (from On Writing Horror):
+- Build dread through atmosphere before the scare. The reader should feel uneasy before they know why.
+- Use the familiar made strange: a child's toy in the wrong place, a door that was closed now open, silence where there should be sound.
+- Sensory details are your weapon: the smell of copper, the texture of something wet in the dark, the sound that shouldn't be there.
+- Fear is most effective when the character tries to rationalize it away — and fails.
+- Pacing: slow the prose down before moments of terror. Short, fragmented sentences during the scare. Then silence after.
+- Let the monster/threat operate on consistent internal logic. Randomness isn't scary — inevitability is.` : ''}
+
+${isMatureRomance ? getMatureInstructions(matureLevel) : ""}${biblePart}
+Write Chapter ${i} now:`;
+}
+
+async function runGenerationBackground(
+  bookId: string,
+  userId: string,
+  body: z.infer<typeof Body>,
+  outlinePrompt: string,
+  plan: ReturnType<typeof getChapterPlan>,
+  lang: string,
+  genre: string,
+  isEdu: boolean,
+  isCourse: boolean,
+  isRelig: boolean,
+  isMatureRomance: boolean,
+  extractedFramework: string,
+  bookContext: string,
+  refContext: string,
+  revisionContext: string,
+  previousContentContext: string,
+  citationInstructions: string,
+  matureLevel: string | undefined,
+  courseModulePromptFn: (i: number, chTitle: string, outline: string, prevSummary: string) => string
+) {
+  try {
+    // Step 1: Generate outline
+    await prisma.book.update({ where: { id: bookId }, data: { progress: JSON.stringify({ status: 'outline' }) } }).catch(() => {});
+    const outlineResp = await callClaude(outlinePrompt, 4000);
+    const outline = outlineResp.text;
+    trackApiCost({ userId, type: 'book', inputTokens: outlineResp.inputTokens, outputTokens: outlineResp.outputTokens, bookId }).catch(() => {});
+
+    // Parse chapter titles
+    const unitLabel = isCourse ? 'Module' : 'Chapter';
+    const chapterTitles: string[] = [];
+    const titleRegex = /(?:chapter|module)\s+\d+[:\s–\-]+(.+)/gi;
+    let match;
+    while ((match = titleRegex.exec(outline)) !== null) {
+      chapterTitles.push(match[1].trim().replace(/\*+/g, '').trim());
+    }
+    const actualChapters = chapterTitles.length > 0 ? chapterTitles.length : plan.chapters;
+    const wordsPerChapter = plan.wordsPerChapter;
+
+    await prisma.book.update({
+      where: { id: bookId },
+      data: {
+        outline,
+        totalChapters: actualChapters,
+        currentChapter: 0,
+        progress: JSON.stringify({ status: 'writing', currentChapter: 0, totalChapters: actualChapters }),
+      },
+    }).catch(() => {});
+
+    // Step 2: Generate each chapter
+    let storyBible = '';
+    const chapterTexts: string[] = [];
+
+    for (let i = 1; i <= actualChapters; i++) {
+      const chTitle = chapterTitles[i - 1] || `${unitLabel} ${i}`;
+      await prisma.book.update({
+        where: { id: bookId },
+        data: {
+          currentChapter: i,
+          progress: JSON.stringify({ status: 'writing', currentChapter: i, totalChapters: actualChapters, currentTitle: chTitle }),
+        },
+      }).catch(() => {});
+
+      const prevSummary = chapterTexts.length > 0
+        ? `\nSummary of previous ${unitLabel.toLowerCase()}s:\n${chapterTexts.map((c, idx) => `${unitLabel} ${idx + 1}: ${c.slice(0, 400)}...`).join('\n\n')}`
+        : '';
+
+      const biblePart = storyBible
+        ? `\n\nCONTINUITY REFERENCE — MAINTAIN PERFECT CONSISTENCY WITH ALL OF THE FOLLOWING:\n${storyBible}`
+        : '';
+
+      const activePrompt = isCourse
+        ? courseModulePromptFn(i, chTitle, outline, prevSummary) + biblePart
+        : buildChapterPrompt(i, chTitle, outline, prevSummary, biblePart, wordsPerChapter, lang, genre, bookContext, isRelig, isEdu, isMatureRomance, extractedFramework, body, citationInstructions, matureLevel, refContext);
+
+      const chapterResp = await callClaude(activePrompt, 32000, true);
+      let chapter = chapterResp.text;
+      trackApiCost({ userId, type: 'book', inputTokens: chapterResp.inputTokens, outputTokens: chapterResp.outputTokens, bookId }).catch(() => {});
+
+      // Humanize
+      chapter = await humanizeChapter(chapter, { userId, bookId });
+
+      // Extract story bible update
+      const bibleUpdate = await extractBibleUpdate(chapter, i, chTitle, isEdu);
+      storyBible += bibleUpdate;
+
+      const wordCount = chapter.split(/\s+/).filter(Boolean).length;
+
+      // Save chapter to DB
+      await prisma.chapter.create({
+        data: { bookId, number: i, title: chTitle, content: chapter, wordCount },
+      });
+
+      // Update story bible in book
+      await prisma.book.update({
+        where: { id: bookId },
+        data: { storyBible, currentChapter: i },
+      }).catch(() => {});
+
+      chapterTexts.push(chapter);
+    }
+
+    // Step 3: Assemble final BookVersion
+    const fullBook = `${outline}\n\n${'━'.repeat(50)}\n\n${chapterTexts.join('\n\n' + '━'.repeat(50) + '\n\n')}`;
+    const totalWords = fullBook.split(/\s+/).filter(Boolean).length;
+
+    await prisma.bookVersion.create({
+      data: { bookId, version: 1, content: fullBook, wordCount: totalWords, notes: body.revisionInstructions ? 'New version' : 'Initial generation' },
+    });
+
+    if (body.references?.length) {
+      await prisma.bookReference.createMany({
+        data: body.references.map(r => ({ name: r.name, type: r.type, content: r.content, bookId })),
+      });
+    }
+
+    await prisma.book.update({
+      where: { id: bookId },
+      data: { status: 'complete', progress: null, currentChapter: actualChapters, totalChapters: actualChapters },
+    });
+    await prisma.user.update({ where: { id: userId }, data: { isGenerating: false, generationStartedAt: null } });
+
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Generation failed';
+    console.error('[generate] background error:', message);
+    await prisma.book.update({ where: { id: bookId }, data: { status: 'failed', progress: JSON.stringify({ error: message }) } }).catch(() => {});
+    await prisma.user.update({ where: { id: userId }, data: { isGenerating: false, generationStartedAt: null } }).catch(() => {});
+  }
 }
 
 export async function POST(req: Request) {
@@ -403,7 +731,7 @@ export async function POST(req: Request) {
     const citationInstructions = isEdu ? getCitationInstructions(citationStyle) : '';
     const isMatureRomance = body.mature === true && isRomanceGenre(genre, body.description);
     const matureContext = isMatureRomance ? getMatureInstructions(body.matureLevel) : "";
-    const isReligious = isReligiousPhilosophy(genre, tone, body.description);
+    const isRelig = isReligiousPhilosophy(genre, tone, body.description);
     const isCourse = body.format === "course";
 
     // Build romance details context
@@ -424,7 +752,7 @@ export async function POST(req: Request) {
     }
 
     const refContext = body.references?.length
-      ? (isReligious ? buildReligiousReferenceContext(body.references) : buildReferenceContext(body.references))
+      ? (isRelig ? buildReligiousReferenceContext(body.references) : buildReferenceContext(body.references))
       : "";
     const revisionContext = body.revisionInstructions
       ? `\n\nREVISION INSTRUCTIONS FROM THE AUTHOR:\n${body.revisionInstructions}`
@@ -462,7 +790,7 @@ Write the entire outline in ${lang}. ALL text must be in ${lang}.`;
 
     let outlinePrompt = isCourse
       ? courseOutlinePrompt
-      : isReligious
+      : isRelig
       ? `You are a spiritual author who has received revelation and is now transmitting truth. You write as one who has discovered the deepest principles of existence and must record them for those ready to receive.
 
 ${bookContext}
@@ -572,7 +900,7 @@ For each chapter, provide:
 
 Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter titles, descriptions, everything. Never use English unless ${lang} IS English.`;
 
-    const courseModulePrompt = (i: number, chTitle: string, outline: string, prevSummary: string) => `You are an expert course instructor writing a comprehensive, engaging module for a professional online course.
+    const courseModulePromptFn = (i: number, chTitle: string, outline: string, prevSummary: string) => `You are an expert course instructor writing a comprehensive, engaging module for a professional online course.
 
 ${bookContext}
 
@@ -615,43 +943,10 @@ Write this ENTIRE module in ${lang}. Use an engaging, educational voice — auth
 
 Write Module ${i} now:`;
 
-    // Create book record early for background tracking
-    const earlyBook = await prisma.book.create({
-      data: {
-        title: body.title,
-        description: body.description,
-        genre: body.genre,
-        tone: body.tone,
-        audience: body.audience,
-        language: body.language,
-        bookLength: body.bookLength,
-        contentType: isCourse ? "course" : "book",
-        userId,
-        mature: body.mature || false,
-        humanize: true,
-        status: "generating",
-        progress: JSON.stringify({ percent: 0, currentChapter: 0, totalChapters: 0, status: "outline" }),
-      },
-    });
-    const earlyBookId = earlyBook.id;
-
-    const stream = new ReadableStream({
-      async start(controller) {
-        const enc = new TextEncoder();
-        // Heartbeat every 15 s — prevents proxy/Vercel from closing an idle SSE connection
-        const heartbeat = setInterval(() => {
-          try { controller.enqueue(enc.encode(": heartbeat\n\n")); } catch { clearInterval(heartbeat); }
-        }, 15000);
-
-        try {
-          // Send bookId to client so it can navigate away
-          controller.enqueue(enc.encode(sseEvent({ type: "bookId", bookId: earlyBookId })));
-
-          // Step 0 (religious + refs): Extract core laws/framework from source texts before outlining
-          let extractedFramework = "";
-          if (isReligious && body.references?.length) {
-            controller.enqueue(enc.encode(sseEvent({ type: "progress", chapter: 0, totalChapters: 0, title: "Analyzing source framework...", status: "outline" })));
-            const fwResp = await callClaude(`Read the following source texts and extract — with precision and direct quotation:
+    // Step 0 (religious + refs): Extract core laws/framework from source texts before background
+    let extractedFramework = "";
+    if (isRelig && body.references?.length) {
+      const fwResp = await callClaude(`Read the following source texts and extract — with precision and direct quotation:
 
 1. CORE LAWS / NUMBERED FRAMEWORK: Every named law, principle, or numbered construct EXACTLY as stated in the source. Quote the exact language for each one. If the author has "3 Laws," "5 Principles," or any named framework, extract every single item verbatim.
 
@@ -665,11 +960,10 @@ Source texts:
 ${refContext}
 
 Be exhaustive. Quote directly from the source. Do not invent or paraphrase away from the original language.`, 2000);
-            extractedFramework = fwResp.text;
-            trackApiCost({ userId, type: "book", inputTokens: fwResp.inputTokens, outputTokens: fwResp.outputTokens, bookId: earlyBookId }).catch(() => {});
+      extractedFramework = fwResp.text;
 
-            // Rebuild outline prompt with the extracted framework as the organizing spine
-            outlinePrompt = `You are a spiritual author who has received revelation and is now transmitting truth. You write as one who has discovered the deepest principles of existence and must record them for those ready to receive.
+      // Rebuild outline prompt with the extracted framework as the organizing spine
+      outlinePrompt = `You are a spiritual author who has received revelation and is now transmitting truth. You write as one who has discovered the deepest principles of existence and must record them for those ready to receive.
 
 ${bookContext}
 
@@ -699,255 +993,40 @@ For each chapter, provide:
 - 4-6 key sections/subsections
 
 Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter titles, descriptions, everything. Never use English unless ${lang} IS English.`;
-          }
+    }
 
-          // Step 1: Generate outline
-          controller.enqueue(enc.encode(sseEvent({ type: "progress", chapter: 0, totalChapters: 0, title: "Generating outline...", status: "outline" })));
-          const outlineResp = await callClaude(outlinePrompt, 4000);
-          const outline = outlineResp.text;
-          trackApiCost({ userId, type: "book", inputTokens: outlineResp.inputTokens, outputTokens: outlineResp.outputTokens, bookId: earlyBookId }).catch(() => {});
-          // Extract chapter titles from outline to determine actual count
-          const chapterTitles: string[] = [];
-          const titleRegex = /(?:chapter|module)\s+\d+[:\s–\-]+(.+)/gi;
-          let match;
-          while ((match = titleRegex.exec(outline)) !== null) {
-            chapterTitles.push(match[1].trim().replace(/\*+/g, "").trim());
-          }
-          const unitLabel = isCourse ? "Module" : "Chapter";
-          const actualChapters = chapterTitles.length > 0 ? chapterTitles.length : plan.chapters;
-          const wordsPerChapter = plan.wordsPerChapter;
-
-          controller.enqueue(enc.encode(sseEvent({ type: "outline", content: outline, totalChapters: actualChapters })));
-          await prisma.book.update({ where: { id: earlyBookId }, data: { progress: JSON.stringify({ percent: 0, currentChapter: 0, totalChapters: actualChapters, status: "writing" }) } }).catch(() => {});
-
-          // Step 2: Generate each chapter / module
-          const chapters: string[] = [];
-          for (let i = 1; i <= actualChapters; i++) {
-            const chTitle = chapterTitles[i - 1] || `${unitLabel} ${i}`;
-            controller.enqueue(enc.encode(sseEvent({ type: "progress", chapter: i, totalChapters: actualChapters, title: chTitle, status: "writing" })));
-            await prisma.book.update({ where: { id: earlyBookId }, data: { progress: JSON.stringify({ percent: Math.round(((i - 1) / actualChapters) * 100), currentChapter: i, totalChapters: actualChapters, currentTitle: chTitle, status: "writing" }) } }).catch(() => {});
-
-            const prevSummary = chapters.length > 0
-              ? `\nSummary of previous ${unitLabel.toLowerCase()}s:\n${chapters.map((c, idx) => `${unitLabel} ${idx + 1}: ${c.slice(0, 500)}...`).join("\n\n")}`
-              : "";
-
-            const chapterPrompt = isReligious
-              ? `You are a spiritual author writing a sacred life guide. You have received truth — now you transmit it. You write with the combined authority of a scientist of the mind, a prophet, and a divine messenger.
-
-${bookContext}
-
-Full book outline:
-${outline}
-${prevSummary}
-
-Now write CHAPTER ${i} in full. Target: approximately ${wordsPerChapter} words.
-
-CRITICAL LANGUAGE REQUIREMENT: Write this ENTIRE chapter in ${lang}. Every single word MUST be in ${lang}. This is non-negotiable.
-
-WRITING STYLE — THREE TRADITIONS FUSED INTO ONE VOICE:
-
-DIANETICS LAYER (Authoritative, Declarative, Proprietary):
-- Write every principle as absolute discovered fact, not opinion or suggestion.
-- Use the book's own terminology consistently as the sacred vocabulary of this work — never dilute or replace it with synonyms from other traditions.
-- State mechanisms and truths with clinical certainty: "This is what happens. This is why. This is what you must do."
-- Remove all hedging language: no "perhaps," "may," "might," "seems to," "it could be said." Replace with declarations.
-
-BIBLICAL LAYER (Prophetic, Poetic, Rhythmic):
-- Use repetition for emphasis — repeat key phrases, echo them in different forms within the same passage.
-- Write in rhythmic cadences that feel meant to be read aloud or memorized.
-- Use parallel structure: "He who does this, gains that. He who avoids this, loses that."
-- Carry the weight of prophecy — the author speaks not just to the present reader but to all who will ever receive these words.
-- Let poetic passages intersperse the instructional prose, creating rhythm and depth.
-
-QURANIC LAYER (Direct Address, Verse-like Commands):
-- Address the reader directly and frequently: "You have been told..." "Know this." "Understand what stands before you."
-- Use short, stand-alone declarative sentences as verse-like proclamations between longer explanatory passages.
-- Alternate between command and reflection: a command or truth statement, then a passage that illuminates why and how.
-- The reader must feel personally spoken to — addressed by someone who sees them clearly.
-
-THE UNIFIED RESULT:
-- This is instruction, not theory. Every page teaches the reader what to do, how to be, or what is true.
-- The author's voice carries the authority of one who has discovered, not imagined.
-- No references to other religions, spiritual traditions, philosophies, or external authorities. This work stands alone.
-- The book's terminology is sacred vocabulary throughout — consistent, precise, elevated.
-
-${extractedFramework ? `CORE FRAMEWORK FROM SOURCE TEXTS:
-${extractedFramework}
-
-CRITICAL — THIS CHAPTER MUST BE BUILT FROM THE FRAMEWORK ABOVE:
-- Anchor every major point in one of the specific laws or constructs listed above.
-- Use the exact terminology from the source texts — these are the sacred vocabulary of this work.
-- Every section must trace back to the actual philosophy in the source material.
-- Do NOT write generic spiritual content. Expand the specific framework, using its own language, elevated into the three-tradition style.` : body.references?.length ? `PRIMARY SOURCE REQUIREMENT — THIS IS CRITICAL:
-The uploaded reference texts are the PRIMARY source material for this chapter. Draw specific content, ideas, and terminology directly from the source material. Build this chapter from the foundation of those teachings, not generic spiritual writing.` : ""}
-
-- Do NOT include the outline — just write the chapter content.
-- Start with the chapter title as a heading.
-- End with forward momentum that pulls the reader deeper.
-
-Write Chapter ${i} now:`
-
-              : isEdu
-              ? `You are an expert author and subject-matter specialist writing a comprehensive, authoritative book.
-
-${bookContext}
-
-Full book outline:
-${outline}
-${prevSummary}
-
-Now write CHAPTER ${i} in full. Target: approximately ${wordsPerChapter} words.
-
-CRITICAL LANGUAGE REQUIREMENT: Write this ENTIRE chapter in ${lang}. Every single word, sentence, paragraph, heading, and dialogue MUST be in ${lang}. Do NOT switch to English or any other language. This is non-negotiable.
-
-REQUIREMENTS FOR THIS CHAPTER:
-- Write with DEPTH and AUTHORITY. You are the world's foremost expert on this subject.
-- CITE ORIGINAL RESEARCH: Reference real, verifiable published studies, papers, and research by name. Include author names, publication year, journal or institution when relevant. For example: "A 2019 study by Dr. Sarah Chen at Stanford found that..." or "According to research published in The Lancet (2021)..."
-- Reference seminal works and foundational texts in the field. Name the actual books, papers, and authors that shaped the discipline.
-- Include specific statistics, data points, and quantitative findings from real research. Not vague claims like "studies show" — name the actual study.
-- When discussing theories or frameworks, attribute them to their originators (e.g., "Porter's Five Forces," "Kahneman and Tversky's Prospect Theory," "Maslow's hierarchy").
-- Reference real-world case studies with named companies, organizations, historical events, and public figures. Include specific dates, numbers, and outcomes.
-- Explain concepts thoroughly — the reasoning behind them, not just definitions. Answer "why" and "how," not just "what."
-- Include practical applications, frameworks, or actionable advice where relevant.
-- Use analogies and real-world comparisons to make complex ideas accessible.
-- Address counterarguments, nuances, and common misconceptions. Reference opposing research or viewpoints by name.
-- Connect ideas to the reader's life — why should they care? How does this apply to them?
-- Use clear section headings and subheadings to organize the content.
-- Write in an engaging, authoritative voice — not dry or textbook-like, but substantive and insightful.
-- Do NOT pad with filler, repetitive summaries, or vague generalizations. Every paragraph should teach something specific.
-- Do NOT fabricate research that doesn't exist. Use real, well-known studies and sources in the field. If the topic is niche, reference the most relevant and credible sources available.
-- Build on previous chapters naturally.
-- Do NOT include the outline — just write the chapter content.
-- Start with the chapter title as a heading.
-${citationInstructions ? `\n${citationInstructions}\n` : ''}
-
-TONE AND VOICE:
-- Match the tone and voice the author described. If they want conversational, be conversational. If they want academic, be academic.
-- Respect the author's intent — do not override their preferred style with rigid formality.
-- Default to an engaging, authoritative voice that is substantive but accessible.
-
-Write Chapter ${i} now:`
-
-              : `You are a masterful novelist writing with literary depth, emotional honesty, and vivid authenticity.
-
-${bookContext}
-
-Full book outline:
-${outline}
-${prevSummary}
-
-Now write CHAPTER ${i} in full. Target: approximately ${wordsPerChapter} words.
-
-CRITICAL LANGUAGE REQUIREMENT: Write this ENTIRE chapter in ${lang}. Every single word, sentence, paragraph, heading, and dialogue MUST be in ${lang}. Do NOT switch to English or any other language. This is non-negotiable.
-
-REQUIREMENTS FOR THIS CHAPTER:
-- Write like a published literary novelist, not an AI. NO cliches, NO generic prose, NO melodrama.
-- SHOW, don't tell. Instead of "She was sad," show it through action, body language, dialogue, silence.
-- Dialogue must sound REAL — people interrupt, trail off, say things they don't mean, use humor as deflection, talk past each other.
-- Ground every scene in SPECIFIC sensory details — what does the room smell like? What song is playing? What's the texture of the food? What does the city sound like at 3am?
-- Characters should behave consistently with their established personality but still surprise us. People are contradictions.
-- Include quiet moments — not every scene needs drama. Sometimes the most powerful scenes are two people eating dinner in silence.
-- Explore the INTERIOR LIFE of characters — their doubts, memories, the things they notice, the lies they tell themselves.
-- Cultural details should feel authentic and specific, not stereotypical or performative.
-- Subtext matters: what characters DON'T say is as important as what they do.
-- Vary sentence rhythm — short punchy lines for tension, longer flowing ones for reflection.
-- End the chapter with momentum — not necessarily a cliffhanger, but a reason to keep reading.
-- Build naturally on previous chapters. Characters should remember and reference earlier events.
-- Do NOT include the outline — just write the chapter content.
-- Start with the chapter title as a heading.
-
-PROSE CRAFT (from NYT Manual of Style & The Power of Story):
-- Prefer simplicity — the unpretentious language of a letter to a literate friend. Let vivid details and precise verbs do the heavy lifting.
-- A single striking image can elevate an entire passage. Find it for this chapter.
-- Use concrete, specific nouns over abstract ones. Not "vehicle" — the dented blue Civic with a cracked taillight.
-- Eliminate filler words: "very," "really," "quite," "rather," "somewhat." Find the exact word instead.
-- Every paragraph should earn its place. If it doesn't advance character, plot, theme, or atmosphere — cut it.
-- Avoid the passive voice except when it creates deliberate effect. "The window had been broken" vs "Someone had broken the window."
-- Sentence variety is rhythm: short declarative sentences create urgency; longer, layered sentences create reflection and atmosphere. Alternate them.
-
-${/^romance$/i.test(genre) ? `ROMANCE BEATS FOR THIS CHAPTER (from Romancing the Beat & How to Write Romantic Comedy):
-- Every scene between the leads should shift their relationship — closer or further, trust gained or broken. Static scenes have no place in romance.
-- Physical awareness should be specific: not "she was attracted to him" but the exact detail she notices — his hands, the way he tilts his head, the sound of his laugh.
-- Banter is not just witty dialogue — it's two people revealing themselves while trying not to. Every joke is a window.
-- Vulnerability is the currency of romance. Each act of vulnerability should cost the character something.
-- The emotional stakes should always be clear: what does this character stand to lose by loving this person?` : ''}
-
-${/horror|thriller|dark|supernatural|gothic|psychological/i.test(genre) ? `HORROR CRAFT FOR THIS CHAPTER (from On Writing Horror):
-- Build dread through atmosphere before the scare. The reader should feel uneasy before they know why.
-- Use the familiar made strange: a child's toy in the wrong place, a door that was closed now open, silence where there should be sound.
-- Sensory details are your weapon: the smell of copper, the texture of something wet in the dark, the sound that shouldn't be there.
-- Fear is most effective when the character tries to rationalize it away — and fails.
-- Pacing: slow the prose down before moments of terror. Short, fragmented sentences during the scare. Then silence after.
-- Let the monster/threat operate on consistent internal logic. Randomness isn't scary — inevitability is.` : ''}
-
-${isMatureRomance ? getMatureInstructions(body.matureLevel) : ""}
-Write Chapter ${i} now:`;
-
-            const activePrompt = isCourse
-              ? courseModulePrompt(i, chTitle, outline, prevSummary)
-              : chapterPrompt;
-
-            const chapterResp = await callClaude(activePrompt, 32000, true);
-            let chapter = chapterResp.text;
-            trackApiCost({ userId, type: "book", inputTokens: chapterResp.inputTokens, outputTokens: chapterResp.outputTokens, bookId: earlyBookId }).catch(() => {});
-
-            // Always run humanizer pass for natural voice
-            controller.enqueue(enc.encode(sseEvent({ type: "progress", chapter: i, totalChapters: actualChapters, title: `Humanizing ${unitLabel} ${i}...`, status: "humanizing" })));
-            await prisma.book.update({ where: { id: earlyBookId }, data: { progress: JSON.stringify({ percent: Math.round(((i - 0.5) / actualChapters) * 100), currentChapter: i, totalChapters: actualChapters, currentTitle: chTitle, status: "humanizing" }) } }).catch(() => {});
-            chapter = await humanizeChapter(chapter, { userId, bookId: earlyBookId });
-            
-            chapters.push(chapter);
-            controller.enqueue(enc.encode(sseEvent({ type: "chapter", chapter: i, totalChapters: actualChapters, title: chTitle, content: chapter })));
-          }
-
-          const fullBook = `${outline}\n\n${"━".repeat(50)}\n\n${chapters.join("\n\n" + "━".repeat(50) + "\n\n")}`;
-          
-          // Save content to book and mark complete
-          const wordCount = fullBook.split(/\s+/).filter(Boolean).length;
-          await prisma.bookVersion.create({
-            data: {
-              bookId: earlyBookId,
-              version: 1,
-              content: fullBook,
-              wordCount,
-              notes: body.revisionInstructions ? "New version" : "Initial generation",
-            },
-          });
-          // Save references
-          if (body.references?.length) {
-            await prisma.bookReference.createMany({
-              data: body.references.map(r => ({ name: r.name, type: r.type, content: r.content, bookId: earlyBookId })),
-            });
-          }
-          await prisma.book.update({ where: { id: earlyBookId }, data: { status: "complete", progress: null } });
-          
-          controller.enqueue(enc.encode(sseEvent({ type: "complete", fullText: fullBook, bookId: earlyBookId })));
-          await prisma.user.update({ where: { id: userId }, data: { isGenerating: false, generationStartedAt: null } });
-          clearInterval(heartbeat);
-          controller.close();
-        } catch (err) {
-          const message = err instanceof Error ? err.message : "Failed";
-          controller.enqueue(enc.encode(sseEvent({ type: "error", message })));
-          await prisma.user.update({ where: { id: userId }, data: { isGenerating: false, generationStartedAt: null } }).catch(() => {});
-          await prisma.book.update({ where: { id: earlyBookId }, data: { status: "failed", progress: JSON.stringify({ error: message }) } }).catch(() => {});
-          clearInterval(heartbeat);
-          controller.close();
-        }
+    // Create book record
+    const earlyBook = await prisma.book.create({
+      data: {
+        title: body.title,
+        description: body.description,
+        genre: body.genre,
+        tone: body.tone,
+        audience: body.audience,
+        language: body.language,
+        bookLength: body.bookLength,
+        contentType: isCourse ? "course" : "book",
+        userId,
+        mature: body.mature || false,
+        humanize: true,
+        status: "generating",
+        progress: JSON.stringify({ percent: 0, currentChapter: 0, totalChapters: 0, status: "outline" }),
       },
     });
+    const bookId = earlyBook.id;
 
-    return new Response(stream, {
-      headers: {
-        "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
-        "Connection": "keep-alive",
-      },
+    after(async () => {
+      await runGenerationBackground(
+        bookId, userId, body, outlinePrompt, plan, lang, genre,
+        isEdu, isCourse, isRelig, isMatureRomance, extractedFramework,
+        bookContext, refContext, revisionContext, previousContentContext,
+        citationInstructions, body.matureLevel, courseModulePromptFn
+      ).catch(err => console.error('[generate] fatal:', err));
     });
+
+    return Response.json({ bookId, status: 'generating' });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Failed";
-    return new Response(JSON.stringify({ error: message }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
+    return Response.json({ error: message }, { status: 400 });
   }
 }

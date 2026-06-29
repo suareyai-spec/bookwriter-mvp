@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, Suspense, useCallback } from "react";
 import { useSession } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import UpsellModal from "@/components/UpsellModal";
 import Link from "next/link";
@@ -73,6 +73,7 @@ export default function Home() {
 
 function HomeContent() {
   const { data: session } = useSession();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const bookIdParam = searchParams.get("bookId");
   const isNewVersion = searchParams.get("newVersion") === "true";
@@ -198,6 +199,7 @@ function HomeContent() {
   const [startTime, setStartTime] = useState<number>(0);
   const [chapterTimes, setChapterTimes] = useState<number[]>([]);
   const [generatingBookId, setGeneratingBookId] = useState<string | null>(null);
+  const [pollingStatus, setPollingStatus] = useState<any>(null);
   const previewRef = useRef<HTMLDivElement>(null);
 
   const doneCount = chapters.filter(c => c.status === "done").length;
@@ -254,206 +256,59 @@ function HomeContent() {
   async function generate() {
     if (!title.trim() || !description.trim()) return;
     setStep("generating");
-    setResult("");
     setError("");
-    setSaved(false);
-    setOutline("");
-    setChapters([]);
-    setCurrentChapter(0);
-    setTotalChapters(0);
-    setStatusText("Generating outline...");
-    setStartTime(Date.now());
-    setChapterTimes([]);
 
     try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 600000);
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, description, genre, tone, audience, bookLength, language, references, mature, format, matureLevel: mature ? matureLevel : undefined, subGenre: subGenre || undefined, romanceSubGenre: isRomance && romanceSubGenre ? romanceSubGenre : undefined, relationshipDynamic: isRomance && relationshipDynamic ? relationshipDynamic : undefined, leadOne: isRomance && (leadOneName || leadOneTraits) ? { name: leadOneName, traits: leadOneTraits } : undefined, leadTwo: isRomance && (leadTwoName || leadTwoTraits) ? { name: leadTwoName, traits: leadTwoTraits } : undefined }),
-        signal: controller.signal,
       });
-      clearTimeout(timeout);
-
-      if (!res.ok || !res.body) {
-        const data = await res.json().catch(() => ({ error: "Failed to connect" }));
+      const data = await res.json();
+      if (!res.ok) {
         if (data.needsSubscription || data.needsCredit) {
           setUpsellMessage(data.error);
           setUpsellSize(data.creditSize || "any");
           setUpsellOpen(true);
         } else {
-          setError(data.error || "Generation failed");
+          setError(data.error || "Failed to start generation");
         }
         setStep("input");
         return;
       }
-
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-      let chapterStartTime = Date.now();
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buffer += decoder.decode(value, { stream: true });
-
-        const lines = buffer.split("\n\n");
-        buffer = lines.pop() || "";
-
-        for (const line of lines) {
-          const trimmed = line.trim();
-          if (!trimmed.startsWith("data: ")) continue;
-          const jsonStr = trimmed.slice(6);
-          let event: Record<string, unknown>;
-          try {
-            event = JSON.parse(jsonStr);
-          } catch {
-            continue;
-          }
-
-          switch (event.type) {
-            case "bookId": {
-              setGeneratingBookId(event.bookId as string);
-              break;
-            }
-            case "progress": {
-              const tc = event.totalChapters as number;
-              setTotalChapters(tc);
-              if (event.status === "outline") {
-                setStatusText("Generating outline...");
-              } else {
-                const ch = event.chapter as number;
-                setCurrentChapter(ch);
-                setStatusText(`Writing ${format === "course" ? "Module" : "Chapter"} ${ch}: ${event.title}...`);
-                chapterStartTime = Date.now();
-                setChapters(prev => {
-                  const updated = [...prev];
-                  // Initialize pending chapters if needed
-                  while (updated.length < tc) {
-                    updated.push({ number: updated.length + 1, title: `Chapter ${updated.length + 1}`, status: "pending" });
-                  }
-                  if (updated[ch - 1]) {
-                    updated[ch - 1] = { ...updated[ch - 1], title: event.title as string, status: "writing" };
-                  }
-                  return updated;
-                });
-              }
-              break;
-            }
-            case "outline": {
-              setOutline(event.content as string);
-              const tc = event.totalChapters as number;
-              setTotalChapters(tc);
-              setStatusText("Outline complete. Starting chapters...");
-              // Try to extract chapter titles from outline
-              const titles: string[] = [];
-              const regex = /(?:chapter|module)\s+\d+[:\s–\-]+(.+)/gi;
-              let m;
-              while ((m = regex.exec(event.content as string)) !== null) {
-                titles.push(m[1].trim().replace(/\*+/g, "").trim());
-              }
-              const unitLabel = format === "course" ? "Module" : "Chapter";
-              const initial: ChapterInfo[] = [];
-              for (let i = 0; i < tc; i++) {
-                initial.push({ number: i + 1, title: titles[i] || `${unitLabel} ${i + 1}`, status: "pending" });
-              }
-              setChapters(initial);
-              break;
-            }
-            case "chapter": {
-              const ch = event.chapter as number;
-              const elapsed = Date.now() - chapterStartTime;
-              setChapterTimes(prev => [...prev, elapsed]);
-              setChapters(prev => {
-                const updated = [...prev];
-                if (updated[ch - 1]) {
-                  updated[ch - 1] = { ...updated[ch - 1], title: event.title as string, status: "done", content: event.content as string };
-                }
-                return updated;
-              });
-              break;
-            }
-            case "complete": {
-              const fullText = event.fullText as string;
-              setResult(fullText);
-              setStep("result");
-              // Book is now auto-saved by the API with the bookId
-              if (event.bookId) {
-                setGeneratingBookId(event.bookId as string);
-                setSaved(true);
-              }
-              break;
-            }
-            case "error": {
-              setError(event.message as string);
-              setStep("input");
-              break;
-            }
-          }
-        }
-      }
-    } catch (e) {
-      if (e instanceof DOMException && e.name === "AbortError") {
-        setError("Generation timed out. Try a shorter book length.");
-        setStep("input");
-      } else if (generatingBookId) {
-        // Stream dropped but book is generating in background — poll for completion
-        setStatusText("Reconnecting...");
-        pollForCompletion(generatingBookId);
-      } else {
-        setError("Network error — please try again. Longer books may take 3-8 minutes.");
-        setStep("input");
-      }
+      setGeneratingBookId(data.bookId);
+      setPollingStatus(null);
+      // Polling starts via useEffect
+    } catch {
+      setError("Network error. Please try again.");
+      setStep("input");
     }
   }
 
-  async function pollForCompletion(bookId: string) {
-    const maxAttempts = 180; // 15 minutes max
-    for (let i = 0; i < maxAttempts; i++) {
-      await new Promise(r => setTimeout(r, 5000));
+  // Polling useEffect for background generation
+  useEffect(() => {
+    if (step !== "generating" || !generatingBookId) return;
+
+    const poll = async () => {
       try {
-        const res = await fetch(`/api/books/${bookId}/status`);
-        if (!res.ok) continue;
+        const res = await fetch(`/api/books/${generatingBookId}/status`);
+        if (!res.ok) return;
         const data = await res.json();
+        setPollingStatus(data);
         if (data.status === "complete") {
-          // Fetch the full book content
-          const bookRes = await fetch(`/api/books/${bookId}`);
-          if (bookRes.ok) {
-            const book = await bookRes.json();
-            setResult(book.content || "");
-            setStep("result");
-            setSaved(true);
-          } else {
-            // Still complete, just redirect to library
-            window.location.href = `/library/${bookId}`;
-          }
-          return;
+          router.push(`/library/${generatingBookId}`);
         } else if (data.status === "failed") {
-          setError("Generation failed. Please try again.");
+          const errMsg = data.progressStatus === "failed" ? "Generation failed" : "Generation failed";
+          setError(errMsg);
           setStep("input");
-          return;
         }
-        // Still generating — update progress
-        if (data.progress) {
-          try {
-            const prog = typeof data.progress === "string" ? JSON.parse(data.progress) : data.progress;
-            if (prog.chapter && prog.totalChapters) {
-              setStatusText(`Writing Chapter ${prog.chapter} of ${prog.totalChapters}...`);
-              setCurrentChapter(prog.chapter);
-              setTotalChapters(prog.totalChapters);
-            }
-          } catch {}
-        }
-      } catch {
-        // Network error during poll — keep trying
-        setStatusText("Connection lost. Retrying...");
-      }
-    }
-    setError("Generation is taking longer than expected. Check your library for the completed book.");
-    setStep("input");
-  }
+      } catch {}
+    };
+
+    poll(); // immediate first poll
+    const interval = setInterval(poll, 10000);
+    return () => clearInterval(interval);
+  }, [step, generatingBookId, router]);
 
   async function generateSeries() {
     if (!title.trim() || !description.trim()) return;
@@ -1055,90 +910,70 @@ function HomeContent() {
           </div>
         )}
 
-        {/* Generating State — Progress UI */}
+        {/* Generating State — Polling UI */}
         {step === "generating" && (
           <div className="mx-auto max-w-3xl px-4 py-8 pb-20">
             <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 sm:p-8 shadow-2xl">
-              {/* Header */}
               <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold mb-1" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-                  Writing &ldquo;{title}&rdquo;
-                </h2>
-                <p className="text-gray-400 text-sm">{statusText}</p>
+                <h2 className="text-2xl font-bold mb-1" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>{title}</h2>
+                <p className="text-gray-400 text-sm">
+                  {!pollingStatus && "Starting generation..."}
+                  {pollingStatus?.progressStatus === "outline" && "Generating outline..."}
+                  {pollingStatus?.progressStatus === "writing" && pollingStatus.currentTitle
+                    ? `Writing ${format === "course" ? "Module" : "Chapter"} ${pollingStatus.currentChapter}: ${pollingStatus.currentTitle}`
+                    : pollingStatus?.progressStatus === "writing" ? `Writing ${format === "course" ? "module" : "chapter"} ${pollingStatus.currentChapter} of ${pollingStatus.totalChapters}...` : ""}
+                </p>
               </div>
 
-              {/* Progress Bar */}
+              {/* Progress bar */}
               <div className="mb-6">
-                <div className="flex justify-between items-center mb-2 text-sm">
-                  <span className="text-gray-400">{progressPercent}% complete</span>
-                  {estimatedRemaining() && (
-                    <span className="text-gray-500">Est. remaining: {estimatedRemaining()}</span>
+                <div className="flex justify-between text-sm mb-2">
+                  <span className="text-gray-400">{pollingStatus?.percentComplete || 0}% complete</span>
+                  {pollingStatus?.totalChapters > 0 && (
+                    <span className="text-gray-500">{pollingStatus.currentChapter} / {pollingStatus.totalChapters} {format === "course" ? "modules" : "chapters"}</span>
                   )}
                 </div>
                 <div className="w-full h-3 bg-white/[0.06] rounded-full overflow-hidden">
                   <div
-                    className="h-full rounded-full relative overflow-hidden bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 transition-all duration-700 ease-out"
-                    style={{ width: `${Math.max(progressPercent, 4)}%` }}
+                    className="h-full rounded-full relative overflow-hidden bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 transition-all duration-1000"
+                    style={{ width: `${Math.max(pollingStatus?.percentComplete || 0, 4)}%` }}
                   >
                     <div className="animate-progress-shimmer absolute inset-0" />
                   </div>
                 </div>
-                <div className="text-right mt-1 text-xs text-gray-600">
-                  {totalChapters > 0
-                    ? `${doneCount} / ${totalChapters} ${format === "course" ? "modules" : "chapters"}`
-                    : "Generating outline..."}
-                </div>
               </div>
 
-              {/* Chapter Checklist */}
-              {chapters.length > 0 && (
-                <div className="mb-6 max-h-48 overflow-y-auto pr-2">
+              {/* Chapter checklist */}
+              {pollingStatus?.chapters?.length > 0 && (
+                <div className="mb-6 max-h-48 overflow-y-auto">
                   <div className="space-y-1.5">
-                    {chapters.map((ch) => (
+                    {pollingStatus.chapters.map((ch: any) => (
                       <div key={ch.number} className="flex items-center gap-3 text-sm">
-                        {ch.status === "done" && (
-                          <span className="flex-shrink-0 w-5 h-5 rounded-full bg-green-500/20 border border-green-500/40 flex items-center justify-center text-green-400 text-xs">✓</span>
-                        )}
-                        {ch.status === "writing" && (
-                          <span className="flex-shrink-0 w-5 h-5 rounded-full border-2 border-blue-400/60 border-t-transparent animate-spin" />
-                        )}
-                        {ch.status === "pending" && (
-                          <span className="flex-shrink-0 w-5 h-5 rounded-full bg-white/[0.04] border border-white/[0.08]" />
-                        )}
-                        <span className={ch.status === "done" ? "text-gray-300" : ch.status === "writing" ? "text-blue-300 font-medium" : "text-gray-600"}>
-                          Ch. {ch.number}: {ch.title}
-                        </span>
+                        <span className="flex-shrink-0 w-5 h-5 rounded-full bg-green-500/20 border border-green-500/40 flex items-center justify-center text-green-400 text-xs">✓</span>
+                        <span className="text-gray-300">{format === "course" ? "Module" : "Ch."} {ch.number}: {ch.title}</span>
+                        {ch.wordCount && <span className="text-gray-600 text-xs ml-auto">{ch.wordCount.toLocaleString()}w</span>}
                       </div>
                     ))}
+                    {pollingStatus.currentChapter > (pollingStatus.chapters?.length || 0) && (
+                      <div className="flex items-center gap-3 text-sm">
+                        <span className="flex-shrink-0 w-5 h-5 rounded-full border-2 border-blue-400/60 border-t-transparent animate-spin" />
+                        <span className="text-blue-300 font-medium">{format === "course" ? "Module" : "Ch."} {pollingStatus.currentChapter}: {pollingStatus.currentTitle}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
 
-              {/* Live Preview */}
-              <div className="border-t border-white/[0.06] pt-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
-                  <span className="text-xs text-gray-500 uppercase tracking-wider font-medium">Live Preview</span>
+              <p className="text-center text-xs text-gray-600 mt-4">
+                Generation runs in the background — you can close this tab and check your library later.
+              </p>
+              {generatingBookId && (
+                <div className="text-center mt-3">
+                  <a href={`/library/${generatingBookId}`} className="text-xs text-blue-400 hover:text-blue-300">
+                    View in library →
+                  </a>
                 </div>
-                <div ref={previewRef} className="max-h-[50vh] overflow-y-auto bg-white/[0.02] rounded-xl p-4 text-sm text-gray-400 leading-relaxed whitespace-pre-wrap">
-                  {outline && (
-                    <div className="mb-4">
-                      <div className="text-xs text-blue-400 uppercase tracking-wider mb-2 font-medium">Outline</div>
-                      {outline}
-                    </div>
-                  )}
-                  {chapters.filter(c => c.content).map((ch) => (
-                    <div key={ch.number} className="mb-4 border-t border-white/[0.04] pt-4">
-                      <div className="text-xs text-purple-400 uppercase tracking-wider mb-2 font-medium">Chapter {ch.number}</div>
-                      {ch.content}
-                    </div>
-                  ))}
-                  {!outline && <span className="text-gray-600">Waiting for content...</span>}
-                </div>
-              </div>
-
-              {/* Keep tab open notice */}
-              <p className="text-center text-xs text-gray-600 mt-4">Please keep this tab open. Do not refresh.</p>
+              )}
             </div>
           </div>
         )}

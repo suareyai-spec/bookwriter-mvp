@@ -16,6 +16,17 @@ interface Version {
   createdAt: string;
 }
 
+interface Chapter {
+  id: string;
+  bookId: string;
+  number: number;
+  title: string;
+  content: string;
+  wordCount: number | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface BookReference {
   id: string;
   name: string;
@@ -134,6 +145,14 @@ export default function BookDetailPage() {
   const [revisionMature, setRevisionMature] = useState(false);
   const [aiOpen, setAiOpen] = useState(false);
 
+  // Chapter view state
+  const [viewMode, setViewMode] = useState<'read' | 'chapters' | 'edit'>('read');
+  const [chapterList, setChapterList] = useState<Chapter[]>([]);
+  const [editingChapter, setEditingChapter] = useState<number | null>(null);
+  const [chapterEditContent, setChapterEditContent] = useState('');
+  const [chapterEditTitle, setChapterEditTitle] = useState('');
+  const [chapterSaving, setChapterSaving] = useState(false);
+
   const [revisionError, setRevisionError] = useState("");
   const [gdocUrl, setGdocUrl] = useState("");
   const [pasteText, setPasteText] = useState("");
@@ -175,7 +194,7 @@ export default function BookDetailPage() {
   // Poll for status if book is generating/revising (came back to page)
   useEffect(() => {
     if (!book || (book.status !== "generating" && book.status !== "revising")) return;
-    
+
     const interval = setInterval(async () => {
       try {
         const res = await fetch(`/api/books/${bookId}/status`);
@@ -187,19 +206,35 @@ export default function BookDetailPage() {
           } else if (data.status === "failed") {
             clearInterval(interval);
             await fetchBook();
-          } else if (data.progress) {
-            setRevisionPercent(data.progress.percent || 0);
-            setRevisionTotalChapters(data.progress.totalChapters || 0);
-            setRevisionCurrentChapter(data.progress.currentChapter || 0);
-            setRevisionStatusText(data.progress.status === "revising" 
-              ? `Revising chapter ${data.progress.currentChapter}...`
-              : data.progress.status === "writing"
-              ? `Writing chapter ${data.progress.currentChapter}: ${data.progress.currentTitle || ""}...`
-              : data.progress.status || "Processing...");
+          } else {
+            // Update progress display from rich status data
+            if (data.totalChapters > 0) {
+              setRevisionTotalChapters(data.totalChapters);
+              setRevisionCurrentChapter(data.currentChapter);
+              setRevisionPercent(data.percentComplete || 0);
+              setRevisionStatusText(
+                data.progressStatus === "outline"
+                  ? "Generating outline..."
+                  : data.currentTitle
+                  ? `Writing chapter ${data.currentChapter}: ${data.currentTitle}...`
+                  : `Writing chapter ${data.currentChapter} of ${data.totalChapters}...`
+              );
+            } else if (data.progress) {
+              setRevisionPercent(data.progress.percent || 0);
+              setRevisionTotalChapters(data.progress.totalChapters || 0);
+              setRevisionCurrentChapter(data.progress.currentChapter || 0);
+              setRevisionStatusText(
+                data.progress.status === "revising"
+                  ? `Revising chapter ${data.progress.currentChapter}...`
+                  : data.progress.status === "writing"
+                  ? `Writing chapter ${data.progress.currentChapter}: ${data.progress.currentTitle || ""}...`
+                  : data.progress.status || "Processing..."
+              );
+            }
           }
         }
       } catch {}
-    }, 3000);
+    }, 10000);
 
     // Set initial state from book progress
     if (book.progress) {
@@ -208,12 +243,21 @@ export default function BookDetailPage() {
         setRevisionPercent(p.percent || 0);
         setRevisionTotalChapters(p.totalChapters || 0);
         setRevisionCurrentChapter(p.currentChapter || 0);
-        setRevisionLoading(true);
+        if (book.status === "generating") setRevisionLoading(true);
       } catch {}
     }
 
     return () => clearInterval(interval);
   }, [book?.status, bookId, fetchBook]);
+
+  // Fetch chapters when in chapters view
+  useEffect(() => {
+    if (!bookId || !book || book.status !== 'complete') return;
+    fetch(`/api/books/${bookId}/chapters`)
+      .then(r => r.json())
+      .then(d => setChapterList(d.chapters || []))
+      .catch(() => {});
+  }, [bookId, book?.status, viewMode]);
 
   // Reference upload handlers
   async function handlePdfUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -287,6 +331,25 @@ export default function BookDetailPage() {
       }
     } catch {}
     setEditSaving(false);
+  }
+
+  async function saveChapter() {
+    if (!book || editingChapter === null || !chapterEditContent.trim()) return;
+    setChapterSaving(true);
+    try {
+      const res = await fetch(`/api/books/${bookId}/chapters/${editingChapter}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: chapterEditContent, title: chapterEditTitle }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setChapterList(prev => prev.map(ch => ch.number === editingChapter ? { ...ch, content: chapterEditContent, title: chapterEditTitle } : ch));
+        setEditingChapter(null);
+        await fetchBook();
+      }
+    } catch {}
+    setChapterSaving(false);
   }
 
   async function startSeries() {
@@ -728,6 +791,17 @@ export default function BookDetailPage() {
                 Create Revision
               </button>
               <button
+                onClick={() => setViewMode(viewMode === 'chapters' ? 'read' : 'chapters')}
+                disabled={isInProgress || book.status !== 'complete'}
+                className={`text-sm rounded-lg px-3 py-1.5 transition-all disabled:opacity-40 ${
+                  viewMode === 'chapters'
+                    ? 'bg-teal-600/30 border-2 border-teal-500/50 text-teal-300'
+                    : 'bg-teal-600/20 hover:bg-teal-600/30 border border-teal-500/30 text-teal-400'
+                }`}
+              >
+                Chapters
+              </button>
+              <button
                 onClick={enterEditMode}
                 disabled={isInProgress || !currentVersion || editMode}
                 className="text-sm bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/30 text-amber-400 rounded-lg px-3 py-1.5 transition-all disabled:opacity-40"
@@ -1066,6 +1140,74 @@ export default function BookDetailPage() {
                     Generate {seriesLength}-Book Series
                   </button>
                 </>
+              )}
+            </div>
+          )}
+
+          {/* Chapters View */}
+          {viewMode === 'chapters' && book.status === 'complete' && (
+            <div className="mb-6 bg-white/[0.03] backdrop-blur-sm border border-teal-500/20 rounded-2xl overflow-hidden">
+              <div className="bg-gradient-to-r from-teal-600/20 to-cyan-600/20 border-b border-white/[0.06] p-4 flex items-center justify-between">
+                <h3 className="text-lg font-bold" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>Chapters</h3>
+                <button onClick={() => { setViewMode('read'); setEditingChapter(null); }} className="text-gray-500 hover:text-white text-lg">&times;</button>
+              </div>
+
+              {editingChapter !== null ? (
+                <div className="p-4 space-y-3">
+                  <div className="flex items-center justify-between gap-4 flex-wrap">
+                    <input
+                      className="flex-1 bg-white/[0.04] border border-teal-500/30 rounded-lg px-3 py-2 text-white font-semibold focus:outline-none focus:ring-2 focus:ring-teal-500/50"
+                      value={chapterEditTitle}
+                      onChange={(e) => setChapterEditTitle(e.target.value)}
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        onClick={saveChapter}
+                        disabled={chapterSaving}
+                        className="bg-green-600/20 hover:bg-green-600/30 border border-green-500/30 text-green-400 rounded-lg px-4 py-2 text-sm font-medium transition-all disabled:opacity-50"
+                      >
+                        {chapterSaving ? "Saving..." : "Save Chapter"}
+                      </button>
+                      <button
+                        onClick={() => setEditingChapter(null)}
+                        className="bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] text-gray-400 rounded-lg px-4 py-2 text-sm transition-all"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                  <div className="text-xs text-gray-500">{chapterEditContent.split(/\s+/).filter(Boolean).length.toLocaleString()} words</div>
+                  <textarea
+                    className="w-full bg-white/[0.02] border border-teal-500/20 rounded-xl p-4 text-gray-300 leading-[1.8] text-[15px] focus:outline-none focus:ring-2 focus:ring-teal-500/30 resize-none"
+                    value={chapterEditContent}
+                    onChange={(e) => setChapterEditContent(e.target.value)}
+                    style={{ minHeight: '60vh' }}
+                  />
+                </div>
+              ) : (
+                <div className="divide-y divide-white/[0.04]">
+                  {chapterList.length === 0 ? (
+                    <div className="p-6 text-center text-gray-500 text-sm">No individual chapters saved. This book was generated before the chapter-by-chapter system.</div>
+                  ) : (
+                    chapterList.map((ch) => (
+                      <button
+                        key={ch.number}
+                        onClick={() => {
+                          setEditingChapter(ch.number);
+                          setChapterEditContent(ch.content);
+                          setChapterEditTitle(ch.title);
+                        }}
+                        className="w-full text-left p-4 hover:bg-white/[0.02] transition-colors flex items-center justify-between gap-4"
+                      >
+                        <div>
+                          <div className="font-medium text-gray-200">Ch. {ch.number}: {ch.title}</div>
+                          {ch.wordCount && <div className="text-xs text-gray-500 mt-0.5">{ch.wordCount.toLocaleString()} words</div>}
+                        </div>
+                        <span className="text-xs text-teal-400 border border-teal-500/30 rounded px-2 py-0.5">Edit</span>
+                      </button>
+                    ))
+                  )}
+                </div>
               )}
             </div>
           )}
