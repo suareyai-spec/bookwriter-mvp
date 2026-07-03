@@ -795,7 +795,7 @@ Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter tit
             : buildChapterPrompt(i, chTitle, outline, prevSummary, biblePart, wordsPerChapter, lang, genre, bookContext, isRelig, isEdu, isMatureRomance, extractedFramework, body, citationInstructions, body.matureLevel, refContext);
 
           // Universal: enforce minimum length on every chapter type
-          const activePrompt = basePrompt + '\n\nIMPORTANT: Write a full, complete chapter of at least 2,500 words. The target length is 2,500–3,500 words. Do not summarize or truncate. Write every section in full detail.';
+          const activePrompt = basePrompt + '\n\nIMPORTANT: Write a full, complete chapter of at least 2,500 words. The target length is 2,500–3,500 words. Do not summarize or truncate. Write every section in full detail.\n\nWrite in a natural, engaging human voice. Vary sentence length. Use concrete examples and vivid language. Avoid AI-sounding phrases like "it\'s important to note", "in conclusion", "furthermore", "delve into", "in today\'s world", "tapestry", or "it is worth mentioning". Write as if you are a skilled human author, not an assistant.';
 
           const chapterResp = await callClaude(activePrompt, 16000, true);
           let chapter = chapterResp.text;
