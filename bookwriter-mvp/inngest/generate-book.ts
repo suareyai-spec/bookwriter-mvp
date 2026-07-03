@@ -431,7 +431,7 @@ Write Chapter ${i} now:`;
 
 export const generateBook = inngest.createFunction(
   { id: "generate-book", retries: 0, triggers: [{ event: "book/generate" as const }] },
-  async ({ event }) => {
+  async ({ event, step }) => {
     const { bookId, userId } = event.data as { bookId: string; userId: string; body: unknown };
     const body = Body.parse((event.data as any).body);
 
@@ -660,7 +660,8 @@ Write Module ${i} now:`;
     // Step 0 (religious + refs): Extract core laws/framework from source texts
     let extractedFramework = "";
     if (isRelig && body.references?.length) {
-      const fwResp = await callClaude(`Read the following source texts and extract — with precision and direct quotation:
+      extractedFramework = await step.run("extract-framework", async () => {
+        const resp = await callClaude(`Read the following source texts and extract — with precision and direct quotation:
 
 1. CORE LAWS / NUMBERED FRAMEWORK: Every named law, principle, or numbered construct EXACTLY as stated in the source. Quote the exact language for each one. If the author has "3 Laws," "5 Principles," or any named framework, extract every single item verbatim.
 
@@ -674,7 +675,8 @@ Source texts:
 ${refContext}
 
 Be exhaustive. Quote directly from the source. Do not invent or paraphrase away from the original language.`, 2000);
-      extractedFramework = fwResp.text;
+        return resp.text;
+      });
 
       outlinePrompt = `You are a spiritual author who has received revelation and is now transmitting truth. You write as one who has discovered the deepest principles of existence and must record them for those ready to receive.
 
@@ -708,105 +710,119 @@ For each chapter, provide:
 Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter titles, descriptions, everything. Never use English unless ${lang} IS English.`;
     }
 
-    // Run generation
     try {
-      // Mark outline in progress
-      await prisma.book.update({ where: { id: bookId }, data: { progress: JSON.stringify({ status: 'outline' }) } }).catch(() => {});
+      // Step 1: Generate outline — returns parsed structure so the chapter loop can drive off it
+      const outlineData = await step.run("generate-outline", async () => {
+        await prisma.book.update({ where: { id: bookId }, data: { progress: JSON.stringify({ status: 'outline' }) } }).catch(() => {});
 
-      // Step 1: Generate outline
-      const outlineResp = await callClaude(outlinePrompt, 4000);
-      const outline = outlineResp.text;
-      trackApiCost({ userId, type: 'book', inputTokens: outlineResp.inputTokens, outputTokens: outlineResp.outputTokens, bookId }).catch(() => {});
+        const outlineResp = await callClaude(outlinePrompt, 4000);
+        const outline = outlineResp.text;
+        trackApiCost({ userId, type: 'book', inputTokens: outlineResp.inputTokens, outputTokens: outlineResp.outputTokens, bookId }).catch(() => {});
 
-      // Parse chapter titles
-      const unitLabel = isCourse ? 'Module' : 'Chapter';
-      const chapterTitles: string[] = [];
-      const titleRegex = /(?:chapter|module)\s+\d+[:\s–\-]+(.+)/gi;
-      let match;
-      while ((match = titleRegex.exec(outline)) !== null) {
-        chapterTitles.push(match[1].trim().replace(/\*+/g, '').trim());
-      }
-      const actualChapters = chapterTitles.length > 0 ? chapterTitles.length : Math.round(plan.totalWords / plan.wordsPerChapter);
-      const wordsPerChapter = plan.wordsPerChapter;
+        const unitLabel = isCourse ? 'Module' : 'Chapter';
+        const chapterTitles: string[] = [];
+        const titleRegex = /(?:chapter|module)\s+\d+[:\s–\-]+(.+)/gi;
+        let match;
+        while ((match = titleRegex.exec(outline)) !== null) {
+          chapterTitles.push(match[1].trim().replace(/\*+/g, '').trim());
+        }
+        const actualChapters = chapterTitles.length > 0 ? chapterTitles.length : Math.round(plan.totalWords / plan.wordsPerChapter);
 
-      await prisma.book.update({
-        where: { id: bookId },
-        data: {
-          outline,
-          totalChapters: actualChapters,
-          currentChapter: 0,
-          progress: JSON.stringify({ status: 'writing', currentChapter: 0, totalChapters: actualChapters }),
-        },
-      }).catch(() => {});
-
-      // Step 2: Generate each chapter
-      let storyBible = '';
-      const chapterTexts: string[] = [];
-
-      for (let i = 1; i <= actualChapters; i++) {
-        const chTitle = chapterTitles[i - 1] || `${unitLabel} ${i}`;
         await prisma.book.update({
           where: { id: bookId },
           data: {
-            currentChapter: i,
-            progress: JSON.stringify({ status: 'writing', currentChapter: i, totalChapters: actualChapters, currentTitle: chTitle }),
+            outline,
+            totalChapters: actualChapters,
+            currentChapter: 0,
+            progress: JSON.stringify({ status: 'writing', currentChapter: 0, totalChapters: actualChapters }),
           },
         }).catch(() => {});
 
-        const prevSummary = chapterTexts.length > 0
-          ? `\nSummary of previous ${unitLabel.toLowerCase()}s:\n${chapterTexts.map((c, idx) => `${unitLabel} ${idx + 1}: ${c.slice(0, 400)}...`).join('\n\n')}`
-          : '';
+        return { outline, actualChapters, chapterTitles, wordsPerChapter: plan.wordsPerChapter };
+      });
 
-        const biblePart = storyBible
-          ? `\n\nCONTINUITY REFERENCE — MAINTAIN PERFECT CONSISTENCY WITH ALL OF THE FOLLOWING:\n${storyBible}`
-          : '';
+      const { outline, actualChapters, chapterTitles, wordsPerChapter } = outlineData;
+      const unitLabel = isCourse ? 'Module' : 'Chapter';
 
-        const activePrompt = isCourse
-          ? courseModulePromptFn(i, chTitle, outline, prevSummary) + biblePart
-          : buildChapterPrompt(i, chTitle, outline, prevSummary, biblePart, wordsPerChapter, lang, genre, bookContext, isRelig, isEdu, isMatureRomance, extractedFramework, body, citationInstructions, body.matureLevel, refContext);
+      // Steps 2+: One step per chapter — each gets its own 5-minute Vercel timeout window
+      for (let i = 1; i <= actualChapters; i++) {
+        const chTitle = chapterTitles[i - 1] || `${unitLabel} ${i}`;
 
-        const chapterResp = await callClaude(activePrompt, 32000, true);
-        let chapter = chapterResp.text;
-        trackApiCost({ userId, type: 'book', inputTokens: chapterResp.inputTokens, outputTokens: chapterResp.outputTokens, bookId }).catch(() => {});
+        await step.run(`chapter-${i}`, async () => {
+          await prisma.book.update({
+            where: { id: bookId },
+            data: {
+              currentChapter: i,
+              progress: JSON.stringify({ status: 'writing', currentChapter: i, totalChapters: actualChapters, currentTitle: chTitle }),
+            },
+          }).catch(() => {});
 
-        chapter = await humanizeChapter(chapter, { userId, bookId });
+          // Load accumulated state from DB — written by previous chapter steps
+          const bookData = await prisma.book.findUnique({ where: { id: bookId }, select: { storyBible: true } });
+          const storyBible = bookData?.storyBible || '';
 
-        const bibleUpdate = await extractBibleUpdate(chapter, i, chTitle, isEdu);
-        storyBible += bibleUpdate;
+          const prevChapters = await prisma.chapter.findMany({
+            where: { bookId },
+            orderBy: { number: 'asc' },
+            select: { number: true, content: true },
+          });
 
-        const wordCount = chapter.split(/\s+/).filter(Boolean).length;
+          const prevSummary = prevChapters.length > 0
+            ? `\nSummary of previous ${unitLabel.toLowerCase()}s:\n${prevChapters.map(c => `${unitLabel} ${c.number}: ${c.content.slice(0, 400)}...`).join('\n\n')}`
+            : '';
 
-        await prisma.chapter.create({
-          data: { bookId, number: i, title: chTitle, content: chapter, wordCount },
+          const biblePart = storyBible
+            ? `\n\nCONTINUITY REFERENCE — MAINTAIN PERFECT CONSISTENCY WITH ALL OF THE FOLLOWING:\n${storyBible}`
+            : '';
+
+          const activePrompt = isCourse
+            ? courseModulePromptFn(i, chTitle, outline, prevSummary) + biblePart
+            : buildChapterPrompt(i, chTitle, outline, prevSummary, biblePart, wordsPerChapter, lang, genre, bookContext, isRelig, isEdu, isMatureRomance, extractedFramework, body, citationInstructions, body.matureLevel, refContext);
+
+          const chapterResp = await callClaude(activePrompt, 32000, true);
+          let chapter = chapterResp.text;
+          trackApiCost({ userId, type: 'book', inputTokens: chapterResp.inputTokens, outputTokens: chapterResp.outputTokens, bookId }).catch(() => {});
+
+          chapter = await humanizeChapter(chapter, { userId, bookId });
+
+          const bibleUpdate = await extractBibleUpdate(chapter, i, chTitle, isEdu);
+          const wordCount = chapter.split(/\s+/).filter(Boolean).length;
+
+          await prisma.chapter.create({
+            data: { bookId, number: i, title: chTitle, content: chapter, wordCount },
+          });
+
+          await prisma.book.update({
+            where: { id: bookId },
+            data: { storyBible: storyBible + bibleUpdate, currentChapter: i },
+          }).catch(() => {});
+
+          return { wordCount };
         });
+      }
+
+      // Final step: load all chapters from DB, assemble BookVersion, mark complete
+      await step.run("finalize", async () => {
+        const chapters = await prisma.chapter.findMany({ where: { bookId }, orderBy: { number: 'asc' } });
+        const fullBook = `${outline}\n\n${'━'.repeat(50)}\n\n${chapters.map(c => c.content).join('\n\n' + '━'.repeat(50) + '\n\n')}`;
+        const totalWords = fullBook.split(/\s+/).filter(Boolean).length;
+
+        await prisma.bookVersion.create({
+          data: { bookId, version: 1, content: fullBook, wordCount: totalWords, notes: body.revisionInstructions ? 'New version' : 'Initial generation' },
+        });
+
+        if (body.references?.length) {
+          await prisma.bookReference.createMany({
+            data: body.references.map(r => ({ name: r.name, type: r.type, content: r.content, bookId })),
+          });
+        }
 
         await prisma.book.update({
           where: { id: bookId },
-          data: { storyBible, currentChapter: i },
-        }).catch(() => {});
-
-        chapterTexts.push(chapter);
-      }
-
-      // Step 3: Assemble final BookVersion
-      const fullBook = `${outline}\n\n${'━'.repeat(50)}\n\n${chapterTexts.join('\n\n' + '━'.repeat(50) + '\n\n')}`;
-      const totalWords = fullBook.split(/\s+/).filter(Boolean).length;
-
-      await prisma.bookVersion.create({
-        data: { bookId, version: 1, content: fullBook, wordCount: totalWords, notes: body.revisionInstructions ? 'New version' : 'Initial generation' },
-      });
-
-      if (body.references?.length) {
-        await prisma.bookReference.createMany({
-          data: body.references.map(r => ({ name: r.name, type: r.type, content: r.content, bookId })),
+          data: { status: 'complete', progress: null, currentChapter: chapters.length, totalChapters: chapters.length },
         });
-      }
-
-      await prisma.book.update({
-        where: { id: bookId },
-        data: { status: 'complete', progress: null, currentChapter: actualChapters, totalChapters: actualChapters },
+        await prisma.user.update({ where: { id: userId }, data: { isGenerating: false, generationStartedAt: null } });
       });
-      await prisma.user.update({ where: { id: userId }, data: { isGenerating: false, generationStartedAt: null } });
 
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Generation failed';
