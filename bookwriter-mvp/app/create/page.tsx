@@ -63,6 +63,22 @@ interface ChapterInfo {
   content?: string;
 }
 
+function getExpectedChapters(bookLen: string): number {
+  if (bookLen?.includes("10,000")) return 5;
+  if (bookLen?.includes("25,000")) return 10;
+  if (bookLen?.includes("50,000")) return 12;
+  if (bookLen?.includes("75,000")) return 15;
+  if (bookLen?.includes("100,000")) return 18;
+  return 12;
+}
+
+function fmtEstimate(secs: number): string {
+  if (secs <= 0) return "almost done";
+  if (secs < 90) return `~${secs}s`;
+  const mins = Math.ceil(secs / 60);
+  return `~${mins} minute${mins > 1 ? "s" : ""}`;
+}
+
 export default function Home() {
   return (
     <Suspense>
@@ -201,6 +217,9 @@ function HomeContent() {
   const [generatingBookId, setGeneratingBookId] = useState<string | null>(null);
   const [pollingStatus, setPollingStatus] = useState<any>(null);
   const [generationFailed, setGenerationFailed] = useState(false);
+  const [estimatedSecsRemaining, setEstimatedSecsRemaining] = useState<number | null>(null);
+  const writingStartTimeRef = useRef<number>(0);
+  const prevCompletedRef = useRef<number>(0);
   const previewRef = useRef<HTMLDivElement>(null);
 
   const doneCount = chapters.filter(c => c.status === "done").length;
@@ -280,6 +299,9 @@ function HomeContent() {
       setGeneratingBookId(data.bookId);
       setPollingStatus(null);
       setGenerationFailed(false);
+      writingStartTimeRef.current = 0;
+      prevCompletedRef.current = 0;
+      setEstimatedSecsRemaining(30 + getExpectedChapters(bookLength) * 45);
       // Polling starts via useEffect
     } catch {
       setError("Network error. Please try again.");
@@ -297,6 +319,22 @@ function HomeContent() {
         if (!res.ok) return;
         const data = await res.json();
         setPollingStatus(data);
+
+        // Update estimated time remaining
+        if (data.progressStatus === "writing" && data.totalChapters > 0) {
+          if (!writingStartTimeRef.current) writingStartTimeRef.current = Date.now();
+          const completed = data.chapters?.length || 0;
+          if (completed > prevCompletedRef.current) {
+            const writingElapsed = (Date.now() - writingStartTimeRef.current) / 1000;
+            const secsPerCh = writingElapsed / completed;
+            const remaining = data.totalChapters - completed;
+            setEstimatedSecsRemaining(Math.max(5, Math.round(remaining * secsPerCh)));
+            prevCompletedRef.current = completed;
+          } else if (completed === 0) {
+            setEstimatedSecsRemaining(data.totalChapters * 45);
+          }
+        }
+
         if (data.status === "complete") {
           router.push(`/library/${generatingBookId}`);
         } else if (data.status === "failed") {
@@ -306,9 +344,18 @@ function HomeContent() {
     };
 
     poll(); // immediate first poll
-    const interval = setInterval(poll, 5000);
+    const interval = setInterval(poll, 3000);
     return () => clearInterval(interval);
   }, [step, generatingBookId, router, generationFailed]);
+
+  // Live countdown — tick down 1 second at a time between polls
+  useEffect(() => {
+    if (step !== "generating" || generationFailed) return;
+    const t = setInterval(() => {
+      setEstimatedSecsRemaining(prev => (prev !== null && prev > 1) ? prev - 1 : prev);
+    }, 1000);
+    return () => clearInterval(t);
+  }, [step, generationFailed]);
 
   async function generateSeries() {
     if (!title.trim() || !description.trim()) return;
@@ -943,16 +990,17 @@ function HomeContent() {
                   <div className="text-center mb-6">
                     <h2 className="text-2xl font-bold mb-1" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>{title}</h2>
                     <p className="text-gray-400 text-sm">
-                      {!pollingStatus && "Starting generation..."}
-                      {pollingStatus?.progressStatus === "outline" && "Generating outline..."}
-                      {pollingStatus?.progressStatus === "writing" && pollingStatus.currentTitle
-                        ? `Writing ${format === "course" ? "Module" : "Chapter"} ${pollingStatus.currentChapter}: ${pollingStatus.currentTitle}`
-                        : pollingStatus?.progressStatus === "writing" ? `Writing ${format === "course" ? "module" : "chapter"} ${pollingStatus.currentChapter} of ${pollingStatus.totalChapters}...` : ""}
+                      {(!pollingStatus || pollingStatus?.progressStatus === "outline") && "Creating your outline..."}
+                      {pollingStatus?.progressStatus === "writing" && (
+                        pollingStatus.currentTitle
+                          ? `${format === "course" ? "Module" : "Chapter"} ${pollingStatus.currentChapter} of ${pollingStatus.totalChapters} — Writing: ${pollingStatus.currentTitle}`
+                          : `Writing ${format === "course" ? "module" : "chapter"} ${pollingStatus.currentChapter} of ${pollingStatus.totalChapters}...`
+                      )}
                     </p>
                   </div>
 
                   {/* Progress bar */}
-                  <div className="mb-6">
+                  <div className="mb-3">
                     <div className="flex justify-between text-sm mb-2">
                       <span className="text-gray-400">{pollingStatus?.percentComplete || 0}% complete</span>
                       {pollingStatus?.totalChapters > 0 && (
@@ -969,6 +1017,14 @@ function HomeContent() {
                     </div>
                   </div>
 
+                  {/* Estimated time */}
+                  {estimatedSecsRemaining !== null && (
+                    <p className="text-center text-xs text-gray-500 mb-5">
+                      Estimated time remaining:{" "}
+                      <span className="text-gray-300 font-medium">{fmtEstimate(estimatedSecsRemaining)}</span>
+                    </p>
+                  )}
+
                   {/* Chapter checklist */}
                   {pollingStatus?.chapters?.length > 0 && (
                     <div className="mb-6 max-h-48 overflow-y-auto">
@@ -983,7 +1039,9 @@ function HomeContent() {
                         {pollingStatus.currentChapter > (pollingStatus.chapters?.length || 0) && (
                           <div className="flex items-center gap-3 text-sm">
                             <span className="flex-shrink-0 w-5 h-5 rounded-full border-2 border-blue-400/60 border-t-transparent animate-spin" />
-                            <span className="text-blue-300 font-medium">{format === "course" ? "Module" : "Ch."} {pollingStatus.currentChapter}: {pollingStatus.currentTitle}</span>
+                            <span className="text-blue-300 font-medium">
+                              {format === "course" ? "Module" : "Ch."} {pollingStatus.currentChapter} of {pollingStatus.totalChapters}: {pollingStatus.currentTitle || "Writing..."}
+                            </span>
                           </div>
                         )}
                       </div>
