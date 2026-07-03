@@ -813,16 +813,22 @@ Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter tit
               : refusalRetry.text;
           }
 
-          // Word count enforcement — retry if under 1,000 words
-          const preHumanizeWordCount = chapter.split(/\s+/).filter(Boolean).length;
-          if (preHumanizeWordCount < 2000 && !chapter.startsWith('[Chapter content')) {
-            const lengthRetry = await callClaude(
-              `The previous attempt was only ${preHumanizeWordCount} words. That is unacceptably short. You MUST write a minimum of 2,500 words for this chapter. Do not summarize. Write every section out in full. Expand every idea with examples, stories, and explanation. Do not stop until you have written at least 2,500 words. Here is the chapter to write in full: ${activePrompt}`,
+          // Word count enforcement — up to 2 retries if under 2,000 words, keep best result
+          let bestChapter = chapter;
+          let bestCount = chapter.split(/\s+/).filter(Boolean).length;
+          for (let attempt = 1; attempt <= 2 && bestCount < 2000 && !bestChapter.startsWith('[Chapter content'); attempt++) {
+            const retryResp = await callClaude(
+              `CRITICAL INSTRUCTION: Your previous response was only ${bestCount} words. This is REJECTED. You MUST now write AT LEAST 2,500 words — do not stop writing until you have written 2,500 words of actual chapter content. Fill the chapter with detailed explanations, stories, examples, dialogue, and depth. Do not summarize. Do not write a short version. Write the FULL chapter now:\n\n${activePrompt}`,
               16000, true
             );
-            trackApiCost({ userId, type: 'book', inputTokens: lengthRetry.inputTokens, outputTokens: lengthRetry.outputTokens, bookId }).catch(() => {});
-            chapter = lengthRetry.text;
+            trackApiCost({ userId, type: 'book', inputTokens: retryResp.inputTokens, outputTokens: retryResp.outputTokens, bookId }).catch(() => {});
+            const retryCount = retryResp.text.split(/\s+/).filter(Boolean).length;
+            if (retryCount > bestCount) {
+              bestChapter = retryResp.text;
+              bestCount = retryCount;
+            }
           }
+          chapter = bestChapter;
 
           const bibleUpdate = await extractBibleUpdate(chapter, i, chTitle, isEdu);
           const wordCount = chapter.split(/\s+/).filter(Boolean).length;
