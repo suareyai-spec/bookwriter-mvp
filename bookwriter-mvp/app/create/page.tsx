@@ -64,12 +64,12 @@ interface ChapterInfo {
 }
 
 function getExpectedChapters(bookLen: string): number {
-  if (bookLen?.includes("10,000")) return 5;
-  if (bookLen?.includes("25,000")) return 10;
-  if (bookLen?.includes("50,000")) return 12;
-  if (bookLen?.includes("75,000")) return 15;
-  if (bookLen?.includes("100,000")) return 18;
-  return 12;
+  if (bookLen?.includes("10,000")) return 3;
+  if (bookLen?.includes("25,000")) return 7;
+  if (bookLen?.includes("50,000")) return 14;
+  if (bookLen?.includes("75,000")) return 21;
+  if (bookLen?.includes("100,000")) return 25;
+  return 14;
 }
 
 function fmtEstimate(secs: number): string {
@@ -711,11 +711,11 @@ function HomeContent() {
                   value={bookLength}
                   onChange={(e) => setBookLength(e.target.value)}
                 >
-                  <option value="10,000 words (~40 pages)" className="bg-gray-900">Short -- 10,000 words - ~40 pages - 5 chapters</option>
-                  <option value="25,000 words (~100 pages)" className="bg-gray-900">Medium -- 24,000 words - ~100 pages - 8 chapters</option>
-                  <option value="50,000 words (~200 pages)" className="bg-gray-900">Standard -- 50,000 words - ~200 pages - 10 chapters</option>
-                  <option value="75,000 words (~300 pages)" className="bg-gray-900">Long -- 72,000 words - ~300 pages - 12 chapters</option>
-                  <option value="100,000 words (~400 pages)" className="bg-gray-900">Epic -- 97,500 words - ~400 pages - 15 chapters</option>
+                  <option value="10,000 words (~40 pages)" className="bg-gray-900">Short (~3 min) — 10,000 words</option>
+                  <option value="25,000 words (~100 pages)" className="bg-gray-900">Medium (~6 min) — 25,000 words</option>
+                  <option value="50,000 words (~200 pages)" className="bg-gray-900">Standard (~10 min) — 50,000 words</option>
+                  <option value="75,000 words (~300 pages)" className="bg-gray-900">Long (~14 min) — 75,000 words</option>
+                  <option value="100,000 words (~400 pages)" className="bg-gray-900">Epic (~18 min) — 100,000 words</option>
                 </select>
               </div>
 

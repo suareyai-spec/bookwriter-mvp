@@ -56,13 +56,13 @@ The author has provided the following reference materials. Use these to inform t
 ${parts.join("\n\n")}`;
 }
 
-function getChapterPlan(bookLength: string): { chapters: number; totalWords: number; wordsPerChapter: number } {
-  if (bookLength?.includes("10,000")) return { chapters: 5, totalWords: 10000, wordsPerChapter: 2000 };
-  if (bookLength?.includes("25,000")) return { chapters: 10, totalWords: 25000, wordsPerChapter: 2500 };
-  if (bookLength?.includes("50,000")) return { chapters: 12, totalWords: 60000, wordsPerChapter: 5000 };
-  if (bookLength?.includes("75,000")) return { chapters: 15, totalWords: 90000, wordsPerChapter: 6000 };
-  if (bookLength?.includes("100,000")) return { chapters: 18, totalWords: 108000, wordsPerChapter: 6000 };
-  return { chapters: 12, wordsPerChapter: 5000, totalWords: 60000 };
+function getChapterPlan(bookLength: string): { totalWords: number; wordsPerChapter: number } {
+  if (bookLength?.includes("10,000")) return { totalWords: 10000, wordsPerChapter: 3000 };
+  if (bookLength?.includes("25,000")) return { totalWords: 25000, wordsPerChapter: 3500 };
+  if (bookLength?.includes("50,000")) return { totalWords: 50000, wordsPerChapter: 3500 };
+  if (bookLength?.includes("75,000")) return { totalWords: 75000, wordsPerChapter: 3500 };
+  if (bookLength?.includes("100,000")) return { totalWords: 100000, wordsPerChapter: 4000 };
+  return { totalWords: 50000, wordsPerChapter: 3500 };
 }
 
 function isRomanceGenre(genre: string, description: string): boolean {
@@ -488,7 +488,7 @@ ${body.description}${refContext}${revisionContext}${previousContentContext}${rom
 
 ${bookContext}
 
-Create a detailed COURSE OUTLINE with ${plan.chapters} modules.
+Create a detailed COURSE OUTLINE. Use however many modules the material naturally requires, targeting 3,000–4,000 words per module, to reach approximately ${plan.totalWords.toLocaleString()} words total.
 
 For each module, provide:
 - MODULE NUMBER and TITLE (e.g., "Module 1: Title Here")
@@ -509,7 +509,7 @@ Write the entire outline in ${lang}. ALL text must be in ${lang}.`;
 
 ${bookContext}
 
-Create a detailed TABLE OF CONTENTS. If the author's vision specifies a number of chapters, use that exact number. Otherwise use approximately ${plan.chapters} chapters.
+Create a detailed TABLE OF CONTENTS with however many chapters the material naturally requires. Each chapter should target 3,000–4,000 words, bringing the total to approximately ${plan.totalWords.toLocaleString()} words. If the author's vision specifies a number of chapters, use that exact number.
 
 WRITING STYLE — THREE TRADITIONS FUSED INTO ONE VOICE:
 This work combines three powerful literary traditions:
@@ -536,7 +536,7 @@ Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter tit
 
 ${bookContext}
 
-Create a detailed TABLE OF CONTENTS. If the author's vision specifies a number of chapters, use that exact number. Otherwise use approximately ${plan.chapters} chapters.
+Create a detailed TABLE OF CONTENTS with however many chapters the material naturally requires. Each chapter should target 3,000–4,000 words, bringing the total to approximately ${plan.totalWords.toLocaleString()} words. If the author's vision specifies a number of chapters, use that exact number.
 
 CRITICAL REQUIREMENTS FOR EDUCATIONAL/NON-FICTION:
 - Go DEEP, not wide. Each chapter should thoroughly explore its subject with real substance.
@@ -561,7 +561,7 @@ Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter tit
 
 ${bookContext}
 
-Create a detailed TABLE OF CONTENTS. If the author's vision specifies a number of chapters, use that exact number. Otherwise use approximately ${plan.chapters} chapters.
+Create a detailed TABLE OF CONTENTS with however many chapters the material naturally requires. Each chapter should target 3,000–4,000 words, bringing the total to approximately ${plan.totalWords.toLocaleString()} words. If the author's vision specifies a number of chapters, use that exact number.
 
 CRITICAL REQUIREMENTS FOR FICTION:
 - Characters must feel like REAL PEOPLE with contradictions, flaws, desires they don't fully understand, and histories that shape their behavior.
@@ -683,7 +683,7 @@ ${bookContext}
 CORE FRAMEWORK EXTRACTED FROM SOURCE TEXTS:
 ${extractedFramework}
 
-Create a detailed TABLE OF CONTENTS. If the author's vision specifies a number of chapters, use that exact number. Otherwise use approximately ${plan.chapters} chapters.
+Create a detailed TABLE OF CONTENTS with however many chapters the material naturally requires. Each chapter should target 3,000–4,000 words, bringing the total to approximately ${plan.totalWords.toLocaleString()} words. If the author's vision specifies a number of chapters, use that exact number.
 
 CRITICAL STRUCTURAL REQUIREMENT — THE FRAMEWORK IS THE SPINE:
 The outline MUST be organized around the exact laws, principles, and constructs extracted above. This is non-negotiable. The specific laws identified in the source material are the organizing spine of the entire book. Each law or core construct must be featured as a dedicated chapter or as the central subject of multiple sections. Chapter titles must directly reflect the language and framework of the source texts.
@@ -726,7 +726,7 @@ Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter tit
       while ((match = titleRegex.exec(outline)) !== null) {
         chapterTitles.push(match[1].trim().replace(/\*+/g, '').trim());
       }
-      const actualChapters = chapterTitles.length > 0 ? chapterTitles.length : plan.chapters;
+      const actualChapters = chapterTitles.length > 0 ? chapterTitles.length : Math.round(plan.totalWords / plan.wordsPerChapter);
       const wordsPerChapter = plan.wordsPerChapter;
 
       await prisma.book.update({
