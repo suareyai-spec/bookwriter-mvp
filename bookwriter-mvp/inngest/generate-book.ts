@@ -2,7 +2,6 @@ import { z } from "zod";
 import { inngest } from "@/lib/inngest";
 import { prisma } from "@/lib/prisma";
 import { anthropic } from "@/lib/openai";
-import { humanizeChapter } from "@/lib/humanizer";
 import { trackApiCost, getTokensFromResponse } from "@/lib/cost-tracker";
 
 // ──── Schemas (mirrored from api/generate/route.ts) ────────────────────────
@@ -824,8 +823,6 @@ Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter tit
             trackApiCost({ userId, type: 'book', inputTokens: lengthRetry.inputTokens, outputTokens: lengthRetry.outputTokens, bookId }).catch(() => {});
             chapter = lengthRetry.text;
           }
-
-          chapter = await humanizeChapter(chapter, { userId, bookId });
 
           const bibleUpdate = await extractBibleUpdate(chapter, i, chTitle, isEdu);
           const wordCount = chapter.split(/\s+/).filter(Boolean).length;
