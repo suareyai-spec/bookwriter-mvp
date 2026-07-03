@@ -22,6 +22,7 @@ interface BookData {
   genre: string | null;
   status: string;
   progress: string | null;
+  failedReason: string | null;
   mature: boolean;
   createdAt: string;
   seriesId: string | null;
@@ -288,15 +289,20 @@ export default function LibraryPage() {
                   })()}
 
                   {book.status === "failed" && (
-                    <div className="mb-3 flex items-center gap-2">
-                      <span className="w-2 h-2 bg-red-400 rounded-full" />
-                      <span className="text-xs text-red-400 font-medium">Generation failed</span>
-                      <button
-                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); router.push("/create"); }}
-                        className="ml-auto text-xs bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-400 rounded-lg px-2.5 py-1 transition-all"
-                      >
-                        Retry
-                      </button>
+                    <div className="mb-3">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="w-2 h-2 bg-red-400 rounded-full flex-shrink-0" />
+                        <span className="text-xs text-red-400 font-medium">Generation failed</span>
+                        <button
+                          onClick={(e) => { e.preventDefault(); e.stopPropagation(); router.push("/create"); }}
+                          className="ml-auto text-xs bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-400 rounded-lg px-2.5 py-1 transition-all flex-shrink-0"
+                        >
+                          Try Again
+                        </button>
+                      </div>
+                      {book.failedReason && (
+                        <p className="text-xs text-red-400/60 ml-4 truncate">{book.failedReason}</p>
+                      )}
                     </div>
                   )}
 
@@ -310,6 +316,14 @@ export default function LibraryPage() {
                   </div>
 
                   <div className="mt-auto flex flex-wrap gap-2" onClick={(e) => e.preventDefault()}>
+                    {book.status === "complete" && (
+                      <button
+                        onClick={(e) => { e.preventDefault(); router.push(`/books/${book.id}/edit`); }}
+                        className="text-sm bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-400 rounded-lg px-3 py-1.5 transition-all"
+                      >
+                        Edit
+                      </button>
+                    )}
                     <button
                       onClick={(e) => { e.preventDefault(); downloadPdf(book.id, book.title); }}
                       className="text-sm bg-green-600/20 hover:bg-green-600/30 border border-green-500/30 text-green-400 rounded-lg px-3 py-1.5 transition-all"

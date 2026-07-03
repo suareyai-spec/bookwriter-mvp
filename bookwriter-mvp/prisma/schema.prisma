@@ -71,6 +71,7 @@ model Book {
   totalChapters  Int             @default(0)
   storyBible     String?         @db.Text
   outline        String?         @db.Text
+  failedReason   String?         @db.Text
   user           User            @relation(fields: [userId], references: [id])
   versions       BookVersion[]
   references     BookReference[]

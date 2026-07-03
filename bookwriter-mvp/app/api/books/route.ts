@@ -20,6 +20,7 @@ export async function GET() {
       genre: true,
       status: true,
       progress: true,
+      failedReason: true,
       contentType: true,
       mature: true,
       seriesId: true,
@@ -34,6 +35,26 @@ export async function GET() {
       },
     },
   });
+
+  // Mark stale generating books as failed (stuck for 45+ minutes)
+  const STALE_MS = 45 * 60 * 1000;
+  const stale = books.filter(
+    (b) => b.status === "generating" && Date.now() - new Date(b.createdAt).getTime() > STALE_MS
+  );
+  if (stale.length > 0) {
+    await Promise.all(
+      stale.map((b) =>
+        prisma.book.update({
+          where: { id: b.id },
+          data: { status: "failed", failedReason: "Generation timed out after 45 minutes" },
+        }).catch(() => {})
+      )
+    );
+    stale.forEach((b) => {
+      (b as any).status = "failed";
+      (b as any).failedReason = "Generation timed out after 45 minutes";
+    });
+  }
 
   const formatted = books.map((b) => ({
     ...b,
