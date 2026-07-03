@@ -796,7 +796,7 @@ Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter tit
             : buildChapterPrompt(i, chTitle, outline, prevSummary, biblePart, wordsPerChapter, lang, genre, bookContext, isRelig, isEdu, isMatureRomance, extractedFramework, body, citationInstructions, body.matureLevel, refContext);
 
           // Universal: enforce minimum length on every chapter type
-          const activePrompt = basePrompt + '\n\nIMPORTANT: Write a full, complete chapter of at least 1,500 words. Do not summarize or truncate. Write every section in full detail.';
+          const activePrompt = basePrompt + '\n\nIMPORTANT: Write a full, complete chapter of at least 2,500 words. The target length is 2,500–3,500 words. Do not summarize or truncate. Write every section in full detail.';
 
           const chapterResp = await callClaude(activePrompt, 16000, true);
           let chapter = chapterResp.text;
@@ -816,9 +816,9 @@ Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter tit
 
           // Word count enforcement — retry if under 1,000 words
           const preHumanizeWordCount = chapter.split(/\s+/).filter(Boolean).length;
-          if (preHumanizeWordCount < 1000 && !chapter.startsWith('[Chapter content')) {
+          if (preHumanizeWordCount < 2000 && !chapter.startsWith('[Chapter content')) {
             const lengthRetry = await callClaude(
-              `The previous attempt was only ${preHumanizeWordCount} words. That is unacceptably short. You MUST write a minimum of 1,500 words for this chapter. Do not summarize. Write every section out in full. Expand every idea with examples, stories, and explanation. Do not stop until you have written at least 1,500 words. Here is the chapter to write in full: ${activePrompt}`,
+              `The previous attempt was only ${preHumanizeWordCount} words. That is unacceptably short. You MUST write a minimum of 2,500 words for this chapter. Do not summarize. Write every section out in full. Expand every idea with examples, stories, and explanation. Do not stop until you have written at least 2,500 words. Here is the chapter to write in full: ${activePrompt}`,
               16000, true
             );
             trackApiCost({ userId, type: 'book', inputTokens: lengthRetry.inputTokens, outputTokens: lengthRetry.outputTokens, bookId }).catch(() => {});
