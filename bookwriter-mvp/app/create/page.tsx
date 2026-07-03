@@ -200,6 +200,7 @@ function HomeContent() {
   const [chapterTimes, setChapterTimes] = useState<number[]>([]);
   const [generatingBookId, setGeneratingBookId] = useState<string | null>(null);
   const [pollingStatus, setPollingStatus] = useState<any>(null);
+  const [generationFailed, setGenerationFailed] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
 
   const doneCount = chapters.filter(c => c.status === "done").length;
@@ -278,6 +279,7 @@ function HomeContent() {
       }
       setGeneratingBookId(data.bookId);
       setPollingStatus(null);
+      setGenerationFailed(false);
       // Polling starts via useEffect
     } catch {
       setError("Network error. Please try again.");
@@ -287,7 +289,7 @@ function HomeContent() {
 
   // Polling useEffect for background generation
   useEffect(() => {
-    if (step !== "generating" || !generatingBookId) return;
+    if (step !== "generating" || !generatingBookId || generationFailed) return;
 
     const poll = async () => {
       try {
@@ -298,17 +300,15 @@ function HomeContent() {
         if (data.status === "complete") {
           router.push(`/library/${generatingBookId}`);
         } else if (data.status === "failed") {
-          const errMsg = data.progressStatus === "failed" ? "Generation failed" : "Generation failed";
-          setError(errMsg);
-          setStep("input");
+          setGenerationFailed(true);
         }
       } catch {}
     };
 
     poll(); // immediate first poll
-    const interval = setInterval(poll, 10000);
+    const interval = setInterval(poll, 5000);
     return () => clearInterval(interval);
-  }, [step, generatingBookId, router]);
+  }, [step, generatingBookId, router, generationFailed]);
 
   async function generateSeries() {
     if (!title.trim() || !description.trim()) return;
@@ -914,65 +914,93 @@ function HomeContent() {
         {step === "generating" && (
           <div className="mx-auto max-w-3xl px-4 py-8 pb-20">
             <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 sm:p-8 shadow-2xl">
-              <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold mb-1" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>{title}</h2>
-                <p className="text-gray-400 text-sm">
-                  {!pollingStatus && "Starting generation..."}
-                  {pollingStatus?.progressStatus === "outline" && "Generating outline..."}
-                  {pollingStatus?.progressStatus === "writing" && pollingStatus.currentTitle
-                    ? `Writing ${format === "course" ? "Module" : "Chapter"} ${pollingStatus.currentChapter}: ${pollingStatus.currentTitle}`
-                    : pollingStatus?.progressStatus === "writing" ? `Writing ${format === "course" ? "module" : "chapter"} ${pollingStatus.currentChapter} of ${pollingStatus.totalChapters}...` : ""}
-                </p>
-              </div>
+              {generationFailed ? (
+                <div className="text-center py-4">
+                  <div className="w-12 h-12 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-6 h-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </div>
+                  <h2 className="text-xl font-bold mb-2" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>Generation Failed</h2>
+                  <p className="text-gray-400 text-sm mb-6">Something went wrong during generation. You can retry with the same settings or adjust them and try again.</p>
+                  <div className="flex justify-center gap-3 flex-wrap">
+                    <button
+                      onClick={() => { setGenerationFailed(false); setStep("input"); setPollingStatus(null); }}
+                      className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold rounded-xl px-5 py-2.5 text-sm transition-all shadow-lg shadow-blue-500/20"
+                    >
+                      Try Again
+                    </button>
+                    <a
+                      href="/library"
+                      className="bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] text-gray-300 rounded-xl px-5 py-2.5 text-sm transition-all"
+                    >
+                      Go to Library
+                    </a>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="text-center mb-6">
+                    <h2 className="text-2xl font-bold mb-1" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>{title}</h2>
+                    <p className="text-gray-400 text-sm">
+                      {!pollingStatus && "Starting generation..."}
+                      {pollingStatus?.progressStatus === "outline" && "Generating outline..."}
+                      {pollingStatus?.progressStatus === "writing" && pollingStatus.currentTitle
+                        ? `Writing ${format === "course" ? "Module" : "Chapter"} ${pollingStatus.currentChapter}: ${pollingStatus.currentTitle}`
+                        : pollingStatus?.progressStatus === "writing" ? `Writing ${format === "course" ? "module" : "chapter"} ${pollingStatus.currentChapter} of ${pollingStatus.totalChapters}...` : ""}
+                    </p>
+                  </div>
 
-              {/* Progress bar */}
-              <div className="mb-6">
-                <div className="flex justify-between text-sm mb-2">
-                  <span className="text-gray-400">{pollingStatus?.percentComplete || 0}% complete</span>
-                  {pollingStatus?.totalChapters > 0 && (
-                    <span className="text-gray-500">{pollingStatus.currentChapter} / {pollingStatus.totalChapters} {format === "course" ? "modules" : "chapters"}</span>
+                  {/* Progress bar */}
+                  <div className="mb-6">
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-gray-400">{pollingStatus?.percentComplete || 0}% complete</span>
+                      {pollingStatus?.totalChapters > 0 && (
+                        <span className="text-gray-500">{pollingStatus.currentChapter} / {pollingStatus.totalChapters} {format === "course" ? "modules" : "chapters"}</span>
+                      )}
+                    </div>
+                    <div className="w-full h-3 bg-white/[0.06] rounded-full overflow-hidden">
+                      <div
+                        className="h-full rounded-full relative overflow-hidden bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 transition-all duration-1000"
+                        style={{ width: `${Math.max(pollingStatus?.percentComplete || 0, 4)}%` }}
+                      >
+                        <div className="animate-progress-shimmer absolute inset-0" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Chapter checklist */}
+                  {pollingStatus?.chapters?.length > 0 && (
+                    <div className="mb-6 max-h-48 overflow-y-auto">
+                      <div className="space-y-1.5">
+                        {pollingStatus.chapters.map((ch: any) => (
+                          <div key={ch.number} className="flex items-center gap-3 text-sm">
+                            <span className="flex-shrink-0 w-5 h-5 rounded-full bg-green-500/20 border border-green-500/40 flex items-center justify-center text-green-400 text-xs">✓</span>
+                            <span className="text-gray-300">{format === "course" ? "Module" : "Ch."} {ch.number}: {ch.title}</span>
+                            {ch.wordCount && <span className="text-gray-600 text-xs ml-auto">{ch.wordCount.toLocaleString()}w</span>}
+                          </div>
+                        ))}
+                        {pollingStatus.currentChapter > (pollingStatus.chapters?.length || 0) && (
+                          <div className="flex items-center gap-3 text-sm">
+                            <span className="flex-shrink-0 w-5 h-5 rounded-full border-2 border-blue-400/60 border-t-transparent animate-spin" />
+                            <span className="text-blue-300 font-medium">{format === "course" ? "Module" : "Ch."} {pollingStatus.currentChapter}: {pollingStatus.currentTitle}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   )}
-                </div>
-                <div className="w-full h-3 bg-white/[0.06] rounded-full overflow-hidden">
-                  <div
-                    className="h-full rounded-full relative overflow-hidden bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 transition-all duration-1000"
-                    style={{ width: `${Math.max(pollingStatus?.percentComplete || 0, 4)}%` }}
-                  >
-                    <div className="animate-progress-shimmer absolute inset-0" />
-                  </div>
-                </div>
-              </div>
 
-              {/* Chapter checklist */}
-              {pollingStatus?.chapters?.length > 0 && (
-                <div className="mb-6 max-h-48 overflow-y-auto">
-                  <div className="space-y-1.5">
-                    {pollingStatus.chapters.map((ch: any) => (
-                      <div key={ch.number} className="flex items-center gap-3 text-sm">
-                        <span className="flex-shrink-0 w-5 h-5 rounded-full bg-green-500/20 border border-green-500/40 flex items-center justify-center text-green-400 text-xs">✓</span>
-                        <span className="text-gray-300">{format === "course" ? "Module" : "Ch."} {ch.number}: {ch.title}</span>
-                        {ch.wordCount && <span className="text-gray-600 text-xs ml-auto">{ch.wordCount.toLocaleString()}w</span>}
-                      </div>
-                    ))}
-                    {pollingStatus.currentChapter > (pollingStatus.chapters?.length || 0) && (
-                      <div className="flex items-center gap-3 text-sm">
-                        <span className="flex-shrink-0 w-5 h-5 rounded-full border-2 border-blue-400/60 border-t-transparent animate-spin" />
-                        <span className="text-blue-300 font-medium">{format === "course" ? "Module" : "Ch."} {pollingStatus.currentChapter}: {pollingStatus.currentTitle}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              <p className="text-center text-xs text-gray-600 mt-4">
-                Generation runs in the background — you can close this tab and check your library later.
-              </p>
-              {generatingBookId && (
-                <div className="text-center mt-3">
-                  <a href={`/library/${generatingBookId}`} className="text-xs text-blue-400 hover:text-blue-300">
-                    View in library →
-                  </a>
-                </div>
+                  <p className="text-center text-xs text-gray-600 mt-4">
+                    Generation runs in the background — you can close this tab and check your library later.
+                  </p>
+                  {generatingBookId && (
+                    <div className="text-center mt-3">
+                      <a href={`/library/${generatingBookId}`} className="text-xs text-blue-400 hover:text-blue-300">
+                        View in library →
+                      </a>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>

@@ -264,8 +264,8 @@ export default function LibraryPage() {
                     if (book.progress) {
                       try {
                         const p = JSON.parse(book.progress);
-                        percent = p.percent || 0;
                         if (p.currentChapter && p.totalChapters) {
+                          percent = Math.round((p.currentChapter / p.totalChapters) * 100);
                           progressText = `${book.status === "generating" ? "Writing" : "Revising"} ch. ${p.currentChapter}/${p.totalChapters}`;
                         }
                       } catch {}
@@ -291,6 +291,12 @@ export default function LibraryPage() {
                     <div className="mb-3 flex items-center gap-2">
                       <span className="w-2 h-2 bg-red-400 rounded-full" />
                       <span className="text-xs text-red-400 font-medium">Generation failed</span>
+                      <button
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); router.push("/create"); }}
+                        className="ml-auto text-xs bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-400 rounded-lg px-2.5 py-1 transition-all"
+                      >
+                        Retry
+                      </button>
                     </div>
                   )}
 
