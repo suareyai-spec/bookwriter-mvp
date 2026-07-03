@@ -430,8 +430,7 @@ Write Chapter ${i} now:`;
 // ──── Inngest Function ───────────────────────────────────────────────────────
 
 export const generateBook = inngest.createFunction(
-  { id: "generate-book", retries: 0 },
-  { event: "book/generate" as const },
+  { id: "generate-book", retries: 0, triggers: [{ event: "book/generate" as const }] },
   async ({ event }) => {
     const { bookId, userId } = event.data as { bookId: string; userId: string; body: unknown };
     const body = Body.parse((event.data as any).body);
