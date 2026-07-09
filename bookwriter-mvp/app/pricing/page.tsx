@@ -10,14 +10,9 @@ import { Suspense } from "react";
 interface UsageData {
   subscriptionPlan: string | null;
   subscriptionStatus: string | null;
-  monthlyBooksUsed: number;
-  monthlyCreditsTotal: number;
-  monthlyCreditsRemaining: number;
-  revisionCount: number;
-  monthlyRevisionLimit: number;
-  revisionsRemaining: number;
-  monthlyNewslettersUsed: number;
-  monthlyNewsletterLimit: number;
+  monthlyCredits: number;
+  purchasedCredits: number;
+  totalCredits: number;
 }
 
 function PricingContent() {
@@ -28,13 +23,14 @@ function PricingContent() {
   const [loading, setLoading] = useState<string | null>(null);
   const success = searchParams.get("success");
   const canceled = searchParams.get("canceled");
+  const creditsPurchased = searchParams.get("credits_purchased");
 
   useEffect(() => {
-    if (status === "authenticated" && session?.user) {
+    if (status === "authenticated" && session?.user && !success && !canceled && !creditsPurchased) {
       router.replace("/account?tab=billing");
       return;
     }
-  }, [status, session, router]);
+  }, [status, session, router, success, canceled, creditsPurchased]);
 
   useEffect(() => {
     if (session?.user) {
@@ -66,17 +62,25 @@ function PricingContent() {
     setLoading(null);
   }
 
-  async function buyCredit(creditSize: string) {
+  async function manageSubscription() {
+    setLoading("portal");
+    const res = await fetch("/api/stripe/portal", { method: "POST" });
+    const data = await res.json();
+    if (data.url) window.location.href = data.url;
+    setLoading(null);
+  }
+
+  async function buyPack(packId: string) {
     if (!session?.user) {
       window.location.href = "/auth/signup";
       return;
     }
-    setLoading(creditSize);
+    setLoading(packId);
     try {
       const res = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type: "credit", creditSize }),
+        body: JSON.stringify({ type: "credit_pack", packId }),
       });
       const data = await res.json();
       if (data.url) {
@@ -90,85 +94,52 @@ function PricingContent() {
     setLoading(null);
   }
 
-  async function manageSubscription() {
-    setLoading("portal");
-    const res = await fetch("/api/stripe/portal", { method: "POST" });
-    const data = await res.json();
-    if (data.url) window.location.href = data.url;
-    setLoading(null);
-  }
-
   const currentPlan = usage?.subscriptionPlan;
   const isActive = usage?.subscriptionStatus === "active";
 
   const plans = [
     {
-      key: "free",
-      name: "Free Starter",
-      price: 0,
-      color: "gray",
-      features: [
-        "1 Short Book (10,000 words max) — 1 revision total",
-        "2 short translations monthly (~3,000 words each)",
-        "2 newsletters monthly",
-        "2 articles monthly (short only)",
-        "PDF/DOCX export",
-      ],
-      extras: "No credit card required",
-      newsletterExtra: "One-time allocation, not monthly",
-      freeStarter: true,
-    },
-    {
-      key: "creator",
-      name: "Creator",
-      price: 99,
+      key: "starter",
+      name: "Starter",
+      price: 19,
+      credits: 25,
       color: "emerald",
       features: [
-        "1 Short or 1 Medium book/month",
-        "10 newsletters/month",
-        "Unlimited short-text translation",
-        "30 revisions/month",
-        "All formats (play, comic, course, thesis)",
-        "1 concurrent generation",
+        "25 credits/month",
+        "Short, Medium & Standard books",
+        "Courses & all special formats",
+        "Unused credits roll over (up to 50)",
+        "PDF & DOCX export",
       ],
-      extras: "Additional: Short $129 · Medium $179 · Standard $249",
-      newsletterExtra: "Extra newsletters: $5 each",
     },
     {
-      key: "author-pro",
-      name: "Author Pro",
-      price: 199,
+      key: "author",
+      name: "Author",
+      price: 49,
+      credits: 50,
       color: "blue",
       popular: true,
       features: [
-        "1 Standard book/month (~60K words)",
-        "30 newsletters/month",
-        "Unlimited short-text translation",
-        "Unlimited revisions (fair use)",
+        "50 credits/month",
+        "All book sizes including Epic & Long",
         "Priority generation queue",
-        "All formats unlocked",
-        "1 concurrent generation",
+        "Unused credits roll over (up to 100)",
+        "All formats & export options",
       ],
-      extras: "Additional: Short $99 · Medium $149 · Standard $199",
-      newsletterExtra: "Extra newsletters: $4 each",
-      equivalency: "1 Standard = 1 Medium + 1 Short = 3 Short",
     },
     {
       key: "studio",
       name: "Studio",
-      price: 349,
+      price: 99,
+      credits: null,
       color: "purple",
       features: [
-        "1 Standard + 1 Medium book/month",
-        "Unlimited newsletters (fair use)",
-        "Unlimited translation incl. full-book",
-        "Unlimited revisions",
+        "Unlimited generation — no credit limits",
+        "All book sizes & special formats",
         "Highest priority queue",
         "2 concurrent generations",
-        "All formats unlocked",
+        "All export formats",
       ],
-      extras: "Additional: Short $79 · Medium $129 · Standard $179",
-      equivalency: "Flexible combos: 2 Medium + 1 Short, etc.",
     },
   ];
 
@@ -203,6 +174,24 @@ function PricingContent() {
     },
   };
 
+  const creditCosts = [
+    { label: "Short book (10k words)", cost: 5 },
+    { label: "Medium book (25k words)", cost: 10 },
+    { label: "Standard book (50k words)", cost: 16 },
+    { label: "Long book (75k words)", cost: 22 },
+    { label: "Epic book (100k words)", cost: 30 },
+    { label: "Thesis / Course", cost: 16 },
+    { label: "Comic / Play", cost: 8 },
+    { label: "Article / Newsletter", cost: 2 },
+    { label: "Translation", cost: 4 },
+  ];
+
+  const creditPacks = [
+    { id: "pack_15", label: "15 credits", price: 12, perCredit: "0.80" },
+    { id: "pack_35", label: "35 credits", price: 25, perCredit: "0.71" },
+    { id: "pack_75", label: "75 credits", price: 49, perCredit: "0.65" },
+  ];
+
   return (
     <main className="min-h-screen bg-[#0a0a0f] text-white">
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
@@ -221,7 +210,7 @@ function PricingContent() {
               Choose your plan
             </h1>
             <p className="mt-4 text-lg text-gray-400 max-w-xl mx-auto">
-              Professional AI book generation, newsletters, translation, and more. Every plan includes all formats.
+              Credit-based pricing. Pay for what you generate. Unused credits roll over every month.
             </p>
           </div>
 
@@ -231,6 +220,11 @@ function PricingContent() {
               Subscription activated successfully. Welcome aboard!
             </div>
           )}
+          {creditsPurchased && (
+            <div className="mb-8 bg-green-500/10 border border-green-500/20 rounded-xl p-4 text-green-400 text-center">
+              Credits added to your account successfully!
+            </div>
+          )}
           {canceled && (
             <div className="mb-8 bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4 text-yellow-400 text-center">
               Checkout was canceled. No charges were made.
@@ -238,7 +232,7 @@ function PricingContent() {
           )}
 
           {/* Plan Cards */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          <div className="grid md:grid-cols-3 gap-6 mb-16">
             {plans.map((plan) => {
               const colors = colorMap[plan.color];
               const isCurrent = currentPlan === plan.key && isActive;
@@ -268,13 +262,15 @@ function PricingContent() {
                       <h3 className="text-lg font-bold">{plan.name}</h3>
                     </div>
                     <div className="flex items-baseline gap-1">
-                      <span className="text-4xl font-bold">{plan.price === 0 ? "Free" : `$${plan.price}`}</span>
-                      {plan.price > 0 && <span className="text-gray-500">/month</span>}
-                      {plan.price === 0 && <span className="text-gray-500">forever</span>}
+                      <span className="text-4xl font-bold">${plan.price}</span>
+                      <span className="text-gray-500">/month</span>
+                    </div>
+                    <div className={`text-sm mt-1 ${colors.text}`}>
+                      {plan.credits !== null ? `${plan.credits} credits/month` : "Unlimited generation"}
                     </div>
                   </div>
 
-                  <ul className="space-y-2.5 mb-4 flex-1">
+                  <ul className="space-y-2.5 mb-6 flex-1">
                     {plan.features.map((f) => (
                       <li key={f} className="flex items-start gap-2 text-sm text-gray-300">
                         <span className={`mt-0.5 w-4 h-4 rounded-full flex items-center justify-center text-xs flex-shrink-0 ${colors.badge}`}>
@@ -285,24 +281,10 @@ function PricingContent() {
                     ))}
                   </ul>
 
-                  {/* Extra pricing info */}
-                  <div className="mb-6 bg-white/[0.02] rounded-xl p-3 border border-white/[0.04] space-y-1">
-                    <div className="text-xs text-gray-400">{plan.extras}</div>
-                    {plan.newsletterExtra && <div className="text-xs text-gray-500">{plan.newsletterExtra}</div>}
-                    {plan.equivalency && <div className="text-xs text-gray-500 italic">{plan.equivalency}</div>}
-                  </div>
-
-                  {(plan as any).freeStarter ? (
+                  {!session ? (
                     <Link
                       href="/auth/signup"
                       className={`w-full text-center bg-gradient-to-r text-white font-semibold rounded-xl p-3.5 transition-all shadow-lg ${colors.button} block`}
-                    >
-                      Get Started Free
-                    </Link>
-                  ) : !session ? (
-                    <Link
-                      href="/auth/signup"
-                      className={`w-full text-center bg-gradient-to-r text-white font-semibold rounded-xl p-3.5 transition-all shadow-lg ${colors.button}`}
                     >
                       Get Started
                     </Link>
@@ -312,7 +294,7 @@ function PricingContent() {
                       disabled={loading === "portal"}
                       className="w-full bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] text-white font-semibold rounded-xl p-3.5 transition-all"
                     >
-                      {loading === "portal" ? "Loading..." : "Manage Subscription"}
+                      {loading === "portal" ? "Loading..." : "Manage"}
                     </button>
                   ) : (
                     <button
@@ -326,6 +308,69 @@ function PricingContent() {
                 </div>
               );
             })}
+          </div>
+
+          {/* What do credits buy */}
+          <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-8 mb-16">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+                What do credits buy?
+              </h2>
+              <p className="text-gray-400 mt-2">
+                Each content type costs a fixed number of credits. Credits never expire.
+              </p>
+            </div>
+            <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+              <table className="w-full max-w-lg mx-auto text-sm">
+                <thead>
+                  <tr className="text-gray-400 border-b border-white/[0.06]">
+                    <th className="text-left py-3 px-3">Content type</th>
+                    <th className="text-right py-3 px-3">Credits</th>
+                  </tr>
+                </thead>
+                <tbody className="text-gray-300">
+                  {creditCosts.map((row) => (
+                    <tr key={row.label} className="border-b border-white/[0.04]">
+                      <td className="py-3 px-3">{row.label}</td>
+                      <td className="text-right py-3 px-3 font-semibold text-white">{row.cost} cr</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Top up your credits */}
+          <div className="mb-16">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+                Top up your credits
+              </h2>
+              <p className="mt-3 text-gray-400 max-w-xl mx-auto">
+                Need more credits? Buy a pack any time. Purchased credits never expire and are used first.
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
+              {creditPacks.map((pack) => (
+                <div
+                  key={pack.id}
+                  className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-6 flex flex-col items-center text-center"
+                >
+                  <div className="text-3xl font-bold text-white mb-1">{pack.label}</div>
+                  <div className="text-4xl font-bold mt-2">${pack.price}</div>
+                  <div className="text-xs text-gray-500 mt-1">${pack.perCredit} per credit</div>
+                  <div className="text-xs text-gray-500 mt-1">one-time purchase</div>
+                  <button
+                    onClick={() => buyPack(pack.id)}
+                    disabled={loading === pack.id}
+                    className="mt-6 w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold rounded-xl p-3 transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50"
+                  >
+                    {loading === pack.id ? "Loading..." : "Buy Now"}
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Premium Packages */}
@@ -429,7 +474,7 @@ function PricingContent() {
                   <ul className="space-y-2 mb-6 flex-1">
                     {pkg.features.map((f) => (
                       <li key={f} className="flex items-start gap-2 text-sm text-gray-300">
-                        <span className="text-emerald-400 mt-0.5 flex-shrink-0">✓</span>
+                        <span className="text-emerald-400 mt-0.5 flex-shrink-0">&#10003;</span>
                         {f}
                       </li>
                     ))}
@@ -473,10 +518,10 @@ function PricingContent() {
             <div className="max-w-lg mx-auto text-center">
               <div className="text-4xl font-bold mb-1">$10<span className="text-lg text-gray-500 font-normal">/seat/month</span></div>
               <ul className="text-sm text-gray-300 space-y-2 mt-4 text-left max-w-xs mx-auto">
-                <li className="flex items-start gap-2"><span className="text-purple-400">✓</span> Individual login per member</li>
-                <li className="flex items-start gap-2"><span className="text-purple-400">✓</span> Shared workspace access</li>
-                <li className="flex items-start gap-2"><span className="text-purple-400">✓</span> Project collaboration permissions</li>
-                <li className="flex items-start gap-2"><span className="text-purple-400">✓</span> Studio subscription required</li>
+                <li className="flex items-start gap-2"><span className="text-purple-400">&#10003;</span> Individual login per member</li>
+                <li className="flex items-start gap-2"><span className="text-purple-400">&#10003;</span> Shared workspace access</li>
+                <li className="flex items-start gap-2"><span className="text-purple-400">&#10003;</span> Project collaboration permissions</li>
+                <li className="flex items-start gap-2"><span className="text-purple-400">&#10003;</span> Studio subscription required</li>
               </ul>
               {session?.user ? (
                 <Link
@@ -496,85 +541,7 @@ function PricingContent() {
             </div>
           </div>
 
-          {/* Extra Book Prices Table */}
-          <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-8 mb-16">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-                Additional Book Pricing
-              </h2>
-              <p className="text-gray-400 mt-2">
-                Need more books beyond your monthly allocation? Credits never expire.
-              </p>
-            </div>
-
-            <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-              <table className="w-full min-w-[400px] max-w-2xl mx-auto text-sm">
-                <thead>
-                  <tr className="text-gray-400 border-b border-white/[0.06]">
-                    <th className="text-left py-3 px-2">Book Size</th>
-                    <th className="text-center py-3 px-2">Creator</th>
-                    <th className="text-center py-3 px-2">Author Pro</th>
-                    <th className="text-center py-3 px-2">Studio</th>
-                  </tr>
-                </thead>
-                <tbody className="text-gray-300">
-                  <tr className="border-b border-white/[0.04]">
-                    <td className="py-3 px-2">Short (~20k words)</td>
-                    <td className="text-center py-3 px-2">$129</td>
-                    <td className="text-center py-3 px-2">$99</td>
-                    <td className="text-center py-3 px-2">$79</td>
-                  </tr>
-                  <tr className="border-b border-white/[0.04]">
-                    <td className="py-3 px-2">Medium (~40k words)</td>
-                    <td className="text-center py-3 px-2">$179</td>
-                    <td className="text-center py-3 px-2">$149</td>
-                    <td className="text-center py-3 px-2">$129</td>
-                  </tr>
-                  <tr className="border-b border-white/[0.04]">
-                    <td className="py-3 px-2">Standard (~60k words)</td>
-                    <td className="text-center py-3 px-2">$249</td>
-                    <td className="text-center py-3 px-2">$199</td>
-                    <td className="text-center py-3 px-2">$179</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-2 font-medium text-amber-400">Epic (~80k+ words)</td>
-                    <td className="text-center py-3 px-2">$499</td>
-                    <td className="text-center py-3 px-2">$499</td>
-                    <td className="text-center py-3 px-2">$499</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Epic Books Section */}
-          <div className="bg-gradient-to-br from-amber-500/5 to-orange-500/5 backdrop-blur-sm border border-amber-500/20 rounded-2xl p-8 mb-16">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-                🏆 Epic Books
-              </h2>
-              <p className="text-gray-400 mt-2">
-                80,000+ words of AI-generated content. Not included in any subscription — always a separate <span className="text-amber-400 font-semibold">$499</span> purchase.
-              </p>
-              <p className="text-gray-500 text-sm mt-1">
-                Includes extended capacity, premium structure support. Epic translation: $299.
-              </p>
-            </div>
-
-            {session && (
-              <div className="text-center">
-                <button
-                  onClick={() => buyCredit("epic")}
-                  disabled={loading === "epic"}
-                  className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-semibold rounded-xl px-8 py-3 transition-all shadow-lg shadow-amber-500/20 disabled:opacity-50"
-                >
-                  {loading === "epic" ? "Loading..." : "Buy Epic Book Credit — $499"}
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* Global Rules */}
+          {/* How it works */}
           <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-8 mb-16">
             <h2 className="text-xl font-bold mb-4" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
               How it works
@@ -582,23 +549,23 @@ function PricingContent() {
             <div className="grid sm:grid-cols-2 gap-4 text-sm text-gray-400">
               <div className="flex items-start gap-3">
                 <span className="text-blue-400 mt-0.5">📖</span>
-                <span>1 Medium = 2 Short books in monthly quota</span>
+                <span>Each book generation costs credits based on length and format</span>
               </div>
               <div className="flex items-start gap-3">
                 <span className="text-blue-400 mt-0.5">🔄</span>
-                <span>Full-book translation counts as a book credit</span>
+                <span>Unused monthly credits roll over (Starter: up to 50, Author: up to 100)</span>
               </div>
               <div className="flex items-start gap-3">
-                <span className="text-blue-400 mt-0.5">✏️</span>
-                <span>Rewriting &gt;70% of a book counts as a new book</span>
+                <span className="text-blue-400 mt-0.5">💰</span>
+                <span>Purchased credits are used first and never expire</span>
               </div>
               <div className="flex items-start gap-3">
                 <span className="text-blue-400 mt-0.5">♾️</span>
-                <span>Credits never expire</span>
+                <span>Studio plan skips credits entirely — unlimited generation</span>
               </div>
               <div className="flex items-start gap-3">
                 <span className="text-blue-400 mt-0.5">⚡</span>
-                <span>1 generation at a time (Studio: 2)</span>
+                <span>1 generation at a time (Studio: 2 concurrent)</span>
               </div>
               <div className="flex items-start gap-3">
                 <span className="text-blue-400 mt-0.5">🛡️</span>
@@ -606,88 +573,6 @@ function PricingContent() {
               </div>
             </div>
           </div>
-
-          {/* Special Content Modes */}
-          <div className="bg-gradient-to-br from-violet-500/5 to-rose-500/5 backdrop-blur-sm border border-violet-500/20 rounded-2xl p-8 mb-16">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-                Special Content Modes
-              </h2>
-              <p className="text-gray-400 mt-2">
-                All formats included with every plan. Generate comic scripts, plays, theses, and courses.
-              </p>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto mb-6">
-              {[
-                { label: "Comic Book", desc: "Full scripts with panels", color: "text-rose-400" },
-                { label: "Playwright", desc: "Acts, scenes, stage directions", color: "text-amber-400" },
-                { label: "Thesis", desc: "Academic with citations", color: "text-cyan-400" },
-                { label: "Course Builder", desc: "Lessons & modules", color: "text-violet-400" },
-              ].map((m) => (
-                <div key={m.label} className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4 text-center">
-                  <div className={`text-sm font-semibold ${m.color}`}>{m.label}</div>
-                  <div className="text-xs text-gray-500 mt-1">{m.desc}</div>
-                </div>
-              ))}
-            </div>
-            <div className="text-center">
-              <Link
-                href="/special"
-                className="bg-gradient-to-r from-violet-600 to-rose-600 hover:from-violet-500 hover:to-rose-500 text-white font-semibold rounded-xl px-8 py-3 transition-all shadow-lg shadow-violet-500/20 inline-block"
-              >
-                Explore Special Modes
-              </Link>
-            </div>
-          </div>
-
-          {/* Extra Credits Section for active subscribers */}
-          {isActive && currentPlan && (
-            <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-8">
-              <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-                  Need more books?
-                </h2>
-                <p className="text-gray-400 mt-2">
-                  Buy additional book credits. Credits never expire and stack with your subscription.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap justify-center gap-4 max-w-3xl mx-auto">
-                {(() => {
-                  const extras: Record<string, { size: string; label: string; price: number }[]> = {
-                    creator: [
-                      { size: "short", label: "Short Book", price: 129 },
-                      { size: "medium", label: "Medium Book", price: 179 },
-                      { size: "standard", label: "Standard Book", price: 249 },
-                    ],
-                    "author-pro": [
-                      { size: "short", label: "Short Book", price: 99 },
-                      { size: "medium", label: "Medium Book", price: 149 },
-                      { size: "standard", label: "Standard Book", price: 199 },
-                    ],
-                    studio: [
-                      { size: "short", label: "Short Book", price: 79 },
-                      { size: "medium", label: "Medium Book", price: 129 },
-                      { size: "standard", label: "Standard Book", price: 179 },
-                    ],
-                  };
-                  const planExtras = extras[currentPlan] || extras.creator;
-                  return planExtras.map((extra) => (
-                    <button
-                      key={extra.size}
-                      onClick={() => buyCredit(extra.size)}
-                      disabled={loading !== null}
-                      className="bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-white/[0.15] rounded-xl p-4 text-center transition-all disabled:opacity-50 w-[180px]"
-                    >
-                      <div className="text-sm font-medium text-gray-300">{extra.label}</div>
-                      <div className="text-xl font-bold mt-1">${extra.price}</div>
-                      <div className="text-xs text-gray-500 mt-1">one-time</div>
-                    </button>
-                  ));
-                })()}
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </main>

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
 import Stripe from "stripe";
+import { PLAN_MONTHLY_CREDITS, PLAN_ROLLOVER_CAP, getCreditPack } from "@/lib/credits";
 
 export async function POST(req: Request) {
   const body = await req.text();
@@ -26,6 +27,8 @@ export async function POST(req: Request) {
       if (session.mode === "subscription") {
         const plan = session.metadata?.plan;
         const subscriptionId = session.subscription as string;
+        const planAllowance = PLAN_MONTHLY_CREDITS[plan || ''];
+        const initialCredits = planAllowance === null ? 999 : (planAllowance ?? 0);
 
         await prisma.user.update({
           where: { id: userId },
@@ -36,6 +39,7 @@ export async function POST(req: Request) {
             monthlyBooksUsed: 0,
             monthlyResetDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
             stripeCustomerId: session.customer as string,
+            monthlyCredits: initialCredits,
           },
         });
       } else if (session.mode === "payment" && session.metadata?.type === "credit") {
@@ -47,6 +51,14 @@ export async function POST(req: Request) {
             stripePaymentId: session.payment_intent as string,
           },
         });
+      } else if (session.mode === "payment" && session.metadata?.type === "credit_pack") {
+        const pack = getCreditPack(session.metadata.packId || "");
+        if (pack && userId) {
+          await prisma.user.update({
+            where: { id: userId },
+            data: { purchasedCredits: { increment: pack.credits } },
+          });
+        }
       }
 
       // Affiliate conversion tracking
@@ -124,11 +136,25 @@ export async function POST(req: Request) {
         const userId = (customer as Stripe.Customer).metadata?.userId;
         if (!userId) break;
 
+        const user = await prisma.user.findUnique({
+          where: { id: userId },
+          select: { subscriptionPlan: true, monthlyCredits: true, purchasedCredits: true },
+        });
+        if (!user) break;
+
+        const plan = user.subscriptionPlan || 'free';
+        const planAllowance = PLAN_MONTHLY_CREDITS[plan];
+        const rolloverCap = PLAN_ROLLOVER_CAP[plan] ?? 0;
+        const rolloverAmount = Math.min((user as any).monthlyCredits ?? 0, rolloverCap);
+        const freshCredits = planAllowance === null ? 999 : (planAllowance ?? 0);
+
         await prisma.user.update({
           where: { id: userId },
           data: {
             monthlyBooksUsed: 0,
             monthlyResetDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+            monthlyCredits: freshCredits,
+            purchasedCredits: ((user as any).purchasedCredits ?? 0) + rolloverAmount,
           },
         });
       }

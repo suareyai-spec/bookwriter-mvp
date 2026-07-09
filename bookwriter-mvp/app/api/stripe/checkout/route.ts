@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { stripe, PLANS, CREDIT_PRICES, REVISION_PRICES, PlanKey } from "@/lib/stripe";
+import { getCreditPack } from "@/lib/credits";
 import { rateLimitByUser } from "@/lib/rate-limit";
 import { cookies } from "next/headers";
 
@@ -22,10 +23,11 @@ export async function POST(req: Request) {
 
   const body = await req.json();
   const { type, plan, creditSize, revisionType } = body as {
-    type: "subscription" | "credit" | "revision";
+    type: "subscription" | "credit" | "revision" | "credit_pack";
     plan?: PlanKey;
     creditSize?: string;
     revisionType?: "single" | "pack" | "unlimited";
+    packId?: string;
   };
 
   // Get or create Stripe customer
@@ -106,6 +108,29 @@ export async function POST(req: Request) {
       ],
       metadata: { userId: user.id, creditSize, type: "credit", ...(affiliateCode ? { affiliateCode } : {}) },
       success_url: `${origin}/library?credit_purchased=true`,
+      cancel_url: `${origin}/pricing?canceled=true`,
+    });
+
+    return NextResponse.json({ url: checkoutSession.url });
+  }
+
+  if (type === "credit_pack") {
+    const pack = getCreditPack((body as any).packId || "");
+    if (!pack) return NextResponse.json({ error: "Invalid credit pack" }, { status: 400 });
+
+    const checkoutSession = await stripe.checkout.sessions.create({
+      customer: customerId,
+      mode: "payment",
+      line_items: [{
+        price_data: {
+          currency: "usd",
+          product_data: { name: `Plot Ghost ${pack.label}` },
+          unit_amount: pack.price,
+        },
+        quantity: 1,
+      }],
+      metadata: { userId: user.id, type: "credit_pack", packId: pack.id, ...(affiliateCode ? { affiliateCode } : {}) },
+      success_url: `${origin}/library?credits_purchased=true`,
       cancel_url: `${origin}/pricing?canceled=true`,
     });
 

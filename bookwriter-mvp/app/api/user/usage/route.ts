@@ -30,6 +30,9 @@ export async function GET() {
       revisionCount: 0,
       monthlyRevisionLimit: Infinity,
       revisionsRemaining: Infinity,
+      monthlyCredits: 9999,
+      purchasedCredits: 9999,
+      totalCredits: 9999,
     });
   }
 
@@ -110,5 +113,8 @@ export async function GET() {
     freeTranslationsUsed: (user as any).freeTranslationsUsed || 0,
     freeNewslettersUsed: (user as any).freeNewslettersUsed || 0,
     freeArticlesUsed: (user as any).freeArticlesUsed || 0,
+    monthlyCredits: (user as any).monthlyCredits ?? 0,
+    purchasedCredits: (user as any).purchasedCredits ?? 0,
+    totalCredits: ((user as any).monthlyCredits ?? 0) + ((user as any).purchasedCredits ?? 0),
   });
 }

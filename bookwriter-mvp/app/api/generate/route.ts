@@ -2,7 +2,8 @@ import { z } from "zod";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { PLANS, getBookSize, getBookCreditCost, PlanKey } from "@/lib/stripe";
+import { PLANS, getBookSize, PlanKey } from "@/lib/stripe";
+import { CREDIT_COST, getContentSizeFromLength, isUnlimitedPlan } from "@/lib/credits";
 import { isAdmin } from "@/lib/config";
 import { rateLimitByUser } from "@/lib/rate-limit";
 import { inngest } from "@/lib/inngest";
@@ -61,91 +62,63 @@ export async function POST(req: Request) {
     // Admin bypass — skip all payment checks
     if (isAdmin(user.email)) {
       await prisma.user.update({ where: { id: userId }, data: { isGenerating: true, generationStartedAt: new Date() } });
-      // Skip to generation (falls through to after payment gate)
     } else {
 
-    const userPlan = user.subscriptionPlan as PlanKey | null;
+    const userPlan = user.subscriptionPlan as string | null;
     const isActive = user.subscriptionStatus === "active";
-    const isFreeUser = !isActive && !userPlan;
 
     // Concurrent generation limit — auto-reset if stuck > 30 minutes
     if (user.isGenerating) {
       const startedAt = (user as any).generationStartedAt;
-      const stuckThreshold = 30 * 60 * 1000; // 30 minutes
+      const stuckThreshold = 30 * 60 * 1000;
       if (startedAt && Date.now() - new Date(startedAt).getTime() > stuckThreshold) {
         await prisma.user.update({ where: { id: userId }, data: { isGenerating: false, generationStartedAt: null } });
         (user as any).isGenerating = false;
       } else {
-        const planConfig = userPlan && PLANS[userPlan] ? PLANS[userPlan] : null;
-        const maxConcurrent = planConfig?.concurrentGenerations || 1;
-        if (maxConcurrent <= 1) {
-          return new Response(JSON.stringify({ error: "You already have a generation in progress. Please wait for it to finish." }), { status: 429, headers: { "Content-Type": "application/json" } });
-        }
+        return new Response(JSON.stringify({ error: "You already have a generation in progress. Please wait for it to finish." }), { status: 429, headers: { "Content-Type": "application/json" } });
       }
     }
 
-    // FREE STARTER TIER: users with no plan get 1 free short book
-    if (isFreeUser) {
-      if (bookSize !== "short") {
-        return new Response(JSON.stringify({ error: "Free Starter only includes Short Books (10,000 words max). Upgrade to unlock Medium, Standard, and Epic book generation.", needsSubscription: true }), { status: 403, headers: { "Content-Type": "application/json" } });
-      }
+    if (!isActive) {
+      // Free tier: 1 free short book
       if ((user as any).freeBookUsed) {
-        const credit = await prisma.bookCredit.findFirst({
-          where: { userId, bookSize, used: false },
-        });
-        if (credit) {
-          await prisma.bookCredit.update({ where: { id: credit.id }, data: { used: true, usedAt: new Date() } });
-        } else {
-          return new Response(JSON.stringify({ error: "You've reached your Free Starter limit. Upgrade to unlock full book generation, full translations, and unlimited creative output.", needsSubscription: true }), { status: 403, headers: { "Content-Type": "application/json" } });
-        }
-      } else {
-        await prisma.user.update({ where: { id: userId }, data: { freeBookUsed: true } });
+        return new Response(JSON.stringify({ error: "You need a subscription to generate books. Visit the pricing page to get started.", needsSubscription: true }), { status: 403, headers: { "Content-Type": "application/json" } });
       }
-    }
-    // Epic books always require a separate credit purchase ($499)
-    else if (bookSize === "epic") {
-      const credit = await prisma.bookCredit.findFirst({
-        where: { userId, bookSize: "epic", used: false },
-      });
-      if (!credit) {
-        return new Response(JSON.stringify({ error: "Epic books require a $499 credit purchase. Buy an Epic Book credit to continue.", needsCredit: true, creditSize: "epic" }), { status: 403, headers: { "Content-Type": "application/json" } });
+      if (bookSize !== "short") {
+        return new Response(JSON.stringify({ error: "Free accounts can only generate short books (10,000 words). Subscribe to unlock all sizes.", needsSubscription: true }), { status: 403, headers: { "Content-Type": "application/json" } });
       }
-      await prisma.bookCredit.update({ where: { id: credit.id }, data: { used: true, usedAt: new Date() } });
-    } else if (isActive && userPlan) {
-      const planConfig = PLANS[userPlan];
-
-      if (!planConfig.allowedSizes.includes(bookSize)) {
-        return new Response(JSON.stringify({ error: `Your ${planConfig.name} plan doesn't include ${bookSize} books. Upgrade your plan or buy a credit.`, needsCredit: true, creditSize: bookSize }), { status: 403, headers: { "Content-Type": "application/json" } });
-      }
-
-      if (user.monthlyResetDate && new Date() > user.monthlyResetDate) {
-        await prisma.user.update({ where: { id: userId }, data: { monthlyBooksUsed: 0, monthlyResetDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), monthlyNewslettersUsed: 0 } });
-        user.monthlyBooksUsed = 0;
-      }
-
-      const creditCost = getBookCreditCost(userPlan, bookSize);
-      const remaining = planConfig.monthlyCredits - user.monthlyBooksUsed;
-
-      if (remaining >= creditCost) {
-        await prisma.user.update({ where: { id: userId }, data: { monthlyBooksUsed: user.monthlyBooksUsed + creditCost } });
-      } else {
-        const credit = await prisma.bookCredit.findFirst({
-          where: { userId, bookSize, used: false },
-        });
-        if (credit) {
-          await prisma.bookCredit.update({ where: { id: credit.id }, data: { used: true, usedAt: new Date() } });
-        } else {
-          return new Response(JSON.stringify({ error: `You've used all your monthly books. Buy an extra ${bookSize} book credit to continue.`, needsCredit: true, creditSize: bookSize }), { status: 403, headers: { "Content-Type": "application/json" } });
-        }
-      }
+      await prisma.user.update({ where: { id: userId }, data: { freeBookUsed: true } });
+    } else if (isUnlimitedPlan(userPlan)) {
+      // Studio — no credit check
     } else {
-      const credit = await prisma.bookCredit.findFirst({
-        where: { userId, bookSize, used: false },
-      });
-      if (!credit) {
-        return new Response(JSON.stringify({ error: "You need a subscription or book credit to generate. Visit the pricing page to get started.", needsSubscription: true }), { status: 403, headers: { "Content-Type": "application/json" } });
+      // Credit-based check for starter/author/creator/author-pro
+      const isCourseFormat = body.format === "course";
+      const contentSizeKey = isCourseFormat ? "course" : getContentSizeFromLength(body.bookLength || "10,000 words");
+      const creditCost = CREDIT_COST[contentSizeKey] ?? CREDIT_COST.standard;
+
+      const monthlyCredits = (user as any).monthlyCredits ?? 0;
+      const purchasedCredits = (user as any).purchasedCredits ?? 0;
+      const totalCredits = monthlyCredits + purchasedCredits;
+
+      if (totalCredits < creditCost) {
+        return new Response(JSON.stringify({
+          error: `Not enough credits. This book costs ${creditCost} credits and you have ${totalCredits}. Buy a credit pack or upgrade your plan.`,
+          needsCredits: true,
+          creditCost,
+          totalCredits,
+        }), { status: 403, headers: { "Content-Type": "application/json" } });
       }
-      await prisma.bookCredit.update({ where: { id: credit.id }, data: { used: true, usedAt: new Date() } });
+
+      // Deduct purchased first, then monthly
+      const fromPurchased = Math.min(purchasedCredits, creditCost);
+      const fromMonthly = creditCost - fromPurchased;
+      await prisma.user.update({
+        where: { id: userId },
+        data: {
+          purchasedCredits: purchasedCredits - fromPurchased,
+          monthlyCredits: monthlyCredits - fromMonthly,
+        },
+      });
     }
 
     // Mark as generating

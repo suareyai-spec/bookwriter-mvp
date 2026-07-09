@@ -43,7 +43,7 @@ export const PLANS = {
   },
   studio: {
     name: "Studio",
-    price: 34900,
+    price: 9900,
     monthlyCredits: MONTHLY_POINTS.studio,
     maxProjects: Infinity,
     allowedSizes: ["short", "medium", "standard"] as string[],
@@ -52,6 +52,28 @@ export const PLANS = {
     monthlyNewsletters: Infinity, // fair use ~100
     concurrentGenerations: 2,
     priority: "highest",
+  },
+  starter: {
+    name: "Starter",
+    price: 1900,
+    monthlyCredits: 25,
+    maxProjects: Infinity,
+    allowedSizes: ["short", "medium", "standard", "long", "epic"] as string[],
+    creditEquivalents: {} as Record<string, number>,
+    monthlyRevisions: Infinity,
+    monthlyNewsletters: Infinity,
+    concurrentGenerations: 1,
+  },
+  author: {
+    name: "Author",
+    price: 4900,
+    monthlyCredits: 50,
+    maxProjects: Infinity,
+    allowedSizes: ["short", "medium", "standard", "long", "epic"] as string[],
+    creditEquivalents: {} as Record<string, number>,
+    monthlyRevisions: Infinity,
+    monthlyNewsletters: Infinity,
+    concurrentGenerations: 1,
   },
 } as const;
 
@@ -90,7 +112,7 @@ export function getBookSize(bookLength: string): string {
   if (bookLength.includes("10,000") || bookLength.includes("20,000")) return "short";
   if (bookLength.includes("25,000") || bookLength.includes("40,000")) return "medium";
   if (bookLength.includes("50,000") || bookLength.includes("60,000")) return "standard";
-  if (bookLength.includes("75,000")) return "standard";
+  if (bookLength.includes("75,000")) return "long";
   if (bookLength.includes("100,000") || bookLength.includes("80,000")) return "epic";
   return "short";
 }

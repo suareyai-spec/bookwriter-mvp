@@ -15,6 +15,7 @@ const PLAN_BADGES: Record<string, { label: string; color: string }> = {
 export default function Navbar() {
   const { data: session } = useSession();
   const [plan, setPlan] = useState<string | null>(null);
+  const [credits, setCredits] = useState<number | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -24,6 +25,11 @@ export default function Navbar() {
         .then((d) => {
           if (d.subscriptionPlan && d.subscriptionStatus === "active") {
             setPlan(d.subscriptionPlan);
+          }
+          if (typeof d.totalCredits === 'number' && d.totalCredits < 9999) {
+            setCredits(d.totalCredits);
+          } else if (d.isAdmin || d.subscriptionPlan === 'studio') {
+            setCredits(null); // unlimited
           }
         })
         .catch(() => {});
@@ -77,6 +83,16 @@ export default function Navbar() {
             {badge && (
               <span className={`text-xs font-semibold border rounded-full px-2 py-0.5 ${badge.color}`}>
                 {badge.label}
+              </span>
+            )}
+            {credits !== null && (
+              <Link href="/pricing" className="text-xs bg-white/[0.05] border border-white/[0.08] text-gray-400 rounded-full px-3 py-1 hover:text-white transition-colors">
+                {credits} credits
+              </Link>
+            )}
+            {credits === null && plan && (
+              <span className="text-xs bg-purple-500/10 border border-purple-500/20 text-purple-400 rounded-full px-2.5 py-1">
+                &#8734;
               </span>
             )}
           </div>
