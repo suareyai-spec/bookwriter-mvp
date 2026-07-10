@@ -977,12 +977,12 @@ function HomeContent() {
                     >
                       Try Again
                     </button>
-                    <a
+                    <Link
                       href="/library"
                       className="bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] text-gray-300 rounded-xl px-5 py-2.5 text-sm transition-all"
                     >
                       Go to Library
-                    </a>
+                    </Link>
                   </div>
                 </div>
               ) : (

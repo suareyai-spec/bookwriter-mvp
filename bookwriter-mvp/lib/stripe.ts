@@ -2,8 +2,7 @@ import Stripe from "stripe";
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-// Re-export plan types for backward compatibility
-import { PLANS as CONFIG_PLANS, type PlanId, MONTHLY_POINTS, getBookPoints, canGenerateBookSize, BOOK_SIZES } from "@/lib/config";
+import { MONTHLY_POINTS } from "@/lib/config";
 
 // Plan configuration (backward compat wrapper)
 export const PLANS = {

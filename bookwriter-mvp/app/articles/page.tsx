@@ -459,7 +459,7 @@ function ArticlesContent() {
               {/* Writing Sample for Voice Matching */}
               <div>
                 <label className={labelClass}>Writing Sample <span className="text-gray-600">(optional)</span></label>
-                <p className="text-xs text-gray-500 mb-3">Paste your own writing and we'll match your style.</p>
+                <p className="text-xs text-gray-500 mb-3">Paste your own writing and we&apos;ll match your style.</p>
                 <textarea
                   className={`${inputClass} resize-none`}
                   rows={5}

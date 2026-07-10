@@ -115,6 +115,20 @@ export default function SpecialModePage() {
     if (status === "unauthenticated") router.push("/auth/login");
   }, [status, router]);
 
+  // Check for returning from Stripe checkout — must be before any early returns
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("paid") === "true") {
+      const stored = sessionStorage.getItem("special_params");
+      if (stored) {
+        sessionStorage.removeItem("special_params");
+        const params = JSON.parse(stored);
+        startGeneration(params);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   if (!config) {
     return (
       <main className="min-h-screen bg-[#0a0a0f] text-white">
@@ -302,20 +316,6 @@ export default function SpecialModePage() {
       setGenerating(false);
     }
   }
-
-  // Check for returning from Stripe checkout
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get("paid") === "true") {
-      const stored = sessionStorage.getItem("special_params");
-      if (stored) {
-        sessionStorage.removeItem("special_params");
-        const params = JSON.parse(stored);
-        startGeneration(params);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const inputClass = "w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-white/[0.2] transition-all text-sm";
   const labelClass = "block text-sm font-medium text-gray-300 mb-1.5";
