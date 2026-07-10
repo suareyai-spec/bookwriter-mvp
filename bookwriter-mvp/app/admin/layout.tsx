@@ -5,11 +5,11 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-
-const ADMIN_EMAILS = ["suarey@gmail.com", "suareyai@gmail.com", "dsuarey@gmail.com"];
+import { ADMIN_EMAILS } from "@/lib/config";
 
 const NAV_ITEMS = [
   { label: "Overview", href: "/admin" },
+  { label: "Generations & Credits", href: "/admin/generations" },
   { label: "Users", href: "/admin/users" },
   { label: "Subscriptions", href: "/admin/subscriptions" },
   { label: "Revenue", href: "/admin/revenue" },

@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy | PlotGhost",
+  description: "How PlotGhost collects, uses, and protects your data when you generate books, scripts, theses, and courses with our AI platform.",
+};
 
 export default function PrivacyPage() {
   return (

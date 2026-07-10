@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { PLANS, getBookSize, PlanKey } from "@/lib/stripe";
-import { getCreditCost, getContentSizeFromLength, isUnlimitedPlan, totalCredits, planDeduction, insufficientCreditsMessage } from "@/lib/credits";
+import { getCreditCost, getContentSizeFromLength, isUnlimitedPlan, totalCredits, deductCredits, insufficientCreditsMessage, CreditDeduction } from "@/lib/credits";
 import { isAdmin } from "@/lib/config";
 import { acquireGenerationSlot, releaseGenerationSlot } from "@/lib/rate-limit";
 import { inngest } from "@/lib/inngest";
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
     const body = Body.parse(await req.json());
     const bookSize = getBookSize(body.bookLength || "10,000 words (~40 pages)");
 
-    let creditDeduction: { fromPurchased: number; fromMonthly: number; fromRollover: number } | null = null;
+    let creditDeduction: CreditDeduction | null = null;
 
     // Admin bypass — skip all payment checks
     if (isAdmin(user.email)) {
@@ -121,15 +121,7 @@ export async function POST(req: Request) {
       }
 
       // Deduct purchased first, then monthly, then rollover
-      creditDeduction = planDeduction(balance, creditCost);
-      await prisma.user.update({
-        where: { id: userId },
-        data: {
-          purchasedCredits: balance.purchasedCredits - creditDeduction.fromPurchased,
-          monthlyCredits: balance.monthlyCredits - creditDeduction.fromMonthly,
-          creditsRollover: balance.creditsRollover - creditDeduction.fromRollover,
-        },
-      });
+      creditDeduction = await deductCredits(userId, balance, creditCost);
     }
 
     // Mark as generating

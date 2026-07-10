@@ -15,8 +15,11 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     where: { id },
     data: {
       ...(body.isActive !== undefined && { isActive: body.isActive }),
+      ...(body.isApproved !== undefined && { isApproved: body.isApproved }),
       ...(body.commissionPercent !== undefined && { commissionPercent: body.commissionPercent }),
+      ...(body.commissionRate !== undefined && { commissionRate: body.commissionRate }),
       ...(body.payoutStatus !== undefined && { payoutStatus: body.payoutStatus }),
+      ...(body.pendingPayout !== undefined && { pendingPayout: body.pendingPayout }),
       ...(body.notes !== undefined && { notes: body.notes }),
     },
   });

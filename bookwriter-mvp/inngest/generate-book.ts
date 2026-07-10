@@ -5,12 +5,7 @@ import { anthropic } from "@/lib/openai";
 import { trackApiCost, getTokensFromResponse } from "@/lib/cost-tracker";
 import { releaseGenerationSlot } from "@/lib/rate-limit";
 import { sendGenerationCompleteEmail, sendGenerationFailedEmail } from "@/lib/email";
-
-interface CreditDeduction {
-  fromPurchased: number;
-  fromMonthly: number;
-  fromRollover: number;
-}
+import { refundCredits, CreditDeduction } from "@/lib/credits";
 
 // ──── Schemas (mirrored from api/generate/route.ts) ────────────────────────
 
@@ -904,20 +899,10 @@ Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter tit
       await releaseGenerationSlot(userId);
 
       // Refund whichever credit pools were deducted at the start of this generation.
-      let creditsRefunded = 0;
-      if (creditDeduction) {
-        creditsRefunded = creditDeduction.fromPurchased + creditDeduction.fromMonthly + creditDeduction.fromRollover;
-        if (creditsRefunded > 0) {
-          await prisma.user.update({
-            where: { id: userId },
-            data: {
-              purchasedCredits: { increment: creditDeduction.fromPurchased },
-              monthlyCredits: { increment: creditDeduction.fromMonthly },
-              creditsRollover: { increment: creditDeduction.fromRollover },
-            },
-          }).catch((refundErr) => console.error('[generate-book] credit refund failed:', refundErr));
-        }
-      }
+      const creditsRefunded = creditDeduction
+        ? creditDeduction.fromPurchased + creditDeduction.fromMonthly + creditDeduction.fromRollover
+        : 0;
+      await refundCredits(userId, creditDeduction).catch((refundErr) => console.error('[generate-book] credit refund failed:', refundErr));
 
       const failedUser = await prisma.user.findUnique({ where: { id: userId }, select: { email: true } }).catch(() => null);
       if (failedUser?.email) {

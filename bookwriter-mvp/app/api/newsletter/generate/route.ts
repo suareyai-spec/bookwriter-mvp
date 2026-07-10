@@ -8,6 +8,7 @@ import { acquireGenerationSlot, releaseGenerationSlot } from "@/lib/rate-limit";
 import { humanizeChapter } from "@/lib/humanizer";
 import { trackApiCost, getTokensFromResponse } from "@/lib/cost-tracker";
 import { sendGenerationCompleteEmail, sendGenerationFailedEmail } from "@/lib/email";
+import { getCreditCost, isUnlimitedPlan, totalCredits, deductCredits, refundCredits, insufficientCreditsMessage, CreditDeduction } from "@/lib/credits";
 
 export const maxDuration = 120;
 export const dynamic = "force-dynamic";
@@ -90,6 +91,8 @@ export async function POST(req: Request) {
     const typeLabel = TYPE_LABELS[body.newsletterType] || body.newsletterType;
     const lang = body.language || "English";
 
+    let creditDeduction: CreditDeduction | null = null;
+
     // Admin bypass
     if (!isAdmin(user.email)) {
       const hasActiveSub = user.subscriptionStatus === "active" && user.subscriptionPlan;
@@ -112,39 +115,29 @@ export async function POST(req: Request) {
           }), { status: 403, headers: { "Content-Type": "application/json" } });
         }
         await prisma.user.update({ where: { id: userId }, data: { monthlyNewslettersUsed: { increment: 1 } } });
+      } else if (isUnlimitedPlan(user.subscriptionPlan)) {
+        // Studio — no credit check
       } else {
-        // Check monthly newsletter limit
-        const plan = user.subscriptionPlan as string;
-        const limits: Record<string, number> = { creator: 10, "author-pro": 30, studio: Infinity };
-        const monthlyLimit = limits[plan] ?? 0;
+        // Credit-based check for starter/author/creator/author-pro
+        const creditCost = getCreditCost("newsletter");
+        const balance = {
+          purchasedCredits: (user as any).purchasedCredits ?? 0,
+          monthlyCredits: (user as any).monthlyCredits ?? 0,
+          creditsRollover: (user as any).creditsRollover ?? 0,
+        };
+        const have = totalCredits(balance);
 
-        // Reset if needed
-        if (user.monthlyResetDate && new Date() > user.monthlyResetDate) {
-          await prisma.user.update({ where: { id: userId }, data: { monthlyNewslettersUsed: 0, monthlyBooksUsed: 0, monthlyResetDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) } });
-          (user as any).monthlyNewslettersUsed = 0;
+        if (have < creditCost) {
+          await releaseGenerationSlot(userId);
+          return new Response(JSON.stringify({
+            error: insufficientCreditsMessage(creditCost, have),
+            needsCredits: true,
+            creditCost,
+            totalCredits: have,
+          }), { status: 403, headers: { "Content-Type": "application/json" } });
         }
 
-        const used = (user as any).monthlyNewslettersUsed || 0;
-        if (monthlyLimit !== Infinity && used >= monthlyLimit) {
-          const extraPrices: Record<string, number> = { creator: 5, "author-pro": 4, studio: 0 };
-          const extraPrice = extraPrices[plan] ?? 5;
-          // Check for purchased newsletter credit
-          const credit = await prisma.bookCredit.findFirst({
-            where: { userId, bookSize: `newsletter_extra`, used: false },
-          });
-          if (!credit) {
-            await releaseGenerationSlot(userId);
-            return new Response(JSON.stringify({
-              error: `You've used all ${monthlyLimit} newsletters this month. Additional newsletters cost $${extraPrice} each.`,
-              needsCredit: true,
-              creditSize: "newsletter_extra",
-            }), { status: 403, headers: { "Content-Type": "application/json" } });
-          }
-          await prisma.bookCredit.update({ where: { id: credit.id }, data: { used: true, usedAt: new Date() } });
-        } else {
-          // Increment newsletter count
-          await prisma.user.update({ where: { id: userId }, data: { monthlyNewslettersUsed: { increment: 1 } } });
-        }
+        creditDeduction = await deductCredits(userId, balance, creditCost);
       }
     }
 
@@ -259,11 +252,13 @@ Write the complete newsletter now:`;
           controller.enqueue(new TextEncoder().encode(sseEvent({ type: "error", message })));
           controller.close();
           await releaseGenerationSlot(userId);
+          const creditsRefunded = creditDeduction ? creditDeduction.fromPurchased + creditDeduction.fromMonthly + creditDeduction.fromRollover : 0;
+          await refundCredits(userId, creditDeduction).catch((refundErr) => console.error('[newsletter] credit refund failed:', refundErr));
           sendGenerationFailedEmail({
             to: user.email,
             title: `${body.companyName} — ${typeLabel} Newsletter`,
             reason: message,
-            creditsRefunded: 0,
+            creditsRefunded,
           }).catch((emailErr) => console.error('[newsletter] failure email failed:', emailErr));
         }
       },

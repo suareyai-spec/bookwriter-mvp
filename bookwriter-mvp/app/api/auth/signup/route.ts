@@ -23,11 +23,14 @@ export async function POST(req: Request) {
 
     const passwordHash = await bcrypt.hash(body.password, 12);
 
+    const ref = req.headers.get("cookie")?.match(/(?:^|;\s*)plotghost_ref=([^;]+)/)?.[1];
+
     const user = await prisma.user.create({
       data: {
         name: body.name.trim(),
         email: body.email.toLowerCase().trim(),
         passwordHash,
+        referredBy: ref ? decodeURIComponent(ref) : undefined,
       },
     });
 

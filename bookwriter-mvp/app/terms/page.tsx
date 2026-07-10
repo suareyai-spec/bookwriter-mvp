@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Terms of Service | PlotGhost",
+  description: "PlotGhost's Terms of Service — content ownership, acceptable use, and the rules governing your use of our AI book generation platform.",
+};
 
 export default function TermsPage() {
   return (

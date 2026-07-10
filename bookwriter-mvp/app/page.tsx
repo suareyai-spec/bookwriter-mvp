@@ -1,5 +1,26 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+
+export const metadata: Metadata = {
+  title: "PlotGhost — AI Book Generator | Write a Full Book in Minutes",
+  description: "Generate full-length books, scripts, theses, and courses with AI. Professional quality, export-ready PDF and Word formats. From idea to finished book in minutes.",
+};
+
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "PlotGhost",
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+  description: "AI-powered book generator that creates full-length books, scripts, theses, and courses. Export-ready PDF and Word formats.",
+  url: "https://plotghost.ai",
+  offers: {
+    "@type": "Offer",
+    price: "19",
+    priceCurrency: "USD",
+  },
+};
 
 const CREATION_MODES = [
   {
@@ -139,6 +160,10 @@ const PLANS_PREVIEW = [
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-[#0a0a0f] text-white selection:bg-blue-500/30">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+      />
       {/* Gradient orbs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-blue-600/8 rounded-full blur-[150px]" />

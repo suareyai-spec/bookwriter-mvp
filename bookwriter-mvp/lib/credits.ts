@@ -1,3 +1,5 @@
+import { prisma } from "@/lib/prisma";
+
 export const CREDIT_COST: Record<string, number> = {
   short: 5, medium: 10, standard: 16, long: 22, epic: 30,
   thesis: 16, course: 16, comic: 8, play: 8,
@@ -74,4 +76,33 @@ export function planDeduction(balance: CreditBalance, cost: number): CreditDeduc
   const afterMonthly = afterPurchased - fromMonthly;
   const fromRollover = Math.min(balance.creditsRollover, afterMonthly);
   return { fromPurchased, fromMonthly, fromRollover };
+}
+
+/** Deducts `cost` credits from `balance` (purchased -> monthly -> rollover) and persists it. */
+export async function deductCredits(userId: string, balance: CreditBalance, cost: number): Promise<CreditDeduction> {
+  const deduction = planDeduction(balance, cost);
+  await prisma.user.update({
+    where: { id: userId },
+    data: {
+      purchasedCredits: balance.purchasedCredits - deduction.fromPurchased,
+      monthlyCredits: balance.monthlyCredits - deduction.fromMonthly,
+      creditsRollover: balance.creditsRollover - deduction.fromRollover,
+    },
+  });
+  return deduction;
+}
+
+/** Restores a previous deduction to whichever pools it came from (used on generation failure). */
+export async function refundCredits(userId: string, deduction: CreditDeduction | null | undefined): Promise<void> {
+  if (!deduction) return;
+  const total = deduction.fromPurchased + deduction.fromMonthly + deduction.fromRollover;
+  if (total <= 0) return;
+  await prisma.user.update({
+    where: { id: userId },
+    data: {
+      purchasedCredits: { increment: deduction.fromPurchased },
+      monthlyCredits: { increment: deduction.fromMonthly },
+      creditsRollover: { increment: deduction.fromRollover },
+    },
+  });
 }

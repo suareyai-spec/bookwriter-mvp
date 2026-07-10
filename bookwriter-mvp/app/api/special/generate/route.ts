@@ -8,6 +8,7 @@ import { acquireGenerationSlot, releaseGenerationSlot } from "@/lib/rate-limit";
 import { humanizeChapter } from "@/lib/humanizer";
 import { trackApiCost, getTokensFromResponse } from "@/lib/cost-tracker";
 import { sendGenerationCompleteEmail, sendGenerationFailedEmail } from "@/lib/email";
+import { getCreditCost, isUnlimitedPlan, totalCredits, deductCredits, refundCredits, insufficientCreditsMessage, CreditDeduction } from "@/lib/credits";
 
 export const maxDuration = 900;
 export const dynamic = "force-dynamic";
@@ -396,7 +397,9 @@ export async function POST(req: Request) {
 
     const body = Body.parse(await req.json());
 
-    // Free Starter gate for special content
+    let creditDeduction: CreditDeduction | null = null;
+
+    // Payment gate for special content
     if (!isAdmin(specialUser.email)) {
       const isActive = specialUser.subscriptionStatus === "active";
       const hasPlan = !!specialUser.subscriptionPlan;
@@ -420,6 +423,29 @@ export async function POST(req: Request) {
           }), { status: 403, headers: { "Content-Type": "application/json" } });
         }
         await prisma.user.update({ where: { id: userId }, data: { freeBookUsed: true } });
+      } else if (isUnlimitedPlan(specialUser.subscriptionPlan)) {
+        // Studio — no credit check
+      } else {
+        // Credit-based check for starter/author/creator/author-pro
+        const creditCost = getCreditCost(CONTENT_TYPE_MAP[body.mode]);
+        const balance = {
+          purchasedCredits: (specialUser as any).purchasedCredits ?? 0,
+          monthlyCredits: (specialUser as any).monthlyCredits ?? 0,
+          creditsRollover: (specialUser as any).creditsRollover ?? 0,
+        };
+        const have = totalCredits(balance);
+
+        if (have < creditCost) {
+          await releaseGenerationSlot(userId);
+          return new Response(JSON.stringify({
+            error: insufficientCreditsMessage(creditCost, have),
+            needsCredits: true,
+            creditCost,
+            totalCredits: have,
+          }), { status: 403, headers: { "Content-Type": "application/json" } });
+        }
+
+        creditDeduction = await deductCredits(userId, balance, creditCost);
       }
     }
 
@@ -536,11 +562,13 @@ export async function POST(req: Request) {
           await prisma.book.update({ where: { id: record.id }, data: { status: "failed", progress: JSON.stringify({ error: message }) } }).catch(() => {});
           controller.close();
           await releaseGenerationSlot(userId);
+          const creditsRefunded = creditDeduction ? creditDeduction.fromPurchased + creditDeduction.fromMonthly + creditDeduction.fromRollover : 0;
+          await refundCredits(userId, creditDeduction).catch((refundErr) => console.error('[special] credit refund failed:', refundErr));
           sendGenerationFailedEmail({
             to: specialUser.email,
             title: record.title,
             reason: message,
-            creditsRefunded: 0,
+            creditsRefunded,
           }).catch((emailErr) => console.error('[special] failure email failed:', emailErr));
         }
       },

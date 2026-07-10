@@ -36,6 +36,8 @@ model User {
   purchasedCredits     Int       @default(0)
   creditsRollover      Int       @default(0)
   hasSeenOnboarding    Boolean   @default(false)
+  referredBy           String?
+  affiliateAccount     Affiliate?
   teamMembers TeamMember[] @relation("TeamMembers")
   ownedTeam   TeamMember[] @relation("TeamOwner")
   apiCosts    ApiCost[]
@@ -156,6 +158,15 @@ model Affiliate {
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   conversions       AffiliateConversion[]
+  // Self-serve affiliate program fields
+  userId            String?  @unique
+  user              User?    @relation(fields: [userId], references: [id])
+  payPalEmail       String?
+  commissionRate    Float    @default(0.30)
+  totalEarnings     Float    @default(0)
+  pendingPayout     Float    @default(0)
+  isApproved        Boolean  @default(false)
+  clicks            AffiliateClick[]
 }
 
 model AffiliateConversion {
@@ -168,4 +179,11 @@ model AffiliateConversion {
   commissionUsd   Float
   createdAt       DateTime  @default(now())
   affiliate       Affiliate @relation(fields: [affiliateId], references: [id], onDelete: Cascade)
+}
+
+model AffiliateClick {
+  id          String    @id @default(cuid())
+  affiliateId String
+  createdAt   DateTime  @default(now())
+  affiliate   Affiliate @relation(fields: [affiliateId], references: [id], onDelete: Cascade)
 }

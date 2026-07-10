@@ -8,6 +8,7 @@ import { acquireGenerationSlot, releaseGenerationSlot } from "@/lib/rate-limit";
 import { humanizeChapter } from "@/lib/humanizer";
 import { trackApiCost, getTokensFromResponse } from "@/lib/cost-tracker";
 import { sendGenerationCompleteEmail, sendGenerationFailedEmail } from "@/lib/email";
+import { getCreditCost, isUnlimitedPlan, totalCredits, deductCredits, refundCredits, insufficientCreditsMessage, CreditDeduction } from "@/lib/credits";
 
 export const maxDuration = 900;
 export const dynamic = "force-dynamic";
@@ -160,6 +161,8 @@ export async function POST(req: Request) {
       );
     }
 
+    let creditDeduction: CreditDeduction | null = null;
+
     // Payment gate — admins bypass all payment
     if (!isAdmin(user.email || "")) {
       const isActive = user.subscriptionStatus === "active";
@@ -198,47 +201,32 @@ export async function POST(req: Request) {
           );
         }
         await prisma.user.update({ where: { id: userId }, data: { freeTranslationsUsed: { increment: 1 } } });
-      } else if (!isActive) {
-        const credit = await prisma.bookCredit.findFirst({
-          where: { userId, used: false },
-        });
-        if (!credit) {
+      } else if (isUnlimitedPlan(plan)) {
+        // Studio — no credit check
+      } else {
+        // Credit-based check for starter/author/creator/author-pro (flat rate per translation)
+        const creditCost = getCreditCost("translation");
+        const balance = {
+          purchasedCredits: (user as any).purchasedCredits ?? 0,
+          monthlyCredits: (user as any).monthlyCredits ?? 0,
+          creditsRollover: (user as any).creditsRollover ?? 0,
+        };
+        const have = totalCredits(balance);
+
+        if (have < creditCost) {
           await releaseGenerationSlot(userId);
           return new Response(
             JSON.stringify({
-              error: `You need a subscription to translate. Visit the pricing page.`,
-              needsSubscription: true,
+              error: insufficientCreditsMessage(creditCost, have),
+              needsCredits: true,
+              creditCost,
+              totalCredits: have,
             }),
             { status: 403, headers: { "Content-Type": "application/json" } }
           );
         }
-        await prisma.bookCredit.update({ where: { id: credit.id }, data: { used: true, usedAt: new Date() } });
-      } else {
-        // Enforce translation type by plan
-        const isShortText = wordCount <= 5000;
-        const isFullBook = wordCount > 5000;
 
-        // Creator and Author Pro: only short-text translation included
-        if (isFullBook && plan !== "studio") {
-          // Full-book translation counts as a book credit
-          const bookSize = wordCount <= 20000 ? "short" : wordCount <= 40000 ? "medium" : wordCount <= 60000 ? "standard" : "epic";
-          const credit = await prisma.bookCredit.findFirst({
-            where: { userId, bookSize, used: false },
-          });
-          if (!credit) {
-            await releaseGenerationSlot(userId);
-            return new Response(
-              JSON.stringify({
-                error: `Full-book translation counts as a book credit. Buy a ${bookSize} book credit or upgrade to Studio for unlimited translation.`,
-                needsCredit: true,
-                creditSize: bookSize,
-              }),
-              { status: 403, headers: { "Content-Type": "application/json" } }
-            );
-          }
-          await prisma.bookCredit.update({ where: { id: credit.id }, data: { used: true, usedAt: new Date() } });
-        }
-        // Short-text translation is free/unlimited for all plans (fair use)
+        creditDeduction = await deductCredits(userId, balance, creditCost);
       }
     }
 
@@ -353,11 +341,13 @@ export async function POST(req: Request) {
           await prisma.user.update({ where: { id: userId }, data: { isGenerating: false, generationStartedAt: null } }).catch(() => {});
           await releaseGenerationSlot(userId);
           controller.close();
+          const creditsRefunded = creditDeduction ? creditDeduction.fromPurchased + creditDeduction.fromMonthly + creditDeduction.fromRollover : 0;
+          await refundCredits(userId, creditDeduction).catch((refundErr) => console.error('[translate] credit refund failed:', refundErr));
           sendGenerationFailedEmail({
             to: user.email,
             title: `Translation to ${body.targetLanguage}`,
             reason: message,
-            creditsRefunded: 0,
+            creditsRefunded,
           }).catch((emailErr) => console.error('[translate] failure email failed:', emailErr));
         }
       },

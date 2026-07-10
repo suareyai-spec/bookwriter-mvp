@@ -24,6 +24,12 @@ interface AffiliateRow {
   notes: string | null;
   createdAt: string;
   conversions: Conversion[];
+  userId: string | null;
+  payPalEmail: string | null;
+  commissionRate: number;
+  totalEarnings: number;
+  pendingPayout: number;
+  isApproved: boolean;
 }
 
 export default function AffiliatesPage() {
@@ -79,7 +85,7 @@ export default function AffiliatesPage() {
   const totalConvAll = affiliates.reduce((s, a) => s + a.totalConversions, 0);
   const totalOwed = affiliates
     .filter(a => a.payoutStatus === 'unpaid')
-    .reduce((s, a) => s + a.totalEarned, 0);
+    .reduce((s, a) => s + a.totalEarned, 0) + affiliates.reduce((s, a) => s + a.pendingPayout, 0);
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
@@ -176,8 +182,13 @@ export default function AffiliatesPage() {
                 </div>
                 {/* Name/Email */}
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white truncate">{aff.ownerName}</p>
-                  <p className="text-xs text-gray-500 truncate">{aff.ownerEmail}</p>
+                  <p className="text-sm font-medium text-white truncate flex items-center gap-1.5">
+                    {aff.ownerName}
+                    {aff.userId && (
+                      <span className="text-[10px] bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-full px-1.5 py-0.5">self-serve</span>
+                    )}
+                  </p>
+                  <p className="text-xs text-gray-500 truncate">{aff.payPalEmail || aff.ownerEmail}</p>
                 </div>
                 {/* Commission */}
                 <div className="text-center w-16 hidden sm:block">
@@ -194,9 +205,15 @@ export default function AffiliatesPage() {
                   <p className="text-xs text-gray-500">conv.</p>
                 </div>
                 <div className="text-center w-20">
-                  <p className="text-sm font-medium text-green-400">${aff.totalEarned.toFixed(2)}</p>
+                  <p className="text-sm font-medium text-green-400">${(aff.totalEarned + aff.totalEarnings).toFixed(2)}</p>
                   <p className="text-xs text-gray-500">earned</p>
                 </div>
+                {aff.pendingPayout > 0 && (
+                  <div className="text-center w-20 hidden md:block">
+                    <p className="text-sm font-medium text-yellow-400">${aff.pendingPayout.toFixed(2)}</p>
+                    <p className="text-xs text-gray-500">pending</p>
+                  </div>
+                )}
                 {/* Payout status */}
                 <select
                   value={aff.payoutStatus}
@@ -211,6 +228,15 @@ export default function AffiliatesPage() {
                   <option value="unpaid">Unpaid</option>
                   <option value="paid">Paid</option>
                 </select>
+                {/* Approve toggle (self-serve affiliates need approval before payouts) */}
+                <button
+                  onClick={e => { e.stopPropagation(); patch(aff.id, { isApproved: !aff.isApproved }); }}
+                  className={`text-xs px-2 py-1 rounded-full transition-colors ${
+                    aff.isApproved ? 'bg-green-500/20 text-green-300' : 'bg-yellow-500/20 text-yellow-300'
+                  }`}
+                >
+                  {saving === aff.id ? '...' : aff.isApproved ? 'Approved' : 'Pending'}
+                </button>
                 {/* Active toggle */}
                 <button
                   onClick={e => { e.stopPropagation(); patch(aff.id, { isActive: !aff.isActive }); }}

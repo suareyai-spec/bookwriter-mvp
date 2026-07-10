@@ -130,18 +130,18 @@ export async function POST(req: Request) {
 
     case "invoice.paid": {
       const invoice = event.data.object as Stripe.Invoice;
+      const customer = await stripe.customers.retrieve(invoice.customer as string);
+      if (!customer || customer.deleted) break;
+      const userId = (customer as Stripe.Customer).metadata?.userId;
+      if (!userId) break;
+
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { subscriptionPlan: true, monthlyCredits: true, creditsRollover: true, referredBy: true },
+      });
+      if (!user) break;
+
       if (invoice.billing_reason === "subscription_cycle") {
-        const customer = await stripe.customers.retrieve(invoice.customer as string);
-        if (!customer || customer.deleted) break;
-        const userId = (customer as Stripe.Customer).metadata?.userId;
-        if (!userId) break;
-
-        const user = await prisma.user.findUnique({
-          where: { id: userId },
-          select: { subscriptionPlan: true, monthlyCredits: true, creditsRollover: true },
-        });
-        if (!user) break;
-
         const plan = user.subscriptionPlan || 'free';
         const planAllowance = PLAN_MONTHLY_CREDITS[plan];
         // Unused monthly credits carry over into creditsRollover, capped at the plan's rollover cap
@@ -160,6 +160,40 @@ export async function POST(req: Request) {
             creditsRollover: newRollover,
           },
         });
+      }
+
+      // Recurring affiliate commission — credited on every paid invoice (first payment + renewals)
+      // for users referred by an approved self-serve affiliate.
+      if (user.referredBy) {
+        try {
+          const affiliate = await prisma.affiliate.findUnique({ where: { code: user.referredBy } });
+          if (affiliate && affiliate.isApproved) {
+            const amountUsd = (invoice.amount_paid || 0) / 100;
+            if (amountUsd > 0) {
+              const commissionUsd = parseFloat((amountUsd * affiliate.commissionRate).toFixed(2));
+              await prisma.affiliate.update({
+                where: { id: affiliate.id },
+                data: {
+                  totalEarnings: { increment: commissionUsd },
+                  pendingPayout: { increment: commissionUsd },
+                  totalConversions: { increment: 1 },
+                },
+              });
+              await prisma.affiliateConversion.create({
+                data: {
+                  affiliateId: affiliate.id,
+                  userEmail: (customer as Stripe.Customer).email || null,
+                  stripeSessionId: invoice.id,
+                  plan: user.subscriptionPlan || null,
+                  amountUsd,
+                  commissionUsd,
+                },
+              });
+            }
+          }
+        } catch (err) {
+          console.error('[webhook] recurring affiliate commission error:', err);
+        }
       }
       break;
     }
