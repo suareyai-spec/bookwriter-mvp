@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { PLANS, getBookSize, PlanKey } from "@/lib/stripe";
-import { getCreditCost, getContentSizeFromLength, isUnlimitedPlan, totalCredits, deductCredits, insufficientCreditsMessage, CreditDeduction } from "@/lib/credits";
+import { getCreditCost, getContentSizeFromLength, isUnlimitedPlan, hasUnlimitedAccess, totalCredits, deductCredits, insufficientCreditsMessage, CreditDeduction } from "@/lib/credits";
 import { isAdmin } from "@/lib/config";
 import { acquireGenerationSlot, releaseGenerationSlot } from "@/lib/rate-limit";
 import { inngest } from "@/lib/inngest";
@@ -63,8 +63,9 @@ export async function POST(req: Request) {
 
     let creditDeduction: CreditDeduction | null = null;
 
-    // Admin bypass — skip all payment checks
-    if (isAdmin(user.email)) {
+    // Admin / unlimited-access bypass — skip all payment checks (whitelisted emails
+    // get unlimited generation, same as Studio, without gaining admin panel access)
+    if (isAdmin(user.email) || hasUnlimitedAccess(user.email)) {
       await prisma.user.update({ where: { id: userId }, data: { isGenerating: true, generationStartedAt: new Date() } });
     } else {
 

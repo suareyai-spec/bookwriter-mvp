@@ -40,6 +40,18 @@ export function isUnlimitedPlan(plan: string | null | undefined): boolean {
   return plan === 'studio';
 }
 
+// Emails that get unlimited generation access (same as Studio — no credit checks,
+// no subscription required) without being granted admin panel access.
+export const UNLIMITED_ACCESS_EMAILS = [
+  "mariajoseruzaragon@gmail.com",
+  "drjdsuarez@gmail.com",
+  "jerelaf@gmail.com",
+];
+
+export function hasUnlimitedAccess(email: string | null | undefined): boolean {
+  return !!email && UNLIMITED_ACCESS_EMAILS.includes(email.toLowerCase().trim());
+}
+
 // ──── Credit deduction / refund helpers ─────────────────────────────────────
 // Shared by every generation route so the "purchased -> monthly -> rollover"
 // spend order and the insufficient-credits message stay identical everywhere.

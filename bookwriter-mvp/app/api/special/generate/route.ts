@@ -8,7 +8,7 @@ import { acquireGenerationSlot, releaseGenerationSlot } from "@/lib/rate-limit";
 import { humanizeChapter } from "@/lib/humanizer";
 import { trackApiCost, getTokensFromResponse } from "@/lib/cost-tracker";
 import { sendGenerationCompleteEmail, sendGenerationFailedEmail } from "@/lib/email";
-import { getCreditCost, isUnlimitedPlan, totalCredits, deductCredits, refundCredits, insufficientCreditsMessage, CreditDeduction } from "@/lib/credits";
+import { getCreditCost, isUnlimitedPlan, hasUnlimitedAccess, totalCredits, deductCredits, refundCredits, insufficientCreditsMessage, CreditDeduction } from "@/lib/credits";
 
 export const maxDuration = 900;
 export const dynamic = "force-dynamic";
@@ -400,7 +400,7 @@ export async function POST(req: Request) {
     let creditDeduction: CreditDeduction | null = null;
 
     // Payment gate for special content
-    if (!isAdmin(specialUser.email)) {
+    if (!isAdmin(specialUser.email) && !hasUnlimitedAccess(specialUser.email)) {
       const isActive = specialUser.subscriptionStatus === "active";
       const hasPlan = !!specialUser.subscriptionPlan;
       const isFreeUser = !isActive && !hasPlan;
