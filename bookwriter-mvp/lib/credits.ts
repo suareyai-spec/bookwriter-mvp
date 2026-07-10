@@ -37,3 +37,41 @@ export function getContentSizeFromLength(bookLength: string): string {
 export function isUnlimitedPlan(plan: string | null | undefined): boolean {
   return plan === 'studio';
 }
+
+// ──── Credit deduction / refund helpers ─────────────────────────────────────
+// Shared by every generation route so the "purchased -> monthly -> rollover"
+// spend order and the insufficient-credits message stay identical everywhere.
+
+export interface CreditBalance {
+  purchasedCredits: number;
+  monthlyCredits: number;
+  creditsRollover: number;
+}
+
+export interface CreditDeduction {
+  fromPurchased: number;
+  fromMonthly: number;
+  fromRollover: number;
+}
+
+export function getCreditCost(contentType: string): number {
+  return CREDIT_COST[contentType] ?? CREDIT_COST.standard;
+}
+
+export function totalCredits(balance: CreditBalance): number {
+  return balance.purchasedCredits + balance.monthlyCredits + balance.creditsRollover;
+}
+
+export function insufficientCreditsMessage(cost: number, have: number): string {
+  return `You need ${cost} credits but only have ${have}. Purchase more or upgrade your plan.`;
+}
+
+// Spend order: purchased credits first, then monthly allowance, then rolled-over credits.
+export function planDeduction(balance: CreditBalance, cost: number): CreditDeduction {
+  const fromPurchased = Math.min(balance.purchasedCredits, cost);
+  const afterPurchased = cost - fromPurchased;
+  const fromMonthly = Math.min(balance.monthlyCredits, afterPurchased);
+  const afterMonthly = afterPurchased - fromMonthly;
+  const fromRollover = Math.min(balance.creditsRollover, afterMonthly);
+  return { fromPurchased, fromMonthly, fromRollover };
+}

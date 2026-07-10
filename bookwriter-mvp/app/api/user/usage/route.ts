@@ -33,6 +33,7 @@ export async function GET() {
       monthlyCredits: 9999,
       purchasedCredits: 9999,
       totalCredits: 9999,
+      hasSeenOnboarding: true,
     });
   }
 
@@ -115,6 +116,8 @@ export async function GET() {
     freeArticlesUsed: (user as any).freeArticlesUsed || 0,
     monthlyCredits: (user as any).monthlyCredits ?? 0,
     purchasedCredits: (user as any).purchasedCredits ?? 0,
-    totalCredits: ((user as any).monthlyCredits ?? 0) + ((user as any).purchasedCredits ?? 0),
+    creditsRollover: (user as any).creditsRollover ?? 0,
+    totalCredits: ((user as any).monthlyCredits ?? 0) + ((user as any).purchasedCredits ?? 0) + ((user as any).creditsRollover ?? 0),
+    hasSeenOnboarding: (user as any).hasSeenOnboarding ?? false,
   });
 }

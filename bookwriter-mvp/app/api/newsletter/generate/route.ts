@@ -4,9 +4,10 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { isAdmin } from "@/lib/config";
-import { rateLimitByUser } from "@/lib/rate-limit";
+import { acquireGenerationSlot, releaseGenerationSlot } from "@/lib/rate-limit";
 import { humanizeChapter } from "@/lib/humanizer";
 import { trackApiCost, getTokensFromResponse } from "@/lib/cost-tracker";
+import { sendGenerationCompleteEmail, sendGenerationFailedEmail } from "@/lib/email";
 
 export const maxDuration = 120;
 export const dynamic = "force-dynamic";
@@ -67,10 +68,8 @@ async function callClaude(prompt: string, maxTokens: number): Promise<{ text: st
 }
 
 export async function POST(req: Request) {
+  let slotUserId: string | null = null;
   try {
-    const rl = await rateLimitByUser("newsletter-generate", 10, 60 * 60 * 1000);
-    if (rl.blocked) return rl.blocked;
-
     const session = await getServerSession(authOptions);
     if (!session?.user) {
       return new Response(JSON.stringify({ error: "Please sign in to generate newsletters." }), { status: 401, headers: { "Content-Type": "application/json" } });
@@ -80,6 +79,10 @@ export async function POST(req: Request) {
     if (!user) {
       return new Response(JSON.stringify({ error: "User not found" }), { status: 404, headers: { "Content-Type": "application/json" } });
     }
+
+    const slot = await acquireGenerationSlot(userId, user.email);
+    if (!slot.allowed) return slot.error!;
+    slotUserId = userId;
 
     const body = Body.parse(await req.json());
     const priceInCents = PRICING[body.wordCount];
@@ -102,6 +105,7 @@ export async function POST(req: Request) {
         }
         const used = (user as any).monthlyNewslettersUsed || 0;
         if (used >= 2) {
+          await releaseGenerationSlot(userId);
           return new Response(JSON.stringify({
             error: "You've reached your Free Starter newsletter limit for this month. Upgrade to unlock more newsletters and unlimited creative output.",
             needsSubscription: true,
@@ -129,6 +133,7 @@ export async function POST(req: Request) {
             where: { userId, bookSize: `newsletter_extra`, used: false },
           });
           if (!credit) {
+            await releaseGenerationSlot(userId);
             return new Response(JSON.stringify({
               error: `You've used all ${monthlyLimit} newsletters this month. Additional newsletters cost $${extraPrice} each.`,
               needsCredit: true,
@@ -242,10 +247,24 @@ Write the complete newsletter now:`;
 
           controller.enqueue(new TextEncoder().encode(sseEvent({ type: "complete", content: newsletter, bookId: record.id })));
           controller.close();
+          await releaseGenerationSlot(userId);
+          sendGenerationCompleteEmail({
+            to: user.email,
+            title: record.title,
+            wordCount: newsletter.split(/\s+/).filter(Boolean).length,
+            bookId: record.id,
+          }).catch((emailErr) => console.error('[newsletter] success email failed:', emailErr));
         } catch (err) {
           const message = err instanceof Error ? err.message : "Generation failed";
           controller.enqueue(new TextEncoder().encode(sseEvent({ type: "error", message })));
           controller.close();
+          await releaseGenerationSlot(userId);
+          sendGenerationFailedEmail({
+            to: user.email,
+            title: `${body.companyName} — ${typeLabel} Newsletter`,
+            reason: message,
+            creditsRefunded: 0,
+          }).catch((emailErr) => console.error('[newsletter] failure email failed:', emailErr));
         }
       },
     });
@@ -258,6 +277,7 @@ Write the complete newsletter now:`;
       },
     });
   } catch (error) {
+    if (slotUserId) await releaseGenerationSlot(slotUserId);
     const message = error instanceof Error ? error.message : "Failed";
     return new Response(JSON.stringify({ error: message }), { status: 400, headers: { "Content-Type": "application/json" } });
   }

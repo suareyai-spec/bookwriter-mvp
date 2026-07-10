@@ -4,9 +4,10 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { isAdmin } from "@/lib/config";
-import { rateLimitByUser } from "@/lib/rate-limit";
+import { acquireGenerationSlot, releaseGenerationSlot } from "@/lib/rate-limit";
 import { humanizeChapter } from "@/lib/humanizer";
 import { trackApiCost, getTokensFromResponse } from "@/lib/cost-tracker";
+import { sendGenerationCompleteEmail, sendGenerationFailedEmail } from "@/lib/email";
 
 export const maxDuration = 900;
 export const dynamic = "force-dynamic";
@@ -96,10 +97,8 @@ async function callClaude(prompt: string, maxTokens: number): Promise<{ text: st
 }
 
 export async function POST(req: Request) {
+  let slotUserId: string | null = null;
   try {
-    const rl = await rateLimitByUser("translate", 10, 60 * 60 * 1000);
-    if (rl.blocked) return rl.blocked;
-
     const session = await getServerSession(authOptions);
     if (!session?.user) {
       return new Response(JSON.stringify({ error: "Please sign in to translate." }), {
@@ -115,6 +114,10 @@ export async function POST(req: Request) {
         headers: { "Content-Type": "application/json" },
       });
     }
+
+    const slot = await acquireGenerationSlot(userId, user.email);
+    if (!slot.allowed) return slot.error!;
+    slotUserId = userId;
 
     const body = Body.parse(await req.json());
 
@@ -150,6 +153,7 @@ export async function POST(req: Request) {
 
     // Single job at a time enforcement
     if (user.isGenerating) {
+      await releaseGenerationSlot(userId);
       return new Response(
         JSON.stringify({ error: "You already have a translation or generation in progress. Please wait for it to finish." }),
         { status: 429, headers: { "Content-Type": "application/json" } }
@@ -165,6 +169,7 @@ export async function POST(req: Request) {
       if (isFreeUser) {
         // Free Starter: 2 short translations (up to ~3,000 words each)
         if (wordCount > 3000) {
+          await releaseGenerationSlot(userId);
           return new Response(
             JSON.stringify({
               error: "Free Starter only includes short translations (up to ~3,000 words). Upgrade to unlock full translation.",
@@ -183,6 +188,7 @@ export async function POST(req: Request) {
         }
         const freeTranslationsUsed = (user as any).freeTranslationsUsed || 0;
         if (freeTranslationsUsed >= 2) {
+          await releaseGenerationSlot(userId);
           return new Response(
             JSON.stringify({
               error: "You've reached your Free Starter translation limit for this month. Upgrade to unlock more translations and unlimited creative output.",
@@ -197,6 +203,7 @@ export async function POST(req: Request) {
           where: { userId, used: false },
         });
         if (!credit) {
+          await releaseGenerationSlot(userId);
           return new Response(
             JSON.stringify({
               error: `You need a subscription to translate. Visit the pricing page.`,
@@ -219,6 +226,7 @@ export async function POST(req: Request) {
             where: { userId, bookSize, used: false },
           });
           if (!credit) {
+            await releaseGenerationSlot(userId);
             return new Response(
               JSON.stringify({
                 error: `Full-book translation counts as a book credit. Buy a ${bookSize} book credit or upgrade to Studio for unlimited translation.`,
@@ -328,12 +336,29 @@ export async function POST(req: Request) {
 
           // Release generating lock
           await prisma.user.update({ where: { id: userId }, data: { isGenerating: false, generationStartedAt: null } }).catch(() => {});
+          await releaseGenerationSlot(userId);
           controller.close();
+          if (body.bookId) {
+            const sourceBook = await prisma.book.findUnique({ where: { id: body.bookId }, select: { title: true } }).catch(() => null);
+            sendGenerationCompleteEmail({
+              to: user.email,
+              title: sourceBook?.title ? `${sourceBook.title} (${body.targetLanguage} translation)` : `Translation to ${body.targetLanguage}`,
+              wordCount: targetWordCount,
+              bookId: body.bookId,
+            }).catch((emailErr) => console.error('[translate] success email failed:', emailErr));
+          }
         } catch (err) {
           const message = err instanceof Error ? err.message : "Translation failed";
           controller.enqueue(new TextEncoder().encode(sseEvent({ type: "error", message })));
           await prisma.user.update({ where: { id: userId }, data: { isGenerating: false, generationStartedAt: null } }).catch(() => {});
+          await releaseGenerationSlot(userId);
           controller.close();
+          sendGenerationFailedEmail({
+            to: user.email,
+            title: `Translation to ${body.targetLanguage}`,
+            reason: message,
+            creditsRefunded: 0,
+          }).catch((emailErr) => console.error('[translate] failure email failed:', emailErr));
         }
       },
     });
@@ -346,6 +371,7 @@ export async function POST(req: Request) {
       },
     });
   } catch (error) {
+    if (slotUserId) await releaseGenerationSlot(slotUserId);
     const message = error instanceof Error ? error.message : "Failed";
     return new Response(JSON.stringify({ error: message }), {
       status: 400,

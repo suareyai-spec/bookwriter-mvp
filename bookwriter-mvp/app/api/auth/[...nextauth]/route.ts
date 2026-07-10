@@ -10,7 +10,7 @@ async function GET(...args: Parameters<typeof nextAuth>) {
 }
 
 async function POST(req: Request, ctx: any) {
-  const rl = rateLimitByIP(req, "auth", 10, 15 * 60 * 1000);
+  const rl = await rateLimitByIP(req, "auth", 10, 15 * 60 * 1000);
   if (rl.blocked) return rl.blocked;
   return (nextAuth as any)(req, ctx);
 }

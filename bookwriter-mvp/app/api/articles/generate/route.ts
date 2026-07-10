@@ -4,9 +4,10 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { isAdmin, ARTICLE_LIMITS, ARTICLE_EXTRA_PRICE } from "@/lib/config";
-import { rateLimitByUser } from "@/lib/rate-limit";
+import { acquireGenerationSlot, releaseGenerationSlot } from "@/lib/rate-limit";
 import { humanizeChapter } from "@/lib/humanizer";
 import { trackApiCost, getTokensFromResponse } from "@/lib/cost-tracker";
+import { sendGenerationCompleteEmail, sendGenerationFailedEmail } from "@/lib/email";
 
 export const maxDuration = 180;
 export const dynamic = "force-dynamic";
@@ -117,10 +118,8 @@ async function fetchReference(url: string): Promise<string> {
 }
 
 export async function POST(req: Request) {
+  let slotUserId: string | null = null;
   try {
-    const rl = await rateLimitByUser("article-generate", 10, 60 * 60 * 1000);
-    if (rl.blocked) return rl.blocked;
-
     const session = await getServerSession(authOptions);
     if (!session?.user) {
       return new Response(JSON.stringify({ error: "Please sign in to generate articles." }), { status: 401, headers: { "Content-Type": "application/json" } });
@@ -130,6 +129,10 @@ export async function POST(req: Request) {
     if (!user) {
       return new Response(JSON.stringify({ error: "User not found" }), { status: 404, headers: { "Content-Type": "application/json" } });
     }
+
+    const slot = await acquireGenerationSlot(userId, user.email);
+    if (!slot.allowed) return slot.error!;
+    slotUserId = userId;
 
     const body = Body.parse(await req.json());
     const wordTarget = WORD_TARGETS[body.wordCount];
@@ -146,6 +149,7 @@ export async function POST(req: Request) {
       if (isFreeUser) {
         // Free Starter: 2 articles per month (resets monthly), short only
         if (body.wordCount !== "short") {
+          await releaseGenerationSlot(userId);
           return new Response(JSON.stringify({
             error: "Free Starter only includes short articles. Upgrade to unlock longer formats.",
             needsSubscription: true,
@@ -160,6 +164,7 @@ export async function POST(req: Request) {
         }
         const used = (user as any).monthlyArticlesUsed || 0;
         if (used >= 2) {
+          await releaseGenerationSlot(userId);
           return new Response(JSON.stringify({
             error: "You've reached your Free Starter article limit for this month. Upgrade to unlock more articles and unlimited creative output.",
             needsSubscription: true,
@@ -192,6 +197,7 @@ export async function POST(req: Request) {
           where: { userId, bookSize: "article_extra", used: false },
         });
         if (!credit) {
+          await releaseGenerationSlot(userId);
           return new Response(JSON.stringify({
             error: `You've used all ${monthlyLimit} articles this month. Additional articles cost $${extraPrice} each.`,
             needsCredit: true,
@@ -404,10 +410,24 @@ ${article.slice(0, 2000)}`;
 
           controller.enqueue(new TextEncoder().encode(sseEvent({ type: "complete", bookId: record.id })));
           controller.close();
+          await releaseGenerationSlot(userId);
+          sendGenerationCompleteEmail({
+            to: user.email,
+            title: record.title,
+            wordCount: article.split(/\s+/).filter(Boolean).length,
+            bookId: record.id,
+          }).catch((emailErr) => console.error('[articles] success email failed:', emailErr));
         } catch (err) {
           const message = err instanceof Error ? err.message : "Generation failed";
           controller.enqueue(new TextEncoder().encode(sseEvent({ type: "error", message })));
           controller.close();
+          await releaseGenerationSlot(userId);
+          sendGenerationFailedEmail({
+            to: user.email,
+            title: `${typeLabel}: ${body.topic.slice(0, 100)}`,
+            reason: message,
+            creditsRefunded: 0,
+          }).catch((emailErr) => console.error('[articles] failure email failed:', emailErr));
         }
       },
     });
@@ -420,6 +440,7 @@ ${article.slice(0, 2000)}`;
       },
     });
   } catch (error) {
+    if (slotUserId) await releaseGenerationSlot(slotUserId);
     const message = error instanceof Error ? error.message : "Failed";
     return new Response(JSON.stringify({ error: message }), { status: 400, headers: { "Content-Type": "application/json" } });
   }

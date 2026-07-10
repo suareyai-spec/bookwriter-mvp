@@ -3,6 +3,14 @@ import { inngest } from "@/lib/inngest";
 import { prisma } from "@/lib/prisma";
 import { anthropic } from "@/lib/openai";
 import { trackApiCost, getTokensFromResponse } from "@/lib/cost-tracker";
+import { releaseGenerationSlot } from "@/lib/rate-limit";
+import { sendGenerationCompleteEmail, sendGenerationFailedEmail } from "@/lib/email";
+
+interface CreditDeduction {
+  fromPurchased: number;
+  fromMonthly: number;
+  fromRollover: number;
+}
 
 // ──── Schemas (mirrored from api/generate/route.ts) ────────────────────────
 
@@ -447,7 +455,12 @@ Write Chapter ${i} now:`;
 export const generateBook = inngest.createFunction(
   { id: "generate-book", retries: 0, triggers: [{ event: "book/generate" as const }] },
   async ({ event, step }) => {
-    const { bookId, userId } = event.data as { bookId: string; userId: string; body: unknown };
+    const { bookId, userId, creditDeduction } = event.data as {
+      bookId: string;
+      userId: string;
+      body: unknown;
+      creditDeduction: CreditDeduction | null;
+    };
     const body = Body.parse((event.data as any).body);
 
     // Compute derived values (same logic as api/generate route)
@@ -848,13 +861,13 @@ Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter tit
       }
 
       // Final step: load all chapters from DB, assemble BookVersion, mark complete
-      await step.run("finalize", async () => {
+      const totalWords = await step.run("finalize", async () => {
         const chapters = await prisma.chapter.findMany({ where: { bookId }, orderBy: { number: 'asc' } });
         const fullBook = `${outline}\n\n${'━'.repeat(50)}\n\n${chapters.map(c => c.content).join('\n\n' + '━'.repeat(50) + '\n\n')}`;
-        const totalWords = fullBook.split(/\s+/).filter(Boolean).length;
+        const words = fullBook.split(/\s+/).filter(Boolean).length;
 
         await prisma.bookVersion.create({
-          data: { bookId, version: 1, content: fullBook, wordCount: totalWords, notes: body.revisionInstructions ? 'New version' : 'Initial generation' },
+          data: { bookId, version: 1, content: fullBook, wordCount: words, notes: body.revisionInstructions ? 'New version' : 'Initial generation' },
         });
 
         if (body.references?.length) {
@@ -868,13 +881,54 @@ Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter tit
           data: { status: 'complete', progress: null, currentChapter: chapters.length, totalChapters: chapters.length },
         });
         await prisma.user.update({ where: { id: userId }, data: { isGenerating: false, generationStartedAt: null } });
+        return words;
       });
+
+      await releaseGenerationSlot(userId);
+
+      const finishedUser = await prisma.user.findUnique({ where: { id: userId }, select: { email: true } });
+      if (finishedUser?.email) {
+        await sendGenerationCompleteEmail({
+          to: finishedUser.email,
+          title: body.title,
+          wordCount: totalWords,
+          bookId,
+        }).catch((err) => console.error('[generate-book] success email failed:', err));
+      }
 
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Generation failed';
       console.error('[generate-book] inngest error:', message);
       await prisma.book.update({ where: { id: bookId }, data: { status: 'failed', failedReason: message, progress: null } }).catch(() => {});
       await prisma.user.update({ where: { id: userId }, data: { isGenerating: false, generationStartedAt: null } }).catch(() => {});
+      await releaseGenerationSlot(userId);
+
+      // Refund whichever credit pools were deducted at the start of this generation.
+      let creditsRefunded = 0;
+      if (creditDeduction) {
+        creditsRefunded = creditDeduction.fromPurchased + creditDeduction.fromMonthly + creditDeduction.fromRollover;
+        if (creditsRefunded > 0) {
+          await prisma.user.update({
+            where: { id: userId },
+            data: {
+              purchasedCredits: { increment: creditDeduction.fromPurchased },
+              monthlyCredits: { increment: creditDeduction.fromMonthly },
+              creditsRollover: { increment: creditDeduction.fromRollover },
+            },
+          }).catch((refundErr) => console.error('[generate-book] credit refund failed:', refundErr));
+        }
+      }
+
+      const failedUser = await prisma.user.findUnique({ where: { id: userId }, select: { email: true } }).catch(() => null);
+      if (failedUser?.email) {
+        await sendGenerationFailedEmail({
+          to: failedUser.email,
+          title: body.title,
+          reason: message,
+          creditsRefunded,
+        }).catch((emailErr) => console.error('[generate-book] failure email failed:', emailErr));
+      }
+
       throw err;
     }
   }

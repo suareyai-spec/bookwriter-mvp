@@ -34,6 +34,8 @@ model User {
   freeArticlesUsed       Int     @default(0)
   monthlyCredits       Int       @default(0)
   purchasedCredits     Int       @default(0)
+  creditsRollover      Int       @default(0)
+  hasSeenOnboarding    Boolean   @default(false)
   teamMembers TeamMember[] @relation("TeamMembers")
   ownedTeam   TeamMember[] @relation("TeamOwner")
   apiCosts    ApiCost[]

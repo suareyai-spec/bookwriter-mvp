@@ -138,14 +138,17 @@ export async function POST(req: Request) {
 
         const user = await prisma.user.findUnique({
           where: { id: userId },
-          select: { subscriptionPlan: true, monthlyCredits: true, purchasedCredits: true },
+          select: { subscriptionPlan: true, monthlyCredits: true, creditsRollover: true },
         });
         if (!user) break;
 
         const plan = user.subscriptionPlan || 'free';
         const planAllowance = PLAN_MONTHLY_CREDITS[plan];
+        // Unused monthly credits carry over into creditsRollover, capped at the plan's rollover cap
+        // (2x monthly allowance: 50 for Starter, 100 for Author). Studio has no cap since it's unlimited.
         const rolloverCap = PLAN_ROLLOVER_CAP[plan] ?? 0;
-        const rolloverAmount = Math.min((user as any).monthlyCredits ?? 0, rolloverCap);
+        const unusedMonthly = (user as any).monthlyCredits ?? 0;
+        const newRollover = Math.min(unusedMonthly + ((user as any).creditsRollover ?? 0), rolloverCap);
         const freshCredits = planAllowance === null ? 999 : (planAllowance ?? 0);
 
         await prisma.user.update({
@@ -154,7 +157,7 @@ export async function POST(req: Request) {
             monthlyBooksUsed: 0,
             monthlyResetDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
             monthlyCredits: freshCredits,
-            purchasedCredits: ((user as any).purchasedCredits ?? 0) + rolloverAmount,
+            creditsRollover: newRollover,
           },
         });
       }

@@ -28,8 +28,11 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-bold text-white mb-3" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>3. Intellectual Property</h2>
-            <p>You retain full ownership of all content generated through the service. Books created using Plot Ghost are yours to use, publish, distribute, or modify as you see fit. We claim no ownership or license over your generated content. The Plot Ghost platform, its design, code, and branding remain our intellectual property.</p>
+            <h2 className="text-xl font-bold text-white mb-3" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>3. Your Content and Ownership</h2>
+            <p>You retain full ownership of all content generated using your prompts. PlotGhost claims no copyright or ownership over the works you generate through the service.</p>
+            <p>You are free to publish, sell, or distribute generated content commercially, in whole or in part, under your own name or pen name, without any obligation to PlotGhost.</p>
+            <p>PlotGhost is not liable for copyright claims or disputes arising from user-provided source material or prompts, including any reference documents, writing samples, or other content you upload or supply for generation.</p>
+            <p>The PlotGhost platform, its design, code, and branding remain our intellectual property.</p>
           </section>
 
           <section>

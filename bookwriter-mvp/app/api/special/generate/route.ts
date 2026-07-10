@@ -4,9 +4,10 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { isAdmin } from "@/lib/config";
-import { rateLimitByUser } from "@/lib/rate-limit";
+import { acquireGenerationSlot, releaseGenerationSlot } from "@/lib/rate-limit";
 import { humanizeChapter } from "@/lib/humanizer";
 import { trackApiCost, getTokensFromResponse } from "@/lib/cost-tracker";
+import { sendGenerationCompleteEmail, sendGenerationFailedEmail } from "@/lib/email";
 
 export const maxDuration = 900;
 export const dynamic = "force-dynamic";
@@ -376,22 +377,27 @@ function sseEvent(data: Record<string, unknown>): string {
 }
 
 export async function POST(req: Request) {
+  let slotUserId: string | null = null;
   try {
-    // --- RATE LIMIT ---
-    const rl = await rateLimitByUser("special-generate", 10, 60 * 60 * 1000);
-    if (rl.blocked) return rl.blocked;
-
     const session = await getServerSession(authOptions);
     if (!session?.user) {
       return new Response(JSON.stringify({ error: "Please sign in." }), { status: 401, headers: { "Content-Type": "application/json" } });
     }
     const userId = (session.user as any).id as string;
+    const specialUser = await prisma.user.findUnique({ where: { id: userId } });
+    if (!specialUser) {
+      return new Response(JSON.stringify({ error: "User not found" }), { status: 404, headers: { "Content-Type": "application/json" } });
+    }
+
+    // --- GENERATION RATE LIMIT: 3 concurrent / 10 per hour / 50 per day ---
+    const slot = await acquireGenerationSlot(userId, specialUser.email);
+    if (!slot.allowed) return slot.error!;
+    slotUserId = userId;
 
     const body = Body.parse(await req.json());
 
     // Free Starter gate for special content
-    const specialUser = await prisma.user.findUnique({ where: { id: userId } });
-    if (specialUser && !isAdmin(specialUser.email)) {
+    if (!isAdmin(specialUser.email)) {
       const isActive = specialUser.subscriptionStatus === "active";
       const hasPlan = !!specialUser.subscriptionPlan;
       const isFreeUser = !isActive && !hasPlan;
@@ -399,6 +405,7 @@ export async function POST(req: Request) {
       if (isFreeUser) {
         // Block doctoral thesis entirely for free users
         if (body.mode === "thesis" && body.tier?.includes("doctoral")) {
+          await releaseGenerationSlot(userId);
           return new Response(JSON.stringify({
             error: "Doctoral-Level Thesis requires a paid plan or premium package purchase. Upgrade to access this feature.",
             needsSubscription: true,
@@ -406,6 +413,7 @@ export async function POST(req: Request) {
         }
         // Free users: use their free book allocation (already tracked by freeBookUsed)
         if ((specialUser as any).freeBookUsed) {
+          await releaseGenerationSlot(userId);
           return new Response(JSON.stringify({
             error: "You've reached your Free Starter limit. Upgrade to unlock full book generation, full translations, and unlimited creative output.",
             needsSubscription: true,
@@ -515,11 +523,25 @@ export async function POST(req: Request) {
           await prisma.book.update({ where: { id: record.id }, data: { status: "complete", progress: null } });
           controller.enqueue(new TextEncoder().encode(sseEvent({ type: "complete", bookId: record.id })));
           controller.close();
+          await releaseGenerationSlot(userId);
+          sendGenerationCompleteEmail({
+            to: specialUser.email,
+            title: record.title,
+            wordCount,
+            bookId: record.id,
+          }).catch((emailErr) => console.error('[special] success email failed:', emailErr));
         } catch (err) {
           const message = err instanceof Error ? err.message : "Failed";
           controller.enqueue(new TextEncoder().encode(sseEvent({ type: "error", message })));
           await prisma.book.update({ where: { id: record.id }, data: { status: "failed", progress: JSON.stringify({ error: message }) } }).catch(() => {});
           controller.close();
+          await releaseGenerationSlot(userId);
+          sendGenerationFailedEmail({
+            to: specialUser.email,
+            title: record.title,
+            reason: message,
+            creditsRefunded: 0,
+          }).catch((emailErr) => console.error('[special] failure email failed:', emailErr));
         }
       },
     });
@@ -532,6 +554,7 @@ export async function POST(req: Request) {
       },
     });
   } catch (error) {
+    if (slotUserId) await releaseGenerationSlot(slotUserId);
     const message = error instanceof Error ? error.message : "Failed";
     return new Response(JSON.stringify({ error: message }), { status: 400, headers: { "Content-Type": "application/json" } });
   }

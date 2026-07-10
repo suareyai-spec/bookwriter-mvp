@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 
@@ -14,6 +14,7 @@ interface UsageData {
   monthlyCreditsTotal: number;
   monthlyCreditsRemaining: number;
   creditCounts: Record<string, number>;
+  hasSeenOnboarding?: boolean;
 }
 
 interface BookData {
@@ -69,6 +70,16 @@ export default function LibraryPage() {
     const interval = setInterval(() => { fetchBooks(); }, 5000);
     return () => clearInterval(interval);
   }, [books, fetchBooks]);
+
+  // First-time visit with no books yet: show the welcome onboarding once, then mark it seen
+  // in the DB so a later visit (even with still zero books) won't show it again.
+  const showOnboarding = !loading && books.length === 0 && usage != null && !usage.isAdmin && !usage.hasSeenOnboarding;
+  const onboardingMarkedRef = useRef(false);
+  useEffect(() => {
+    if (!showOnboarding || onboardingMarkedRef.current) return;
+    onboardingMarkedRef.current = true;
+    fetch("/api/user/onboarding", { method: "POST" }).catch(() => {});
+  }, [showOnboarding]);
 
   async function deleteBook(id: string) {
     if (!confirm("Are you sure you want to delete this item?")) return;
@@ -191,7 +202,42 @@ export default function LibraryPage() {
             </div>
           )}
 
-          {books.length === 0 ? (
+          {books.length === 0 && showOnboarding ? (
+            <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-10 sm:p-14 text-center">
+              <h2
+                className="text-2xl sm:text-3xl font-bold mb-3"
+                style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
+              >
+                Welcome to PlotGhost
+              </h2>
+              <p className="text-gray-400 text-base sm:text-lg mb-10 max-w-md mx-auto">
+                Turn an idea into a finished, downloadable book in minutes. Here&apos;s how it works:
+              </p>
+
+              <div className="grid gap-6 sm:grid-cols-3 max-w-2xl mx-auto mb-10 text-left">
+                {[
+                  { step: "1", title: "Choose your format", desc: "Book, course, article, comic, and more." },
+                  { step: "2", title: "Describe your book", desc: "Give it a title, genre, and a few details." },
+                  { step: "3", title: "Download in minutes", desc: "Export as PDF or .docx, ready to publish." },
+                ].map((item) => (
+                  <div key={item.step} className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-5">
+                    <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-bold mb-3">
+                      {item.step}
+                    </div>
+                    <h3 className="text-sm font-semibold text-white mb-1">{item.title}</h3>
+                    <p className="text-xs text-gray-400">{item.desc}</p>
+                  </div>
+                ))}
+              </div>
+
+              <Link
+                href="/create"
+                className="inline-block bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold rounded-xl px-8 py-4 text-base transition-all shadow-lg shadow-blue-500/20"
+              >
+                Create your first book
+              </Link>
+            </div>
+          ) : books.length === 0 ? (
             <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-12 text-center">
               <p className="text-gray-400 text-lg mb-4">You haven&apos;t created anything yet. Create your first one!</p>
               <Link
