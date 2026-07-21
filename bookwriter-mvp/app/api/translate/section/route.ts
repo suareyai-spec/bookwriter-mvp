@@ -62,14 +62,19 @@ export async function POST(req: Request) {
 
     const body = Body.parse(await req.json());
 
-    const prompt = `Translate the following text into ${body.targetLanguage}.
+    const prompt = `You are a professional translator rendering this content into ${body.targetLanguage}. The standard: the finished translation should read as if a skilled native speaker of ${body.targetLanguage} wrote it originally.
 
-RULES:
-- Translate ONLY what is written. Do NOT add anything — no extra words, no filler, no commentary.
-- Preserve the author's tone, voice, and style exactly.
+TARGET LANGUAGE EXCELLENCE: Translation quality depends on your command of the target language as much as your understanding of the source. Read your translation aloud — if any sentence would make a native speaker pause, rewrite it.
+
+MEANING, NOT WORDS: Translate meaning, not lexical items. Always ask: what did the source author mean to communicate? Then communicate that, using natural ${body.targetLanguage} idioms and phrasing rather than literal, word-for-word correspondence.
+
+PRESERVE REGISTER AND TONE: If the source is formal, the translation must be formal. If casual or technical, match it exactly.
+
+CULTURAL TRANSPOSITION: Idioms, humor, units, and conventions should bridge the gap for the target reader rather than being carried over literally.
+
+TECHNICAL REQUIREMENTS:
+- Translate only what is written — no extra words, filler, commentary, summarizing, or editorializing.
 - Preserve ALL formatting: headers, bold, italic, lists, paragraph breaks.
-- Idioms should use natural ${body.targetLanguage} equivalents.
-- Do NOT summarize, expand, explain, or editorialize. Just translate.
 
 OUTPUT: Return ONLY the translated text. Nothing else.
 

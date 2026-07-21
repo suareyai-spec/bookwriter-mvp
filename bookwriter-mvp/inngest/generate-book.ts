@@ -290,106 +290,36 @@ function buildChapterPrompt(
   matureLevel: string | undefined,
   refContext: string
 ): string {
+  const topicPhrase = `"${body.title}"${genre && genre !== "General" ? ` (${genre})` : ""}`;
+
+  const BOOK_SYSTEM_PROMPT = `You are a professional author generating chapter content for a book on ${topicPhrase}. Your writing must be specific, energetic, and structurally varied — never generic.
+
+SPECIFICITY OVER GENERALITY: Never write in abstractions when you can write in specifics. Replace "many professionals struggle with X" with a named person in a named place facing a named version of X. Even when details are illustrative rather than factual, specifics create credibility. Every claim should have a concrete anchor: a name, a number, a place, a date, a face.
+
+CAUSE-AND-EFFECT STRUCTURE: Each section must earn its place causally, not just topically. Ask: why does understanding X make Y necessary? The reader should feel pulled forward by logic, not marched forward by a table of contents.
+
+THE HUMAN THREAD: Every chapter needs at least one human being navigating the chapter's core tension. Open mid-scene — let the reader live inside a situation before you explain the theory. End chapters by returning to that human, showing what changed.
+
+VARIED STRUCTURE: No two chapters should have the same shape. Section count, section length, and paragraph density should reflect where the intellectual weight actually falls — not a house style.
+
+VOICE: Write like a smart person explaining something to another smart person. Use contractions. Use "we" when including the reader. Mix short and long sentences deliberately.
+
+AVOID: "It is important to note that..." / "In summary," "As we have seen," / "Furthermore," "Moreover" as openers / ending every section with a restatement / passive voice as default / identical paragraph lengths / self-announcing transitions.`;
+
+  let extraRequirements = "";
   if (isRelig) {
-    return `You are a spiritual author writing a sacred life guide. You have received truth — now you transmit it. You write with the combined authority of a scientist of the mind, a prophet, and a divine messenger.
-
-${bookContext}
-
-Full book outline:
-${outline}
-${prevSummary}
-
-Now write CHAPTER ${i} in full. Target: approximately ${wordsPerChapter} words.
-
-CRITICAL LANGUAGE REQUIREMENT: Write this ENTIRE chapter in ${lang}. Every single word MUST be in ${lang}. This is non-negotiable.
-
-WRITING STYLE — THREE TRADITIONS FUSED INTO ONE VOICE:
-
-DIANETICS LAYER (Authoritative, Declarative, Proprietary):
-- Write every principle as absolute discovered fact, not opinion or suggestion.
-- Use the book's own terminology consistently as the sacred vocabulary of this work — never dilute or replace it with synonyms from other traditions.
-- State mechanisms and truths with clinical certainty: "This is what happens. This is why. This is what you must do."
-- Remove all hedging language: no "perhaps," "may," "might," "seems to," "it could be said." Replace with declarations.
-
-BIBLICAL LAYER (Prophetic, Poetic, Rhythmic):
-- Use repetition for emphasis — repeat key phrases, echo them in different forms within the same passage.
-- Write in rhythmic cadences that feel meant to be read aloud or memorized.
-- Use parallel structure: "He who does this, gains that. He who avoids this, loses that."
-- Carry the weight of prophecy — the author speaks not just to the present reader but to all who will ever receive these words.
-- Let poetic passages intersperse the instructional prose, creating rhythm and depth.
-
-QURANIC LAYER (Direct Address, Verse-like Commands):
-- Address the reader directly and frequently: "You have been told..." "Know this." "Understand what stands before you."
-- Use short, stand-alone declarative sentences as verse-like proclamations between longer explanatory passages.
-- Alternate between command and reflection: a command or truth statement, then a passage that illuminates why and how.
-- The reader must feel personally spoken to — addressed by someone who sees them clearly.
-
-THE UNIFIED RESULT:
-- This is instruction, not theory. Every page teaches the reader what to do, how to be, or what is true.
-- The author's voice carries the authority of one who has discovered, not imagined.
-- No references to other religions, spiritual traditions, philosophies, or external authorities. This work stands alone.
-- The book's terminology is sacred vocabulary throughout — consistent, precise, elevated.
-
-${extractedFramework ? `CORE FRAMEWORK FROM SOURCE TEXTS:
-${extractedFramework}
-
-CRITICAL — THIS CHAPTER MUST BE BUILT FROM THE FRAMEWORK ABOVE:
-- Anchor every major point in one of the specific laws or constructs listed above.
-- Use the exact terminology from the source texts — these are the sacred vocabulary of this work.
-- Every section must trace back to the actual philosophy in the source material.
-- Do NOT write generic spiritual content. Expand the specific framework, using its own language, elevated into the three-tradition style.` : body.references?.length ? `PRIMARY SOURCE REQUIREMENT — THIS IS CRITICAL:
-The uploaded reference texts are the PRIMARY source material for this chapter. Draw specific content, ideas, and terminology directly from the source material. Build this chapter from the foundation of those teachings, not generic spiritual writing.` : ""}
-
-- Do NOT include the outline — just write the chapter content.
-- Start with the chapter title as a heading.
-- End with forward momentum that pulls the reader deeper.${biblePart}
-
-Write Chapter ${i} now:`;
+    extraRequirements = extractedFramework
+      ? `\n\nCORE FRAMEWORK FROM SOURCE TEXTS — THIS CHAPTER MUST BE BUILT FROM IT:\n${extractedFramework}\n\nAnchor every major point in one of the specific laws or constructs listed above. Use the exact terminology from the source texts as this work's vocabulary. Do NOT write generic content — expand the specific framework, using its own language.`
+      : body.references?.length
+      ? `\n\nPRIMARY SOURCE REQUIREMENT: The uploaded reference texts are the primary source material for this chapter. Draw specific content, ideas, and terminology directly from them rather than generic material.`
+      : "";
   }
-
-  if (isEdu) {
-    return `You are an expert author and subject-matter specialist writing a comprehensive, authoritative book.
-
-${bookContext}
-
-Full book outline:
-${outline}
-${prevSummary}
-
-Now write CHAPTER ${i} in full. Target: approximately ${wordsPerChapter} words.
-
-CRITICAL LANGUAGE REQUIREMENT: Write this ENTIRE chapter in ${lang}. Every single word, sentence, paragraph, heading, and dialogue MUST be in ${lang}. Do NOT switch to English or any other language. This is non-negotiable.
-
-REQUIREMENTS FOR THIS CHAPTER:
-- Write with DEPTH and AUTHORITY. You are the world's foremost expert on this subject.
-- CITE ORIGINAL RESEARCH: Reference real, verifiable published studies, papers, and research by name. Include author names, publication year, journal or institution when relevant. For example: "A 2019 study by Dr. Sarah Chen at Stanford found that..." or "According to research published in The Lancet (2021)..."
-- Reference seminal works and foundational texts in the field. Name the actual books, papers, and authors that shaped the discipline.
-- Include specific statistics, data points, and quantitative findings from real research. Not vague claims like "studies show" — name the actual study.
-- When discussing theories or frameworks, attribute them to their originators (e.g., "Porter's Five Forces," "Kahneman and Tversky's Prospect Theory," "Maslow's hierarchy").
-- Reference real-world case studies with named companies, organizations, historical events, and public figures. Include specific dates, numbers, and outcomes.
-- Explain concepts thoroughly — the reasoning behind them, not just definitions. Answer "why" and "how," not just "what."
-- Include practical applications, frameworks, or actionable advice where relevant.
-- Use analogies and real-world comparisons to make complex ideas accessible.
-- Address counterarguments, nuances, and common misconceptions. Reference opposing research or viewpoints by name.
-- Connect ideas to the reader's life — why should they care? How does this apply to them?
-- Use clear section headings and subheadings to organize the content.
-- Write in an engaging, authoritative voice — not dry or textbook-like, but substantive and insightful.
-- Do NOT pad with filler, repetitive summaries, or vague generalizations. Every paragraph should teach something specific.
-- Do NOT fabricate research that doesn't exist. Use real, well-known studies and sources in the field. If the topic is niche, reference the most relevant and credible sources available.
-- Build on previous chapters naturally.
-- Do NOT include the outline — just write the chapter content.
-- Start with the chapter title as a heading.
-${citationInstructions ? `\n${citationInstructions}\n` : ''}
-TONE AND VOICE:
-- Match the tone and voice the author described. If they want conversational, be conversational. If they want academic, be academic.
-- Respect the author's intent — do not override their preferred style with rigid formality.
-- Default to an engaging, authoritative voice that is substantive but accessible.${biblePart}
-
-Write Chapter ${i} now:`;
+  if (isEdu && citationInstructions) {
+    extraRequirements += `\n\n${citationInstructions}`;
   }
+  const matureBlock = isMatureRomance ? `\n\n${getMatureInstructions(matureLevel)}` : "";
 
-  // Fiction
-  return `You are a masterful novelist writing with literary depth, emotional honesty, and vivid authenticity.
+  return `${BOOK_SYSTEM_PROMPT}
 
 ${bookContext}
 
@@ -399,49 +329,12 @@ ${prevSummary}
 
 Now write CHAPTER ${i} in full. Target: approximately ${wordsPerChapter} words.
 
-CRITICAL LANGUAGE REQUIREMENT: Write this ENTIRE chapter in ${lang}. Every single word, sentence, paragraph, heading, and dialogue MUST be in ${lang}. Do NOT switch to English or any other language. This is non-negotiable.
+CRITICAL LANGUAGE REQUIREMENT: Write this ENTIRE chapter in ${lang}. Every single word, sentence, paragraph, heading, and dialogue MUST be in ${lang}. Do NOT switch to English or any other language. This is non-negotiable.${extraRequirements}${matureBlock}
 
-REQUIREMENTS FOR THIS CHAPTER:
-- Write like a published literary novelist, not an AI. NO cliches, NO generic prose, NO melodrama.
-- SHOW, don't tell. Instead of "She was sad," show it through action, body language, dialogue, silence.
-- Dialogue must sound REAL — people interrupt, trail off, say things they don't mean, use humor as deflection, talk past each other.
-- Ground every scene in SPECIFIC sensory details — what does the room smell like? What song is playing? What's the texture of the food? What does the city sound like at 3am?
-- Characters should behave consistently with their established personality but still surprise us. People are contradictions.
-- Include quiet moments — not every scene needs drama. Sometimes the most powerful scenes are two people eating dinner in silence.
-- Explore the INTERIOR LIFE of characters — their doubts, memories, the things they notice, the lies they tell themselves.
-- Cultural details should feel authentic and specific, not stereotypical or performative.
-- Subtext matters: what characters DON'T say is as important as what they do.
-- Vary sentence rhythm — short punchy lines for tension, longer flowing ones for reflection.
-- End the chapter with momentum — not necessarily a cliffhanger, but a reason to keep reading.
-- Build naturally on previous chapters. Characters should remember and reference earlier events.
 - Do NOT include the outline — just write the chapter content.
 - Start with the chapter title as a heading.
+- Build naturally on previous chapters; characters, arguments, or teachings should carry forward.${biblePart}
 
-PROSE CRAFT (from NYT Manual of Style & The Power of Story):
-- Prefer simplicity — the unpretentious language of a letter to a literate friend. Let vivid details and precise verbs do the heavy lifting.
-- A single striking image can elevate an entire passage. Find it for this chapter.
-- Use concrete, specific nouns over abstract ones. Not "vehicle" — the dented blue Civic with a cracked taillight.
-- Eliminate filler words: "very," "really," "quite," "rather," "somewhat." Find the exact word instead.
-- Every paragraph should earn its place. If it doesn't advance character, plot, theme, or atmosphere — cut it.
-- Avoid the passive voice except when it creates deliberate effect. "The window had been broken" vs "Someone had broken the window."
-- Sentence variety is rhythm: short declarative sentences create urgency; longer, layered sentences create reflection and atmosphere. Alternate them.
-
-${/^romance$/i.test(genre) ? `ROMANCE BEATS FOR THIS CHAPTER (from Romancing the Beat & How to Write Romantic Comedy):
-- Every scene between the leads should shift their relationship — closer or further, trust gained or broken. Static scenes have no place in romance.
-- Physical awareness should be specific: not "she was attracted to him" but the exact detail she notices — his hands, the way he tilts his head, the sound of his laugh.
-- Banter is not just witty dialogue — it's two people revealing themselves while trying not to. Every joke is a window.
-- Vulnerability is the currency of romance. Each act of vulnerability should cost the character something.
-- The emotional stakes should always be clear: what does this character stand to lose by loving this person?` : ''}
-
-${/horror|thriller|dark|supernatural|gothic|psychological/i.test(genre) ? `HORROR CRAFT FOR THIS CHAPTER (from On Writing Horror):
-- Build dread through atmosphere before the scare. The reader should feel uneasy before they know why.
-- Use the familiar made strange: a child's toy in the wrong place, a door that was closed now open, silence where there should be sound.
-- Sensory details are your weapon: the smell of copper, the texture of something wet in the dark, the sound that shouldn't be there.
-- Fear is most effective when the character tries to rationalize it away — and fails.
-- Pacing: slow the prose down before moments of terror. Short, fragmented sentences during the scare. Then silence after.
-- Let the monster/threat operate on consistent internal logic. Randomness isn't scary — inevitability is.` : ''}
-
-${isMatureRomance ? getMatureInstructions(matureLevel) : ""}${biblePart}
 Write Chapter ${i} now:`;
 }
 
@@ -637,7 +530,22 @@ For each chapter, provide:
 
 Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter titles, descriptions, everything. Never use English unless ${lang} IS English.`;
 
-    const courseModulePromptFn = (i: number, chTitle: string, outline: string, prevSummary: string) => `You are an expert course instructor writing a comprehensive, engaging module for a professional online course.
+    const courseModulePromptFn = (i: number, chTitle: string, outline: string, prevSummary: string) => {
+      const COURSE_SYSTEM_PROMPT = `You are an expert instructional designer writing lesson content for an online course on "${body.title}". Your goal is not to inform — it is to transform. A student who finishes this course should be able to DO something they couldn't do before.
+
+TRANSFORMATION IS THE PRODUCT: Begin every lesson anchored to what the student will be able to do differently by the end. Not "you will learn about X" — but "after this lesson, you'll be able to recognize when X is happening and stop it."
+
+ONE STUDENT, ONE LESSON: Write every lesson as if talking to one specific person sitting across from you. Not a crowd. Direct address: "Here's what most people miss when they try this..." or "You've probably already noticed that..."
+
+HOOK EVERY LESSON: Every lesson title and opening must contain: (1) a curiosity gap, (2) a clear benefit, (3) a hint at the problem it solves. Lead with a scenario or story, then extract the principle — never explain a concept without showing it in action first.
+
+VARIED STRUCTURE: Lessons must NOT follow identical shapes. Vary the number of teaching points. Vary when you give examples. Vary lesson length based on what the content actually needs. Do NOT place a callout or talking point at a fixed interval every N sections — use them only when the content genuinely demands one.
+
+CLOSE WITH MOMENTUM: Do NOT end every lesson with "In this lesson we covered..." followed by bullets. End with the thing the student now needs to think about or do before the next lesson.
+
+AVOID: Identical lesson structures throughout / "In this lesson, we will cover..." as first sentence / metronomic callouts / "Now that you understand X, let's move on to Y" / definitions before examples / passive voice and academic hedging.`;
+
+      return `${COURSE_SYSTEM_PROMPT}
 
 ${bookContext}
 
@@ -645,40 +553,12 @@ Full course outline:
 ${outline}
 ${prevSummary}
 
-Write MODULE ${i} in full: "${chTitle}"
+Write MODULE ${i} in full: "${chTitle}". Aim for roughly 2,500–4,000 words of substantive teaching — let what the content actually needs determine section count, example placement, and length, not a fixed template.
 
-REQUIRED STRUCTURE — follow this exactly, using these headings:
-
-## Module Introduction (300–500 words)
-Hook the learner on why this topic matters. Preview what they will learn and achieve. Connect to the previous module if applicable. Make them eager to continue.
-
-## Core Content (3000–5000 words)
-Deep, substantive teaching on this module's topic. Organize with clear subheadings. Include:
-- Detailed explanation of each concept — the WHY and HOW, not just the WHAT
-- Real-world examples, case studies, and specific applications
-- Relevant research, frameworks, expert perspectives, or data where appropriate
-- Step-by-step guidance where the topic calls for it
-- Analogies and comparisons that make complex ideas concrete
-Every section should teach something specific and actionable. No filler or padding.
-
-## Key Takeaways
-5–7 bullet points capturing the most important lessons from this module. Each takeaway should be specific and memorable — something a learner could immediately explain to someone else.
-
-## Exercises & Action Steps
-3–5 specific, practical exercises or assignments. Each exercise should:
-- Have a clear objective
-- Include specific instructions for completing it
-- Connect directly to the core content of this module
-Include at least one reflection question that deepens understanding.
-
-## Module Summary (200–300 words)
-Concise recap of what was covered. Reinforce the most critical concepts. Bridge naturally to the next module, creating momentum to continue.
-
----
-
-Write this ENTIRE module in ${lang}. Use an engaging, educational voice — authoritative but accessible. The learner should feel they are being taught by a world-class expert who genuinely wants them to succeed.
+CRITICAL LANGUAGE REQUIREMENT: Write this ENTIRE module in ${lang}. Every single word must be in ${lang}. This is non-negotiable.
 
 Write Module ${i} now:`;
+    };
 
     // Step 0 (religious + refs): Extract core laws/framework from source texts
     let extractedFramework = "";

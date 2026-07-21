@@ -145,7 +145,21 @@ export async function POST(req: Request) {
       ? `\n\nINCLUDE THESE SECTIONS:\n${body.sections.map(s => `- ${s}`).join("\n")}`
       : "";
 
-    const prompt = `You are an expert email newsletter writer who understands the psychology of reader engagement and relationship-building through email. Generate a complete, ready-to-send newsletter.
+    const prompt = `You are writing a newsletter email on behalf of ${body.companyName} to their subscriber list. The primary purpose is to give something of genuine value — not to sell, announce, or update. Value first, always.
+
+WRITE TO ONE PERSON: Picture one specific subscriber. This email is a letter from one person to one person who chose to hear from you. "You" should appear far more than "I."
+
+GIVE BEFORE YOU ASK: Deliver real value — an insight, a reframe, a story with a lesson, a specific tip — before asking for anything. Ratio: at least 3:1 (value to ask).
+
+HOOK THE OPENING: Never start with "I hope this email finds you well." Start mid-thought, mid-scene, or with a question. The first sentence must pull them in immediately.
+
+CONVERSATIONAL VOICE: Use contractions. Short paragraphs (2-3 sentences). Show personality. The reader subscribed to a person, not a publication.
+
+VARY FORMAT: Not every email is intro → tips → CTA. Mix it up: a single story with one lesson / a challenging question + your take / a reader question + your answer / a personal reflection. Format variety prevents skimming.
+
+CLOSE WITH CONNECTION: End with something that invites response — a question for them to think about, a specific ask to hit reply. Goal is two-way relationship, not broadcast.
+
+AVOID: "I hope this finds you well" / purely promotional emails without giving first / generic tips that apply to everyone / identical structure every time / closing with only a CTA.
 
 COMPANY: ${body.companyName}
 INDUSTRY: ${body.industry}
@@ -159,29 +173,6 @@ ${sectionsText}
 
 CONTENT TO COVER:
 ${body.keyTopics}
-
-PHILOSOPHY (based on Newsletter Ninja by Labrecque, Wired for Story by Cron, Write It Up by Silvia):
-- A newsletter's primary purpose is NOT to sell — it's to build a relationship. You are selling the sender as someone worth hearing from, not just their product. Readers subscribed because they're interested in this person/brand — reward that trust.
-- Every email must deliver VALUE before asking for anything. The "ask" (CTA, purchase, click) should come after a string of "gives." If you only email when you want something, you'll lose them.
-- You are not the reader. Don't assume what bores you bores them. Write for THEIR interests, not yours.
-- From the very first sentence, the reader must want to read the next sentence (Cron). Something must be at stake or intriguing immediately — not a preamble, not throat-clearing. The "ball must be in play" from word one.
-- Everything must pass the "So what?" test (Labov's evaluation). Every paragraph must have a reason to exist. If it doesn't serve the reader, cut it.
-- Emotion determines meaning (Cron). If the reader doesn't FEEL something, they won't remember anything. Ground abstract ideas in specific, concrete details that trigger feeling.
-- Write with a personal, confident, collaborative tone (Silvia). Sound like a specific human wrote this and cared about it — not a corporate memo from no one to no one. Be warm but not sycophantic. Be confident but not combative.
-- Specificity always beats generality. "We grew 23% in Q3" beats "We had a great quarter." "Sarah from Portland used it to..." beats "Many customers have found..."
-- Answer reader objections before they arise (Labrecque). If you're announcing a price increase, acknowledge the reaction before they have it.
-
-WRITING RULES:
-- Subject lines: make a specific PROMISE the reader wants kept. Write 3 options: one curiosity-driven, one benefit-driven, one direct. A subject line is a contract — the email must deliver on it.
-- Opening: 1-2 sentences max, then deliver value. No "I hope this email finds you well." No "It's been an exciting quarter." Start with something the READER cares about, not something you want to announce.
-- Each section must answer "why should the reader care RIGHT NOW" — not why the company is excited, but why the reader's life/work/day is better for knowing this.
-- One CTA per section maximum — decision fatigue kills action.
-- Use the specific-to-general pattern: lead with a concrete story, example, or data point, THEN zoom out to the broader point.
-- Bold key phrases for scanning. Short paragraphs (2-3 sentences max). Bullets for lists of 3+ items.
-- Vary sentence rhythm: short punchy sentence after a long complex one. Read it aloud in your head — it should have a natural cadence.
-- Match the ${body.tone} tone authentically — not a costume over generic corporate language.
-- Close with a single clear next step. End on a human note — something that makes the reader feel like a person wrote this to another person, not a broadcast to a list.
-- No clichés: "at the end of the day," "move the needle," "low-hanging fruit," "synergy." Find the real words.
 
 FORMAT:
 1. 3 SUBJECT LINE OPTIONS (each under 50 chars, each a different approach)

@@ -152,9 +152,9 @@ const STATS = [
 const CITATION_STYLES = ["AMA", "APA", "Bluebook", "IEEE", "Chicago", "Harvard"];
 
 const PLANS_PREVIEW = [
-  { name: "Starter", price: "$35", feature: "1 Short Book per month", color: "emerald" },
-  { name: "Author", price: "$79", feature: "3 Short OR 2 Medium books/mo", color: "blue", popular: true },
-  { name: "Pro Author", price: "$149", feature: "Unlimited standard books", color: "purple" },
+  { name: "Starter", price: "$19", feature: "25 credits/month, rolls over", color: "emerald" },
+  { name: "Author", price: "$49", feature: "50 credits/month, rolls over", color: "blue", popular: true },
+  { name: "Studio", price: "$99", feature: "Unlimited generation, no credit limits", color: "purple" },
 ];
 
 export default function HomePage() {

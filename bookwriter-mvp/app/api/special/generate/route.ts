@@ -214,7 +214,25 @@ ${isDoctoral ? "- Doctoral-level depth: theoretical framework, comprehensive lit
     section: (idx: number, total: number, outline: string, prev: string[]) => {
       const sectionName = sections[idx - 1] || `Section ${idx}`;
       const prevSummary = prev.length > 0 ? `\nPrevious sections summary:\n${prev.map((p, i) => `${sections[i]}: ${p.slice(0, 500)}...`).join("\n\n")}` : "";
-      return `You are an academic writing expert producing a ${isDoctoral ? "doctoral-level" : "university-level"} thesis.
+      const ACADEMIC_SYSTEM_PROMPT = `You are an expert academic writer producing a thesis, dissertation, or academic book chapter on ${body.fieldOfStudy || `"${body.title}"`}. Your writing must be rigorous, specific, and confident — not defensive, not generic, not padded.
+
+WRITE WITH AUTHORITY: Prefer active voice and direct statements. "This study demonstrates" beats "it can be noted that the findings suggest." Hedging is appropriate when genuinely uncertain — it is not a default tone.
+
+PERSONAL VOICE: Even formal academic writing should sound like a person wrote it. Use "we" or "this paper" where appropriate. Avoid impersonal constructions ("one might argue") unless formality demands it.
+
+SPECIFICITY AS CREDIBILITY: Every claim must have a specific anchor: a named study, a precise statistic, a named place or population. Not "rural patients face barriers" but "in RUCA-9 designated tracts, only 12% of patients have access to same-day telehealth (Author, Year)."
+
+VARIED SENTENCES: Mix short declaratives after long analytical sentences. Use semicolons for balanced pairs, colons to elaborate, dashes for emphasis. Vary punctuation and you automatically vary sentence rhythm.
+
+PARAGRAPH DISCIPLINE: 4-6 sentences per expository paragraph. One governing idea per paragraph. If it runs to 10+ sentences, split it.
+
+STRUCTURE VARIATION: Not every chapter should have the same number of sections. Not every section should open with a definition. Structure should follow the argument, not a house template.
+
+CITATION DISCIPLINE: All citations must be verifiable. Do not fabricate author names, publication years, journal names, or findings. If uncertain, flag that verification is needed.
+
+AVOID: "individuals" (use "people/patients/students") / "utilize" (use "use") / "it is important to note that" / padding / identical section counts across chapters / passive voice as default.`;
+
+      return `${ACADEMIC_SYSTEM_PROMPT}
 
 ${context}
 
@@ -222,18 +240,7 @@ Outline:
 ${outline}
 ${prevSummary}
 
-Write the "${sectionName}" section in full.
-
-ACADEMIC WRITING STANDARDS (MANDATORY):
-Maintain an academic, formal, and professional style throughout, strictly adhering to scientific research standards and established methodological guidelines. The language must be objective, precise, and clear — avoid value judgments, personal opinions, subjective evaluations, or emotional expressions. Adopt the position of a researcher, analyzing phenomena with impartiality, theoretical grounding, and intellectual rigor.
-
-PARAGRAPH STRUCTURE:
-Each paragraph must develop a single central idea in a clear, logical, and coherent manner. Follow this sequence:
-1. Topic sentence — explicitly presents the main idea, specific and aligned with the text's objective
-2. Conceptual explanation — expands, defines, or contextualizes the topic with theoretical clarity
-3. Academic evidence — citations from scholarly authors, empirical data, or references to prior research, integrated smoothly using rhetorical structures that position arguments within the broader academic conversation
-4. Critical analysis — interpret the evidence and explain its relevance to the central argument, demonstrating conceptual mastery and reflective thinking (never merely accumulate references without intellectual development)
-5. Closing/transitional sentence — reinforce the main idea or link logically to the next paragraph for textual continuity
+Write the "${sectionName}" section in full, at ${isDoctoral ? "doctoral" : "university"} level.
 
 CITATION AND EVIDENCE:
 - Citation style: ${citation}
@@ -241,14 +248,6 @@ CITATION AND EVIDENCE:
 - Integrate sources using proper academic framing (e.g., "As Booth et al. argue in The Craft of Research..." or "According to Creswell (2018)...")
 - Where specific sources cannot be verified, clearly label as [PLACEHOLDER — verify source]
 - Every major claim must be supported by a named source or study
-
-GRAMMATICAL AND STYLISTIC REQUIREMENTS:
-- Syntactic clarity, proper agreement, and consistent verb tense usage
-- Construct precise sentences, eliminate redundancy, employ appropriate technical vocabulary
-- Maintain concision without sacrificing analytical depth
-- Formal academic voice — no colloquialisms, contractions, or informal expressions
-- Every sentence must contribute meaningfully to argument development
-- Ideas must flow in a logical, coherent, and progressive manner with proper textual cohesion
 
 SECTION-SPECIFIC REQUIREMENTS:
 ${sectionName === "Abstract" ? "- 250-350 words summarizing the entire thesis\n- Include: purpose, methods, key findings, conclusions" : ""}
@@ -322,7 +321,21 @@ Create a WORKBOOK OUTLINE that accompanies this course:
 Format clearly with lesson numbers and exercise types.`;
       }
 
-      return `You are an expert course designer creating content for ${body.platform || "online"} delivery.
+      const COURSE_SYSTEM_PROMPT = `You are an expert instructional designer writing lesson content for an online course on "${body.title}". Your goal is not to inform — it is to transform. A student who finishes this course should be able to DO something they couldn't do before.
+
+TRANSFORMATION IS THE PRODUCT: Begin every lesson anchored to what the student will be able to do differently by the end. Not "you will learn about X" — but "after this lesson, you'll be able to recognize when X is happening and stop it."
+
+ONE STUDENT, ONE LESSON: Write every lesson as if talking to one specific person sitting across from you. Not a crowd. Direct address: "Here's what most people miss when they try this..." or "You've probably already noticed that..."
+
+HOOK EVERY LESSON: Every lesson title and opening must contain: (1) a curiosity gap, (2) a clear benefit, (3) a hint at the problem it solves. Lead with a scenario or story, then extract the principle — never explain a concept without showing it in action first.
+
+VARIED STRUCTURE: Lessons must NOT follow identical shapes. Vary the number of teaching points. Vary when you give examples. Vary lesson length based on what the content actually needs. Do NOT place a callout or talking point at a fixed interval every N sections — use them only when the content genuinely demands one.
+
+CLOSE WITH MOMENTUM: Do NOT end every lesson with "In this lesson we covered..." followed by bullets. End with the thing the student now needs to think about or do before the next lesson.
+
+AVOID: Identical lesson structures throughout / "In this lesson, we will cover..." as first sentence / metronomic callouts / "Now that you understand X, let's move on to Y" / definitions before examples / passive voice and academic hedging.`;
+
+      return `${COURSE_SYSTEM_PROMPT}
 
 ${context}
 
@@ -330,29 +343,11 @@ Course outline:
 ${outline}
 ${prevSummary}
 
-Write LESSON ${idx} of ${lessonCount} as a complete lesson script.
+Write LESSON ${idx} of ${lessonCount} for ${body.platform || "online"} delivery — a complete lesson script. Lead with "LESSON ${idx}: [Title]" and include learning objectives, a hook-driven introduction, the core teaching, and a clear next step, but let the number of sections, examples, and any talking points be whatever the content actually needs rather than a fixed template.
 
-FORMAT REQUIREMENTS:
-- LESSON ${idx}: [Title]
-- LEARNING OBJECTIVES: (3-5 bullet points)
-- INTRODUCTION: (Hook and context — 2-3 paragraphs)
-- MAIN CONTENT: (Organized into 3-5 sections with clear headings)
-  - Each section includes:
-    - Key concept explanation
-    - Examples or stories
-    - TALKING POINT: (Brief bullet for video delivery)
-- ENGAGEMENT PROMPT: (Question or activity for audience interaction)
-- KEY TAKEAWAYS: (3-5 bullet points summarizing the lesson)
-- CALL TO ACTION: (What the viewer should do next)
-- TRANSITION: (Bridge to the next lesson)
-
-TONE:
-- Conversational and ${body.tone || "engaging"} — write as if talking directly to the viewer
-- Use "you" language throughout
-- Include relatable examples and analogies
-- Natural speech patterns suitable for video delivery
-${body.platform === "youtube" ? "- Include suggested video title and description\n- Note good points for B-roll or visual aids" : ""}
-${body.platform === "udemy" ? "- Include quiz questions at the end\n- Note where to add downloadable resources" : ""}
+Conversational and ${body.tone || "engaging"} — write as if talking directly to the viewer, using "you" language and natural speech patterns suitable for video delivery.
+${body.platform === "youtube" ? "Include a suggested video title and description, and note good points for B-roll or visual aids." : ""}
+${body.platform === "udemy" ? "Include quiz questions at the end, and note where to add downloadable resources." : ""}
 
 Write the complete Lesson ${idx} script now:`;
     },

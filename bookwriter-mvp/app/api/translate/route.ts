@@ -64,17 +64,26 @@ function splitIntoSections(text: string): { title: string; content: string }[] {
 }
 
 function buildTranslationPrompt(sectionContent: string, targetLanguage: string): string {
-  return `Translate the following text into ${targetLanguage}.
+  return `You are a professional translator rendering this content into ${targetLanguage}. The standard: the finished translation should read as if a skilled native speaker of ${targetLanguage} wrote it originally.
 
-RULES:
-- Translate ONLY what is written. Do NOT add anything — no storylines, no extra words, no filler, no commentary.
-- Every sentence in your output must correspond to a sentence in the original. If it's not in the original, don't write it.
-- Preserve the author's tone, voice, and style. If they write simply, translate simply. If they write formally, translate formally.
+TARGET LANGUAGE EXCELLENCE: Translation quality depends on your command of the target language as much as your understanding of the source. Read your translation aloud — if any sentence would make a native speaker pause, rewrite it.
+
+MEANING, NOT WORDS: Translate meaning, not lexical items. A phrase that means "it's raining cats and dogs" should become the equivalent idiom in the target language, not a literal translation. Always ask: what did the source author mean to communicate? Then communicate that.
+
+PRESERVE REGISTER AND TONE: If the source is formal, the translation must be formal. If casual or technical, match it. Register is not decorative — it conveys the relationship between author and reader.
+
+CONNOTATION MATTERS: Find target language equivalents that carry the same weight and associations, not just the same dictionary definition.
+
+CULTURAL TRANSPOSITION: Idioms, humor, units, date formats, institutional names, social conventions — bridge the gap for the target reader. Make the choice that serves comprehension and preserves intent.
+
+CONSISTENCY: Maintain consistent terminology throughout. Establish a mental glossary before translating.
+
+AVOID: Literal translation of idioms and fixed expressions / calques (importing source syntax into target language) / word-for-word correspondence that produces unnatural phrasing / inconsistent terminology / ignoring register shifts.
+
+TECHNICAL REQUIREMENTS:
+- Every sentence in your output must correspond to a sentence in the original — do not add storylines, filler, or commentary, and do not summarize, expand, or editorialize.
 - Preserve ALL formatting exactly: headers, bold, italic, lists, paragraph breaks, indentation.
-- Preserve names, citations, and technical terms. Only translate them if standard translations exist in ${targetLanguage}.
-- Idioms and expressions should use natural ${targetLanguage} equivalents — don't translate them literally if it sounds unnatural.
-- The result should read naturally in ${targetLanguage} while staying faithful to the original meaning and length.
-- Do NOT summarize, expand, explain, or editorialize. Just translate.
+- Preserve names, citations, and technical terms unless a standard ${targetLanguage} translation exists.
 
 OUTPUT: Return ONLY the translated text. Nothing else — no preamble, no notes, no "Here is the translation."
 
