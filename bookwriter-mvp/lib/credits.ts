@@ -46,6 +46,7 @@ export const UNLIMITED_ACCESS_EMAILS = [
   "mariajoseruzaragon@gmail.com",
   "drjdsuarez@gmail.com",
   "jerelaf@gmail.com",
+  "victoriastanzione@gmail.com",
 ];
 
 export function hasUnlimitedAccess(email: string | null | undefined): boolean {
