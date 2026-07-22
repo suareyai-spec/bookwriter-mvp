@@ -3,8 +3,7 @@
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
-
-const ADMIN_EMAILS = ["suarey@gmail.com", "suareyai@gmail.com"];
+import { ADMIN_EMAILS } from "@/lib/config";
 
 const PLAN_BADGES: Record<string, { label: string; color: string }> = {
   starter: { label: "Starter", color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" },
@@ -71,7 +70,7 @@ export default function Navbar() {
             Library
           </Link>
           {session.user?.email && ADMIN_EMAILS.includes(session.user.email) && (
-            <Link href="/admin" onClick={closeMenu} className="text-amber-400 hover:text-amber-300 transition-colors py-2">
+            <Link href="/admin/subscriptions" onClick={closeMenu} className="text-amber-400 hover:text-amber-300 transition-colors py-2">
               Admin
             </Link>
           )}
