@@ -119,6 +119,16 @@ function isReligiousPhilosophy(genre: string, tone: string, description: string)
   return keywords.some(k => combined.includes(k));
 }
 
+// Broader detector for the alternate spiritual/self-help chapter voice — checks the
+// genre dropdown value first (e.g. "Religious", "Self-Help" are exact genre options),
+// falling back to keyword matching against tone/description. Word-boundary matching
+// avoids false positives like "god" inside "Godfather" or "soul" inside "consul".
+const SPIRITUAL_SELF_HELP_PATTERN = /\b(religious|spiritual|faith|god|universe|self-love|philosophy|soul|self-help)\b/i;
+
+function isSpiritualSelfHelp(genre: string, tone: string, description: string): boolean {
+  return SPIRITUAL_SELF_HELP_PATTERN.test(`${genre} ${tone} ${description}`);
+}
+
 function buildReligiousReferenceContext(references: z.infer<typeof ReferenceItem>[]): string {
   if (!references.length) return "";
   const MAX_REF_CHARS = 50000;
@@ -291,6 +301,7 @@ function buildChapterPrompt(
   refContext: string
 ): string {
   const topicPhrase = `"${body.title}"${genre && genre !== "General" ? ` (${genre})` : ""}`;
+  const useSpiritualVoice = isSpiritualSelfHelp(genre, body.tone || "", body.description);
 
   const BOOK_SYSTEM_PROMPT = `You are a professional author generating chapter content for a book on ${topicPhrase}. Your writing must be specific, energetic, and structurally varied — never generic.
 
@@ -306,6 +317,37 @@ VOICE: Write like a smart person explaining something to another smart person. U
 
 AVOID: "It is important to note that..." / "In summary," "As we have seen," / "Furthermore," "Moreover" as openers / ending every section with a restatement / passive voice as default / identical paragraph lengths / self-announcing transitions.`;
 
+  const SPIRITUAL_SYSTEM_PROMPT = `You are writing passages for a spiritual book. This is not a self-help book — it is a living philosophy that teaches through declaration, rhythm, and revelation. The reader is not being informed. They are being awakened.
+
+VOICE: Write with absolute authority. No hedging. No "perhaps" or "it might be." These are truths, not suggestions. Sound like someone speaking from direct knowing — not research, not tradition, but lived understanding.
+
+THREE REGISTERS TO BLEND:
+
+BIBLICAL: Eternal present tense. Short declarative sentences that feel carved, not written. Parallelism — repeat and build on the same structure. Begin sentences with "And" when building to a proclamation. Let silence exist between ideas.
+Example rhythm: "Ask and it shall be given. Seek and you shall find. Be still and the universe will speak."
+
+QURANIC: Ask questions the reader cannot dismiss — then answer them with full authority. Use invocation. Build warning and promise in the same breath.
+Example rhythm: "Then tell me — who put the fear in you? Was it not you yourself who built the walls? The universe did not build them. You did. And you alone can bring them down."
+
+REVELATORY (Dianetics-style): Present these truths as newly discovered mechanisms of existence — not beliefs, not opinions, but facts about how reality operates that most people have never been told. Name things. Define them precisely. Build from first principle to revelation.
+Example rhythm: "The soul does not forget. Every lifetime it has lived is recorded. Every lesson is carried forward. This is not mysticism. This is the architecture of existence."
+
+STRUCTURAL RULES:
+- Open with a single declarative truth (maximum weight, minimum words)
+- Expand through metaphor grounded in the physical world — crabs, sponges, planets, chips from a bag. The infinite explained through the tangible.
+- Return to the opening truth at the end — restated, but now deeper
+- Vary passage length by the weight of the idea, not word count
+- Occasionally break a word apart to reveal what it contains (individual → in-divid-u-al) — sparingly, only when it illuminates
+
+AVOID:
+- Generic affirmations ("Believe in yourself!")
+- Passive or academic tone
+- Sounding like Eckhart Tolle, Deepak Chopra, or any existing spiritual author
+- Ending passages with summaries — let the final line land, then stop
+- Sentences that are spiritually vague ("the universe has a plan for you") — be specific and structural`;
+
+  const chapterSystemPrompt = useSpiritualVoice ? SPIRITUAL_SYSTEM_PROMPT : BOOK_SYSTEM_PROMPT;
+
   let extraRequirements = "";
   if (isRelig) {
     extraRequirements = extractedFramework
@@ -314,12 +356,15 @@ AVOID: "It is important to note that..." / "In summary," "As we have seen," / "F
       ? `\n\nPRIMARY SOURCE REQUIREMENT: The uploaded reference texts are the primary source material for this chapter. Draw specific content, ideas, and terminology directly from them rather than generic material.`
       : "";
   }
-  if (isEdu && citationInstructions) {
+  // Citation instructions are for research-backed nonfiction and directly contradict
+  // the spiritual voice's "not research — lived understanding" instruction, so skip them
+  // when that voice is active even if the genre also happens to classify as isEdu.
+  if (isEdu && citationInstructions && !useSpiritualVoice) {
     extraRequirements += `\n\n${citationInstructions}`;
   }
   const matureBlock = isMatureRomance ? `\n\n${getMatureInstructions(matureLevel)}` : "";
 
-  return `${BOOK_SYSTEM_PROMPT}
+  return `${chapterSystemPrompt}
 
 ${bookContext}
 
