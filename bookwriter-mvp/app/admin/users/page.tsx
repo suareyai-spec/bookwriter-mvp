@@ -75,8 +75,8 @@ export default function AdminUsers() {
         >
           <option value="">All Plans</option>
           <option value="none">No Plan</option>
-          <option value="creator">Creator</option>
-          <option value="author-pro">Author Pro</option>
+          <option value="starter">Starter</option>
+          <option value="author">Author</option>
           <option value="studio">Studio</option>
         </select>
         <select
@@ -121,8 +121,8 @@ export default function AdminUsers() {
                       <td className="p-3">
                         <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
                           u.subscriptionPlan === "studio" ? "bg-purple-500/20 text-purple-400" :
-                          u.subscriptionPlan === "author-pro" ? "bg-blue-500/20 text-blue-400" :
-                          u.subscriptionPlan === "creator" ? "bg-green-500/20 text-green-400" :
+                          u.subscriptionPlan === "author" ? "bg-blue-500/20 text-blue-400" :
+                          u.subscriptionPlan === "starter" ? "bg-green-500/20 text-green-400" :
                           "bg-gray-500/20 text-gray-400"
                         }`}>
                           {u.subscriptionPlan || "No Plan"}
@@ -153,8 +153,8 @@ export default function AdminUsers() {
                               className="bg-white/[0.05] border border-white/[0.1] rounded px-2 py-1 text-xs text-white"
                             >
                               <option value="">Free</option>
-                              <option value="creator">Creator</option>
-                              <option value="author-pro">Author Pro</option>
+                              <option value="starter">Starter</option>
+                              <option value="author">Author</option>
                               <option value="studio">Studio</option>
                             </select>
                             <button

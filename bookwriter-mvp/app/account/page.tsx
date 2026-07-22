@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import { Suspense } from "react";
+import { CREDIT_PACKS } from "@/lib/credits";
 
 interface AccountData {
   email: string;
@@ -33,22 +34,22 @@ interface AccountData {
 
 const PLAN_LABELS: Record<string, string> = {
   free: "Free Starter",
-  creator: "Creator",
-  "author-pro": "Author Pro",
+  starter: "Starter",
+  author: "Author",
   studio: "Studio",
 };
 
 const PLAN_BADGE_STYLES: Record<string, string> = {
   free: "bg-gray-500/20 text-gray-400 border-gray-500/30",
-  creator: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-  "author-pro": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+  starter: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+  author: "bg-blue-500/20 text-blue-400 border-blue-500/30",
   studio: "bg-purple-500/20 text-purple-400 border-purple-500/30",
 };
 
 const PLAN_PRICES: Record<string, number> = {
-  creator: 99,
-  "author-pro": 199,
-  studio: 349,
+  starter: 19,
+  author: 49,
+  studio: 99,
 };
 
 function AccountContent() {
@@ -256,13 +257,13 @@ function AccountContent() {
     setBillingLoading(null);
   }
 
-  async function billingBuyCredit(creditSize: string) {
-    setBillingLoading(creditSize);
+  async function billingBuyCreditPack(packId: string) {
+    setBillingLoading(packId);
     try {
       const res = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type: "credit", creditSize }),
+        body: JSON.stringify({ type: "credit_pack", packId }),
       });
       const data = await res.json();
       if (data.url) { window.location.href = data.url; return; }
@@ -303,7 +304,7 @@ function AccountContent() {
 
   const hasSubscription = account.subscriptionPlan && (account.subscriptionStatus === "active" || account.subscriptionStatus === "canceling");
   const isCanceling = account.subscriptionStatus === "canceling";
-  const allPlans = ["creator", "author-pro", "studio"];
+  const allPlans = ["starter", "author", "studio"];
   const otherPlans = allPlans.filter((p) => p !== account.subscriptionPlan);
 
   const booksPercent = account.monthlyCreditsTotal > 0
@@ -401,19 +402,16 @@ function AccountContent() {
                 <div className="grid md:grid-cols-3 gap-4">
                   {[
                     {
-                      key: "creator", name: "Creator", price: 99, color: "emerald",
-                      features: ["1 Short or 1 Medium book/month", "10 newsletters/month", "5 articles/month", "Unlimited short-text translation", "30 revisions/month", "All formats", "1 concurrent generation"],
-                      extras: "Additional: Short $129 · Medium $179 · Standard $249",
+                      key: "starter", name: "Starter", price: 19, color: "emerald",
+                      features: ["25 credits/month, rolls over up to 50", "Short, Medium & Standard books", "Courses & all special formats", "Unlimited newsletters & revisions", "PDF & DOCX export", "1 concurrent generation"],
                     },
                     {
-                      key: "author-pro", name: "Author Pro", price: 199, color: "blue", popular: true,
-                      features: ["1 Standard book/month (~60K words)", "30 newsletters/month", "15 articles/month", "Unlimited short-text translation", "Unlimited revisions (fair use)", "Priority queue", "All formats"],
-                      extras: "Additional: Short $99 · Medium $149 · Standard $199",
+                      key: "author", name: "Author", price: 49, color: "blue", popular: true,
+                      features: ["50 credits/month, rolls over up to 100", "All book sizes including Epic & Long", "Priority generation queue", "Unlimited newsletters & revisions", "All formats & export options", "1 concurrent generation"],
                     },
                     {
-                      key: "studio", name: "Studio", price: 349, color: "purple",
-                      features: ["1 Standard + 1 Medium book/month", "Unlimited newsletters (fair use)", "~50 articles/month (fair use)", "Full-book translation", "Unlimited revisions", "Highest priority", "2 concurrent generations"],
-                      extras: "Additional: Short $79 · Medium $129 · Standard $179",
+                      key: "studio", name: "Studio", price: 99, color: "purple",
+                      features: ["Unlimited generation — no credit limits", "All book sizes & special formats", "Unlimited newsletters & revisions", "Highest priority queue", "All export formats", "2 concurrent generations"],
                     },
                   ].map((plan) => {
                     const isCurrent = account.subscriptionPlan === plan.key && hasSubscription;
@@ -446,7 +444,6 @@ function AccountContent() {
                             </li>
                           ))}
                         </ul>
-                        <div className="text-xs text-gray-500 mb-4 bg-white/[0.02] rounded-lg p-2 border border-white/[0.04]">{plan.extras}</div>
                         {isCurrent ? (
                           <button onClick={handleManageBilling} disabled={actionLoading === "billing"} className="w-full bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] text-white font-medium rounded-xl p-3 text-sm transition-all">
                             {actionLoading === "billing" ? "Loading..." : "Manage Plan"}
@@ -466,52 +463,24 @@ function AccountContent() {
                 </div>
               </section>
 
-              {/* Additional Book Pricing */}
+              {/* Buy More Credits */}
               <section className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-6">
-                <h2 className="text-lg font-semibold mb-2">Additional Book Pricing</h2>
-                <p className="text-sm text-gray-400 mb-4">Need more books beyond your monthly allocation? Credits never expire.</p>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="text-gray-400 border-b border-white/[0.06]">
-                        <th className="text-left py-2 px-2">Book Size</th>
-                        <th className="text-center py-2 px-2">Creator</th>
-                        <th className="text-center py-2 px-2">Author Pro</th>
-                        <th className="text-center py-2 px-2">Studio</th>
-                      </tr>
-                    </thead>
-                    <tbody className="text-gray-300">
-                      {[
-                        ["Short (~20k words)", "$129", "$99", "$79"],
-                        ["Medium (~40k words)", "$179", "$149", "$129"],
-                        ["Standard (~60k words)", "$249", "$199", "$179"],
-                        ["Epic (~80k+ words)", "$499", "$499", "$499"],
-                      ].map(([size, c, a, s], i) => (
-                        <tr key={i} className="border-b border-white/[0.04] last:border-0">
-                          <td className={`py-2.5 px-2 ${i === 3 ? "font-medium text-amber-400" : ""}`}>{size}</td>
-                          <td className="text-center py-2.5 px-2">{c}</td>
-                          <td className="text-center py-2.5 px-2">{a}</td>
-                          <td className="text-center py-2.5 px-2">{s}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                <h2 className="text-lg font-semibold mb-2">Buy More Credits</h2>
+                <p className="text-sm text-gray-400 mb-4">Need more than your monthly allocation? Credit packs never expire and stack with your subscription — every book size, including Epic, is included on Starter and Author.</p>
+                <div className="flex flex-wrap gap-3">
+                  {CREDIT_PACKS.map((pack) => (
+                    <button
+                      key={pack.id}
+                      onClick={() => billingBuyCreditPack(pack.id)}
+                      disabled={billingLoading !== null}
+                      className="bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-white/[0.15] rounded-xl p-4 text-center transition-all disabled:opacity-50 w-[160px]"
+                    >
+                      <div className="text-sm font-medium text-gray-300">{pack.label}</div>
+                      <div className="text-xl font-bold mt-1">${(pack.price / 100).toFixed(0)}</div>
+                      <div className="text-xs text-gray-500 mt-1">one-time</div>
+                    </button>
+                  ))}
                 </div>
-              </section>
-
-              {/* Epic Books */}
-              <section className="bg-gradient-to-br from-amber-500/5 to-orange-500/5 border border-amber-500/20 rounded-2xl p-6">
-                <h2 className="text-lg font-semibold mb-2">🏆 Epic Books</h2>
-                <p className="text-sm text-gray-400 mb-4">
-                  80,000+ words. Not included in any subscription — always a separate <span className="text-amber-400 font-semibold">$499</span> purchase. Epic translation: $299.
-                </p>
-                <button
-                  onClick={() => billingBuyCredit("epic")}
-                  disabled={billingLoading === "epic"}
-                  className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-medium rounded-xl px-6 py-2.5 text-sm transition-all shadow-lg shadow-amber-500/20 disabled:opacity-50"
-                >
-                  {billingLoading === "epic" ? "Loading..." : "Buy Epic Credit — $499"}
-                </button>
               </section>
 
               {/* Premium Packages */}
@@ -574,34 +543,6 @@ function AccountContent() {
                 )}
               </section>
 
-              {/* Buy Extra Credits */}
-              {hasSubscription && account.subscriptionPlan && (
-                <section className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-6">
-                  <h2 className="text-lg font-semibold mb-2">Need more books?</h2>
-                  <p className="text-sm text-gray-400 mb-4">Buy additional book credits. Credits never expire and stack with your subscription.</p>
-                  <div className="flex flex-wrap gap-3">
-                    {(() => {
-                      const extras: Record<string, { size: string; label: string; price: number }[]> = {
-                        creator: [{ size: "short", label: "Short", price: 129 }, { size: "medium", label: "Medium", price: 179 }, { size: "standard", label: "Standard", price: 249 }],
-                        "author-pro": [{ size: "short", label: "Short", price: 99 }, { size: "medium", label: "Medium", price: 149 }, { size: "standard", label: "Standard", price: 199 }],
-                        studio: [{ size: "short", label: "Short", price: 79 }, { size: "medium", label: "Medium", price: 129 }, { size: "standard", label: "Standard", price: 179 }],
-                      };
-                      return (extras[account.subscriptionPlan!] || extras.creator).map((extra) => (
-                        <button
-                          key={extra.size}
-                          onClick={() => billingBuyCredit(extra.size)}
-                          disabled={billingLoading !== null}
-                          className="bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-white/[0.15] rounded-xl p-4 text-center transition-all disabled:opacity-50 w-[160px]"
-                        >
-                          <div className="text-sm font-medium text-gray-300">{extra.label} Book</div>
-                          <div className="text-xl font-bold mt-1">${extra.price}</div>
-                          <div className="text-xs text-gray-500 mt-1">one-time</div>
-                        </button>
-                      ));
-                    })()}
-                  </div>
-                </section>
-              )}
             </div>
           )}
 

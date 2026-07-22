@@ -50,9 +50,9 @@ export async function GET() {
 
   // Calculate MRR from active subscriptions
   const planPrices: Record<string, number> = {
-    creator: 99,
-    "author-pro": 199,
-    studio: 349,
+    starter: 19,
+    author: 49,
+    studio: 99,
   };
   let mrr = 0;
   for (const sub of subscriptionBreakdown) {

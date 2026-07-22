@@ -81,7 +81,7 @@ export async function GET() {
   const monthlyNewsletterLimit = isFreeUser ? 2 : (planConfig ? (planConfig as any).monthlyNewsletters || 0 : 0);
   const monthlyNewslettersUsed = (user as any).monthlyNewslettersUsed || 0;
   const monthlyArticlesUsed = (user as any).monthlyArticlesUsed || 0;
-  const articleLimits: Record<string, number> = { free: 2, creator: 5, "author-pro": 15, studio: 50 };
+  const articleLimits: Record<string, number> = { free: 2, starter: 5, author: 15, studio: 50 };
   const monthlyArticleLimit = isFreeUser ? 2 : (plan ? (articleLimits[plan] ?? 0) : 0);
 
   return NextResponse.json({

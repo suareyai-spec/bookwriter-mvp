@@ -35,8 +35,8 @@ function KPI({ label, value, sub, color = "text-white" }: { label: string; value
 function Badge({ plan }: { plan: string | null }) {
   const styles: Record<string, string> = {
     studio: "bg-purple-500/20 text-purple-400",
-    "author-pro": "bg-blue-500/20 text-blue-400",
-    creator: "bg-green-500/20 text-green-400",
+    author: "bg-blue-500/20 text-blue-400",
+    starter: "bg-green-500/20 text-green-400",
   };
   return (
     <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${styles[plan || ""] || "bg-gray-500/20 text-gray-400"}`}>
@@ -231,8 +231,8 @@ function UsersTab() {
         <select value={planFilter} onChange={(e) => { setPlanFilter(e.target.value); setPage(1); }} className="bg-white/[0.03] border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-gray-300 focus:outline-none">
           <option value="">All Plans</option>
           <option value="none">Free (No Plan)</option>
-          <option value="creator">Creator</option>
-          <option value="author-pro">Author Pro</option>
+          <option value="starter">Starter</option>
+          <option value="author">Author</option>
           <option value="studio">Studio</option>
         </select>
         <select value={statusFilter} onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }} className="bg-white/[0.03] border border-white/[0.06] rounded-lg px-3 py-2 text-sm text-gray-300 focus:outline-none">
@@ -312,9 +312,9 @@ function UsersTab() {
                                   className="bg-white/[0.05] border border-white/[0.1] rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-blue-500/50"
                                 >
                                   <option value="">Free</option>
-                                  <option value="creator">Creator ($99/mo)</option>
-                                  <option value="author-pro">Author Pro ($199/mo)</option>
-                                  <option value="studio">Studio ($349/mo)</option>
+                                  <option value="starter">Starter ($19/mo)</option>
+                                  <option value="author">Author ($49/mo)</option>
+                                  <option value="studio">Studio ($99/mo)</option>
                                 </select>
                               </div>
                               <div className="flex items-center gap-2">
@@ -526,7 +526,7 @@ function RevenueTab() {
 
   if (loading) return <Spinner />;
 
-  const planPrices: Record<string, number> = { creator: 99, "author-pro": 199, studio: 349 };
+  const planPrices: Record<string, number> = { starter: 19, author: 49, studio: 99 };
 
   return (
     <div className="space-y-6">

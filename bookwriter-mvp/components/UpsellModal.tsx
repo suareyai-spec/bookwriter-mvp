@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { CREDIT_PACKS } from "@/lib/credits";
 
 interface UpsellModalProps {
   isOpen: boolean;
@@ -13,53 +14,19 @@ interface UpsellModalProps {
   revisionPrices?: { single: number; pack: { count: number; price: number }; unlimited: number };
 }
 
-const CREDIT_LABELS: Record<string, string> = {
-  short: "Short Book (~20k words)",
-  medium: "Medium Book (~40k words)",
-  standard: "Standard Book (~60k words)",
-  epic: "Epic Book (80k+ words)",
-};
-
-const BOOK_OPTIONS: Record<string, { size: string; label: string; price: number }[]> = {
-  creator: [
-    { size: "short", label: "Short Book Credit", price: 129 },
-    { size: "medium", label: "Medium Book Credit", price: 179 },
-    { size: "standard", label: "Standard Book Credit", price: 249 },
-    { size: "epic", label: "Epic Book Credit", price: 499 },
-  ],
-  "author-pro": [
-    { size: "short", label: "Short Book Credit", price: 99 },
-    { size: "medium", label: "Medium Book Credit", price: 149 },
-    { size: "standard", label: "Standard Book Credit", price: 199 },
-    { size: "epic", label: "Epic Book Credit", price: 499 },
-  ],
-  studio: [
-    { size: "short", label: "Short Book Credit", price: 79 },
-    { size: "medium", label: "Medium Book Credit", price: 129 },
-    { size: "standard", label: "Standard Book Credit", price: 179 },
-    { size: "epic", label: "Epic Book Credit", price: 499 },
-  ],
-  none: [
-    { size: "short", label: "Short Book Credit", price: 129 },
-    { size: "medium", label: "Medium Book Credit", price: 179 },
-    { size: "standard", label: "Standard Book Credit", price: 249 },
-    { size: "epic", label: "Epic Book Credit", price: 499 },
-  ],
-};
-
-export default function UpsellModal({ isOpen, onClose, currentPlan, requestedSize, message, upsellType = "book", revisionPrices }: UpsellModalProps) {
+export default function UpsellModal({ isOpen, onClose, currentPlan, message, upsellType = "book", revisionPrices }: UpsellModalProps) {
   const [loading, setLoading] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
   const isRevisionUpsell = upsellType === "revision";
 
-  async function buyCredit(size: string) {
-    setLoading(size);
+  async function buyCreditPack(packId: string) {
+    setLoading(packId);
     const res = await fetch("/api/stripe/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ type: "credit", creditSize: size }),
+      body: JSON.stringify({ type: "credit_pack", packId }),
     });
     const data = await res.json();
     if (data.url) window.location.href = data.url;
@@ -77,8 +44,6 @@ export default function UpsellModal({ isOpen, onClose, currentPlan, requestedSiz
     if (data.url) window.location.href = data.url;
     setLoading(null);
   }
-
-  const bookOptions = BOOK_OPTIONS[currentPlan || "none"] || BOOK_OPTIONS.none;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -154,22 +119,20 @@ export default function UpsellModal({ isOpen, onClose, currentPlan, requestedSiz
         {currentPlan && !isRevisionUpsell && (
           <>
             <div className="space-y-2 mb-4">
-              {bookOptions
-                .filter((o) => o.size === requestedSize || requestedSize === "any")
-                .map((opt) => (
-                  <button
-                    key={opt.size}
-                    onClick={() => buyCredit(opt.size)}
-                    disabled={loading !== null}
-                    className="w-full flex items-center justify-between bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-white/[0.15] rounded-xl p-4 transition-all disabled:opacity-50"
-                  >
-                    <div className="text-left">
-                      <div className="text-sm font-medium text-gray-200">{opt.label}</div>
-                      <div className="text-xs text-gray-500">{CREDIT_LABELS[opt.size]}</div>
-                    </div>
-                    <div className="text-lg font-bold">${opt.price}</div>
-                  </button>
-                ))}
+              {CREDIT_PACKS.map((pack) => (
+                <button
+                  key={pack.id}
+                  onClick={() => buyCreditPack(pack.id)}
+                  disabled={loading !== null}
+                  className="w-full flex items-center justify-between bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-white/[0.15] rounded-xl p-4 transition-all disabled:opacity-50"
+                >
+                  <div className="text-left">
+                    <div className="text-sm font-medium text-gray-200">{pack.label}</div>
+                    <div className="text-xs text-gray-500">Credits never expire — stack with your subscription</div>
+                  </div>
+                  <div className="text-lg font-bold">${(pack.price / 100).toFixed(0)}</div>
+                </button>
+              ))}
             </div>
             <Link href="/pricing" className="block text-center text-sm text-blue-400 hover:text-blue-300 transition-colors">
               Or upgrade your plan

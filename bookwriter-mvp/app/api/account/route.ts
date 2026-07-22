@@ -48,7 +48,7 @@ export async function GET() {
     },
     totalCredits: credits.length,
     monthlyArticlesUsed: (user as any).monthlyArticlesUsed || 0,
-    monthlyArticleLimit: plan ? (({ free: 2, creator: 5, "author-pro": 15, studio: 50 } as Record<string, number>)[plan] ?? 0) : 2,
+    monthlyArticleLimit: plan ? (({ free: 2, starter: 5, author: 15, studio: 50 } as Record<string, number>)[plan] ?? 0) : 2,
     monthlyNewslettersUsed: (user as any).monthlyNewslettersUsed || 0,
     monthlyNewsletterLimit: planConfig ? (planConfig as any).monthlyNewsletters || 0 : 0,
   });

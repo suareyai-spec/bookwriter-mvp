@@ -2,14 +2,18 @@ import Stripe from "stripe";
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-import { MONTHLY_POINTS } from "@/lib/config";
-
-// Plan configuration (backward compat wrapper)
+// Plan configuration. "creator" and "author-pro" were the old plan names/prices
+// before the Starter/Author/Studio credit-based repricing — removed since no
+// checkout path can select them anymore (app/pricing/page.tsx only ever sends
+// starter/author/studio) and PLAN_MONTHLY_CREDITS/PLAN_ROLLOVER_CAP in
+// lib/credits.ts already keep 'creator'/'author-pro' as numeric aliases for
+// starter/author in case any legacy subscriptionPlan value is still on a
+// user record.
 export const PLANS = {
   free: {
     name: "Free Starter",
     price: 0,
-    monthlyCredits: MONTHLY_POINTS.free,
+    monthlyCredits: 1,
     maxProjects: Infinity,
     allowedSizes: ["short"] as string[],
     creditEquivalents: { short: 1 },
@@ -17,33 +21,10 @@ export const PLANS = {
     monthlyNewsletters: 2,
     concurrentGenerations: 1,
   },
-  creator: {
-    name: "Creator",
-    price: 9900, // cents
-    monthlyCredits: MONTHLY_POINTS.creator,
-    maxProjects: Infinity,
-    allowedSizes: ["short", "medium"] as string[],
-    creditEquivalents: { short: 1, medium: 2 },
-    monthlyRevisions: 30,
-    monthlyNewsletters: 10,
-    concurrentGenerations: 1,
-  },
-  "author-pro": {
-    name: "Author Pro",
-    price: 19900,
-    monthlyCredits: MONTHLY_POINTS["author-pro"],
-    maxProjects: Infinity,
-    allowedSizes: ["short", "medium", "standard"] as string[],
-    creditEquivalents: { short: 1, medium: 2, standard: 3 },
-    monthlyRevisions: Infinity,
-    monthlyNewsletters: 30,
-    concurrentGenerations: 1,
-    priority: true,
-  },
   studio: {
     name: "Studio",
     price: 9900,
-    monthlyCredits: MONTHLY_POINTS.studio,
+    monthlyCredits: Infinity,
     maxProjects: Infinity,
     allowedSizes: ["short", "medium", "standard"] as string[],
     creditEquivalents: { short: 1, medium: 2, standard: 3 },
@@ -78,30 +59,34 @@ export const PLANS = {
 
 export type PlanKey = keyof typeof PLANS;
 
-// Credit prices (one-time purchases) in cents — vary by current plan
+// Credit prices (one-time purchases) in cents — vary by current plan.
+// Superseded by the flat CREDIT_PACKS in lib/credits.ts (used by the
+// "credit_pack" checkout type); kept only so the "credit" checkout type
+// still resolves sane prices for the plan a user is actually on.
 export const CREDIT_PRICES: Record<string, Record<string, number>> = {
   free: { short: 12900, medium: 17900, standard: 24900, epic: 49900 },
-  creator: { short: 12900, medium: 17900, standard: 24900, epic: 49900 },
-  "author-pro": { short: 9900, medium: 14900, standard: 19900, epic: 49900 },
+  starter: { short: 12900, medium: 17900, standard: 24900, epic: 49900 },
+  author: { short: 9900, medium: 14900, standard: 19900, epic: 49900 },
   studio: { short: 7900, medium: 12900, standard: 17900, epic: 49900 },
   none: { short: 12900, medium: 17900, standard: 24900, epic: 49900 },
 };
 
-// Additional newsletter prices in cents
+// Additional newsletter prices in cents (unused now that newsletters are
+// unlimited on every paid plan — kept for backward compatibility).
 export const NEWSLETTER_PRICES: Record<string, number> = {
   free: 500,
-  creator: 500,
-  "author-pro": 400,
+  starter: 0,
+  author: 0,
   studio: 0,
   none: 500,
 };
 
-// Revision prices — only Creator has a cap (30/mo), others unlimited
-// No more per-revision purchasing needed for author-pro/studio
+// Revision prices — Starter, Author, and Studio all include unlimited
+// revisions, so no per-revision purchase is needed on any paid plan.
 export const REVISION_PRICES: Record<string, { single: number; pack: { count: number; price: number }; unlimited: number }> = {
   free: { single: 500, pack: { count: 10, price: 3900 }, unlimited: 9900 },
-  creator: { single: 500, pack: { count: 10, price: 3900 }, unlimited: 9900 },
-  "author-pro": { single: 0, pack: { count: 0, price: 0 }, unlimited: 0 },
+  starter: { single: 0, pack: { count: 0, price: 0 }, unlimited: 0 },
+  author: { single: 0, pack: { count: 0, price: 0 }, unlimited: 0 },
   studio: { single: 0, pack: { count: 0, price: 0 }, unlimited: 0 },
   none: { single: 500, pack: { count: 10, price: 3900 }, unlimited: 9900 },
 };

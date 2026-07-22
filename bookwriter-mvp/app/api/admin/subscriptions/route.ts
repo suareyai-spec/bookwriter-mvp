@@ -10,76 +10,81 @@ export async function GET(req: NextRequest) {
   if (!session) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const url = new URL(req.url);
-  const status = url.searchParams.get("status") || "active";
-  const page = parseInt(url.searchParams.get("page") || "1");
+  const search = url.searchParams.get("search")?.trim() || "";
+  const plan = url.searchParams.get("plan") || "";
+  const status = url.searchParams.get("status") || "";
+  const page = Math.max(1, parseInt(url.searchParams.get("page") || "1"));
   const limit = 25;
   const skip = (page - 1) * limit;
 
-  const where: any = { subscriptionId: { not: null } };
-  if (status === "active") {
-    where.subscriptionStatus = "active";
-  } else if (status === "canceled") {
-    where.subscriptionStatus = { in: ["canceled", "past_due", "unpaid"] };
+  const where: any = {};
+  if (search) {
+    where.OR = [
+      { email: { contains: search, mode: "insensitive" } },
+      { name: { contains: search, mode: "insensitive" } },
+    ];
+  }
+  if (plan === "none") {
+    where.subscriptionPlan = null;
+  } else if (plan) {
+    where.subscriptionPlan = plan;
+  }
+  if (status) {
+    where.subscriptionStatus = status;
   }
 
-  const [users, total] = await Promise.all([
+  const [users, total, totalActive, planBreakdown] = await Promise.all([
     prisma.user.findMany({
       where,
       skip,
       take: limit,
       orderBy: { createdAt: "desc" },
       select: {
-        id: true, name: true, email: true,
-        subscriptionPlan: true, subscriptionStatus: true,
-        subscriptionId: true, stripeCustomerId: true,
+        id: true,
+        name: true,
+        email: true,
+        subscriptionPlan: true,
+        subscriptionStatus: true,
+        monthlyCredits: true,
+        purchasedCredits: true,
+        creditsRollover: true,
         createdAt: true,
+        _count: { select: { books: true } },
       },
     }),
     prisma.user.count({ where }),
-  ]);
-
-  // Get Stripe sub details for active ones
-  const enriched = await Promise.all(
-    users.map(async (u) => {
-      let stripeSub: any = null;
-      if (u.subscriptionId) {
-        try {
-          stripeSub = await stripe.subscriptions.retrieve(u.subscriptionId);
-        } catch {}
-      }
-      return {
-        ...u,
-        currentPeriodEnd: stripeSub?.current_period_end
-          ? new Date(stripeSub.current_period_end * 1000).toISOString()
-          : null,
-        canceledAt: stripeSub?.canceled_at
-          ? new Date(stripeSub.canceled_at * 1000).toISOString()
-          : null,
-        priceAmount: stripeSub?.items?.data?.[0]?.price?.unit_amount
-          ? stripeSub.items.data[0].price.unit_amount / 100
-          : null,
-      };
-    })
-  );
-
-  // Churn rate
-  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-  const [totalActive, canceledRecently] = await Promise.all([
     prisma.user.count({ where: { subscriptionStatus: "active" } }),
-    prisma.user.count({
-      where: {
-        subscriptionStatus: { in: ["canceled", "past_due"] },
-        // approximation — we don't track cancel date in DB
-      },
-    }),
+    prisma.user.groupBy({ by: ["subscriptionPlan"], where: { subscriptionStatus: "active" }, _count: true }),
   ]);
+
+  // Last generation date per user — one grouped query instead of N+1.
+  const userIds = users.map((u) => u.id);
+  const lastGen = userIds.length
+    ? await prisma.book.groupBy({ by: ["userId"], where: { userId: { in: userIds } }, _max: { createdAt: true } })
+    : [];
+  const lastGenMap = new Map(lastGen.map((g) => [g.userId, g._max.createdAt]));
+
+  const subscriptions = users.map((u) => ({
+    id: u.id,
+    name: u.name,
+    email: u.email,
+    plan: u.subscriptionPlan || "free",
+    status: u.subscriptionStatus || "none",
+    creditsRemaining: (u.monthlyCredits ?? 0) + (u.purchasedCredits ?? 0) + (u.creditsRollover ?? 0),
+    joinDate: u.createdAt,
+    lastGenerationDate: lastGenMap.get(u.id) || null,
+    totalGenerations: u._count.books,
+  }));
 
   return NextResponse.json({
-    subscriptions: enriched,
+    subscriptions,
     total,
     page,
-    totalPages: Math.ceil(total / limit),
-    stats: { totalActive, canceledRecently, churnRate: totalActive > 0 ? canceledRecently / (totalActive + canceledRecently) : 0 },
+    totalPages: Math.max(1, Math.ceil(total / limit)),
+    stats: {
+      totalActive,
+      byPlan: planBreakdown.map((p) => ({ plan: p.subscriptionPlan || "free", count: p._count })),
+    },
   });
 }
 

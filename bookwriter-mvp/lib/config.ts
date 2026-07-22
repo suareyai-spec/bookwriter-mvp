@@ -4,108 +4,6 @@ export function isAdmin(email: string): boolean {
   return ADMIN_EMAILS.includes(email.toLowerCase());
 }
 
-export const PLANS = {
-  free: {
-    name: 'Free Starter',
-    price: 0,
-    monthlyBooks: 1, // lifetime, not monthly
-    maxBookSize: 'short' as const,
-    newsletters: 2,
-    revisions: 1,
-    translations: 'short-text' as const,
-    additionalNewsletter: 0,
-    additionalBooks: { short: 129, medium: 179, standard: 249, epic: 499 },
-    concurrentGenerations: 1,
-    formats: 'all' as const,
-    priority: false,
-  },
-  creator: {
-    name: 'Creator',
-    price: 99,
-    monthlyBooks: 1, // 1 medium or 1 short
-    maxBookSize: 'medium' as const, // cannot do standard
-    newsletters: 10,
-    revisions: 30,
-    translations: 'short-text' as const,
-    additionalNewsletter: 5,
-    additionalBooks: { short: 129, medium: 179, standard: 249, epic: 499 },
-    concurrentGenerations: 1,
-    formats: 'all' as const,
-    priority: false,
-  },
-  'author-pro': {
-    name: 'Author Pro',
-    price: 199,
-    monthlyBooks: 1, // 1 standard = 1 medium+1 short = 3 short
-    maxBookSize: 'standard' as const,
-    newsletters: 30,
-    revisions: Infinity,
-    translations: 'short-text' as const,
-    additionalNewsletter: 4,
-    additionalBooks: { short: 99, medium: 149, standard: 199, epic: 499 },
-    concurrentGenerations: 1,
-    formats: 'all' as const,
-    priority: true,
-  },
-  studio: {
-    name: 'Studio',
-    price: 349,
-    monthlyBooks: 2, // 1 standard + 1 medium, or combos
-    maxBookSize: 'standard' as const,
-    newsletters: Infinity, // fair use ~100
-    revisions: Infinity,
-    translations: 'unlimited' as const,
-    additionalNewsletter: 0,
-    additionalBooks: { short: 79, medium: 129, standard: 179, epic: 499 },
-    concurrentGenerations: 2,
-    formats: 'all' as const,
-    priority: 'highest' as const,
-  },
-};
-
-export type PlanId = keyof typeof PLANS;
-
-export const BOOK_SIZES = {
-  short: { label: 'Short', maxWords: 20000 },
-  medium: { label: 'Medium', maxWords: 40000 },
-  standard: { label: 'Standard', maxWords: 60000 },
-  epic: { label: 'Epic', maxWords: Infinity },
-};
-
-export type BookSize = keyof typeof BOOK_SIZES;
-
-// Book size equivalency in "book points" for monthly quota tracking
-// Creator: 1 medium = 2 points, 1 short = 1 point (monthlyBooks=1 means 2 points)
-// Author Pro: 1 standard = 3 points, 1 medium = 2, 1 short = 1 (monthlyBooks=1 means 3 points)
-// Studio: 1 standard + 1 medium = 5 points (monthlyBooks=2 means 5 points)
-export const BOOK_POINTS: Record<string, Record<string, number>> = {
-  free: { short: 1 },
-  creator: { short: 1, medium: 2 },
-  'author-pro': { short: 1, medium: 2, standard: 3 },
-  studio: { short: 1, medium: 2, standard: 3 },
-};
-
-export const MONTHLY_POINTS: Record<string, number> = {
-  free: 1,
-  creator: 2,       // 1 medium OR 2 short
-  'author-pro': 3,  // 1 standard OR 1 medium+1 short OR 3 short
-  studio: 5,        // 1 standard + 1 medium, or other combos
-};
-
-export const BOOK_SIZE_ORDER = ['short', 'medium', 'standard', 'epic'] as const;
-
-export function canGenerateBookSize(plan: PlanId, size: string): boolean {
-  const maxSize = PLANS[plan].maxBookSize;
-  const maxIdx = BOOK_SIZE_ORDER.indexOf(maxSize as any);
-  const sizeIdx = BOOK_SIZE_ORDER.indexOf(size as any);
-  if (sizeIdx < 0) return false;
-  return sizeIdx <= maxIdx;
-}
-
-export function getBookPoints(plan: PlanId, size: string): number {
-  return BOOK_POINTS[plan]?.[size] ?? Infinity;
-}
-
 export const PREMIUM_PACKAGES = {
   'doctoral-thesis': { name: 'Doctoral-Level Thesis', price: 499 },
   'premium-playwright': { name: 'Premium Playwright', price: 399 },
@@ -152,14 +50,14 @@ export const ARTICLE_WORD_COUNTS = [
 
 export const ARTICLE_LIMITS: Record<string, number> = {
   free: 2,
-  creator: 5,
-  "author-pro": 15,
+  starter: 5,
+  author: 15,
   studio: 50, // fair use
 };
 
 export const ARTICLE_EXTRA_PRICE: Record<string, number> = {
   free: 7,
-  creator: 7,
-  "author-pro": 5,
+  starter: 7,
+  author: 5,
   studio: 0,
 };

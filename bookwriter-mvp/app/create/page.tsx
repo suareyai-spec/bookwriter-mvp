@@ -286,7 +286,7 @@ function HomeContent() {
       });
       const data = await res.json();
       if (!res.ok) {
-        if (data.needsSubscription || data.needsCredit) {
+        if (data.needsSubscription || data.needsCredit || data.needsCredits) {
           setUpsellMessage(data.error);
           setUpsellSize(data.creditSize || "any");
           setUpsellOpen(true);
