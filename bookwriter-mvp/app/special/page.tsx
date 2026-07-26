@@ -3,7 +3,22 @@
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 
-const MODES = [
+interface Tier {
+  label: string;
+  price?: number;
+  credits?: number;
+}
+
+interface Mode {
+  key: string;
+  title: string;
+  description: string;
+  includes: string[];
+  tiers: Tier[];
+  color: string;
+}
+
+const MODES: Mode[] = [
   {
     key: "comic",
     title: "Comic Book",
@@ -77,6 +92,23 @@ const MODES = [
     ],
     color: "violet",
   },
+  {
+    key: "university-course",
+    title: "University Course",
+    description:
+      "A full 12-15 week accredited-style academic course for online asynchronous delivery, modeled after Harvard DCE's course structure — syllabus, weekly lectures, discussion prompts, and a complete assessment package with rubrics.",
+    includes: [
+      "Full syllabus — objectives, grading, policies",
+      "Week-by-week outline with Bloom's-mapped objectives",
+      "2,000-4,000 word lecture per week, discussion prompts & readings",
+      "Quizzes with answer keys, midterm, final, and rubrics",
+      "15-25 min generation — this is a full semester course",
+    ],
+    tiers: [
+      { label: "12-15 week course", credits: 45 },
+    ],
+    color: "indigo",
+  },
 ];
 
 const colorMap: Record<string, { border: string; bg: string; text: string; badge: string; button: string }> = {
@@ -107,6 +139,13 @@ const colorMap: Record<string, { border: string; bg: string; text: string; badge
     text: "text-violet-400",
     badge: "bg-violet-500/20 text-violet-400 border-violet-500/30",
     button: "from-violet-600 to-violet-700 hover:from-violet-500 hover:to-violet-600 shadow-violet-500/20",
+  },
+  indigo: {
+    border: "border-indigo-500/30",
+    bg: "bg-indigo-500/5",
+    text: "text-indigo-400",
+    badge: "bg-indigo-500/20 text-indigo-400 border-indigo-500/30",
+    button: "from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 shadow-indigo-500/20",
   },
 };
 
@@ -173,7 +212,9 @@ export default function SpecialPage() {
                     <div className="flex flex-wrap gap-3">
                       {mode.tiers.map((tier) => (
                         <div key={tier.label} className="text-sm">
-                          <span className="text-white font-bold">${tier.price}</span>
+                          <span className="text-white font-bold">
+                            {tier.credits != null ? `${tier.credits} credits` : `$${tier.price}`}
+                          </span>
                           <span className="text-gray-500 ml-1">{tier.label}</span>
                         </div>
                       ))}

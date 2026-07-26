@@ -66,6 +66,7 @@ function getContentLabel(contentType: string): string {
     case "playwright": return "play";
     case "thesis": return "thesis";
     case "course": return "course";
+    case "university_course": return "university course";
     case "translation": return "translation";
     default: return "book";
   }

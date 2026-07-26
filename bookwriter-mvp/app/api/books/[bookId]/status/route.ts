@@ -21,6 +21,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ bookId: 
       totalChapters: true,
       outline: true,
       title: true,
+      failedReason: true,
       chapters: {
         select: { number: true, title: true, wordCount: true },
         orderBy: { number: 'asc' },
@@ -49,5 +50,6 @@ export async function GET(req: Request, { params }: { params: Promise<{ bookId: 
     chapters: book.chapters,
     outline: book.outline,
     progressStatus: progressObj?.status || null,
+    failedReason: book.failedReason,
   });
 }

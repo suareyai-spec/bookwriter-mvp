@@ -4,6 +4,12 @@ export const CREDIT_COST: Record<string, number> = {
   short: 5, medium: 10, standard: 16, long: 22, epic: 30,
   thesis: 16, course: 16, comic: 8, play: 8,
   article: 2, newsletter: 2, translation: 4,
+  // A 12-15 week university course generates roughly 20-30 model calls
+  // (syllabus + weekly outlines + 12-15 weekly lectures + assessment package)
+  // and comparable-or-greater total word volume to an Epic book (30 credits),
+  // plus structurally distinct content (quizzes with answer keys, rubrics,
+  // midterm/final) an Epic book doesn't have — priced above Epic to reflect that.
+  university_course: 45,
 };
 
 export const PLAN_MONTHLY_CREDITS: Record<string, number | null> = {
