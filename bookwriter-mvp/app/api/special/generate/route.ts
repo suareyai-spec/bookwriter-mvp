@@ -9,6 +9,7 @@ import { humanizeChapter } from "@/lib/humanizer";
 import { trackApiCost, getTokensFromResponse } from "@/lib/cost-tracker";
 import { sendGenerationCompleteEmail, sendGenerationFailedEmail } from "@/lib/email";
 import { getCreditCost, hasUnlimitedAccess, totalCredits, deductCredits, refundCredits, insufficientCreditsMessage, CreditDeduction } from "@/lib/credits";
+import { getStyleExamples } from "@/lib/embeddings";
 
 export const maxDuration = 900;
 export const dynamic = "force-dynamic";
@@ -64,7 +65,18 @@ const CONTENT_TYPE_MAP: Record<string, string> = {
   course: "course",
 };
 
-function getComicPrompt(body: z.infer<typeof Body>, refContext: string): { outline: string; section: (idx: number, total: number, outline: string, prev: string[]) => string; sectionCount: number } {
+// contentType tag to query the RAG style-reference corpus with — distinct
+// from CONTENT_TYPE_MAP above (which tags the generated Book record).
+// Comic/playwright have no dedicated ingested corpus yet, so they fall back
+// to 'book' voice examples, same as the whitepaper mode does.
+const RAG_CONTENT_TYPE_MAP: Record<string, string> = {
+  comic: "book",
+  playwright: "book",
+  thesis: "academic",
+  course: "course",
+};
+
+function getComicPrompt(body: z.infer<typeof Body>, refContext: string, styleReference: string): { outline: string; section: (idx: number, total: number, outline: string, prev: string[]) => string; sectionCount: number } {
   const isFullArc = body.tier.includes("full");
   const issueCount = isFullArc ? 5 : 1;
   const context = `Title: "${body.title}"
@@ -113,13 +125,13 @@ FORMAT REQUIREMENTS:
 - Note dramatic visual moments, splash pages, and two-page spreads
 - Maintain consistent character voice throughout
 - End with a compelling hook or resolution
-
+${styleReference ? `\n${styleReference}\n` : ""}
 Write the complete comic script now:`;
     },
   };
 }
 
-function getPlaywrightPrompt(body: z.infer<typeof Body>, refContext: string): { outline: string; section: (idx: number, total: number, outline: string, prev: string[]) => string; sectionCount: number } {
+function getPlaywrightPrompt(body: z.infer<typeof Body>, refContext: string, styleReference: string): { outline: string; section: (idx: number, total: number, outline: string, prev: string[]) => string; sectionCount: number } {
   const isLong = body.tier.includes("long");
   const actCount = isLong ? 5 : 2;
   const context = `Title: "${body.title}"
@@ -173,13 +185,13 @@ DIALOGUE QUALITY:
 - Mix humor with tension naturally
 - Silence and pauses carry meaning
 - Each character should have a distinct voice and speech pattern
-
+${styleReference ? `\n${styleReference}\n` : ""}
 Write Act ${idx} now:`;
     },
   };
 }
 
-function getThesisPrompt(body: z.infer<typeof Body>, refContext: string): { outline: string; section: (idx: number, total: number, outline: string, prev: string[]) => string; sectionCount: number } {
+function getThesisPrompt(body: z.infer<typeof Body>, refContext: string, styleReference: string): { outline: string; section: (idx: number, total: number, outline: string, prev: string[]) => string; sectionCount: number } {
   const isDoctoral = body.tier.includes("doctoral");
   const sections = ["Abstract", "Introduction", "Literature Review", "Methodology", "Results and Discussion", "Conclusion", "References"];
   const citationMap: Record<string, string> = {
@@ -261,13 +273,13 @@ ${sectionName === "References" ? "- Compile all citations used across the thesis
 The thesis must reflect organization, scientific rigor, conceptual precision, and a well-articulated connection between theory, methodology, and results.
 
 IMPORTANT: This is a DRAFT for academic assistance. The user is responsible for verifying all citations and sources.
-
+${styleReference ? `\n${styleReference}\n` : ""}
 Write the complete "${sectionName}" section now:`;
     },
   };
 }
 
-function getCoursePrompt(body: z.infer<typeof Body>, refContext: string): { outline: string; section: (idx: number, total: number, outline: string, prev: string[]) => string; sectionCount: number } {
+function getCoursePrompt(body: z.infer<typeof Body>, refContext: string, styleReference: string): { outline: string; section: (idx: number, total: number, outline: string, prev: string[]) => string; sectionCount: number } {
   const tierMap: Record<string, number> = {
     course_mini: 6,
     course_full: 15,
@@ -348,7 +360,7 @@ Write LESSON ${idx} of ${lessonCount} for ${body.platform || "online"} delivery 
 Conversational and ${body.tone || "engaging"} — write as if talking directly to the viewer, using "you" language and natural speech patterns suitable for video delivery.
 ${body.platform === "youtube" ? "Include a suggested video title and description, and note good points for B-roll or visual aids." : ""}
 ${body.platform === "udemy" ? "Include quiz questions at the end, and note where to add downloadable resources." : ""}
-
+${styleReference ? `\n${styleReference}\n` : ""}
 Write the complete Lesson ${idx} script now:`;
     },
   };
@@ -446,20 +458,23 @@ export async function POST(req: Request) {
     const refContext = body.references?.length ? buildReferenceContext(body.references) : "";
     const langNote = body.language && body.language !== "English" ? `\n\nIMPORTANT: Write ALL content in ${body.language}. Every word of the output must be in ${body.language}.` : "";
 
+    const ragTopic = `${body.title} ${body.topic || ""} ${body.fieldOfStudy || ""} ${body.genre || ""} ${body.synopsis || body.description || ""}`.trim().slice(0, 500);
+    const styleReference = await getStyleExamples(ragTopic, RAG_CONTENT_TYPE_MAP[body.mode]);
+
     let promptConfig: { outline: string; section: (idx: number, total: number, outline: string, prev: string[]) => string; sectionCount: number };
 
     switch (body.mode) {
       case "comic":
-        promptConfig = getComicPrompt(body, refContext);
+        promptConfig = getComicPrompt(body, refContext, styleReference);
         break;
       case "playwright":
-        promptConfig = getPlaywrightPrompt(body, refContext);
+        promptConfig = getPlaywrightPrompt(body, refContext, styleReference);
         break;
       case "thesis":
-        promptConfig = getThesisPrompt(body, refContext);
+        promptConfig = getThesisPrompt(body, refContext, styleReference);
         break;
       case "course":
-        promptConfig = getCoursePrompt(body, refContext);
+        promptConfig = getCoursePrompt(body, refContext, styleReference);
         break;
     }
 

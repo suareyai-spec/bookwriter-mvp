@@ -9,6 +9,7 @@ import { humanizeChapter } from "@/lib/humanizer";
 import { trackApiCost, getTokensFromResponse } from "@/lib/cost-tracker";
 import { sendGenerationCompleteEmail, sendGenerationFailedEmail } from "@/lib/email";
 import { getCreditCost, hasUnlimitedAccess, totalCredits, deductCredits, refundCredits, insufficientCreditsMessage, CreditDeduction } from "@/lib/credits";
+import { getStyleExamples } from "@/lib/embeddings";
 
 export const maxDuration = 900;
 export const dynamic = "force-dynamic";
@@ -63,7 +64,7 @@ function splitIntoSections(text: string): { title: string; content: string }[] {
   return sections.length > 0 ? sections : [{ title: "Full Text", content: text }];
 }
 
-function buildTranslationPrompt(sectionContent: string, targetLanguage: string): string {
+function buildTranslationPrompt(sectionContent: string, targetLanguage: string, styleReference: string): string {
   return `You are a professional translator rendering this content into ${targetLanguage}. The standard: the finished translation should read as if a skilled native speaker of ${targetLanguage} wrote it originally.
 
 TARGET LANGUAGE EXCELLENCE: Translation quality depends on your command of the target language as much as your understanding of the source. Read your translation aloud — if any sentence would make a native speaker pause, rewrite it.
@@ -86,7 +87,7 @@ TECHNICAL REQUIREMENTS:
 - Preserve names, citations, and technical terms unless a standard ${targetLanguage} translation exists.
 
 OUTPUT: Return ONLY the translated text. Nothing else — no preamble, no notes, no "Here is the translation."
-
+${styleReference ? `\n${styleReference}\n` : ""}
 Text to translate:
 
 ${sectionContent}`;
@@ -247,6 +248,10 @@ export async function POST(req: Request) {
       : allSections;
     const totalSections = sectionsToTranslate.length;
 
+    // Fetched once and reused across every section, rather than per-section,
+    // to avoid redundant embedding calls.
+    const styleReference = await getStyleExamples(sourceText.slice(0, 1000), "translation");
+
     const stream = new ReadableStream({
       async start(controller) {
         try {
@@ -278,7 +283,7 @@ export async function POST(req: Request) {
               )
             );
 
-            const prompt = buildTranslationPrompt(section.content, body.targetLanguage);
+            const prompt = buildTranslationPrompt(section.content, body.targetLanguage, styleReference);
             const translateResp = await callClaude(prompt, 8192);
             let translated = translateResp.text;
             trackApiCost({ userId, type: "translation", inputTokens: translateResp.inputTokens, outputTokens: translateResp.outputTokens, bookId: body.bookId }).catch(() => {});

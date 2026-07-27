@@ -6,6 +6,7 @@ import { trackApiCost, getTokensFromResponse } from "@/lib/cost-tracker";
 import { releaseGenerationSlot } from "@/lib/rate-limit";
 import { sendGenerationCompleteEmail, sendGenerationFailedEmail } from "@/lib/email";
 import { refundCredits, CreditDeduction } from "@/lib/credits";
+import { getStyleExamples } from "@/lib/embeddings";
 
 // ──── Schemas (mirrored from api/generate/route.ts) ────────────────────────
 
@@ -298,7 +299,8 @@ function buildChapterPrompt(
   body: z.infer<typeof Body>,
   citationInstructions: string,
   matureLevel: string | undefined,
-  refContext: string
+  refContext: string,
+  styleReference: string
 ): string {
   const topicPhrase = `"${body.title}"${genre && genre !== "General" ? ` (${genre})` : ""}`;
   const useSpiritualVoice = isSpiritualSelfHelp(genre, body.tone || "", body.description);
@@ -371,7 +373,7 @@ ${bookContext}
 Full book outline:
 ${outline}
 ${prevSummary}
-
+${styleReference ? `\n${styleReference}\n` : ""}
 Now write CHAPTER ${i} in full. Target: approximately ${wordsPerChapter} words.
 
 CRITICAL LANGUAGE REQUIREMENT: Write this ENTIRE chapter in ${lang}. Every single word, sentence, paragraph, heading, and dialogue MUST be in ${lang}. Do NOT switch to English or any other language. This is non-negotiable.${extraRequirements}${matureBlock}
@@ -597,13 +599,20 @@ ${bookContext}
 Full course outline:
 ${outline}
 ${prevSummary}
-
+${styleReference ? `\n${styleReference}\n` : ""}
 Write MODULE ${i} in full: "${chTitle}". Aim for roughly 2,500–4,000 words of substantive teaching — let what the content actually needs determine section count, example placement, and length, not a fixed template.
 
 CRITICAL LANGUAGE REQUIREMENT: Write this ENTIRE module in ${lang}. Every single word must be in ${lang}. This is non-negotiable.
 
 Write Module ${i} now:`;
     };
+
+    // RAG style reference — fetched once and reused across every chapter/module
+    // prompt for this book, rather than per-chapter, to avoid redundant
+    // embedding calls. Empty string (no-op) if nothing relevant is found.
+    const styleReference = await step.run("fetch-style-reference", async () => {
+      return getStyleExamples(`${body.title} — ${genre}: ${body.description}`.slice(0, 2000), "book");
+    });
 
     // Step 0 (religious + refs): Extract core laws/framework from source texts
     let extractedFramework = "";
@@ -725,7 +734,7 @@ Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter tit
 
           const basePrompt = isCourse
             ? courseModulePromptFn(i, chTitle, outline, prevSummary) + biblePart
-            : buildChapterPrompt(i, chTitle, outline, prevSummary, biblePart, wordsPerChapter, lang, genre, bookContext, isRelig, isEdu, isMatureRomance, extractedFramework, body, citationInstructions, body.matureLevel, refContext);
+            : buildChapterPrompt(i, chTitle, outline, prevSummary, biblePart, wordsPerChapter, lang, genre, bookContext, isRelig, isEdu, isMatureRomance, extractedFramework, body, citationInstructions, body.matureLevel, refContext, styleReference);
 
           // Universal: enforce minimum length on every chapter type
           const activePrompt = basePrompt + '\n\nIMPORTANT: Write a full, complete chapter of at least 2,500 words. The target length is 2,500–3,500 words. Do not summarize or truncate. Write every section in full detail.\n\nWrite in a natural, engaging human voice. Vary sentence length. Use concrete examples and vivid language. Avoid AI-sounding phrases like "it\'s important to note", "in conclusion", "furthermore", "delve into", "in today\'s world", "tapestry", or "it is worth mentioning". Write as if you are a skilled human author, not an assistant.';

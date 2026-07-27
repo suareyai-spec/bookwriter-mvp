@@ -6,6 +6,7 @@ import { trackApiCost, getTokensFromResponse } from "@/lib/cost-tracker";
 import { releaseGenerationSlot } from "@/lib/rate-limit";
 import { sendGenerationCompleteEmail, sendGenerationFailedEmail } from "@/lib/email";
 import { refundCredits, CreditDeduction } from "@/lib/credits";
+import { getStyleExamples } from "@/lib/embeddings";
 
 // ──── Schema (mirrored from api/special/university-course/route.ts) ────────
 
@@ -148,6 +149,13 @@ export const generateUniversityCourse = inngest.createFunction(
     const gradingBreakdown = GRADING_BREAKDOWNS[body.gradingPreference];
     const CONTENT_SYSTEM_PROMPT = contentSystemPrompt(body);
 
+    // RAG style reference — fetched once and reused across every weekly
+    // lecture prompt, rather than per-week, to avoid redundant embedding
+    // calls. Empty string (no-op) if nothing relevant is found.
+    const styleReference = await step.run("fetch-style-reference", async () => {
+      return getStyleExamples(`${body.subject}: ${body.courseTitle}`, "course");
+    });
+
     try {
       // ──── STAGE 1: SYLLABUS ────────────────────────────────────────────
       const syllabus = await step.run("stage-1-syllabus", async () => {
@@ -271,7 +279,7 @@ ${context}
 Full weekly outline for the course:
 ${outline}
 ${prevSummary}
-
+${styleReference ? `\n${styleReference}\n` : ""}
 Write the complete content for WEEK ${i} of ${weeks}: "${weekTitle}". Use these exact section headings:
 
 ## Week ${i}: ${weekTitle}

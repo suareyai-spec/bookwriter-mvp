@@ -9,6 +9,7 @@ import { humanizeChapter } from "@/lib/humanizer";
 import { trackApiCost, getTokensFromResponse } from "@/lib/cost-tracker";
 import { sendGenerationCompleteEmail, sendGenerationFailedEmail } from "@/lib/email";
 import { getCreditCost, hasUnlimitedAccess, totalCredits, deductCredits, refundCredits, insufficientCreditsMessage, CreditDeduction } from "@/lib/credits";
+import { getStyleExamples } from "@/lib/embeddings";
 
 export const maxDuration = 120;
 export const dynamic = "force-dynamic";
@@ -144,6 +145,8 @@ export async function POST(req: Request) {
       ? `\n\nINCLUDE THESE SECTIONS:\n${body.sections.map(s => `- ${s}`).join("\n")}`
       : "";
 
+    const styleReference = await getStyleExamples(`${body.industry}: ${body.keyTopics}`, "newsletter");
+
     const prompt = `You are writing a newsletter email on behalf of ${body.companyName} to their subscriber list. The primary purpose is to give something of genuine value — not to sell, announce, or update. Value first, always.
 
 WRITE TO ONE PERSON: Picture one specific subscriber. This email is a letter from one person to one person who chose to hear from you. "You" should appear far more than "I."
@@ -169,7 +172,7 @@ CTA: ${body.callToAction || "Visit our website"}
 LANGUAGE: ${lang} — Write EVERYTHING in ${lang}.
 TARGET LENGTH: ~${wordTarget} words
 ${sectionsText}
-
+${styleReference ? `\n${styleReference}\n` : ""}
 CONTENT TO COVER:
 ${body.keyTopics}
 

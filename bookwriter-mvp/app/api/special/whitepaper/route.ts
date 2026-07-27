@@ -9,6 +9,7 @@ import { humanizeChapter } from "@/lib/humanizer";
 import { trackApiCost, getTokensFromResponse } from "@/lib/cost-tracker";
 import { sendGenerationCompleteEmail, sendGenerationFailedEmail } from "@/lib/email";
 import { getCreditCost, hasUnlimitedAccess, totalCredits, deductCredits, refundCredits, insufficientCreditsMessage, CreditDeduction } from "@/lib/credits";
+import { getStyleExamples } from "@/lib/embeddings";
 
 export const maxDuration = 900;
 export const dynamic = "force-dynamic";
@@ -96,7 +97,7 @@ function parseSupportingPoints(raw: string | undefined): string[] {
     .filter(Boolean);
 }
 
-function getWhitepaperPrompt(body: z.infer<typeof Body>, refContext: string): { outline: string; section: (idx: number, total: number, outline: string, prev: string[]) => string; sectionCount: number } {
+function getWhitepaperPrompt(body: z.infer<typeof Body>, refContext: string, styleReference: string): { outline: string; section: (idx: number, total: number, outline: string, prev: string[]) => string; sectionCount: number } {
   const lengthConfig = LENGTH_CONFIG[body.length];
   const citation = CITATION_LABELS[body.citationStyle];
   const points = parseSupportingPoints(body.supportingPoints);
@@ -166,7 +167,7 @@ ${body.citationStyle === "none"
   ? "List the sources referenced throughout the document by name in a simple reference list."
   : `Compile all sources cited across the document, formatted strictly according to ${citation}.`}
 ${body.citationStyle !== "none" ? "Mark any source you cannot verify as [PLACEHOLDER — verify source] rather than fabricating a citation." : ""}
-
+${styleReference ? `\n${styleReference}\n` : ""}
 Write this closing section now:`;
       }
 
@@ -181,7 +182,7 @@ ${prevSummary}
 STAGE 2 — BODY CONTENT, SECTION ${idx} OF ${bodySectionCount}
 
 Write body section ${idx} of ${bodySectionCount} in full, at approximately ${lengthConfig.wordsPerSection} words. Open with an informative header stating the key finding or argument (not a decorative label), then lead with that finding before any supporting context. Use specific data, named examples, and concrete figures wherever the topic allows.
-
+${styleReference ? `\n${styleReference}\n` : ""}
 Write the complete section now:`;
     },
   };
@@ -269,7 +270,12 @@ export async function POST(req: Request) {
     const refContext = body.references?.length ? buildReferenceContext(body.references) : "";
     const langNote = body.language && body.language !== "English" ? `\n\nIMPORTANT: Write ALL content in ${body.language}. Every word of the output must be in ${body.language}.` : "";
 
-    const promptConfig = getWhitepaperPrompt(body, refContext);
+    // No dedicated whitepaper corpus has been ingested yet — fall back to
+    // 'book' voice examples until one is.
+    const ragTopic = `${body.title} ${body.topic} ${body.centralThesis}`.trim().slice(0, 500);
+    const styleReference = (await getStyleExamples(ragTopic, "whitepaper")) || (await getStyleExamples(ragTopic, "book"));
+
+    const promptConfig = getWhitepaperPrompt(body, refContext, styleReference);
     if (langNote) {
       const origOutline = promptConfig.outline;
       promptConfig.outline = origOutline + langNote;
