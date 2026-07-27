@@ -37,6 +37,10 @@ model User {
   creditsRollover      Int       @default(0)
   hasSeenOnboarding    Boolean   @default(false)
   referredBy           String?
+  resetToken           String?   @unique
+  resetTokenExpiry     DateTime?
+  emailVerified        Boolean   @default(false)
+  verifyToken          String?   @unique
   affiliateAccount     Affiliate?
   teamMembers TeamMember[] @relation("TeamMembers")
   ownedTeam   TeamMember[] @relation("TeamOwner")

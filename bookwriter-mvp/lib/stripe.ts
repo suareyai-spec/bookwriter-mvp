@@ -2,9 +2,15 @@ import Stripe from "stripe";
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-// Plan configuration. "creator" and "author-pro" were the old plan names/prices
-// before the Starter/Author/Studio credit-based repricing — removed since no
-// checkout path can select them anymore (app/pricing/page.tsx only ever sends
+// Single source of truth for pricing — do not hardcode prices elsewhere.
+// Every checkout route, account/pricing page, and email template should read
+// plan names/prices from PLANS (subscriptions) or PREMIUM_PACKAGES/CREDIT_PACKS
+// (lib/config.ts / lib/credits.ts, one-time purchases) rather than inlining
+// dollar amounts or plan names as literals.
+//
+// "creator" and "author-pro" were the old plan names/prices before the
+// Starter/Author/Studio credit-based repricing — removed since no checkout
+// path can select them anymore (app/pricing/page.tsx only ever sends
 // starter/author/studio) and PLAN_MONTHLY_CREDITS/PLAN_ROLLOVER_CAP in
 // lib/credits.ts already keep 'creator'/'author-pro' as numeric aliases for
 // starter/author in case any legacy subscriptionPlan value is still on a

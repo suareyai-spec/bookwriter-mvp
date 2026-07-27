@@ -12,7 +12,7 @@ export default function Footer() {
                 className="text-xl font-bold tracking-wide text-white"
                 style={{ fontFamily: "var(--font-playfair), Georgia, serif", letterSpacing: "0.08em" }}
               >
-                Plot Ghost
+                PlotGhost
               </span>
             </Link>
             <p className="mt-3 text-sm text-gray-500 leading-relaxed">
@@ -50,7 +50,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/[0.06] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-600">
-          <span>&copy; {new Date().getFullYear()} Plot Ghost. All rights reserved.</span>
+          <span>&copy; {new Date().getFullYear()} PlotGhost. All rights reserved.</span>
           <span>Powered by AI — Your content stays private</span>
         </div>
       </div>

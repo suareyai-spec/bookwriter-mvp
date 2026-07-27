@@ -42,7 +42,7 @@ export default function LoginPage() {
       <div className="relative z-10 w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-block">
-            <img src="/logo.svg" alt="Plot Ghost" className="h-10 mx-auto mb-3" />
+            <img src="/logo.svg" alt="PlotGhost" className="h-10 mx-auto mb-3" />
           </Link>
           <p className="mt-2 text-gray-400">Welcome back</p>
         </div>
@@ -68,7 +68,12 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Password</label>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-sm font-medium text-gray-300">Password</label>
+                <Link href="/auth/forgot-password" className="text-xs text-blue-400 hover:text-blue-300 transition-colors">
+                  Forgot password?
+                </Link>
+              </div>
               <input
                 type="password"
                 required

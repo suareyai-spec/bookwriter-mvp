@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { PLANS, getBookSize, PlanKey } from "@/lib/stripe";
-import { getCreditCost, getContentSizeFromLength, isUnlimitedPlan, hasUnlimitedAccess, totalCredits, deductCredits, insufficientCreditsMessage, CreditDeduction } from "@/lib/credits";
+import { getCreditCost, getContentSizeFromLength, hasUnlimitedAccess, totalCredits, deductCredits, insufficientCreditsMessage, CreditDeduction } from "@/lib/credits";
 import { isAdmin } from "@/lib/config";
 import { acquireGenerationSlot, releaseGenerationSlot } from "@/lib/rate-limit";
 import { inngest } from "@/lib/inngest";
@@ -96,10 +96,9 @@ export async function POST(req: Request) {
         return new Response(JSON.stringify({ error: "Free accounts can only generate short books (10,000 words). Subscribe to unlock all sizes.", needsSubscription: true }), { status: 403, headers: { "Content-Type": "application/json" } });
       }
       await prisma.user.update({ where: { id: userId }, data: { freeBookUsed: true } });
-    } else if (isUnlimitedPlan(userPlan)) {
-      // Studio — no credit check
     } else {
-      // Credit-based check for starter/author/creator/author-pro
+      // Credit-based check for starter/author/studio (studio's high monthly
+      // allotment is enforced through this same path — see lib/credits.ts)
       const isCourseFormat = body.format === "course";
       const contentSizeKey = isCourseFormat ? "course" : getContentSizeFromLength(body.bookLength || "10,000 words");
       const creditCost = getCreditCost(contentSizeKey);

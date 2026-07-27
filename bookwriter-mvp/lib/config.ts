@@ -1,12 +1,33 @@
-export const ADMIN_EMAILS = ["suarey@gmail.com", "suareyai@gmail.com", "drjdsuarez@gmail.com", "support@iamdivid.com", "dsuarey@gmail.com"];
+export const ADMIN_EMAILS = ["suarey@gmail.com", "suareyai@gmail.com", "drjdsuarez@gmail.com", "support@plotghost.ai", "dsuarey@gmail.com"];
 
 export function isAdmin(email: string): boolean {
   return ADMIN_EMAILS.includes(email.toLowerCase());
 }
 
+// Canonical site URL — all internal links, canonical tags, emails, and API
+// callbacks should build off this instead of hardcoding the domain.
+export const SITE_URL = "https://www.plotghost.ai";
+
+// Plan display names — must stay in sync with PLANS in lib/stripe.ts (which
+// holds prices too, but can't be imported into client components since it
+// instantiates the server-only Stripe SDK). Use this anywhere a plan key needs
+// to become a human-readable label so a plan never falls back to a stale name
+// (e.g. the old "Pro Author" tier) in the UI.
+const PLAN_DISPLAY_NAMES: Record<string, string> = {
+  free: "Free Starter",
+  starter: "Starter",
+  author: "Author",
+  studio: "Studio",
+};
+
+export function getPlanDisplayName(plan: string | null | undefined): string {
+  return (plan && PLAN_DISPLAY_NAMES[plan]) || "Free Starter";
+}
+
+// Doctoral-Level Thesis ($499 one-time package) was removed — the thesis/academic
+// generator is positioned as a research assistant, not a submit-ready-thesis product.
 export const PREMIUM_PACKAGES = {
-  'doctoral-thesis': { name: 'Doctoral-Level Thesis', price: 499 },
-  'premium-playwright': { name: 'Premium Playwright', price: 399 },
+  'premium-playwright': { name: 'Premium Play', price: 399 },
   'premium-comic': { name: 'Premium Comic Book Script', price: 399 },
   'course-builder-pro': { name: 'Full Course Builder Pro', price: 399 },
   'multi-language-bundle': { name: 'Multi-Language Expansion', price: 249 },

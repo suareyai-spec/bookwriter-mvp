@@ -4,6 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Terms of Service | PlotGhost",
   description: "PlotGhost's Terms of Service — content ownership, acceptable use, and the rules governing your use of our AI book generation platform.",
+  alternates: { canonical: "/terms" },
 };
 
 export default function TermsPage() {
@@ -25,7 +26,7 @@ export default function TermsPage() {
         <div className="prose prose-invert max-w-none space-y-8 text-gray-300 leading-relaxed">
           <section>
             <h2 className="text-xl font-bold text-white mb-3" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>1. Service Description</h2>
-            <p>Plot Ghost is an AI-powered book generation service. Users provide a title, description, and preferences, and the service generates full-length book content using artificial intelligence. Users can store, manage, and export their generated books.</p>
+            <p>PlotGhost is an AI-powered book generation service. Users provide a title, description, and preferences, and the service generates full-length book content using artificial intelligence. Users can store, manage, and export their generated books.</p>
           </section>
 
           <section>
@@ -68,7 +69,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-xl font-bold text-white mb-3" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>9. Contact</h2>
-            <p>For questions about these terms, contact us at support@iamdivid.com.</p>
+            <p>For questions about these terms, contact us at support@plotghost.ai.</p>
           </section>
         </div>
       </div>

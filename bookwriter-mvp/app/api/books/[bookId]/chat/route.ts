@@ -99,7 +99,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ bookId:
     targetLabel = chapters[selectedChapter].title;
   }
 
-  const systemPrompt = `You are an AI writing editor for Plot Ghost. You are helping the user edit their book titled "${book.title}".
+  const systemPrompt = `You are an AI writing editor for PlotGhost. You are helping the user edit their book titled "${book.title}".
 
 CURRENT CONTENT (${targetLabel}):
 ${targetContent}

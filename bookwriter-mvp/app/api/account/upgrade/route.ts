@@ -40,7 +40,7 @@ export async function POST(req: Request) {
         unit_amount: planConfig.price,
         recurring: { interval: "month" },
         product_data: {
-          name: `Plot Ghost ${planConfig.name} Plan`,
+          name: `PlotGhost ${planConfig.name} Plan`,
         },
       });
 
@@ -92,7 +92,7 @@ export async function POST(req: Request) {
         price_data: {
           currency: "usd",
           product_data: {
-            name: `Plot Ghost ${planConfig.name} Plan`,
+            name: `PlotGhost ${planConfig.name} Plan`,
             description: `Monthly subscription — ${planConfig.name}`,
           },
           unit_amount: planConfig.price,

@@ -6,6 +6,7 @@ import { BLOG_POSTS } from "@/lib/blog";
 export const metadata: Metadata = {
   title: "Blog | PlotGhost",
   description: "Guides and comparisons on AI book writing, self-publishing, and getting the most out of AI-generated content.",
+  alternates: { canonical: "/blog" },
 };
 
 export default function BlogIndexPage() {

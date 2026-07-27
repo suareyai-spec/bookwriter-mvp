@@ -1,7 +1,8 @@
 import { Resend } from "resend";
+import { SITE_URL } from "@/lib/config";
 
 const FROM_ADDRESS = "PlotGhost <noreply@plotghost.ai>";
-const APP_URL = process.env.NEXTAUTH_URL || "https://plotghost.ai";
+const APP_URL = SITE_URL;
 
 let resendClient: Resend | null = null;
 function getResend(): Resend | null {
@@ -71,6 +72,35 @@ export async function sendGenerationFailedEmail(params: {
     <p style="font-size: 13px; line-height: 1.6; color: #666;">Reason: ${escapeHtml(reason)}</p>
     <p style="margin: 24px 0;">
       <a href="${libraryUrl}" style="background: #111; color: #fff; padding: 12px 20px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 600;">Go to your library</a>
+    </p>
+  `);
+  await send(to, subject, html);
+}
+
+export async function sendPasswordResetEmail(params: { to: string; token: string }): Promise<void> {
+  const { to, token } = params;
+  const resetUrl = `${APP_URL}/auth/reset-password?token=${token}`;
+  const subject = "Reset your PlotGhost password";
+  const html = wrapperHtml(`
+    <h1 style="font-size: 20px; margin-bottom: 16px;">Reset your password</h1>
+    <p style="font-size: 15px; line-height: 1.6;">We received a request to reset the password for your PlotGhost account. This link expires in 1 hour.</p>
+    <p style="margin: 24px 0;">
+      <a href="${resetUrl}" style="background: #111; color: #fff; padding: 12px 20px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 600;">Reset password</a>
+    </p>
+    <p style="font-size: 13px; line-height: 1.6; color: #666;">If you didn't request this, you can safely ignore this email — your password won't be changed.</p>
+  `);
+  await send(to, subject, html);
+}
+
+export async function sendVerificationEmail(params: { to: string; token: string }): Promise<void> {
+  const { to, token } = params;
+  const verifyUrl = `${APP_URL}/api/auth/verify-email?token=${token}`;
+  const subject = "Verify your email for PlotGhost";
+  const html = wrapperHtml(`
+    <h1 style="font-size: 20px; margin-bottom: 16px;">Verify your email</h1>
+    <p style="font-size: 15px; line-height: 1.6;">Welcome to PlotGhost! Please confirm this is your email address to finish setting up your account.</p>
+    <p style="margin: 24px 0;">
+      <a href="${verifyUrl}" style="background: #111; color: #fff; padding: 12px 20px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 600;">Verify email</a>
     </p>
   `);
   await send(to, subject, html);

@@ -5,31 +5,36 @@ import SessionProvider from "@/components/SessionProvider";
 import Footer from "@/components/Footer";
 import { Suspense } from "react";
 import { AffiliateTracker } from "@/app/_components/AffiliateTracker";
+import { SITE_URL } from "@/lib/config";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 const playfair = Playfair_Display({ variable: "--font-playfair", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Plot Ghost — AI Book Generator",
+  metadataBase: new URL(SITE_URL),
+  title: "PlotGhost — AI Book Generator",
   description: "Create full-length books, scripts, theses, and courses with AI. Professional quality, export-ready formatting. From idea to finished work in minutes.",
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: "/favicon.svg",
     apple: "/og-image.png",
   },
   openGraph: {
-    title: "Plot Ghost — AI Book Generator",
+    title: "PlotGhost — AI Book Generator",
     description: "Create full-length books, scripts, theses, and courses with AI. Professional quality, export-ready formatting.",
-    url: "https://plotghost.ai",
-    siteName: "Plot Ghost",
-    images: [{ url: "https://plotghost.ai/og-image.png", width: 1200, height: 630, alt: "Plot Ghost" }],
+    url: SITE_URL,
+    siteName: "PlotGhost",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "PlotGhost" }],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Plot Ghost — AI Book Generator",
+    title: "PlotGhost — AI Book Generator",
     description: "Create full-length books, scripts, theses, and courses with AI.",
-    images: ["https://plotghost.ai/og-image.png"],
+    images: ["/og-image.png"],
   },
 };
 

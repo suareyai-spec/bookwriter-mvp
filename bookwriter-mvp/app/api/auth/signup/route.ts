@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import { prisma } from "@/lib/prisma";
+import { sendVerificationEmail } from "@/lib/email";
 
 const SignupSchema = z.object({
   name: z.string().min(1, "Name is required").max(100),
@@ -24,6 +26,7 @@ export async function POST(req: Request) {
     const passwordHash = await bcrypt.hash(body.password, 12);
 
     const ref = req.headers.get("cookie")?.match(/(?:^|;\s*)plotghost_ref=([^;]+)/)?.[1];
+    const verifyToken = crypto.randomBytes(32).toString("hex");
 
     const user = await prisma.user.create({
       data: {
@@ -31,8 +34,11 @@ export async function POST(req: Request) {
         email: body.email.toLowerCase().trim(),
         passwordHash,
         referredBy: ref ? decodeURIComponent(ref) : undefined,
+        verifyToken,
       },
     });
+
+    await sendVerificationEmail({ to: user.email, token: verifyToken });
 
     return NextResponse.json({ success: true, userId: user.id });
   } catch (error) {

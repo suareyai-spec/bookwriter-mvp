@@ -28,7 +28,7 @@ export async function POST(req: Request) {
         const plan = session.metadata?.plan;
         const subscriptionId = session.subscription as string;
         const planAllowance = PLAN_MONTHLY_CREDITS[plan || ''];
-        const initialCredits = planAllowance === null ? 999 : (planAllowance ?? 0);
+        const initialCredits = planAllowance ?? 0;
 
         await prisma.user.update({
           where: { id: userId },
@@ -144,12 +144,12 @@ export async function POST(req: Request) {
       if (invoice.billing_reason === "subscription_cycle") {
         const plan = user.subscriptionPlan || 'free';
         const planAllowance = PLAN_MONTHLY_CREDITS[plan];
-        // Unused monthly credits carry over into creditsRollover, capped at the plan's rollover cap
-        // (2x monthly allowance: 50 for Starter, 100 for Author). Studio has no cap since it's unlimited.
+        // Unused monthly credits carry over into creditsRollover, capped at the plan's
+        // rollover cap (50 for Starter, 100 for Author, 500 for Studio).
         const rolloverCap = PLAN_ROLLOVER_CAP[plan] ?? 0;
         const unusedMonthly = (user as any).monthlyCredits ?? 0;
         const newRollover = Math.min(unusedMonthly + ((user as any).creditsRollover ?? 0), rolloverCap);
-        const freshCredits = planAllowance === null ? 999 : (planAllowance ?? 0);
+        const freshCredits = planAllowance ?? 0;
 
         await prisma.user.update({
           where: { id: userId },

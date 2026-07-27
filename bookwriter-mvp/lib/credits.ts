@@ -12,13 +12,17 @@ export const CREDIT_COST: Record<string, number> = {
   university_course: 45,
 };
 
+// Studio is deliberately NOT unlimited — 999 credits/month is a high but
+// specific "generous fair-use" allotment, enforced through the exact same
+// getCreditCost()/deductCredits() path used by every other plan (no more
+// special-cased bypass branch in the generation routes).
 export const PLAN_MONTHLY_CREDITS: Record<string, number | null> = {
-  starter: 25, author: 50, studio: null,
+  starter: 25, author: 50, studio: 999,
   creator: 25, 'author-pro': 50, free: 0,
 };
 
 export const PLAN_ROLLOVER_CAP: Record<string, number> = {
-  starter: 50, author: 100, studio: 0, creator: 50, 'author-pro': 100, free: 0,
+  starter: 50, author: 100, studio: 500, creator: 50, 'author-pro': 100, free: 0,
 };
 
 export const CREDIT_PACKS = [
@@ -42,12 +46,11 @@ export function getContentSizeFromLength(bookLength: string): string {
   return 'short';
 }
 
-export function isUnlimitedPlan(plan: string | null | undefined): boolean {
-  return plan === 'studio';
-}
-
-// Emails that get unlimited generation access (same as Studio — no credit checks,
-// no subscription required) without being granted admin panel access.
+// Emails that get unlimited generation access (whitelisted comped accounts —
+// no credit checks, no subscription required) without being granted admin
+// panel access. This is a small, hand-picked whitelist, NOT how the Studio
+// plan works: Studio is a paid, credit-metered tier (see PLAN_MONTHLY_CREDITS
+// above) with a generous fair-use limit, enforced the same as every other plan.
 export const UNLIMITED_ACCESS_EMAILS = [
   "mariajoseruzaragon@gmail.com",
   "drjdsuarez@gmail.com",

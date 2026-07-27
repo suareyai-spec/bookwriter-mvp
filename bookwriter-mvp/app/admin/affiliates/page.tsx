@@ -76,7 +76,7 @@ export default function AffiliatesPage() {
   };
 
   const copyLink = (code: string) => {
-    navigator.clipboard.writeText(`https://plotghost.ai?ref=${code}`);
+    navigator.clipboard.writeText(`https://www.plotghost.ai?ref=${code}`);
     setCopied(code);
     setTimeout(() => setCopied(null), 2000);
   };
@@ -255,7 +255,7 @@ export default function AffiliatesPage() {
                   <div className="flex items-center gap-4 mb-3">
                     <p className="text-xs text-gray-400">
                       Affiliate link:{' '}
-                      <span className="text-blue-400 font-mono">https://plotghost.ai?ref={aff.code}</span>
+                      <span className="text-blue-400 font-mono">https://www.plotghost.ai?ref={aff.code}</span>
                     </p>
                     <div className="flex items-center gap-2 ml-auto">
                       <label className="text-xs text-gray-400">Commission %</label>

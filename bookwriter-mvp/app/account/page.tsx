@@ -7,12 +7,14 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import { Suspense } from "react";
 import { CREDIT_PACKS } from "@/lib/credits";
+import { getPlanDisplayName } from "@/lib/config";
 
 interface AccountData {
   email: string;
   name: string | null;
   createdAt: string;
   isAdmin: boolean;
+  emailVerified: boolean;
   subscriptionPlan: string | null;
   subscriptionStatus: string | null;
   subscriptionId: string | null;
@@ -32,13 +34,6 @@ interface AccountData {
   monthlyNewsletterLimit: number;
 }
 
-const PLAN_LABELS: Record<string, string> = {
-  free: "Free Starter",
-  starter: "Starter",
-  author: "Author",
-  studio: "Studio",
-};
-
 const PLAN_BADGE_STYLES: Record<string, string> = {
   free: "bg-gray-500/20 text-gray-400 border-gray-500/30",
   starter: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
@@ -46,6 +41,9 @@ const PLAN_BADGE_STYLES: Record<string, string> = {
   studio: "bg-purple-500/20 text-purple-400 border-purple-500/30",
 };
 
+// Must stay in sync with PLANS in lib/stripe.ts (the single source of truth for
+// pricing) — duplicated here only because this is a client component and
+// lib/stripe.ts instantiates the server-only Stripe SDK at module scope.
 const PLAN_PRICES: Record<string, number> = {
   starter: 19,
   author: 49,
@@ -86,6 +84,18 @@ function AccountContent() {
   const [teamEmail, setTeamEmail] = useState("");
   const [teamLoading, setTeamLoading] = useState(false);
   const [teamError, setTeamError] = useState<string | null>(null);
+
+  // Change password
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [passwordSaving, setPasswordSaving] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordSuccess, setPasswordSuccess] = useState(false);
+
+  // Email verification
+  const [resendingVerification, setResendingVerification] = useState(false);
+  const [verificationResent, setVerificationResent] = useState(false);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -242,6 +252,55 @@ function AccountContent() {
     setDeleting(false);
   }
 
+  async function handleChangePassword(e: React.FormEvent) {
+    e.preventDefault();
+    setPasswordError("");
+    setPasswordSuccess(false);
+
+    if (newPassword !== confirmNewPassword) {
+      setPasswordError("New passwords don't match");
+      return;
+    }
+    if (newPassword.length < 8) {
+      setPasswordError("New password must be at least 8 characters");
+      return;
+    }
+
+    setPasswordSaving(true);
+    try {
+      const res = await fetch("/api/account/password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setPasswordSuccess(true);
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmNewPassword("");
+      } else {
+        setPasswordError(data.error || "Something went wrong");
+      }
+    } catch {
+      setPasswordError("Connection error. Please try again.");
+    }
+    setPasswordSaving(false);
+  }
+
+  async function handleResendVerification() {
+    setResendingVerification(true);
+    try {
+      const res = await fetch("/api/account/resend-verification", { method: "POST" });
+      if (res.ok) setVerificationResent(true);
+    } catch {}
+    setResendingVerification(false);
+  }
+
+  function handleDownloadData() {
+    window.location.href = "/api/account/export";
+  }
+
   async function billingSubscribe(plan: string) {
     setBillingLoading(plan);
     try {
@@ -372,7 +431,7 @@ function AccountContent() {
                 ) : hasSubscription ? (
                   <div className="flex items-center gap-3">
                     <span className={`text-sm font-semibold border rounded-full px-3 py-1 ${PLAN_BADGE_STYLES[account.subscriptionPlan!] || "bg-white/10 text-white border-white/20"}`}>
-                      {PLAN_LABELS[account.subscriptionPlan!] || account.subscriptionPlan}
+                      {getPlanDisplayName(account.subscriptionPlan)}
                     </span>
                     <span className="text-2xl font-bold">${PLAN_PRICES[account.subscriptionPlan!]}<span className="text-sm text-gray-500 font-normal">/mo</span></span>
                     {isCanceling && (
@@ -411,7 +470,7 @@ function AccountContent() {
                     },
                     {
                       key: "studio", name: "Studio", price: 99, color: "purple",
-                      features: ["Unlimited generation — no credit limits", "All book sizes & special formats", "Unlimited newsletters & revisions", "Highest priority queue", "All export formats", "2 concurrent generations"],
+                      features: ["999 credits/month — generous fair-use limits", "All book sizes & special formats", "Unlimited newsletters & revisions", "Highest priority queue", "All export formats", "2 concurrent generations", "Fair use policy applies"],
                     },
                   ].map((plan) => {
                     const isCurrent = account.subscriptionPlan === plan.key && hasSubscription;
@@ -489,8 +548,7 @@ function AccountContent() {
                 <p className="text-sm text-gray-400 mb-4">One-time purchases for specialized, high-quality content.</p>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {[
-                    { key: "doctoral-thesis", emoji: "🎓", title: "Doctoral-Level Thesis", price: 499, features: ["Comprehensive academic thesis draft", "Abstract, lit review, methodology", "Citation formatting (APA/MLA/Chicago)", "Advanced argument flow"], color: "from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500" },
-                    { key: "premium-playwright", emoji: "🎭", title: "Premium Playwright", price: 399, features: ["Complete theatrical script", "Acts and scenes structure", "Character-driven dialogue", "Stage direction and pacing"], color: "from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500" },
+                    { key: "premium-playwright", emoji: "🎭", title: "Premium Play", price: 399, features: ["Complete theatrical script", "Acts and scenes structure", "Character-driven dialogue", "Stage direction and pacing"], color: "from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500" },
                     { key: "premium-comic", emoji: "💥", title: "Premium Comic Script", price: 399, features: ["Full comic issue or arc", "Panel-by-panel breakdown", "Character voice consistency", "Built for illustrators"], color: "from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500" },
                     { key: "course-builder-pro", emoji: "📚", title: "Course Builder Pro", price: 399, features: ["10–20 structured lessons", "Lesson scripts & engagement hooks", "CTA framework & module sequencing", "For creators, coaches, educators"], color: "from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500" },
                     { key: "multi-language-bundle", emoji: "🌍", title: "Multi-Language Expansion", price: 249, features: ["Translate one completed project", "Up to 3 additional languages", "Full literary preservation", "Maintains tone & style"], color: "from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500" },
@@ -629,7 +687,7 @@ function AccountContent() {
                       PLAN_BADGE_STYLES[account.subscriptionPlan!] || "bg-white/10 text-white border-white/20"
                     }`}
                   >
-                    {PLAN_LABELS[account.subscriptionPlan!] || account.subscriptionPlan}
+                    {getPlanDisplayName(account.subscriptionPlan)}
                   </span>
                   {isCanceling && (
                     <span className="text-xs text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-full px-2 py-0.5">
@@ -667,7 +725,7 @@ function AccountContent() {
                               : "bg-white/[0.04] border-white/[0.08] text-gray-300 hover:bg-white/[0.08]"
                           }`}
                         >
-                          {actionLoading === p ? "..." : `${isHigher ? "Upgrade to" : "Downgrade to"} ${PLAN_LABELS[p]} ($${PLAN_PRICES[p]}/mo)`}
+                          {actionLoading === p ? "..." : `${isHigher ? "Upgrade to" : "Downgrade to"} ${getPlanDisplayName(p)} ($${PLAN_PRICES[p]}/mo)`}
                         </button>
                       );
                     })}
@@ -709,7 +767,7 @@ function AccountContent() {
                       disabled={actionLoading !== null}
                       className="text-sm font-medium bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl px-4 py-2 transition-all disabled:opacity-50"
                     >
-                      {actionLoading === p ? "..." : `${PLAN_LABELS[p]} — $${PLAN_PRICES[p]}/mo`}
+                      {actionLoading === p ? "..." : `${getPlanDisplayName(p)} — $${PLAN_PRICES[p]}/mo`}
                     </button>
                   ))}
                 </div>
@@ -957,12 +1015,86 @@ function AccountContent() {
             </section>
           )}
 
+          {/* 6.5 Security */}
+          <section className="glass-card rounded-2xl p-6">
+            <h2 className="text-lg font-semibold text-white/90 mb-4">Security</h2>
+
+            {!account.emailVerified && (
+              <div className="mb-5 bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 flex items-center justify-between flex-wrap gap-3">
+                <div className="text-sm text-amber-400">
+                  {verificationResent ? "Verification email sent — check your inbox." : "Your email address hasn't been verified yet."}
+                </div>
+                {!verificationResent && (
+                  <button
+                    onClick={handleResendVerification}
+                    disabled={resendingVerification}
+                    className="text-xs font-medium text-amber-400 hover:text-amber-300 bg-amber-500/10 border border-amber-500/20 rounded-lg px-3 py-1.5 transition-all disabled:opacity-50"
+                  >
+                    {resendingVerification ? "Sending..." : "Resend verification email"}
+                  </button>
+                )}
+              </div>
+            )}
+
+            <form onSubmit={handleChangePassword} className="space-y-3 max-w-sm mb-6">
+              <h3 className="text-sm font-medium text-gray-300">Change password</h3>
+              {passwordError && (
+                <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-red-400 text-sm">{passwordError}</div>
+              )}
+              {passwordSuccess && (
+                <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3 text-emerald-400 text-sm">Password updated.</div>
+              )}
+              <input
+                type="password"
+                required
+                placeholder="Current password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl p-3 text-white text-sm placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+              />
+              <input
+                type="password"
+                required
+                placeholder="New password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl p-3 text-white text-sm placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+              />
+              <input
+                type="password"
+                required
+                placeholder="Confirm new password"
+                value={confirmNewPassword}
+                onChange={(e) => setConfirmNewPassword(e.target.value)}
+                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl p-3 text-white text-sm placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+              />
+              <button
+                type="submit"
+                disabled={passwordSaving}
+                className="text-sm font-medium bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] text-white rounded-xl px-4 py-2.5 transition-all disabled:opacity-50"
+              >
+                {passwordSaving ? "Updating..." : "Update password"}
+              </button>
+            </form>
+
+            <div>
+              <h3 className="text-sm font-medium text-gray-300 mb-2">Your data</h3>
+              <p className="text-sm text-gray-400 mb-3">Download a copy of your account info and everything you&apos;ve generated.</p>
+              <button
+                onClick={handleDownloadData}
+                className="text-sm font-medium text-gray-300 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] rounded-xl px-4 py-2.5 transition-all"
+              >
+                Download my data
+              </button>
+            </div>
+          </section>
+
           {/* 7. Support */}
           <section className="glass-card rounded-2xl p-6">
             <h2 className="text-lg font-semibold text-white/90 mb-4">Support</h2>
             <p className="text-sm text-white/50 mb-3">Need help? Have questions about your account, billing, or features?</p>
-            <a href="mailto:support@iamdivid.com" className="text-sm text-blue-400 hover:text-blue-300 transition-colors">
-              support@iamdivid.com
+            <a href="mailto:support@plotghost.ai" className="text-sm text-blue-400 hover:text-blue-300 transition-colors">
+              support@plotghost.ai
             </a>
           </section>
 

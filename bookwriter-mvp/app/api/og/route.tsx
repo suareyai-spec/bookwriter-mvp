@@ -28,7 +28,7 @@ export async function GET() {
           Books · Scripts · Theses · Courses · Comics
         </div>
         <div style={{ width: 200, height: 2, backgroundColor: "#6366f1", opacity: 0.5, borderRadius: 1, marginBottom: 40 }} />
-        <div style={{ fontSize: 20, color: "#4b5563" }}>plotghost.ai</div>
+        <div style={{ fontSize: 20, color: "#4b5563" }}>www.plotghost.ai</div>
       </div>
     ),
     { width: 1200, height: 630 }

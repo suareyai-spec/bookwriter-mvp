@@ -131,14 +131,15 @@ function PricingContent() {
       key: "studio",
       name: "Studio",
       price: 99,
-      credits: null,
+      credits: 999,
       color: "purple",
       features: [
-        "Unlimited generation — no credit limits",
+        "999 credits/month — generous fair-use limits",
         "All book sizes & special formats",
         "Highest priority queue",
         "2 concurrent generations",
         "All export formats",
+        "Fair use policy applies",
       ],
     },
   ];
@@ -266,7 +267,7 @@ function PricingContent() {
                       <span className="text-gray-500">/month</span>
                     </div>
                     <div className={`text-sm mt-1 ${colors.text}`}>
-                      {plan.credits !== null ? `${plan.credits} credits/month` : "Unlimited generation"}
+                      {plan.credits} credits/month
                     </div>
                   </div>
 
@@ -387,24 +388,9 @@ function PricingContent() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
                 {
-                  key: "doctoral-thesis",
-                  emoji: "🎓",
-                  title: "Doctoral-Level Thesis",
-                  price: 499,
-                  features: [
-                    "Comprehensive academic thesis draft",
-                    "Abstract, lit review, methodology, analysis, conclusion",
-                    "Formal academic tone",
-                    "Citation formatting (APA / MLA / Chicago)",
-                    "Advanced argument flow",
-                    "User responsible for final verification",
-                  ],
-                  color: "from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 shadow-cyan-500/20",
-                },
-                {
                   key: "premium-playwright",
                   emoji: "🎭",
-                  title: "Premium Playwright",
+                  title: "Premium Play",
                   price: 399,
                   features: [
                     "Complete theatrical script",
@@ -561,7 +547,7 @@ function PricingContent() {
               </div>
               <div className="flex items-start gap-3">
                 <span className="text-blue-400 mt-0.5">♾️</span>
-                <span>Studio plan skips credits entirely — unlimited generation</span>
+                <span>Studio plan includes 999 credits/month — generous fair-use limits</span>
               </div>
               <div className="flex items-start gap-3">
                 <span className="text-blue-400 mt-0.5">⚡</span>

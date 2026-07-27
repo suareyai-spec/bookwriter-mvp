@@ -123,7 +123,7 @@ export default function Navbar() {
     <nav className="relative px-4 sm:px-6 py-4 sm:py-5 max-w-5xl mx-auto">
       <div className="flex items-center justify-between">
         <Link href="/" className="flex items-center">
-          <img src="/logo.svg" alt="Plot Ghost" className="h-8 w-auto" />
+          <img src="/logo.svg" alt="PlotGhost" className="h-8 w-auto" />
         </Link>
 
         {/* Desktop nav */}

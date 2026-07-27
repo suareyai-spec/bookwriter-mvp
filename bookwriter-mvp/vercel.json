@@ -1,3 +1,11 @@
 {
-  "buildCommand": "prisma generate && prisma migrate deploy && next build"
+  "buildCommand": "prisma generate && prisma migrate deploy && next build",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "plotghost.ai" }],
+      "destination": "https://www.plotghost.ai/:path*",
+      "statusCode": 301
+    }
+  ]
 }

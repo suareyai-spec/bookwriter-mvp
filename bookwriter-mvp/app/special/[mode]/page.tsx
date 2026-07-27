@@ -25,7 +25,7 @@ const MODE_CONFIG: Record<string, {
     premiumPackage: "premium-comic",
   },
   playwright: {
-    title: "Playwright",
+    title: "Play",
     contentType: "play",
     tiers: [
       { key: "play_standard", label: "Standard Play", price: 149 },
@@ -36,15 +36,13 @@ const MODE_CONFIG: Record<string, {
     premiumPackage: "premium-playwright",
   },
   thesis: {
-    title: "Educational / Thesis",
+    title: "Research & Thesis Assistant",
     contentType: "thesis",
     tiers: [
       { key: "thesis_standard", label: "Standard", price: 199 },
-      { key: "thesis_doctoral", label: "Doctoral-Level", price: 299 },
-      { key: "doctoral-thesis", label: "⭐ Premium Doctoral", price: 499, premium: true },
+      { key: "thesis_doctoral", label: "Advanced Research Project", price: 299 },
     ],
     color: "cyan",
-    premiumPackage: "doctoral-thesis",
   },
   course: {
     title: "Influencer Course Builder",

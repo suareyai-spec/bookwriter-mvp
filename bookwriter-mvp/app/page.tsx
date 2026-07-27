@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import { SITE_URL } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "PlotGhost — AI Book Generator | Write a Full Book in Minutes",
   description: "Generate full-length books, scripts, theses, and courses with AI. Professional quality, export-ready PDF and Word formats. From idea to finished book in minutes.",
+  alternates: {
+    canonical: "/",
+  },
 };
 
 const JSON_LD = {
@@ -14,7 +18,7 @@ const JSON_LD = {
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
   description: "AI-powered book generator that creates full-length books, scripts, theses, and courses. Export-ready PDF and Word formats.",
-  url: "https://plotghost.ai",
+  url: SITE_URL,
   offers: {
     "@type": "Offer",
     price: "19",
@@ -146,7 +150,7 @@ const STATS = [
   { value: "10+", label: "Languages Supported" },
   { value: "5", label: "Content Modes" },
   { value: "Live", label: "Chapter-by-Chapter Streaming" },
-  { value: "Auto", label: "Professional Citations" },
+  { value: "Auto", label: "Citation Formatting Assistance" },
 ];
 
 const CITATION_STYLES = ["AMA", "APA", "Bluebook", "IEEE", "Chicago", "Harvard"];
@@ -154,7 +158,7 @@ const CITATION_STYLES = ["AMA", "APA", "Bluebook", "IEEE", "Chicago", "Harvard"]
 const PLANS_PREVIEW = [
   { name: "Starter", price: "$19", feature: "25 credits/month, rolls over", color: "emerald" },
   { name: "Author", price: "$49", feature: "50 credits/month, rolls over", color: "blue", popular: true },
-  { name: "Studio", price: "$99", feature: "Unlimited generation, no credit limits", color: "purple" },
+  { name: "Studio", price: "$99", feature: "999 credits/month — generous fair-use limits", color: "purple" },
 ];
 
 export default function HomePage() {
@@ -208,7 +212,7 @@ export default function HomePage() {
           <div className="text-center mb-16">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-purple-400/70 mb-4">Creation Modes</p>
             <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">
-              Whatever you write, Plot Ghost helps
+              Whatever you write, PlotGhost helps
               <br className="hidden sm:block" />
               you finish it faster.
             </h2>
@@ -275,10 +279,13 @@ export default function HomePage() {
           <div className="text-center mb-12">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-purple-400/70 mb-4">Academic Excellence</p>
             <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
-              Auto-detected citation styles for every field
+              Citation formatting assistance for every field
             </h2>
             <p className="text-gray-400 max-w-xl mx-auto">
-              Professional citations generated automatically in the format your discipline requires.
+              Auto-detected citation styles help format references in the convention your discipline expects.
+            </p>
+            <p className="text-gray-500 text-sm max-w-xl mx-auto mt-3">
+              AI-generated citations should always be verified against original sources before use in academic or professional work.
             </p>
           </div>
           <div className="flex flex-wrap justify-center gap-3">

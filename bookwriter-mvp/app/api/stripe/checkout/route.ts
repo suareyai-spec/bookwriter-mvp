@@ -61,7 +61,7 @@ export async function POST(req: Request) {
           price_data: {
             currency: "usd",
             product_data: {
-              name: `Plot Ghost ${planConfig.name} Plan`,
+              name: `PlotGhost ${planConfig.name} Plan`,
               description: `Monthly subscription — ${planConfig.name}`,
             },
             unit_amount: planConfig.price,
@@ -99,7 +99,7 @@ export async function POST(req: Request) {
           price_data: {
             currency: "usd",
             product_data: {
-              name: `Plot Ghost ${sizeLabels[creditSize] || creditSize} Credit`,
+              name: `PlotGhost ${sizeLabels[creditSize] || creditSize} Credit`,
             },
             unit_amount: amount,
           },
@@ -124,7 +124,7 @@ export async function POST(req: Request) {
       line_items: [{
         price_data: {
           currency: "usd",
-          product_data: { name: `Plot Ghost ${pack.label}` },
+          product_data: { name: `PlotGhost ${pack.label}` },
           unit_amount: pack.price,
         },
         quantity: 1,
@@ -175,7 +175,7 @@ export async function POST(req: Request) {
           price_data: {
             currency: "usd",
             product_data: {
-              name: `Plot Ghost ${productName}`,
+              name: `PlotGhost ${productName}`,
             },
             unit_amount: amount,
           },

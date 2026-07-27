@@ -8,7 +8,7 @@ import { acquireGenerationSlot, releaseGenerationSlot } from "@/lib/rate-limit";
 import { humanizeChapter } from "@/lib/humanizer";
 import { trackApiCost, getTokensFromResponse } from "@/lib/cost-tracker";
 import { sendGenerationCompleteEmail, sendGenerationFailedEmail } from "@/lib/email";
-import { getCreditCost, isUnlimitedPlan, hasUnlimitedAccess, totalCredits, deductCredits, refundCredits, insufficientCreditsMessage, CreditDeduction } from "@/lib/credits";
+import { getCreditCost, hasUnlimitedAccess, totalCredits, deductCredits, refundCredits, insufficientCreditsMessage, CreditDeduction } from "@/lib/credits";
 
 export const maxDuration = 180;
 export const dynamic = "force-dynamic";
@@ -174,10 +174,9 @@ export async function POST(req: Request) {
           }), { status: 403, headers: { "Content-Type": "application/json" } });
         }
         await prisma.user.update({ where: { id: userId }, data: { monthlyArticlesUsed: { increment: 1 } } });
-      } else if (isUnlimitedPlan(user.subscriptionPlan)) {
-        // Studio — no credit check
       } else {
-        // Credit-based check for starter/author/creator/author-pro
+        // Credit-based check for starter/author/studio (studio's high monthly
+        // allotment is enforced through this same path — see lib/credits.ts)
         const creditCost = getCreditCost("article");
         const balance = {
           purchasedCredits: (user as any).purchasedCredits ?? 0,

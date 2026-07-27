@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import UpsellModal from "@/components/UpsellModal";
 import Link from "next/link";
 import { generateBookPremise } from "@/lib/auto-generate";
+import { getPlanDisplayName } from "@/lib/config";
 
 interface ReferenceItem {
   type: "pdf" | "gdoc" | "text";
@@ -878,7 +879,7 @@ function HomeContent() {
               {usage && !usage.isAdmin && usage.subscriptionPlan && usage.subscriptionStatus === "active" && (
                 <div className="text-sm text-gray-400 bg-white/[0.03] border border-white/[0.06] rounded-xl p-3 flex items-center justify-between">
                   <span>
-                    {usage.subscriptionPlan === "starter" ? "Starter" : usage.subscriptionPlan === "author" ? "Author" : "Pro Author"} Plan — {usage.monthlyCreditsRemaining} monthly credits remaining
+                    {getPlanDisplayName(usage.subscriptionPlan)} Plan — {usage.monthlyCreditsRemaining} monthly credits remaining
                   </span>
                   <Link href="/pricing" className="text-blue-400 hover:text-blue-300 text-xs">Manage</Link>
                 </div>

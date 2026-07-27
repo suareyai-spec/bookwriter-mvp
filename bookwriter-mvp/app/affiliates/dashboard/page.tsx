@@ -38,7 +38,7 @@ export default function AffiliateDashboardPage() {
 
   const copyLink = () => {
     if (!affiliate) return;
-    navigator.clipboard.writeText(`https://plotghost.ai/?ref=${affiliate.code}`);
+    navigator.clipboard.writeText(`https://www.plotghost.ai/?ref=${affiliate.code}`);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -88,7 +88,7 @@ export default function AffiliateDashboardPage() {
         <div className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-5 mb-8 flex flex-col sm:flex-row sm:items-center gap-3">
           <div className="flex-1 min-w-0">
             <p className="text-xs text-gray-400 mb-1">Your referral link</p>
-            <p className="font-mono text-blue-400 text-sm break-all">https://plotghost.ai/?ref={affiliate.code}</p>
+            <p className="font-mono text-blue-400 text-sm break-all">https://www.plotghost.ai/?ref={affiliate.code}</p>
           </div>
           <button
             onClick={copyLink}

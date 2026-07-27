@@ -87,7 +87,7 @@ export default function AffiliatesLandingPage() {
             </p>
             <div className="bg-white/[0.06] border border-white/[0.1] rounded-xl p-4 mb-2">
               <p className="text-xs text-gray-400 mb-1">Your referral link</p>
-              <p className="font-mono text-blue-400 text-sm break-all">https://plotghost.ai/?ref={code}</p>
+              <p className="font-mono text-blue-400 text-sm break-all">https://www.plotghost.ai/?ref={code}</p>
             </div>
             <Link href="/affiliates/dashboard" className="text-sm text-blue-400 hover:text-blue-300">
               Go to your affiliate dashboard →

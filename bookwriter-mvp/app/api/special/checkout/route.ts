@@ -5,13 +5,8 @@ import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
 import { isAdmin, PREMIUM_PACKAGES } from "@/lib/config";
 
-const PREMIUM_TIER_PRICES: Record<string, { amount: number; label: string }> = {
-  'doctoral-thesis': { amount: 49900, label: "Premium Doctoral-Level Thesis Package" },
-  'premium-playwright': { amount: 39900, label: "Premium Playwright Package" },
-  'premium-comic': { amount: 39900, label: "Premium Comic Book Script Package" },
-  'course-builder-pro': { amount: 39900, label: "Full Course Builder Pro Package" },
-  'multi-language-bundle': { amount: 24900, label: "Multi-Language Expansion Bundle" },
-};
+// Premium package prices/labels come from PREMIUM_PACKAGES (lib/config.ts) — the
+// single source of truth — so this route no longer keeps a second, parallel copy.
 
 const TIER_PRICES: Record<string, { amount: number; label: string }> = {
   comic_single: { amount: 9900, label: "Comic Book — Single Issue" },
@@ -45,8 +40,9 @@ export async function POST(req: Request) {
 
   // Handle premium package purchase
   if (packageType) {
-    const premiumConfig = PREMIUM_TIER_PRICES[packageType];
-    if (!premiumConfig) return NextResponse.json({ error: "Invalid package" }, { status: 400 });
+    const pkg = PREMIUM_PACKAGES[packageType as keyof typeof PREMIUM_PACKAGES];
+    if (!pkg) return NextResponse.json({ error: "Invalid package" }, { status: 400 });
+    const premiumConfig = { amount: pkg.price * 100, label: pkg.name };
 
     if (isAdmin(user.email)) {
       return NextResponse.json({ skipPayment: true });
@@ -74,7 +70,7 @@ export async function POST(req: Request) {
         price_data: {
           currency: "usd",
           product_data: {
-            name: `Plot Ghost ${premiumConfig.label}`,
+            name: `PlotGhost ${premiumConfig.label}`,
             description: packageType === 'multi-language-bundle'
               ? `Translate project into ${targetLanguages?.join(', ') || '3 languages'}`
               : "Premium one-time package",
@@ -126,7 +122,7 @@ export async function POST(req: Request) {
         price_data: {
           currency: "usd",
           product_data: {
-            name: `Plot Ghost ${tierConfig.label}`,
+            name: `PlotGhost ${tierConfig.label}`,
             description: "One-time special content generation",
           },
           unit_amount: tierConfig.amount,

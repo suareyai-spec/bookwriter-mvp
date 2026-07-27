@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback, useRef } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import { getPlanDisplayName } from "@/lib/config";
 
 interface UsageData {
   isAdmin?: boolean;
@@ -166,7 +167,7 @@ export default function LibraryPage() {
                   ) : usage.subscriptionPlan && usage.subscriptionStatus === "active" ? (
                     <>
                       <div className="text-sm font-medium text-gray-300">
-                        {usage.subscriptionPlan === "starter" ? "Starter" : usage.subscriptionPlan === "author" ? "Author" : "Pro Author"} Plan
+                        {getPlanDisplayName(usage.subscriptionPlan)} Plan
                         <span className="text-gray-500 ml-2">
                           {usage.monthlyBooksUsed} of {usage.monthlyCreditsTotal} monthly credits used
                         </span>

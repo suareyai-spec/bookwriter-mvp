@@ -41,7 +41,7 @@ export default function AffiliatePage() {
           </p>
           <div className="bg-white/[0.06] border border-white/[0.1] rounded-xl p-4 mb-4">
             <p className="text-xs text-gray-400 mb-1">Your future affiliate link</p>
-            <p className="font-mono text-blue-400 text-sm break-all">https://plotghost.ai?ref={assignedCode}</p>
+            <p className="font-mono text-blue-400 text-sm break-all">https://www.plotghost.ai?ref={assignedCode}</p>
           </div>
           <p className="text-xs text-gray-600">Save this link — it&apos;ll be active once approved.</p>
         </div>

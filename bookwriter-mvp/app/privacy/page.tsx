@@ -4,6 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Privacy Policy | PlotGhost",
   description: "How PlotGhost collects, uses, and protects your data when you generate books, scripts, theses, and courses with our AI platform.",
+  alternates: { canonical: "/privacy" },
 };
 
 export default function PrivacyPage() {
@@ -30,7 +31,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-xl font-bold text-white mb-3" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>2. How We Use Your Information</h2>
-            <p>We use your information solely to provide and improve the Plot Ghost service. This includes authenticating your account, storing and displaying your generated books, and enabling export functionality. We do not use your data for advertising or marketing purposes.</p>
+            <p>We use your information solely to provide and improve the PlotGhost service. This includes authenticating your account, storing and displaying your generated books, and enabling export functionality. We do not use your data for advertising or marketing purposes.</p>
           </section>
 
           <section>
@@ -50,7 +51,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-xl font-bold text-white mb-3" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>6. Data Retention and Deletion</h2>
-            <p>Your data is retained for as long as you maintain an active account. You may delete individual books at any time from your library. To delete your entire account and all associated data, please contact us at support@iamdivid.com.</p>
+            <p>Your data is retained for as long as you maintain an active account. You may delete individual books at any time from your library. To delete your entire account and all associated data, please contact us at support@plotghost.ai.</p>
           </section>
 
           <section>
@@ -65,7 +66,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-xl font-bold text-white mb-3" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>9. Contact</h2>
-            <p>For questions or concerns about this privacy policy or your data, contact us at support@iamdivid.com.</p>
+            <p>For questions or concerns about this privacy policy or your data, contact us at support@plotghost.ai.</p>
           </section>
         </div>
       </div>

@@ -2,7 +2,7 @@ import { z } from "zod";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { getCreditCost, isUnlimitedPlan, hasUnlimitedAccess, totalCredits, deductCredits, insufficientCreditsMessage, CreditDeduction } from "@/lib/credits";
+import { getCreditCost, hasUnlimitedAccess, totalCredits, deductCredits, insufficientCreditsMessage, CreditDeduction } from "@/lib/credits";
 import { isAdmin } from "@/lib/config";
 import { acquireGenerationSlot, releaseGenerationSlot } from "@/lib/rate-limit";
 import { inngest } from "@/lib/inngest";
@@ -51,7 +51,6 @@ export async function POST(req: Request) {
     if (isAdmin(user.email) || hasUnlimitedAccess(user.email)) {
       await prisma.user.update({ where: { id: userId }, data: { isGenerating: true, generationStartedAt: new Date() } });
     } else {
-      const userPlan = user.subscriptionPlan as string | null;
       const isActive = user.subscriptionStatus === "active";
 
       // Concurrent generation limit — auto-reset if stuck > 30 minutes
@@ -73,9 +72,9 @@ export async function POST(req: Request) {
           error: "A University Course requires an active subscription. Visit the pricing page to get started.",
           needsSubscription: true,
         }, { status: 403 });
-      } else if (isUnlimitedPlan(userPlan)) {
-        // Studio — no credit check
       } else {
+        // Credit-based check for starter/author/studio (studio's high monthly
+        // allotment is enforced through this same path — see lib/credits.ts)
         const creditCost = getCreditCost("university_course");
         const balance = {
           purchasedCredits: (user as any).purchasedCredits ?? 0,

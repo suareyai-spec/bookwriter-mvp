@@ -39,7 +39,7 @@ const MODES: Mode[] = [
   },
   {
     key: "playwright",
-    title: "Playwright",
+    title: "Play",
     description:
       "Full theatrical play with acts, scenes, character dialogue, and stage directions. Natural, lifelike conversational writing designed for the stage.",
     includes: [
@@ -57,19 +57,19 @@ const MODES: Mode[] = [
   },
   {
     key: "thesis",
-    title: "Educational / Thesis",
+    title: "Research & Thesis Assistant",
     description:
-      "Full academic thesis draft with proper structure, formal university-level tone, logical argumentation, and correct citation formatting. Positioned as drafting assistance — not final submission.",
+      "Organize research, develop outlines, and get citation formatting assistance for academic work — proper structure, formal university-level tone, and logical argumentation. Drafting assistance, not a submit-ready thesis.",
     includes: [
       "Abstract, introduction, literature review",
       "Methodology, discussion, conclusion",
-      "Citation formatting (APA / MLA / Chicago)",
+      "Citation formatting assistance (APA / MLA / Chicago)",
       "Reference list with sources",
       "Formal academic tone throughout",
     ],
     tiers: [
       { label: "Standard", price: 199 },
-      { label: "Doctoral-Level", price: 299 },
+      { label: "Advanced Research Project", price: 299 },
     ],
     color: "cyan",
   },

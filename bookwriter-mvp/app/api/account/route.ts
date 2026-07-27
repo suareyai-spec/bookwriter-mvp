@@ -29,6 +29,7 @@ export async function GET() {
     name: user.name,
     createdAt: user.createdAt,
     isAdmin: isAdmin(user.email),
+    emailVerified: user.emailVerified,
     subscriptionPlan: user.subscriptionPlan,
     subscriptionStatus: user.subscriptionStatus,
     subscriptionId: user.subscriptionId,

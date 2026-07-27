@@ -62,7 +62,7 @@ export default function SignupPage() {
       <div className="relative z-10 w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-block">
-            <img src="/logo.svg" alt="Plot Ghost" className="h-10 mx-auto mb-3" />
+            <img src="/logo.svg" alt="PlotGhost" className="h-10 mx-auto mb-3" />
           </Link>
           <p className="mt-2 text-gray-400">Create your account</p>
         </div>
