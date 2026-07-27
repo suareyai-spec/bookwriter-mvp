@@ -28,6 +28,7 @@ export default function Footer() {
               <li><Link href="/special/university-course" className="text-gray-500 hover:text-white transition-colors">University Courses</Link></li>
               <li><Link href="/translate" className="text-gray-500 hover:text-white transition-colors">Translation</Link></li>
               <li><Link href="/special/thesis" className="text-gray-500 hover:text-white transition-colors">Research Assistant</Link></li>
+              <li><Link href="/special/whitepaper" className="text-gray-500 hover:text-white transition-colors">White Papers & Reports</Link></li>
               <li><Link href="/library" className="text-gray-500 hover:text-white transition-colors">Library</Link></li>
               <li><Link href="/pricing" className="text-gray-500 hover:text-white transition-colors">Pricing</Link></li>
             </ul>

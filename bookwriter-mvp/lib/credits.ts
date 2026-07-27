@@ -10,6 +10,11 @@ export const CREDIT_COST: Record<string, number> = {
   // plus structurally distinct content (quizzes with answer keys, rubrics,
   // midterm/final) an Epic book doesn't have — priced above Epic to reflect that.
   university_course: 45,
+  // A white paper/report is a 3-stage generation (exec summary + outline,
+  // body sections, conclusion/recommendations/references) — more calls than
+  // a 2-credit article but well short of a full book, so it's priced
+  // between the two as specified.
+  whitepaper: 8,
 };
 
 // Studio is deliberately NOT unlimited — 999 credits/month is a high but

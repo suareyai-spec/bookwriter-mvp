@@ -20,42 +20,6 @@ interface Mode {
 
 const MODES: Mode[] = [
   {
-    key: "comic",
-    title: "Comic Book",
-    description:
-      "Full comic script with panel-by-panel structure, dialogue, scene and character descriptions, and consistent character voice. Written for illustrators — writing only, no illustrations.",
-    includes: [
-      "Panel-by-panel script structure",
-      "Dialogue per panel in speech bubble format",
-      "Scene and character descriptions",
-      "Consistent character voice throughout",
-      "Written for illustrator handoff",
-    ],
-    tiers: [
-      { label: "Single Issue", price: 99 },
-      { label: "Full Story Arc", price: 249 },
-    ],
-    color: "rose",
-  },
-  {
-    key: "playwright",
-    title: "Play",
-    description:
-      "Full theatrical play with acts, scenes, character dialogue, and stage directions. Natural, lifelike conversational writing designed for the stage.",
-    includes: [
-      "Acts and scenes structure",
-      "Character dialogue with natural flow",
-      "Stage directions and blocking notes",
-      "Lifelike conversational writing",
-      "Theater-ready formatting",
-    ],
-    tiers: [
-      { label: "Standard Play", price: 149 },
-      { label: "Long Multi-Act Play", price: 249 },
-    ],
-    color: "amber",
-  },
-  {
     key: "thesis",
     title: "Research & Thesis Assistant",
     description:
@@ -109,6 +73,23 @@ const MODES: Mode[] = [
     ],
     color: "indigo",
   },
+  {
+    key: "whitepaper",
+    title: "White Papers & Reports",
+    description:
+      "Publish-ready white papers, industry reports, and executive briefs that establish your authority — structured, evidence-based, and written for decision-makers.",
+    includes: [
+      "Executive summary + structured outline",
+      "Section-by-section body content",
+      "Conclusion, recommendations & references",
+      "Citation formatting assistance (APA / Chicago)",
+      "PDF & Word export",
+    ],
+    tiers: [
+      { label: "White paper / report", credits: 8 },
+    ],
+    color: "slate",
+  },
 ];
 
 const colorMap: Record<string, { border: string; bg: string; text: string; badge: string; button: string }> = {
@@ -147,6 +128,13 @@ const colorMap: Record<string, { border: string; bg: string; text: string; badge
     badge: "bg-indigo-500/20 text-indigo-400 border-indigo-500/30",
     button: "from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 shadow-indigo-500/20",
   },
+  slate: {
+    border: "border-slate-400/30",
+    bg: "bg-slate-400/5",
+    text: "text-slate-300",
+    badge: "bg-slate-400/20 text-slate-300 border-slate-400/30",
+    button: "from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 shadow-slate-500/20",
+  },
 };
 
 export default function SpecialPage() {
@@ -170,7 +158,7 @@ export default function SpecialPage() {
               Special Content Modes
             </h1>
             <p className="mt-4 text-lg text-gray-400 max-w-2xl mx-auto">
-              Go beyond books. Generate comic scripts, theatrical plays, academic theses, and online courses — all powered by AI.
+              Go beyond books. Generate research assistance, online courses, university courses, and professional white papers — all powered by AI.
             </p>
           </div>
 

@@ -288,6 +288,7 @@ export default function LibraryPage() {
                         thesis: { label: "Thesis", color: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30" },
                         course: { label: "Course", color: "bg-violet-500/20 text-violet-400 border-violet-500/30" },
                         university_course: { label: "University Course", color: "bg-indigo-500/20 text-indigo-400 border-indigo-500/30" },
+                        whitepaper: { label: "White Paper", color: "bg-slate-500/20 text-slate-300 border-slate-500/30" },
                       };
                       const b = badges[book.contentType];
                       return b ? (

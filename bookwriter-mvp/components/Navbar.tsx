@@ -17,7 +17,7 @@ const CREATE_ITEMS = [
   { label: "Newsletters & Articles", href: "/newsletter" },
   { label: "Translation", href: "/translate" },
   { label: "Research Assistant", href: "/special/thesis" },
-  { label: "Comic & Theater", href: "/special" },
+  { label: "White Papers & Reports", href: "/special/whitepaper" },
 ];
 
 export default function Navbar() {
