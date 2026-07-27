@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { ADMIN_EMAILS } from "@/lib/config";
+import { useCredits } from "@/lib/useCredits";
+import LowCreditBanner from "@/components/LowCreditBanner";
 
 const PLAN_BADGES: Record<string, { label: string; color: string }> = {
   starter: { label: "Starter", color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" },
@@ -22,29 +24,12 @@ const CREATE_ITEMS = [
 
 export default function Navbar() {
   const { data: session } = useSession();
-  const [plan, setPlan] = useState<string | null>(null);
-  const [credits, setCredits] = useState<number | null>(null);
+  const { totalCredits, isAdmin: isUnlimitedAdmin, subscriptionPlan, subscriptionStatus } = useCredits();
   const [menuOpen, setMenuOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
   const createRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (session?.user) {
-      fetch("/api/user/usage")
-        .then((r) => r.json())
-        .then((d) => {
-          if (d.subscriptionPlan && d.subscriptionStatus === "active") {
-            setPlan(d.subscriptionPlan);
-          }
-          if (typeof d.totalCredits === 'number' && d.totalCredits < 9999) {
-            setCredits(d.totalCredits);
-          } else if (d.isAdmin || d.subscriptionPlan === 'studio') {
-            setCredits(null); // unlimited
-          }
-        })
-        .catch(() => {});
-    }
-  }, [session]);
+  const plan = isUnlimitedAdmin ? "admin" : (subscriptionPlan && subscriptionStatus === "active" ? subscriptionPlan : null);
 
   // Close the Create dropdown on outside click
   useEffect(() => {
@@ -86,16 +71,18 @@ export default function Navbar() {
                 {badge.label}
               </span>
             )}
-            {credits !== null && (
-              <Link href="/pricing" className="text-xs bg-white/[0.05] border border-white/[0.08] text-gray-400 rounded-full px-3 py-1 hover:text-white transition-colors">
-                {credits} credits
-              </Link>
-            )}
-            {credits === null && plan && (
+            {isUnlimitedAdmin ? (
               <span className="text-xs bg-purple-500/10 border border-purple-500/20 text-purple-400 rounded-full px-2.5 py-1">
                 &#8734;
               </span>
+            ) : totalCredits !== null && (
+              <Link href="/credits" className="text-xs bg-white/[0.05] border border-white/[0.08] text-gray-300 rounded-full px-3 py-1 hover:text-white hover:border-white/[0.15] transition-colors font-medium">
+                {totalCredits} credits
+              </Link>
             )}
+            <Link href="/credits" className="text-xs text-gray-500 hover:text-blue-400 transition-colors">
+              Buy Credits
+            </Link>
           </div>
           <button
             onClick={() => { closeMenu(); signOut({ callbackUrl: "/" }); }}
@@ -122,7 +109,9 @@ export default function Navbar() {
   );
 
   return (
-    <nav className="relative px-4 sm:px-6 py-4 sm:py-5 max-w-5xl mx-auto">
+    <>
+      {session && !isUnlimitedAdmin && <LowCreditBanner totalCredits={totalCredits} />}
+      <nav className="relative px-4 sm:px-6 py-4 sm:py-5 max-w-5xl mx-auto">
       <div className="flex items-center justify-between">
         <Link href="/" className="flex items-center">
           <img src="/logo.svg" alt="PlotGhost" className="h-8 w-auto" />
@@ -205,6 +194,7 @@ export default function Navbar() {
           </div>
         </div>
       )}
-    </nav>
+      </nav>
+    </>
   );
 }

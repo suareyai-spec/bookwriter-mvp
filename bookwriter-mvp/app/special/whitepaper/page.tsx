@@ -4,8 +4,8 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import Navbar from "@/components/Navbar";
-
-const CREDIT_COST = 8;
+import GenerateButton from "@/components/GenerateButton";
+import { getCreditCost } from "@/lib/credits";
 
 const DOCUMENT_TYPES = ["White Paper", "Industry Report", "Research Report", "Annual Report", "Case Study Report", "Executive Brief"] as const;
 const TONES = ["Authoritative", "Academic", "Consultative", "Data-driven"] as const;
@@ -251,7 +251,7 @@ export default function WhitepaperPage() {
             Create a White Paper or Report
           </h1>
           <p className="text-gray-400 mb-8">
-            A publish-ready white paper, industry report, or executive brief — structured, evidence-based, and written for decision-makers. Costs <strong className="text-white">{CREDIT_COST} credits</strong>.
+            A publish-ready white paper, industry report, or executive brief — structured, evidence-based, and written for decision-makers. Costs <strong className="text-white">{getCreditCost(`whitepaper_${length}`)} credits</strong> for the selected length.
           </p>
 
           {error && (
@@ -373,13 +373,13 @@ export default function WhitepaperPage() {
               </select>
             </div>
 
-            <button
+            <GenerateButton
+              cost={getCreditCost(`whitepaper_${length}`)}
+              label="Generate Document"
               onClick={handleSubmit}
-              disabled={loading || !title.trim()}
-              className="w-full bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white font-semibold rounded-xl p-4 transition-all shadow-lg shadow-slate-500/20 disabled:opacity-50 text-lg"
-            >
-              {loading ? "Starting..." : `Generate Document — ${CREDIT_COST} credits`}
-            </button>
+              loading={loading}
+              disabled={!title.trim()}
+            />
           </div>
         </div>
       </div>

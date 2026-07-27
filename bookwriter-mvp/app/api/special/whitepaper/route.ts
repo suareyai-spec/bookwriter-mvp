@@ -245,7 +245,7 @@ export async function POST(req: Request) {
       } else {
         // Credit-based check for starter/author/studio (studio's high monthly
         // allotment is enforced through this same path — see lib/credits.ts)
-        const creditCost = getCreditCost("whitepaper");
+        const creditCost = getCreditCost(`whitepaper_${body.length}`);
         const balance = {
           purchasedCredits: (user as any).purchasedCredits ?? 0,
           monthlyCredits: (user as any).monthlyCredits ?? 0,

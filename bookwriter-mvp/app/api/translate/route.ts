@@ -8,7 +8,7 @@ import { acquireGenerationSlot, releaseGenerationSlot } from "@/lib/rate-limit";
 import { humanizeChapter } from "@/lib/humanizer";
 import { trackApiCost, getTokensFromResponse } from "@/lib/cost-tracker";
 import { sendGenerationCompleteEmail, sendGenerationFailedEmail } from "@/lib/email";
-import { getCreditCost, hasUnlimitedAccess, totalCredits, deductCredits, refundCredits, insufficientCreditsMessage, CreditDeduction } from "@/lib/credits";
+import { getTranslationCreditCost, hasUnlimitedAccess, totalCredits, deductCredits, refundCredits, insufficientCreditsMessage, CreditDeduction } from "@/lib/credits";
 import { getStyleExamples } from "@/lib/embeddings";
 
 export const maxDuration = 900;
@@ -212,9 +212,11 @@ export async function POST(req: Request) {
         }
         await prisma.user.update({ where: { id: userId }, data: { freeTranslationsUsed: { increment: 1 } } });
       } else {
-        // Credit-based check for starter/author/studio (flat rate per translation;
-        // studio's high monthly allotment is enforced through this same path)
-        const creditCost = getCreditCost("translation");
+        // Credit-based check for starter/author/studio (scales with the
+        // source word count — short/standard flat tiers, full-book
+        // translations scale proportionally; see getTranslationCreditCost().
+        // Studio's high monthly allotment is enforced through this same path)
+        const creditCost = getTranslationCreditCost(wordCount);
         const balance = {
           purchasedCredits: (user as any).purchasedCredits ?? 0,
           monthlyCredits: (user as any).monthlyCredits ?? 0,

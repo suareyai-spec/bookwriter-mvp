@@ -4,43 +4,39 @@ import { useSession } from "next-auth/react";
 import { useRouter, useParams } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import Navbar from "@/components/Navbar";
+import GenerateButton from "@/components/GenerateButton";
 import { generateSpecialPremise } from "@/lib/auto-generate";
 
 const MODE_CONFIG: Record<string, {
   title: string;
   contentType: string;
-  tiers: { key: string; label: string; price: number; premium?: boolean }[];
+  tiers: { key: string; label: string; credits: number }[];
   color: string;
-  premiumPackage?: string;
 }> = {
   comic: {
     title: "Comic Book",
     contentType: "comic",
     tiers: [
-      { key: "comic_single", label: "Single Issue", price: 99 },
-      { key: "comic_full", label: "Full Story Arc", price: 249 },
-      { key: "premium-comic", label: "⭐ Premium Package", price: 399, premium: true },
+      { key: "comic_single", label: "Single Issue", credits: 8 },
+      { key: "comic_full", label: "Full Story Arc (5 issues)", credits: 20 },
     ],
     color: "rose",
-    premiumPackage: "premium-comic",
   },
   playwright: {
     title: "Play",
     contentType: "play",
     tiers: [
-      { key: "play_standard", label: "Standard Play", price: 149 },
-      { key: "play_long", label: "Long Multi-Act Play", price: 249 },
-      { key: "premium-playwright", label: "⭐ Premium Package", price: 399, premium: true },
+      { key: "play_standard", label: "Standard Play (2 acts)", credits: 8 },
+      { key: "play_long", label: "Long Multi-Act Play (5 acts)", credits: 20 },
     ],
     color: "amber",
-    premiumPackage: "premium-playwright",
   },
   thesis: {
     title: "Research & Thesis Assistant",
     contentType: "thesis",
     tiers: [
-      { key: "thesis_standard", label: "Standard", price: 199 },
-      { key: "thesis_doctoral", label: "Advanced Research Project", price: 299 },
+      { key: "thesis_standard", label: "Standard", credits: 4 },
+      { key: "thesis_doctoral", label: "Advanced Research Project", credits: 4 },
     ],
     color: "cyan",
   },
@@ -48,13 +44,11 @@ const MODE_CONFIG: Record<string, {
     title: "Influencer Course Builder",
     contentType: "course",
     tiers: [
-      { key: "course_mini", label: "Mini (5-7 lessons)", price: 99 },
-      { key: "course_full", label: "Full (10-20 lessons)", price: 199 },
-      { key: "course_premium", label: "Premium + Workbook", price: 249 },
-      { key: "course-builder-pro", label: "⭐ Pro Package", price: 399, premium: true },
+      { key: "course_mini", label: "Mini (5-7 lessons)", credits: 8 },
+      { key: "course_full", label: "Full (10-20 lessons)", credits: 16 },
+      { key: "course_premium", label: "Full + Workbook", credits: 20 },
     ],
     color: "violet",
-    premiumPackage: "course-builder-pro",
   },
 };
 
@@ -65,7 +59,7 @@ interface Reference {
 }
 
 export default function SpecialModePage() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const params = useParams();
   const mode = params.mode as string;
@@ -106,26 +100,30 @@ export default function SpecialModePage() {
   const [totalSections, setTotalSections] = useState(0);
   const [genStartTime, setGenStartTime] = useState(0);
   const [streamContent, setStreamContent] = useState<string[]>([]);
-  const [bookId, setBookId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [remainingLabel, setRemainingLabel] = useState<string>("");
 
   useEffect(() => {
     if (status === "unauthenticated") router.push("/auth/login");
   }, [status, router]);
 
-  // Check for returning from Stripe checkout — must be before any early returns
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get("paid") === "true") {
-      const stored = sessionStorage.getItem("special_params");
-      if (stored) {
-        sessionStorage.removeItem("special_params");
-        const params = JSON.parse(stored);
-        startGeneration(params);
-      }
+    if (!(currentSection > 0 && genStartTime > 0)) {
+      setRemainingLabel("");
+      return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const tick = () => {
+      const elapsed = (Date.now() - genStartTime) / 1000;
+      const perSection = elapsed / currentSection;
+      const remaining = Math.round(perSection * (totalSections - currentSection));
+      setRemainingLabel(
+        remaining < 60 ? `~${remaining}s remaining` : `~${Math.round(remaining / 60)}m ${remaining % 60}s remaining`
+      );
+    };
+    tick();
+    const interval = setInterval(tick, 1000);
+    return () => clearInterval(interval);
+  }, [currentSection, totalSections, genStartTime]);
 
   if (!config) {
     return (
@@ -180,12 +178,20 @@ export default function SpecialModePage() {
     setReferences((prev) => prev.filter((_, i) => i !== idx));
   }
 
-  async function handleCheckoutAndGenerate() {
+  const selectedTierConfig = config.tiers.find((t) => t.key === selectedTier);
+  const cost = selectedTierConfig?.credits || 0;
+
+  async function handleGenerate() {
     if (!title.trim()) { setError("Title is required"); return; }
     setError(null);
     setLoading(true);
+    setGenerating(true);
+    setProgress("Starting generation...");
+    setCurrentSection(0);
+    setTotalSections(0);
+    setGenStartTime(Date.now());
+    setStreamContent([]);
 
-    // Build params
     const params: Record<string, unknown> = {
       mode,
       tier: selectedTier,
@@ -216,49 +222,6 @@ export default function SpecialModePage() {
     }
 
     try {
-      // Determine if this is a premium package purchase
-      const selectedTierConfig = config.tiers.find((t) => t.key === selectedTier);
-      const isPremium = selectedTierConfig?.premium;
-      const checkoutBody = isPremium
-        ? { packageType: selectedTier }
-        : { tier: selectedTier };
-
-      // First, checkout
-      const checkoutRes = await fetch("/api/special/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(checkoutBody),
-      });
-      const checkoutData = await checkoutRes.json();
-
-      if (checkoutData.url) {
-        // Store params in sessionStorage for after redirect
-        sessionStorage.setItem("special_params", JSON.stringify(params));
-        window.location.href = checkoutData.url;
-        return;
-      }
-
-      if (checkoutData.skipPayment) {
-        // Admin bypass — go straight to generation
-        await startGeneration(params);
-        return;
-      }
-
-      setError(checkoutData.error || "Checkout failed");
-    } catch {
-      setError("Connection error. Please try again.");
-    }
-    setLoading(false);
-  }
-
-  async function startGeneration(params: Record<string, unknown>) {
-    setGenerating(true);
-    setProgress("Starting generation...");
-    setCurrentSection(0);
-    setTotalSections(0);
-    setGenStartTime(Date.now());
-
-    try {
       const res = await fetch("/api/special/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -269,13 +232,14 @@ export default function SpecialModePage() {
         const data = await res.json();
         setError(data.error || "Generation failed");
         setGenerating(false);
+        setLoading(false);
         return;
       }
 
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
 
-      if (!reader) { setError("No stream"); setGenerating(false); return; }
+      if (!reader) { setError("No stream"); setGenerating(false); setLoading(false); return; }
 
       while (true) {
         const { done, value } = await reader.read();
@@ -287,7 +251,6 @@ export default function SpecialModePage() {
         for (const line of lines) {
           try {
             const data = JSON.parse(line.slice(6));
-            if (data.type === "bookId") setBookId(data.bookId);
             if (data.type === "outline" && data.totalSections) setTotalSections(data.totalSections);
             if (data.type === "progress") {
               setProgress(data.title || data.status || "Generating...");
@@ -300,11 +263,13 @@ export default function SpecialModePage() {
             }
             if (data.type === "complete") {
               setGenerating(false);
+              setLoading(false);
               if (data.bookId) router.push(`/library/${data.bookId}`);
             }
             if (data.type === "error") {
               setError(data.message);
               setGenerating(false);
+              setLoading(false);
             }
           } catch {}
         }
@@ -312,6 +277,7 @@ export default function SpecialModePage() {
     } catch {
       setError("Generation failed. Please try again.");
       setGenerating(false);
+      setLoading(false);
     }
   }
 
@@ -345,16 +311,8 @@ export default function SpecialModePage() {
                       style={{ width: `${Math.max(2, (currentSection / totalSections) * 100)}%` }}
                     />
                   </div>
-                  {currentSection > 0 && genStartTime > 0 && (
-                    <p className="text-xs text-gray-500">
-                      {(() => {
-                        const elapsed = (Date.now() - genStartTime) / 1000;
-                        const perSection = elapsed / currentSection;
-                        const remaining = Math.round(perSection * (totalSections - currentSection));
-                        if (remaining < 60) return `~${remaining}s remaining`;
-                        return `~${Math.round(remaining / 60)}m ${remaining % 60}s remaining`;
-                      })()}
-                    </p>
+                  {remainingLabel && (
+                    <p className="text-xs text-gray-500">{remainingLabel}</p>
                   )}
                 </div>
               )}
@@ -389,7 +347,7 @@ export default function SpecialModePage() {
           >
             Create {config.title}
           </h1>
-          <p className="text-gray-400 mb-8">Fill in the details below and choose your tier.</p>
+          <p className="text-gray-400 mb-8">Fill in the details below and choose your format.</p>
 
           {error && (
             <div className="mb-6 bg-red-500/10 border border-red-500/20 rounded-xl p-4 text-red-400 text-sm">
@@ -515,7 +473,7 @@ export default function SpecialModePage() {
 
             {/* Tier Selection */}
             <div>
-              <label className={labelClass}>Select Tier</label>
+              <label className={labelClass}>Select Format</label>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {config.tiers.map((tier) => (
                   <button
@@ -523,17 +481,12 @@ export default function SpecialModePage() {
                     onClick={() => setSelectedTier(tier.key)}
                     className={`p-4 rounded-xl border text-center transition-all ${
                       selectedTier === tier.key
-                        ? tier.premium
-                          ? "border-amber-500/40 bg-amber-500/10"
-                          : "border-white/30 bg-white/[0.08]"
-                        : tier.premium
-                          ? "border-amber-500/20 bg-amber-500/[0.03] hover:bg-amber-500/[0.06]"
-                          : "border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04]"
+                        ? "border-white/30 bg-white/[0.08]"
+                        : "border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04]"
                     }`}
                   >
-                    <div className={`text-lg font-bold ${tier.premium ? "text-amber-400" : ""}`}>${tier.price}</div>
-                    <div className={`text-xs mt-1 ${tier.premium ? "text-amber-400/70" : "text-gray-400"}`}>{tier.label}</div>
-                    {tier.premium && <div className="text-[10px] text-amber-500/60 mt-0.5">Enhanced features</div>}
+                    <div className="text-lg font-bold">{tier.credits} credits</div>
+                    <div className="text-xs mt-1 text-gray-400">{tier.label}</div>
                   </button>
                 ))}
               </div>
@@ -607,13 +560,13 @@ export default function SpecialModePage() {
             </div>
 
             {/* Submit */}
-            <button
-              onClick={handleCheckoutAndGenerate}
-              disabled={loading || !title.trim()}
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold rounded-xl p-4 transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50 text-lg"
-            >
-              {loading ? "Processing..." : `Purchase & Generate — $${config.tiers.find((t) => t.key === selectedTier)?.price || ""}`}
-            </button>
+            <GenerateButton
+              cost={cost}
+              label={`Generate ${config.title}`}
+              onClick={handleGenerate}
+              loading={loading}
+              disabled={!title.trim()}
+            />
           </div>
         </div>
       </div>

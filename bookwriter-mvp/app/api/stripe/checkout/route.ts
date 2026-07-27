@@ -2,11 +2,14 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { stripe, PLANS, CREDIT_PRICES, REVISION_PRICES, PlanKey } from "@/lib/stripe";
+import { stripe, PLANS, PlanKey } from "@/lib/stripe";
 import { getCreditPack } from "@/lib/credits";
 import { rateLimitByUser } from "@/lib/rate-limit";
 import { cookies } from "next/headers";
 
+// The only two Stripe products PlotGhost sells: monthly subscriptions and
+// one-time credit pack top-ups. There is no other paid path — every
+// generation action is credit-metered (see lib/credits.ts).
 export async function POST(req: Request) {
   // --- RATE LIMIT ---
   const rl = await rateLimitByUser("stripe-checkout", 10, 60 * 60 * 1000);
@@ -22,11 +25,9 @@ export async function POST(req: Request) {
   if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
 
   const body = await req.json();
-  const { type, plan, creditSize, revisionType } = body as {
-    type: "subscription" | "credit" | "revision" | "credit_pack";
+  const { type, plan } = body as {
+    type: "subscription" | "credit_pack";
     plan?: PlanKey;
-    creditSize?: string;
-    revisionType?: "single" | "pack" | "unlimited";
     packId?: string;
   };
 
@@ -78,42 +79,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ url: checkoutSession.url });
   }
 
-  if (type === "credit" && creditSize) {
-    const userPlan = (user.subscriptionPlan as string) || "none";
-    const prices = CREDIT_PRICES[userPlan] || CREDIT_PRICES.none;
-    const amount = prices[creditSize];
-    if (!amount) return NextResponse.json({ error: "Invalid credit size" }, { status: 400 });
-
-    const sizeLabels: Record<string, string> = {
-      short: "Short Book (~20k words)",
-      medium: "Medium Book (~40k words)",
-      standard: "Standard Book (~60k words)",
-      epic: "Epic Book (80k+ words)",
-    };
-
-    const checkoutSession = await stripe.checkout.sessions.create({
-      customer: customerId,
-      mode: "payment",
-      line_items: [
-        {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: `PlotGhost ${sizeLabels[creditSize] || creditSize} Credit`,
-            },
-            unit_amount: amount,
-          },
-          quantity: 1,
-        },
-      ],
-      metadata: { userId: user.id, creditSize, type: "credit", ...(affiliateCode ? { affiliateCode } : {}) },
-      success_url: `${origin}/library?credit_purchased=true`,
-      cancel_url: `${origin}/pricing?canceled=true`,
-    });
-
-    return NextResponse.json({ url: checkoutSession.url });
-  }
-
   if (type === "credit_pack") {
     const pack = getCreditPack((body as any).packId || "");
     if (!pack) return NextResponse.json({ error: "Invalid credit pack" }, { status: 400 });
@@ -130,61 +95,8 @@ export async function POST(req: Request) {
         quantity: 1,
       }],
       metadata: { userId: user.id, type: "credit_pack", packId: pack.id, ...(affiliateCode ? { affiliateCode } : {}) },
-      success_url: `${origin}/library?credits_purchased=true`,
-      cancel_url: `${origin}/pricing?canceled=true`,
-    });
-
-    return NextResponse.json({ url: checkoutSession.url });
-  }
-
-  if (type === "revision" && revisionType) {
-    const userPlan = (user.subscriptionPlan as string) || "none";
-    const prices = REVISION_PRICES[userPlan] || REVISION_PRICES.none;
-
-    let amount: number;
-    let productName: string;
-    let revisionCount: number;
-
-    switch (revisionType) {
-      case "single":
-        amount = prices.single;
-        productName = "Single Revision";
-        revisionCount = 1;
-        break;
-      case "pack":
-        amount = prices.pack.price;
-        productName = `${prices.pack.count}-Pack Revisions`;
-        revisionCount = prices.pack.count;
-        break;
-      case "unlimited":
-        amount = prices.unlimited;
-        productName = "Unlimited Revisions (per book)";
-        revisionCount = -1; // -1 means unlimited
-        break;
-      default:
-        return NextResponse.json({ error: "Invalid revision type" }, { status: 400 });
-    }
-
-    if (amount <= 0) return NextResponse.json({ error: "Invalid revision purchase" }, { status: 400 });
-
-    const checkoutSession = await stripe.checkout.sessions.create({
-      customer: customerId,
-      mode: "payment",
-      line_items: [
-        {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: `PlotGhost ${productName}`,
-            },
-            unit_amount: amount,
-          },
-          quantity: 1,
-        },
-      ],
-      metadata: { userId: user.id, type: "revision", revisionType, revisionCount: String(revisionCount), ...(affiliateCode ? { affiliateCode } : {}) },
-      success_url: `${origin}/library?revision_purchased=true`,
-      cancel_url: `${origin}/pricing?canceled=true`,
+      success_url: `${origin}/credits?purchased=true`,
+      cancel_url: `${origin}/credits?canceled=true`,
     });
 
     return NextResponse.json({ url: checkoutSession.url });

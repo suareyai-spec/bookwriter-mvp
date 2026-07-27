@@ -27,11 +27,18 @@ interface AccountData {
   monthlyRevisionLimit: number;
   revisionsRemaining: number;
   creditCounts: Record<string, number>;
-  totalCredits: number;
   monthlyArticlesUsed: number;
   monthlyArticleLimit: number;
   monthlyNewslettersUsed: number;
   monthlyNewsletterLimit: number;
+  monthlyCredits: number;
+  packCredits: number;
+  creditsRollover: number;
+  rolloverCap: number;
+  planMonthlyAllowance: number;
+  totalCredits: number;
+  creditsUsedThisMonth: number;
+  creditsUsedAllTime: number;
 }
 
 const PLAN_BADGE_STYLES: Record<string, string> = {
@@ -331,21 +338,6 @@ function AccountContent() {
     setBillingLoading(null);
   }
 
-  async function billingBuyPackage(packageType: string) {
-    setBillingLoading(packageType);
-    try {
-      const res = await fetch("/api/special/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ packageType }),
-      });
-      const data = await res.json();
-      if (data.url) { window.location.href = data.url; return; }
-      alert(data.error || "Something went wrong.");
-    } catch { alert("Connection error."); }
-    setBillingLoading(null);
-  }
-
   if (status === "loading" || loading) {
     return (
       <main className="min-h-screen bg-[#0a0a0f] text-white">
@@ -538,43 +530,6 @@ function AccountContent() {
                       <div className="text-xl font-bold mt-1">${(pack.price / 100).toFixed(0)}</div>
                       <div className="text-xs text-gray-500 mt-1">one-time</div>
                     </button>
-                  ))}
-                </div>
-              </section>
-
-              {/* Premium Packages */}
-              <section>
-                <h2 className="text-lg font-semibold mb-2">Premium Packages</h2>
-                <p className="text-sm text-gray-400 mb-4">One-time purchases for specialized, high-quality content.</p>
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {[
-                    { key: "premium-playwright", emoji: "🎭", title: "Premium Play", price: 399, features: ["Complete theatrical script", "Acts and scenes structure", "Character-driven dialogue", "Stage direction and pacing"], color: "from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500" },
-                    { key: "premium-comic", emoji: "💥", title: "Premium Comic Script", price: 399, features: ["Full comic issue or arc", "Panel-by-panel breakdown", "Character voice consistency", "Built for illustrators"], color: "from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500" },
-                    { key: "course-builder-pro", emoji: "📚", title: "Influencer Course Builder Pro", price: 399, features: ["10–20 structured lessons", "Lesson scripts & engagement hooks", "CTA framework & module sequencing", "For creators, coaches, educators"], color: "from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500" },
-                    { key: "multi-language-bundle", emoji: "🌍", title: "Multi-Language Expansion", price: 249, features: ["Translate one completed project", "Up to 3 additional languages", "Full literary preservation", "Maintains tone & style"], color: "from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500" },
-                  ].map((pkg) => (
-                    <div key={pkg.key} className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5 flex flex-col">
-                      <div className="text-2xl mb-2">{pkg.emoji}</div>
-                      <h3 className="text-base font-bold mb-1">{pkg.title}</h3>
-                      <div className="flex items-baseline gap-1 mb-3">
-                        <span className="text-2xl font-bold">${pkg.price}</span>
-                        <span className="text-gray-500 text-sm">one-time</span>
-                      </div>
-                      <ul className="space-y-1.5 mb-4 flex-1">
-                        {pkg.features.map((f) => (
-                          <li key={f} className="flex items-start gap-2 text-sm text-gray-300">
-                            <span className="text-emerald-400 mt-0.5 flex-shrink-0">✓</span>{f}
-                          </li>
-                        ))}
-                      </ul>
-                      <button
-                        onClick={() => billingBuyPackage(pkg.key)}
-                        disabled={billingLoading === pkg.key}
-                        className={`w-full bg-gradient-to-r text-white font-medium rounded-xl p-3 text-sm transition-all ${pkg.color} disabled:opacity-50`}
-                      >
-                        {billingLoading === pkg.key ? "Loading..." : "Purchase"}
-                      </button>
-                    </div>
                   ))}
                 </div>
               </section>
@@ -910,32 +865,30 @@ function AccountContent() {
           )}
 
           {/* 4. Credits */}
-          <section className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-6 mb-6">
-            <h2 className="text-lg font-semibold mb-4">Credits</h2>
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-2xl font-bold">{account.totalCredits}</span>
-                <span className="text-gray-400 ml-2 text-sm">available book credits</span>
+          {!account.isAdmin && (
+            <section className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-6 mb-6">
+              <h2 className="text-lg font-semibold mb-4">Credits</h2>
+              <div className="flex items-center justify-between flex-wrap gap-3">
+                <div>
+                  <span className="text-2xl font-bold">{account.totalCredits}</span>
+                  <span className="text-gray-400 ml-2 text-sm">total credits</span>
+                  <div className="text-sm text-gray-500 mt-1">
+                    {account.monthlyCredits + account.creditsRollover} monthly credits + {account.packCredits} pack credits = {account.totalCredits} total
+                  </div>
+                </div>
+                <Link
+                  href="/credits"
+                  className="text-sm text-blue-400 hover:text-blue-300 font-medium"
+                >
+                  Buy Credits →
+                </Link>
               </div>
-              <button
-                onClick={() => { setActiveTab("billing"); window.history.replaceState(null, "", "/account?tab=billing"); }}
-                className="text-sm text-blue-400 hover:text-blue-300 font-medium"
-              >
-                Purchase more →
-              </button>
-            </div>
-            {account.totalCredits > 0 && (
-              <div className="flex gap-3 mt-3 text-xs text-gray-500">
-                {Object.entries(account.creditCounts).map(([size, count]) =>
-                  count > 0 ? (
-                    <span key={size} className="bg-white/[0.04] border border-white/[0.06] rounded-lg px-2 py-1">
-                      {count} {size}
-                    </span>
-                  ) : null
-                )}
+              <div className="flex gap-4 mt-4 pt-4 border-t border-white/[0.06] text-xs text-gray-500">
+                <span>{account.creditsUsedThisMonth} credits used this month</span>
+                <span>{account.creditsUsedAllTime} used all-time</span>
               </div>
-            )}
-          </section>
+            </section>
+          )}
 
           {/* 5. Billing History */}
           {account.stripeCustomerId && (

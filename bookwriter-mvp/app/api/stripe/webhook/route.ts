@@ -42,15 +42,6 @@ export async function POST(req: Request) {
             monthlyCredits: initialCredits,
           },
         });
-      } else if (session.mode === "payment" && session.metadata?.type === "credit") {
-        const creditSize = session.metadata.creditSize;
-        await prisma.bookCredit.create({
-          data: {
-            userId,
-            bookSize: creditSize,
-            stripePaymentId: session.payment_intent as string,
-          },
-        });
       } else if (session.mode === "payment" && session.metadata?.type === "credit_pack") {
         const pack = getCreditPack(session.metadata.packId || "");
         if (pack && userId) {

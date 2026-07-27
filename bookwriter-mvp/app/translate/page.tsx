@@ -4,6 +4,8 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import GenerateButton from "@/components/GenerateButton";
+import { getTranslationCreditCost } from "@/lib/credits";
 
 const LANGUAGES = [
   "English", "Spanish", "French", "German", "Portuguese", "Italian", "Japanese",
@@ -11,15 +13,6 @@ const LANGUAGES = [
   "Russian", "Hindi", "Dutch", "Swedish", "Polish", "Turkish",
   "Vietnamese", "Thai", "Hebrew", "Greek",
 ];
-
-function calculatePrice(wordCount: number): { price: number; tier: string; description: string } {
-  if (wordCount <= 0) return { price: 0, tier: "—", description: "Enter text to see pricing" };
-  if (wordCount <= 5000) return { price: 0, tier: "Short Text", description: "Included with all plans (under 5,000 words)" };
-  if (wordCount <= 20000) return { price: 0, tier: "Full Book — Short", description: "Counts as a book credit (Studio: included)" };
-  if (wordCount <= 40000) return { price: 0, tier: "Full Book — Medium", description: "Counts as a book credit (Studio: included)" };
-  if (wordCount <= 60000) return { price: 0, tier: "Full Book — Standard", description: "Counts as a book credit (Studio: included)" };
-  return { price: 299, tier: "Full Book — Epic", description: "Epic translation: $299" };
-}
 
 interface TranslatedSection {
   title: string;
@@ -119,7 +112,7 @@ export default function TranslatePage() {
     }
   }, []);
 
-  const pricing = calculatePrice(sourceWordCount);
+  const creditCost = getTranslationCreditCost(sourceWordCount);
 
   const startTranslation = useCallback(async () => {
     if (!sourceText.trim()) {
@@ -430,13 +423,14 @@ export default function TranslatePage() {
               </div>
 
               {/* Translate Button */}
-              <button
+              <GenerateButton
+                cost={creditCost}
+                label="Translate"
+                loadingLabel="Translating..."
                 onClick={startTranslation}
-                disabled={isTranslating || !sourceText.trim()}
-                className="w-full py-4 rounded-xl font-semibold text-lg transition-all bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                {isTranslating ? "Translating..." : "Translate"}
-              </button>
+                loading={isTranslating}
+                disabled={!sourceText.trim()}
+              />
             </div>
           </div>
 

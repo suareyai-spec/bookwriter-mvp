@@ -6,6 +6,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import { Suspense } from "react";
+import { CREDIT_PACKS } from "@/lib/credits";
 
 interface UsageData {
   subscriptionPlan: string | null;
@@ -111,6 +112,7 @@ function PricingContent() {
         "Unused credits roll over (up to 50)",
         "PDF & DOCX export",
       ],
+      canGenerate: "~5 Short books, or 2 White Papers + a Short Course, or 25 articles per month",
     },
     {
       key: "author",
@@ -126,6 +128,7 @@ function PricingContent() {
         "Unused credits roll over (up to 100)",
         "All formats & export options",
       ],
+      canGenerate: "~2 Standard books, or 1 Epic book + a White Paper, or 50 articles per month",
     },
     {
       key: "studio",
@@ -141,6 +144,7 @@ function PricingContent() {
         "All export formats",
         "Fair use policy applies",
       ],
+      canGenerate: "~33 Epic books, or a full University Course + dozens of articles per month",
     },
   ];
 
@@ -176,21 +180,18 @@ function PricingContent() {
   };
 
   const creditCosts = [
-    { label: "Short book (10k words)", cost: 5 },
-    { label: "Medium book (25k words)", cost: 10 },
-    { label: "Standard book (50k words)", cost: 16 },
-    { label: "Long book (75k words)", cost: 22 },
-    { label: "Epic book (100k words)", cost: 30 },
-    { label: "Thesis / Course", cost: 16 },
-    { label: "Comic / Play", cost: 8 },
-    { label: "Article / Newsletter", cost: 2 },
-    { label: "Translation", cost: 4 },
-  ];
-
-  const creditPacks = [
-    { id: "pack_15", label: "15 credits", price: 12, perCredit: "0.80" },
-    { id: "pack_35", label: "35 credits", price: 25, perCredit: "0.71" },
-    { id: "pack_75", label: "75 credits", price: 49, perCredit: "0.65" },
+    { label: "Newsletter / Article", cost: 1 },
+    { label: "White Paper (Short → Comprehensive)", cost: "3–8" },
+    { label: "Short Book (~10k words)", cost: 5 },
+    { label: "Medium Book (~30k words)", cost: 10 },
+    { label: "Standard Book (~60k words)", cost: 18 },
+    { label: "Epic Book (~100k words)", cost: 30 },
+    { label: "Short Course (6-8 lessons)", cost: 8 },
+    { label: "University Course (12-15 weeks)", cost: 45 },
+    { label: "Research & Thesis Assistant", cost: 4 },
+    { label: "Translation", cost: "3–25" },
+    { label: "Per-chapter revision", cost: 1 },
+    { label: "Full book revision", cost: 3 },
   ];
 
   return (
@@ -269,6 +270,7 @@ function PricingContent() {
                     <div className={`text-sm mt-1 ${colors.text}`}>
                       {plan.credits} credits/month
                     </div>
+                    <div className="text-xs text-gray-500 mt-2">{plan.canGenerate}</div>
                   </div>
 
                   <ul className="space-y-2.5 mb-6 flex-1">
@@ -341,153 +343,42 @@ function PricingContent() {
             </div>
           </div>
 
-          {/* Top up your credits */}
+          {/* Need more credits? */}
           <div className="mb-16">
             <div className="text-center mb-8">
               <h2 className="text-3xl sm:text-4xl font-bold tracking-tight" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-                Top up your credits
+                Need more credits?
               </h2>
               <p className="mt-3 text-gray-400 max-w-xl mx-auto">
-                Need more credits? Buy a pack any time. Purchased credits never expire and are used first.
+                Buy a credit pack any time — on top of any plan. Pack credits never expire and are used
+                only after your monthly credits run out. Subscription credits are always the cheapest
+                per-credit, so an upgrade goes further than a pack if you generate regularly.
               </p>
             </div>
 
-            <div className="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
-              {creditPacks.map((pack) => (
-                <div
-                  key={pack.id}
-                  className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-6 flex flex-col items-center text-center"
-                >
-                  <div className="text-3xl font-bold text-white mb-1">{pack.label}</div>
-                  <div className="text-4xl font-bold mt-2">${pack.price}</div>
-                  <div className="text-xs text-gray-500 mt-1">${pack.perCredit} per credit</div>
-                  <div className="text-xs text-gray-500 mt-1">one-time purchase</div>
-                  <button
-                    onClick={() => buyPack(pack.id)}
-                    disabled={loading === pack.id}
-                    className="mt-6 w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold rounded-xl p-3 transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50"
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto">
+              {CREDIT_PACKS.map((pack) => {
+                const perCredit = pack.price / 100 / pack.credits;
+                return (
+                  <div
+                    key={pack.id}
+                    className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-6 flex flex-col items-center text-center"
                   >
-                    {loading === pack.id ? "Loading..." : "Buy Now"}
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Premium Packages */}
-          <div className="mb-16">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-                Premium Packages
-              </h2>
-              <p className="mt-3 text-gray-400 max-w-xl mx-auto">
-                One-time purchases for specialized, high-quality content generation.
-              </p>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                {
-                  key: "premium-playwright",
-                  emoji: "🎭",
-                  title: "Premium Play",
-                  price: 399,
-                  features: [
-                    "Complete theatrical script",
-                    "Acts and scenes structure",
-                    "Character-driven dialogue",
-                    "Stage direction and pacing",
-                    "Natural conversational flow",
-                    "Performance-ready structure",
-                  ],
-                  color: "from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 shadow-amber-500/20",
-                },
-                {
-                  key: "premium-comic",
-                  emoji: "💥",
-                  title: "Premium Comic Book Script",
-                  price: 399,
-                  features: [
-                    "Full comic issue or arc",
-                    "Panel-by-panel breakdown",
-                    "Scene direction",
-                    "Character voice consistency",
-                    "Dialogue pacing & narrative continuity",
-                    "Built for illustrators & production",
-                  ],
-                  color: "from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 shadow-rose-500/20",
-                },
-                {
-                  key: "course-builder-pro",
-                  emoji: "📚",
-                  title: "Full Influencer Course Builder Pro",
-                  price: 399,
-                  features: [
-                    "10–20 fully structured lessons",
-                    "Lesson scripts & engagement hooks",
-                    "CTA framework",
-                    "Module sequencing",
-                    "Workbook outline",
-                    "For creators, coaches, educators",
-                  ],
-                  color: "from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 shadow-violet-500/20",
-                },
-                {
-                  key: "multi-language-bundle",
-                  emoji: "🌍",
-                  title: "Multi-Language Expansion",
-                  price: 249,
-                  features: [
-                    "Translate one completed project",
-                    "Up to 3 additional languages",
-                    "Full literary preservation",
-                    "Uses advanced literary translation",
-                    "Maintains tone & style across languages",
-                  ],
-                  color: "from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 shadow-emerald-500/20",
-                },
-              ].map((pkg) => (
-                <div
-                  key={pkg.key}
-                  className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-6 flex flex-col"
-                >
-                  <div className="text-3xl mb-3">{pkg.emoji}</div>
-                  <h3 className="text-lg font-bold mb-1">{pkg.title}</h3>
-                  <div className="flex items-baseline gap-1 mb-4">
-                    <span className="text-3xl font-bold">${pkg.price}</span>
-                    <span className="text-gray-500">one-time</span>
+                    <div className="text-sm font-semibold text-gray-300 mb-1">{pack.label}</div>
+                    <div className="text-3xl font-bold text-white mb-1">{pack.credits}</div>
+                    <div className="text-xs text-gray-500 mb-3">credits</div>
+                    <div className="text-2xl font-bold">${(pack.price / 100).toFixed(0)}</div>
+                    <div className="text-xs text-gray-500 mt-1">${perCredit.toFixed(2)}/credit</div>
+                    <button
+                      onClick={() => buyPack(pack.id)}
+                      disabled={loading === pack.id}
+                      className="mt-6 w-full bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] text-white font-semibold rounded-xl p-3 text-sm transition-all disabled:opacity-50"
+                    >
+                      {loading === pack.id ? "Loading..." : "Buy Now"}
+                    </button>
                   </div>
-                  <ul className="space-y-2 mb-6 flex-1">
-                    {pkg.features.map((f) => (
-                      <li key={f} className="flex items-start gap-2 text-sm text-gray-300">
-                        <span className="text-emerald-400 mt-0.5 flex-shrink-0">&#10003;</span>
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <button
-                    onClick={async () => {
-                      if (!session?.user) { window.location.href = "/auth/signup"; return; }
-                      setLoading(pkg.key);
-                      try {
-                        const res = await fetch("/api/special/checkout", {
-                          method: "POST",
-                          headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify({ packageType: pkg.key }),
-                        });
-                        const data = await res.json();
-                        if (data.url) { window.location.href = data.url; return; }
-                        alert(data.error || "Something went wrong.");
-                      } catch { alert("Connection error."); }
-                      setLoading(null);
-                    }}
-                    disabled={loading === pkg.key}
-                    className={`w-full bg-gradient-to-r text-white font-semibold rounded-xl p-3.5 transition-all shadow-lg ${pkg.color} disabled:opacity-50`}
-                  >
-                    {loading === pkg.key ? "Loading..." : "Purchase"}
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 

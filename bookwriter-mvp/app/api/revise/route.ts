@@ -3,11 +3,11 @@ import { anthropic } from "@/lib/openai";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { PLANS, REVISION_PRICES, PlanKey } from "@/lib/stripe";
 import { isAdmin } from "@/lib/config";
 import { rateLimitByUser } from "@/lib/rate-limit";
 import { humanizeChapter } from "@/lib/humanizer";
 import { trackApiCost, getTokensFromResponse } from "@/lib/cost-tracker";
+import { getRevisionCreditCost, hasUnlimitedAccess, totalCredits, deductCredits, refundCredits, insufficientCreditsMessage, CreditDeduction } from "@/lib/credits";
 
 export const maxDuration = 900;
 export const dynamic = "force-dynamic";
@@ -141,15 +141,73 @@ export async function POST(req: Request) {
 
     const body = Body.parse(await req.json());
 
-    // --- REVISION LIMIT CHECK ---
-    if (!isAdmin(user.email)) {
-      const userPlan = user.subscriptionPlan as PlanKey | null;
-      const isActive = user.subscriptionStatus === "active";
-      const isFreeUser = !isActive && !userPlan;
-      const planConfig = userPlan && PLANS[userPlan] ? PLANS[userPlan] : null;
+    const translateTo = body.translateTo;
+    const lang = translateTo || body.language || "English";
+    const isMatureRomance = body.mature === true && isRomanceGenre(body.genre || "", body.revisionInstructions);
+    const matureInstructions = isMatureRomance ? getMatureInstructions() : "";
+    const refContext = body.references?.length ? buildReferenceContext(body.references) : "";
+    const lengthInstruction = getLengthInstruction(body.lengthAdjustment);
+    const { outline, chapters } = parseChapters(body.previousContent);
 
-      // Free Starter: 1 lifetime revision
+    // --- DETERMINE SCOPE (which chapters actually need revision) ---
+    // Has to happen before the credit check below, since the cost depends on
+    // how many chapters are touched. Length changes and full translations
+    // always touch every chapter, so Claude is only consulted when the
+    // instructions might be chapter-specific.
+    let chaptersToRevise: number[] = chapters.map((_, i) => i + 1);
+    if (chapters.length > 0 && body.lengthAdjustment !== "extend" && body.lengthAdjustment !== "shorten" && !translateTo) {
+      const analysisPrompt = `You are a professional book editor. A book has been written and the author wants revisions.
+
+Book Title: "${body.title}"
+Genre: ${body.genre || "General"}
+Tone: ${body.tone || "Professional"}
+Language: ${lang}
+
+The book has ${chapters.length} chapters:
+${chapters.map((ch, i) => `Chapter ${i + 1}: ${ch.title}`).join("\n")}
+
+REVISION INSTRUCTIONS FROM THE AUTHOR:
+${body.revisionInstructions}
+${refContext}
+${lengthInstruction}
+
+Based on the revision instructions, which chapters need to be rewritten or updated?
+Respond with ONLY a JSON array of chapter numbers that need revision, like [1, 3, 5].
+If the instructions are general and apply to the whole book, list all chapters.
+If they mention specific chapters, only list those.
+Respond with ONLY the JSON array, nothing else.`;
+
+      try {
+        const analysisResp = await callClaude(analysisPrompt, 200);
+        trackApiCost({ userId, type: "revision", inputTokens: analysisResp.inputTokens, outputTokens: analysisResp.outputTokens, bookId: body.bookId }).catch(() => {});
+        const parsed = JSON.parse(analysisResp.text.trim());
+        if (Array.isArray(parsed)) {
+          const filtered = parsed.filter((n: unknown) => typeof n === "number" && n >= 1 && n <= chapters.length);
+          if (filtered.length > 0) chaptersToRevise = filtered;
+        }
+      } catch {
+        // Keep the "all chapters" fallback already assigned above
+      }
+    }
+
+    // --- PAYMENT GATE ---
+    let creditDeduction: CreditDeduction | null = null;
+    if (!isAdmin(user.email) && !hasUnlimitedAccess(user.email)) {
+      const isActive = user.subscriptionStatus === "active";
+      const isFreeUser = !isActive && !user.subscriptionPlan;
+
+      // Full translation via revision always redirects to the dedicated
+      // Translate page, which prices by actual word count — a flat
+      // per-chapter revision charge would badly undercharge a full book.
+      if (translateTo && chapters.length > 0) {
+        return new Response(JSON.stringify({
+          error: "Full translation counts as a new book generation. Please use the Translate page instead, which prices by word count.",
+          isFullRewrite: true,
+        }), { status: 403, headers: { "Content-Type": "application/json" } });
+      }
+
       if (isFreeUser) {
+        // Free Starter: 1 lifetime revision
         const freeRevisionsUsed = (user as any).freeRevisionsUsed || 0;
         if (freeRevisionsUsed >= 1) {
           return new Response(JSON.stringify({
@@ -159,59 +217,29 @@ export async function POST(req: Request) {
         }
         await prisma.user.update({ where: { id: userId }, data: { freeRevisionsUsed: { increment: 1 } } });
       } else {
-      const monthlyLimit = planConfig ? planConfig.monthlyRevisions : 0;
+        // Credit-based check for starter/author/studio — 1 credit per chapter
+        // actually touched, capped at the flat full-book rate (3 credits).
+        const creditCost = getRevisionCreditCost(chaptersToRevise.length);
+        const balance = {
+          purchasedCredits: (user as any).purchasedCredits ?? 0,
+          monthlyCredits: (user as any).monthlyCredits ?? 0,
+          creditsRollover: (user as any).creditsRollover ?? 0,
+        };
+        const have = totalCredits(balance);
 
-      // Reset revision count if needed
-      if ((user as any).revisionResetDate && new Date() > (user as any).revisionResetDate) {
-        await prisma.user.update({
-          where: { id: userId },
-          data: { revisionCount: 0, revisionResetDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) },
-        });
-        (user as any).revisionCount = 0;
-      }
-
-      const revisionCount = (user as any).revisionCount || 0;
-
-      if (monthlyLimit !== Infinity && revisionCount >= monthlyLimit) {
-        const prices = REVISION_PRICES[userPlan || "none"];
-        return new Response(JSON.stringify({
-          error: `You've used all ${monthlyLimit} revisions this month. Purchase additional revisions to continue.`,
-          needsRevision: true,
-          revisionPrices: prices,
-          upsell: "revision",
-        }), { status: 403, headers: { "Content-Type": "application/json" } });
-      }
-
-      // Full translation via revision counts as a new book (except Studio unlimited)
-      if (userPlan !== "studio" && body.translateTo) {
-        const { chapters } = parseChapters(body.previousContent);
-        if (chapters.length > 0) {
+        if (have < creditCost) {
           return new Response(JSON.stringify({
-            error: "Full translation counts as a new book generation. Please use the generate flow instead, which will consume a book credit.",
-            isFullRewrite: true,
+            error: insufficientCreditsMessage(creditCost, have),
+            needsCredits: true,
+            creditCost,
+            totalCredits: have,
           }), { status: 403, headers: { "Content-Type": "application/json" } });
         }
-      }
 
-      // Increment revision count
-      await prisma.user.update({
-        where: { id: userId },
-        data: {
-          revisionCount: { increment: 1 },
-          revisionResetDate: (user as any).revisionResetDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-        },
-      });
-      } // end paid plan revision block
+        creditDeduction = await deductCredits(userId, balance, creditCost);
+      }
     }
-    // --- END REVISION LIMIT CHECK ---
-    const translateTo = body.translateTo;
-    const lang = translateTo || body.language || "English";
-    const isMatureRomance = body.mature === true && isRomanceGenre(body.genre || "", body.revisionInstructions);
-    const matureInstructions = isMatureRomance ? getMatureInstructions() : "";
-    const refContext = body.references?.length ? buildReferenceContext(body.references) : "";
-    const lengthInstruction = getLengthInstruction(body.lengthAdjustment);
-    const translateInstruction = translateTo ? `\n\nTRANSLATION REQUIREMENT: Translate the ENTIRE book into ${translateTo}. Write everything — chapter titles, all content, dialogue, descriptions — in ${translateTo}. This is a full translation, not a summary. Maintain the same meaning, tone, style, and nuance as the original. Do not leave any text in the original language.` : "";
-    const { outline, chapters } = parseChapters(body.previousContent);
+    // --- END PAYMENT GATE ---
 
     // Mark book as revising in DB
     if (body.bookId && userId) {
@@ -229,56 +257,13 @@ export async function POST(req: Request) {
     const stream = new ReadableStream({
       async start(controller) {
         try {
-          controller.enqueue(new TextEncoder().encode(sseEvent({ 
-            type: "progress", chapter: 0, totalChapters: chapters.length, 
-            title: "Analyzing revision instructions...", status: "analyzing" 
-          })));
-
-          const analysisPrompt = `You are a professional book editor. A book has been written and the author wants revisions.
-
-Book Title: "${body.title}"
-Genre: ${body.genre || "General"}
-Tone: ${body.tone || "Professional"}
-Language: ${lang}
-
-The book has ${chapters.length} chapters:
-${chapters.map((ch, i) => `Chapter ${i + 1}: ${ch.title}`).join("\n")}
-
-REVISION INSTRUCTIONS FROM THE AUTHOR:
-${body.revisionInstructions}
-${refContext}
-${lengthInstruction}
-
-Based on the revision instructions, which chapters need to be rewritten or updated? 
-Respond with ONLY a JSON array of chapter numbers that need revision, like [1, 3, 5].
-If the instructions are general and apply to the whole book, list all chapters.
-If they mention specific chapters, only list those.
-${body.lengthAdjustment === "extend" || body.lengthAdjustment === "shorten" ? "Since the author wants to change the book length, ALL chapters need revision." : ""}
-${translateTo ? `Since the author wants a FULL TRANSLATION to ${translateTo}, ALL chapters need revision.` : ""}
-Respond with ONLY the JSON array, nothing else.`;
-
-          const analysisResp = await callClaude(analysisPrompt, 200);
-          const analysisResult = analysisResp.text;
-          trackApiCost({ userId, type: "revision", inputTokens: analysisResp.inputTokens, outputTokens: analysisResp.outputTokens, bookId: body.bookId }).catch(() => {});
-          let chaptersToRevise: number[] = [];
-          try {
-            const parsed = JSON.parse(analysisResult.trim());
-            if (Array.isArray(parsed)) {
-              chaptersToRevise = parsed.filter((n: unknown) => typeof n === "number" && n >= 1 && n <= chapters.length);
-            }
-          } catch {
-            chaptersToRevise = chapters.map((_, i) => i + 1);
-          }
-
-          if (chaptersToRevise.length === 0) {
-            chaptersToRevise = chapters.map((_, i) => i + 1);
-          }
-
-          controller.enqueue(new TextEncoder().encode(sseEvent({ 
-            type: "analysis", 
-            chaptersToRevise, 
+          // Scope (chaptersToRevise) was already determined above, before the
+          // credit check, so this just narrates it — no second Claude call.
+          controller.enqueue(new TextEncoder().encode(sseEvent({
+            type: "analysis",
+            chaptersToRevise,
             totalChapters: chapters.length,
-            message: `Updating ${chaptersToRevise.length} of ${chapters.length} chapters` 
+            message: `Updating ${chaptersToRevise.length} of ${chapters.length} chapters`
           })));
 
           const revisedChapters = [...chapters];
@@ -394,6 +379,7 @@ Revised Chapter ${chapterNum}:`;
               });
             } catch {}
           }
+          await refundCredits(userId, creditDeduction).catch((refundErr) => console.error('[revise] credit refund failed:', refundErr));
           controller.close();
         }
       },

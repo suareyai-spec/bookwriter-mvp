@@ -4,8 +4,10 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import Navbar from "@/components/Navbar";
+import GenerateButton from "@/components/GenerateButton";
+import { getCreditCost } from "@/lib/credits";
 
-const CREDIT_COST = 45;
+const CREDIT_COST = getCreditCost("university_course");
 
 export default function UniversityCoursePage() {
   const { status: authStatus } = useSession();
@@ -296,13 +298,13 @@ export default function UniversityCoursePage() {
               </select>
             </div>
 
-            <button
+            <GenerateButton
+              cost={CREDIT_COST}
+              label="Generate Course"
               onClick={handleSubmit}
-              disabled={loading || !courseTitle.trim()}
-              className="w-full bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white font-semibold rounded-xl p-4 transition-all shadow-lg shadow-indigo-500/20 disabled:opacity-50 text-lg"
-            >
-              {loading ? "Starting..." : `Generate Course — ${CREDIT_COST} credits`}
-            </button>
+              loading={loading}
+              disabled={!courseTitle.trim()}
+            />
           </div>
         </div>
       </div>

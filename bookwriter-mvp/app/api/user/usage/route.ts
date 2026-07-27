@@ -2,8 +2,9 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { PLANS, REVISION_PRICES, PlanKey } from "@/lib/stripe";
+import { PLANS, PlanKey } from "@/lib/stripe";
 import { isAdmin } from "@/lib/config";
+import { PLAN_MONTHLY_CREDITS, PLAN_ROLLOVER_CAP } from "@/lib/credits";
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -32,7 +33,11 @@ export async function GET() {
       revisionsRemaining: Infinity,
       monthlyCredits: 9999,
       purchasedCredits: 9999,
+      packCredits: 9999,
+      creditsRollover: 0,
       totalCredits: 9999,
+      creditsUsedThisMonth: 0,
+      creditsUsedAllTime: 0,
       hasSeenOnboarding: true,
     });
   }
@@ -103,7 +108,6 @@ export async function GET() {
     revisionCount,
     monthlyRevisionLimit,
     revisionsRemaining,
-    revisionPrices: REVISION_PRICES[plan || "free"],
     monthlyNewslettersUsed,
     monthlyNewsletterLimit,
     monthlyArticlesUsed,
@@ -114,10 +118,18 @@ export async function GET() {
     freeTranslationsUsed: (user as any).freeTranslationsUsed || 0,
     freeNewslettersUsed: (user as any).freeNewslettersUsed || 0,
     freeArticlesUsed: (user as any).freeArticlesUsed || 0,
+    // Unified credit balance — purchasedCredits are "pack credits" (never
+    // expire, spent after monthly/rollover, don't count toward the plan's
+    // rollover cap). See lib/credits.ts for the full spend order.
     monthlyCredits: (user as any).monthlyCredits ?? 0,
     purchasedCredits: (user as any).purchasedCredits ?? 0,
+    packCredits: (user as any).purchasedCredits ?? 0,
     creditsRollover: (user as any).creditsRollover ?? 0,
+    rolloverCap: plan ? (PLAN_ROLLOVER_CAP[plan] ?? 0) : 0,
+    planMonthlyAllowance: plan ? (PLAN_MONTHLY_CREDITS[plan] ?? 0) : 0,
     totalCredits: ((user as any).monthlyCredits ?? 0) + ((user as any).purchasedCredits ?? 0) + ((user as any).creditsRollover ?? 0),
+    creditsUsedThisMonth: (user as any).creditsUsedThisMonth ?? 0,
+    creditsUsedAllTime: (user as any).creditsUsedAllTime ?? 0,
     hasSeenOnboarding: (user as any).hasSeenOnboarding ?? false,
   });
 }

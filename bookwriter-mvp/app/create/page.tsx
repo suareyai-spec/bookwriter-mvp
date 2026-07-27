@@ -8,6 +8,8 @@ import UpsellModal from "@/components/UpsellModal";
 import Link from "next/link";
 import { generateBookPremise } from "@/lib/auto-generate";
 import { getPlanDisplayName } from "@/lib/config";
+import { getCreditCost, getContentSizeFromLength } from "@/lib/credits";
+import GenerateButton from "@/components/GenerateButton";
 
 interface ReferenceItem {
   type: "pdf" | "gdoc" | "text";
@@ -879,24 +881,11 @@ function HomeContent() {
               {usage && !usage.isAdmin && usage.subscriptionPlan && usage.subscriptionStatus === "active" && (
                 <div className="text-sm text-gray-400 bg-white/[0.03] border border-white/[0.06] rounded-xl p-3 flex items-center justify-between">
                   <span>
-                    {getPlanDisplayName(usage.subscriptionPlan)} Plan — {usage.monthlyCreditsRemaining} monthly credits remaining
+                    {getPlanDisplayName(usage.subscriptionPlan)} Plan — {usage.totalCredits} credits available
                   </span>
                   <Link href="/pricing" className="text-blue-400 hover:text-blue-300 text-xs">Manage</Link>
                 </div>
               )}
-
-              {/* Plan restriction warning */}
-              {usage && !usage.isAdmin && usage.subscriptionPlan && usage.subscriptionStatus === "active" && (() => {
-                const sizeMap: Record<string, string> = { "10,000": "short", "25,000": "medium", "50,000": "standard", "75,000": "standard", "100,000": "epic" };
-                const selectedSize = Object.entries(sizeMap).find(([k]) => bookLength.includes(k))?.[1] || "short";
-                if (selectedSize === "epic") {
-                  return <div className="text-sm text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-xl p-3">Epic books require a one-time credit purchase on any plan.</div>;
-                }
-                if (!usage.allowedSizes.includes(selectedSize)) {
-                  return <div className="text-sm text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-xl p-3">Your plan does not include {selectedSize} books. Upgrade or buy a credit.</div>;
-                }
-                return null;
-              })()}
 
               {/* Create as Series Toggle */}
               <div className="border border-white/[0.08] rounded-xl p-4 space-y-3">
@@ -940,13 +929,22 @@ function HomeContent() {
               </div>
 
               {/* Generate Button */}
-              <button
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 disabled:from-gray-700 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-semibold rounded-xl p-4 transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 disabled:shadow-none"
-                onClick={createAsSeries ? generateSeries : generate}
-                disabled={!title.trim() || !description.trim()}
-              >
-                {session ? (createAsSeries ? `Generate ${seriesLength}-Book Series` : "Generate Book") : "Sign in to Generate"}
-              </button>
+              {session ? (
+                <GenerateButton
+                  cost={getCreditCost(getContentSizeFromLength(bookLength)) * (createAsSeries ? seriesLength : 1)}
+                  label={createAsSeries ? `Generate ${seriesLength}-Book Series` : "Generate Book"}
+                  onClick={createAsSeries ? generateSeries : generate}
+                  disabled={!title.trim() || !description.trim()}
+                />
+              ) : (
+                <button
+                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 disabled:from-gray-700 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-semibold rounded-xl p-4 transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 disabled:shadow-none"
+                  onClick={createAsSeries ? generateSeries : generate}
+                  disabled={!title.trim() || !description.trim()}
+                >
+                  Sign in to Generate
+                </button>
+              )}
             </div>
 
             {/* Trust badges */}

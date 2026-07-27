@@ -35,6 +35,8 @@ model User {
   monthlyCredits       Int       @default(0)
   purchasedCredits     Int       @default(0)
   creditsRollover      Int       @default(0)
+  creditsUsedThisMonth Int       @default(0)
+  creditsUsedAllTime   Int       @default(0)
   hasSeenOnboarding    Boolean   @default(false)
   referredBy           String?
   resetToken           String?   @unique

@@ -24,16 +24,10 @@ export function getPlanDisplayName(plan: string | null | undefined): string {
   return (plan && PLAN_DISPLAY_NAMES[plan]) || "Free Starter";
 }
 
-// Doctoral-Level Thesis ($499 one-time package) was removed — the thesis/academic
-// generator is positioned as a research assistant, not a submit-ready-thesis product.
-export const PREMIUM_PACKAGES = {
-  'premium-playwright': { name: 'Premium Play', price: 399 },
-  'premium-comic': { name: 'Premium Comic Book Script', price: 399 },
-  'course-builder-pro': { name: 'Full Influencer Course Builder Pro', price: 399 },
-  'multi-language-bundle': { name: 'Multi-Language Expansion', price: 249 },
-} as const;
-
-export type PremiumPackageId = keyof typeof PREMIUM_PACKAGES;
+// Per-item premium packages (Doctoral Thesis, Premium Play/Comic/Course,
+// Multi-Language Bundle) were removed entirely — PlotGhost is unified onto a
+// single credit-based system (see lib/credits.ts). Every one of those
+// products is now just a normal credit-metered generation.
 
 export const TEAM_SEAT_PRICE = 10; // per month
 

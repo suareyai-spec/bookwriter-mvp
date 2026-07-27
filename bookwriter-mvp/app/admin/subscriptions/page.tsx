@@ -9,6 +9,10 @@ interface SubscriptionRow {
   plan: string;
   status: string;
   creditsRemaining: number;
+  monthlyCreditsRemaining: number;
+  packCreditsRemaining: number;
+  creditsUsedThisMonth: number;
+  creditsUsedAllTime: number;
   joinDate: string;
   lastGenerationDate: string | null;
   totalGenerations: number;
@@ -170,6 +174,10 @@ export default function AdminSubscriptions() {
                   <th className="text-left p-3">Plan</th>
                   <th className="text-left p-3">Status</th>
                   <th className="text-right p-3">Credits Remaining</th>
+                  <th className="text-right p-3">Monthly Remaining</th>
+                  <th className="text-right p-3">Pack Remaining</th>
+                  <th className="text-right p-3">Used This Month</th>
+                  <th className="text-right p-3">Used All-Time</th>
                   <th className="text-right p-3">Joined</th>
                   <th className="text-right p-3">Last Generation</th>
                 </tr>
@@ -194,6 +202,10 @@ export default function AdminSubscriptions() {
                         </span>
                       </td>
                       <td className="p-3 text-right text-gray-300">{s.creditsRemaining.toLocaleString()}</td>
+                      <td className="p-3 text-right text-gray-500">{s.monthlyCreditsRemaining.toLocaleString()}</td>
+                      <td className="p-3 text-right text-gray-500">{s.packCreditsRemaining.toLocaleString()}</td>
+                      <td className="p-3 text-right text-gray-500">{s.creditsUsedThisMonth.toLocaleString()}</td>
+                      <td className="p-3 text-right text-gray-500">{s.creditsUsedAllTime.toLocaleString()}</td>
                       <td className="p-3 text-right text-gray-500">{new Date(s.joinDate).toLocaleDateString()}</td>
                       <td className="p-3 text-right text-gray-500">
                         {s.lastGenerationDate ? new Date(s.lastGenerationDate).toLocaleDateString() : "Never"}
@@ -201,7 +213,7 @@ export default function AdminSubscriptions() {
                     </tr>
                     {expanded === s.id && (
                       <tr key={`${s.id}-detail`}>
-                        <td colSpan={7} className="p-4 bg-white/[0.01]">
+                        <td colSpan={11} className="p-4 bg-white/[0.01]">
                           {detailLoading ? (
                             <div className="text-center text-gray-500 py-4">Loading detail...</div>
                           ) : detail ? (
@@ -284,7 +296,7 @@ export default function AdminSubscriptions() {
                   </Fragment>
                 ))}
                 {subscriptions.length === 0 && (
-                  <tr><td colSpan={7} className="p-8 text-center text-gray-500">No users found</td></tr>
+                  <tr><td colSpan={11} className="p-8 text-center text-gray-500">No users found</td></tr>
                 )}
               </tbody>
             </table>

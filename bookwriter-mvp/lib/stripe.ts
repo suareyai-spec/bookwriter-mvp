@@ -4,9 +4,11 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 // Single source of truth for pricing — do not hardcode prices elsewhere.
 // Every checkout route, account/pricing page, and email template should read
-// plan names/prices from PLANS (subscriptions) or PREMIUM_PACKAGES/CREDIT_PACKS
-// (lib/config.ts / lib/credits.ts, one-time purchases) rather than inlining
-// dollar amounts or plan names as literals.
+// plan names/prices from PLANS (subscriptions) or CREDIT_PACKS (lib/credits.ts,
+// one-time credit top-ups — the only other Stripe product PlotGhost sells)
+// rather than inlining dollar amounts or plan names as literals. There is no
+// other paid path: every generation action is credit-metered, so there's
+// nothing left to pay per-item for.
 //
 // "creator" and "author-pro" were the old plan names/prices before the
 // Starter/Author/Studio credit-based repricing — removed since no checkout
@@ -22,7 +24,6 @@ export const PLANS = {
     monthlyCredits: 1,
     maxProjects: Infinity,
     allowedSizes: ["short"] as string[],
-    creditEquivalents: { short: 1 },
     monthlyRevisions: 1,
     monthlyNewsletters: 2,
     concurrentGenerations: 1,
@@ -33,7 +34,6 @@ export const PLANS = {
     monthlyCredits: Infinity,
     maxProjects: Infinity,
     allowedSizes: ["short", "medium", "standard"] as string[],
-    creditEquivalents: { short: 1, medium: 2, standard: 3 },
     monthlyRevisions: Infinity,
     monthlyNewsletters: Infinity, // fair use ~100
     concurrentGenerations: 2,
@@ -45,7 +45,6 @@ export const PLANS = {
     monthlyCredits: 25,
     maxProjects: Infinity,
     allowedSizes: ["short", "medium", "standard", "long", "epic"] as string[],
-    creditEquivalents: {} as Record<string, number>,
     monthlyRevisions: Infinity,
     monthlyNewsletters: Infinity,
     concurrentGenerations: 1,
@@ -56,7 +55,6 @@ export const PLANS = {
     monthlyCredits: 50,
     maxProjects: Infinity,
     allowedSizes: ["short", "medium", "standard", "long", "epic"] as string[],
-    creditEquivalents: {} as Record<string, number>,
     monthlyRevisions: Infinity,
     monthlyNewsletters: Infinity,
     concurrentGenerations: 1,
@@ -64,38 +62,6 @@ export const PLANS = {
 } as const;
 
 export type PlanKey = keyof typeof PLANS;
-
-// Credit prices (one-time purchases) in cents — vary by current plan.
-// Superseded by the flat CREDIT_PACKS in lib/credits.ts (used by the
-// "credit_pack" checkout type); kept only so the "credit" checkout type
-// still resolves sane prices for the plan a user is actually on.
-export const CREDIT_PRICES: Record<string, Record<string, number>> = {
-  free: { short: 12900, medium: 17900, standard: 24900, epic: 49900 },
-  starter: { short: 12900, medium: 17900, standard: 24900, epic: 49900 },
-  author: { short: 9900, medium: 14900, standard: 19900, epic: 49900 },
-  studio: { short: 7900, medium: 12900, standard: 17900, epic: 49900 },
-  none: { short: 12900, medium: 17900, standard: 24900, epic: 49900 },
-};
-
-// Additional newsletter prices in cents (unused now that newsletters are
-// unlimited on every paid plan — kept for backward compatibility).
-export const NEWSLETTER_PRICES: Record<string, number> = {
-  free: 500,
-  starter: 0,
-  author: 0,
-  studio: 0,
-  none: 500,
-};
-
-// Revision prices — Starter, Author, and Studio all include unlimited
-// revisions, so no per-revision purchase is needed on any paid plan.
-export const REVISION_PRICES: Record<string, { single: number; pack: { count: number; price: number }; unlimited: number }> = {
-  free: { single: 500, pack: { count: 10, price: 3900 }, unlimited: 9900 },
-  starter: { single: 0, pack: { count: 0, price: 0 }, unlimited: 0 },
-  author: { single: 0, pack: { count: 0, price: 0 }, unlimited: 0 },
-  studio: { single: 0, pack: { count: 0, price: 0 }, unlimited: 0 },
-  none: { single: 500, pack: { count: 10, price: 3900 }, unlimited: 9900 },
-};
 
 // Map bookLength string to size key
 export function getBookSize(bookLength: string): string {
@@ -105,12 +71,6 @@ export function getBookSize(bookLength: string): string {
   if (bookLength.includes("75,000")) return "long";
   if (bookLength.includes("100,000") || bookLength.includes("80,000")) return "epic";
   return "short";
-}
-
-// Get credit cost in monthly points for a book size
-export function getBookCreditCost(plan: PlanKey, size: string): number {
-  const equiv = PLANS[plan].creditEquivalents as Record<string, number>;
-  return equiv[size] || Infinity;
 }
 
 // Get monthly revision limit for a plan (null = free starter)

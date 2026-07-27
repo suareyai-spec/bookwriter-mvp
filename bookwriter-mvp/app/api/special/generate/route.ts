@@ -413,14 +413,6 @@ export async function POST(req: Request) {
       const isFreeUser = !isActive && !hasPlan;
 
       if (isFreeUser) {
-        // Block doctoral thesis entirely for free users
-        if (body.mode === "thesis" && body.tier?.includes("doctoral")) {
-          await releaseGenerationSlot(userId);
-          return new Response(JSON.stringify({
-            error: "Doctoral-Level Thesis requires a paid plan or premium package purchase. Upgrade to access this feature.",
-            needsSubscription: true,
-          }), { status: 403, headers: { "Content-Type": "application/json" } });
-        }
         // Free users: use their free book allocation (already tracked by freeBookUsed)
         if ((specialUser as any).freeBookUsed) {
           await releaseGenerationSlot(userId);
@@ -432,8 +424,11 @@ export async function POST(req: Request) {
         await prisma.user.update({ where: { id: userId }, data: { freeBookUsed: true } });
       } else {
         // Credit-based check for starter/author/studio (studio's high monthly
-        // allotment is enforced through this same path — see lib/credits.ts)
-        const creditCost = getCreditCost(CONTENT_TYPE_MAP[body.mode]);
+        // allotment is enforced through this same path — see lib/credits.ts).
+        // Thesis is flat regardless of tier; comic/playwright/course tiers
+        // (e.g. "comic_full", "course_premium") are themselves valid
+        // CREDIT_COST keys, so body.tier can be used directly.
+        const creditCost = body.mode === "thesis" ? getCreditCost("thesis") : getCreditCost(body.tier);
         const balance = {
           purchasedCredits: (specialUser as any).purchasedCredits ?? 0,
           monthlyCredits: (specialUser as any).monthlyCredits ?? 0,

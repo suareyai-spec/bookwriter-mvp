@@ -10,16 +10,12 @@ interface UpsellModalProps {
   currentPlan: string | null;
   requestedSize: string;
   message: string;
-  upsellType?: "book" | "revision";
-  revisionPrices?: { single: number; pack: { count: number; price: number }; unlimited: number };
 }
 
-export default function UpsellModal({ isOpen, onClose, currentPlan, message, upsellType = "book", revisionPrices }: UpsellModalProps) {
+export default function UpsellModal({ isOpen, onClose, currentPlan, message }: UpsellModalProps) {
   const [loading, setLoading] = useState<string | null>(null);
 
   if (!isOpen) return null;
-
-  const isRevisionUpsell = upsellType === "revision";
 
   async function buyCreditPack(packId: string) {
     setLoading(packId);
@@ -33,18 +29,6 @@ export default function UpsellModal({ isOpen, onClose, currentPlan, message, ups
     setLoading(null);
   }
 
-  async function buyRevision(revisionType: string) {
-    setLoading(revisionType);
-    const res = await fetch("/api/stripe/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ type: "revision", revisionType }),
-    });
-    const data = await res.json();
-    if (data.url) window.location.href = data.url;
-    setLoading(null);
-  }
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
@@ -52,7 +36,7 @@ export default function UpsellModal({ isOpen, onClose, currentPlan, message, ups
         <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-white text-lg">&times;</button>
 
         <h3 className="text-xl font-bold mb-2" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-          {!currentPlan ? "Upgrade to unlock more" : isRevisionUpsell ? "Need more revisions?" : "Need more books?"}
+          {!currentPlan ? "Upgrade to unlock more" : "Need more credits?"}
         </h3>
         <p className="text-sm text-gray-400 mb-6">{message || "You've reached your Free Starter limit. Upgrade to unlock full book generation, full translations, and unlimited creative output."}</p>
 
@@ -71,52 +55,7 @@ export default function UpsellModal({ isOpen, onClose, currentPlan, message, ups
           </div>
         )}
 
-        {currentPlan && isRevisionUpsell && revisionPrices && (
-          <>
-            <div className="space-y-2 mb-4">
-              <button
-                onClick={() => buyRevision("single")}
-                disabled={loading !== null}
-                className="w-full flex items-center justify-between bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-white/[0.15] rounded-xl p-4 transition-all disabled:opacity-50"
-              >
-                <div className="text-left">
-                  <div className="text-sm font-medium text-gray-200">Single Revision</div>
-                  <div className="text-xs text-gray-500">One additional revision</div>
-                </div>
-                <div className="text-lg font-bold">${(revisionPrices.single / 100).toFixed(0)}</div>
-              </button>
-              {revisionPrices.pack.count > 0 && (
-                <button
-                  onClick={() => buyRevision("pack")}
-                  disabled={loading !== null}
-                  className="w-full flex items-center justify-between bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-white/[0.15] rounded-xl p-4 transition-all disabled:opacity-50"
-                >
-                  <div className="text-left">
-                    <div className="text-sm font-medium text-gray-200">{revisionPrices.pack.count}-Pack Revisions</div>
-                    <div className="text-xs text-gray-500">Best value — save {Math.round((1 - revisionPrices.pack.price / (revisionPrices.single * revisionPrices.pack.count)) * 100)}%</div>
-                  </div>
-                  <div className="text-lg font-bold">${(revisionPrices.pack.price / 100).toFixed(0)}</div>
-                </button>
-              )}
-              <button
-                onClick={() => buyRevision("unlimited")}
-                disabled={loading !== null}
-                className="w-full flex items-center justify-between bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-white/[0.15] rounded-xl p-4 transition-all disabled:opacity-50"
-              >
-                <div className="text-left">
-                  <div className="text-sm font-medium text-gray-200">Unlimited Revisions</div>
-                  <div className="text-xs text-gray-500">Unlimited revisions for this book</div>
-                </div>
-                <div className="text-lg font-bold">${(revisionPrices.unlimited / 100).toFixed(0)}</div>
-              </button>
-            </div>
-            <Link href="/pricing" className="block text-center text-sm text-blue-400 hover:text-blue-300 transition-colors">
-              Or upgrade your plan
-            </Link>
-          </>
-        )}
-
-        {currentPlan && !isRevisionUpsell && (
+        {currentPlan && (
           <>
             <div className="space-y-2 mb-4">
               {CREDIT_PACKS.map((pack) => (

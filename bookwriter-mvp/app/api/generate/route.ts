@@ -98,9 +98,11 @@ export async function POST(req: Request) {
       await prisma.user.update({ where: { id: userId }, data: { freeBookUsed: true } });
     } else {
       // Credit-based check for starter/author/studio (studio's high monthly
-      // allotment is enforced through this same path — see lib/credits.ts)
-      const isCourseFormat = body.format === "course";
-      const contentSizeKey = isCourseFormat ? "course" : getContentSizeFromLength(body.bookLength || "10,000 words");
+      // allotment is enforced through this same path — see lib/credits.ts).
+      // A course-format book costs the same as its word-count tier — it's
+      // the same generation pipeline, just styled as modules instead of
+      // chapters, so there's no separate "course" price to look up.
+      const contentSizeKey = getContentSizeFromLength(body.bookLength || "10,000 words");
       const creditCost = getCreditCost(contentSizeKey);
 
       const balance = {

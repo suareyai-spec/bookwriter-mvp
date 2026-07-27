@@ -4,6 +4,8 @@ import { useState, useEffect, Suspense } from "react";
 import { useSession } from "next-auth/react";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
+import GenerateButton from "@/components/GenerateButton";
+import { getCreditCost } from "@/lib/credits";
 
 const ARTICLE_TYPES = [
   { key: "news", label: "News Article" },
@@ -518,13 +520,21 @@ function ArticlesContent() {
               </div>
 
               {/* Generate Button */}
-              <button
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 disabled:from-gray-700 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-semibold rounded-xl p-4 transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 disabled:shadow-none"
-                onClick={generate}
-                disabled={!topic.trim() || !session}
-              >
-                {session ? "Generate Article" : "Sign in to Generate"}
-              </button>
+              {session ? (
+                <GenerateButton
+                  cost={getCreditCost("article")}
+                  label="Generate Article"
+                  onClick={generate}
+                  disabled={!topic.trim()}
+                />
+              ) : (
+                <button
+                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 disabled:from-gray-700 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-semibold rounded-xl p-4 transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 disabled:shadow-none"
+                  disabled
+                >
+                  Sign in to Generate
+                </button>
+              )}
             </div>
           </div>
         )}
