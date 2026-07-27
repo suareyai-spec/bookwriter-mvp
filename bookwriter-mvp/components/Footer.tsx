@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="border-t border-white/[0.06] mt-auto bg-[#070710]">
       <div className="max-w-6xl mx-auto px-6 py-14">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-8 mb-12">
           {/* Brand */}
           <div className="col-span-2 sm:col-span-1">
             <Link href="/">
@@ -16,7 +16,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="mt-3 text-sm text-gray-500 leading-relaxed">
-              AI-powered book generation. Write, revise, and export professional books in minutes.
+              The AI publishing studio for experts, creators and agencies.
             </p>
           </div>
 
@@ -25,6 +25,9 @@ export default function Footer() {
             <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Product</h4>
             <ul className="space-y-2.5 text-sm">
               <li><Link href="/create" className="text-gray-500 hover:text-white transition-colors">Create Book</Link></li>
+              <li><Link href="/special/university-course" className="text-gray-500 hover:text-white transition-colors">University Courses</Link></li>
+              <li><Link href="/translate" className="text-gray-500 hover:text-white transition-colors">Translation</Link></li>
+              <li><Link href="/special/thesis" className="text-gray-500 hover:text-white transition-colors">Research Assistant</Link></li>
               <li><Link href="/library" className="text-gray-500 hover:text-white transition-colors">Library</Link></li>
               <li><Link href="/pricing" className="text-gray-500 hover:text-white transition-colors">Pricing</Link></li>
             </ul>
@@ -36,6 +39,15 @@ export default function Footer() {
             <ul className="space-y-2.5 text-sm">
               <li><Link href="/auth/login" className="text-gray-500 hover:text-white transition-colors">Sign In</Link></li>
               <li><Link href="/auth/signup" className="text-gray-500 hover:text-white transition-colors">Create Account</Link></li>
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div>
+            <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Company</h4>
+            <ul className="space-y-2.5 text-sm">
+              <li><Link href="/about" className="text-gray-500 hover:text-white transition-colors">About</Link></li>
+              <li><a href="mailto:support@plotghost.ai" className="text-gray-500 hover:text-white transition-colors">support@plotghost.ai</a></li>
             </ul>
           </div>
 
