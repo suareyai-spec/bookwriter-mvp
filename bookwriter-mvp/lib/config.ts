@@ -29,7 +29,7 @@ export function getPlanDisplayName(plan: string | null | undefined): string {
 export const PREMIUM_PACKAGES = {
   'premium-playwright': { name: 'Premium Play', price: 399 },
   'premium-comic': { name: 'Premium Comic Book Script', price: 399 },
-  'course-builder-pro': { name: 'Full Course Builder Pro', price: 399 },
+  'course-builder-pro': { name: 'Full Influencer Course Builder Pro', price: 399 },
   'multi-language-bundle': { name: 'Multi-Language Expansion', price: 249 },
 } as const;
 

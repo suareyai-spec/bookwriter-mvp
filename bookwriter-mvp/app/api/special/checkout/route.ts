@@ -15,9 +15,9 @@ const TIER_PRICES: Record<string, { amount: number; label: string }> = {
   play_long: { amount: 24900, label: "Theatrical Play — Long Multi-Act" },
   thesis_standard: { amount: 19900, label: "Academic Thesis — Standard" },
   thesis_doctoral: { amount: 29900, label: "Academic Thesis — Doctoral-Level" },
-  course_mini: { amount: 9900, label: "Course Builder — Mini" },
-  course_full: { amount: 19900, label: "Course Builder — Full" },
-  course_premium: { amount: 24900, label: "Course Builder — Premium + Workbook" },
+  course_mini: { amount: 9900, label: "Influencer Course Builder — Mini" },
+  course_full: { amount: 19900, label: "Influencer Course Builder — Full" },
+  course_premium: { amount: 24900, label: "Influencer Course Builder — Premium + Workbook" },
 };
 
 export async function POST(req: Request) {

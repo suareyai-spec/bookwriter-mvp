@@ -420,7 +420,7 @@ function PricingContent() {
                 {
                   key: "course-builder-pro",
                   emoji: "📚",
-                  title: "Full Course Builder Pro",
+                  title: "Full Influencer Course Builder Pro",
                   price: 399,
                   features: [
                     "10–20 fully structured lessons",
