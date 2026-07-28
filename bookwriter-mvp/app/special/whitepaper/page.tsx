@@ -251,7 +251,7 @@ export default function WhitepaperPage() {
             Create a White Paper or Report
           </h1>
           <p className="text-gray-400 mb-8">
-            A publish-ready white paper, industry report, or executive brief — structured, evidence-based, and written for decision-makers. Costs <strong className="text-white">{getCreditCost(`whitepaper_${length}`)} credits</strong> for the selected length.
+            A publish-ready white paper, industry report, or executive brief — structured, evidence-based, and written for decision-makers. Costs <strong className="text-white">{getCreditCost(`whitepaper_${length}`)} credits</strong> for the selected length and takes <strong className="text-white">~3-5 min</strong> to generate.
           </p>
 
           {error && (

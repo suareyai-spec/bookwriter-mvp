@@ -135,7 +135,7 @@ export default function UniversityCoursePage() {
                 Generating your University Course
               </h2>
               <p className="text-gray-400 text-sm">
-                This is a full {totalWeeks}-week course — expect 15-25 minutes. You can safely leave this page; we&apos;ll email you when it&apos;s ready.
+                This is a full {totalWeeks}-week course — expect ~20-30 minutes. You can safely leave this page; we&apos;ll email you when it&apos;s ready.
               </p>
             </div>
 
@@ -201,7 +201,7 @@ export default function UniversityCoursePage() {
             Create a University Course
           </h1>
           <p className="text-gray-400 mb-8">
-            A full 12-15 week academic course for online asynchronous delivery — syllabus, weekly lectures, discussion prompts, and a complete assessment package. Costs <strong className="text-white">{CREDIT_COST} credits</strong>.
+            A full 12-15 week academic course for online asynchronous delivery — syllabus, weekly lectures, discussion prompts, and a complete assessment package. Costs <strong className="text-white">{CREDIT_COST} credits</strong> and takes <strong className="text-white">~20-30 min</strong> to generate.
           </p>
 
           {error && (

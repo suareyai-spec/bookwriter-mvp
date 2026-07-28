@@ -42,11 +42,11 @@ const GENRE_SUBTOPICS: Record<string, string[]> = {
 };
 
 const TONE_SAMPLES: Record<string, string> = {
-  "Professional & Authoritative": "The evidence clearly demonstrates that organizations implementing these strategies see a 40% improvement in outcomes. This chapter examines the three critical frameworks that drive sustainable growth.",
+  "Professional & Authoritative": "Most agencies die not from lack of clients, but from taking the wrong ones. The $10k client who emails at midnight costs more than the $3k client who trusts you. Here\u2019s how to tell them apart before you sign the contract.",
   "Conversational & Friendly": "Here\u2019s the thing nobody tells you about starting out \u2014 it\u2019s messy, and that\u2019s completely fine. Let me walk you through what actually worked for me, no sugarcoating.",
   "Academic & Research-Driven": "As established by Kahneman and Tversky (1979), cognitive biases systematically influence decision-making processes. This analysis extends their framework to examine contemporary applications in behavioral economics.",
   "Inspirational & Motivational": "You were not built for a small life. Every setback you\u2019ve faced has been shaping you for this exact moment. The question isn\u2019t whether you can \u2014 it\u2019s whether you will.",
-  "Narrative & Story-Driven": "The morning Sarah walked into the lab, she had no idea that the next three hours would change everything she believed about her research. The data on her screen told a story nobody expected.",
+  "Narrative & Story-Driven": "She didn\u2019t leave the city because she stopped loving it. She left because she finally loved herself more \u2014 and the city had never once made room for that version of her.",
   "Humorous & Lighthearted": "Look, I\u2019m not saying my first attempt at sourdough could\u2019ve been used as a doorstop, but my dog sniffed it and walked away. And that dog eats everything. Here\u2019s what I learned.",
 };
 
@@ -73,6 +73,15 @@ function getExpectedChapters(bookLen: string): number {
   if (bookLen?.includes("75,000")) return 21;
   if (bookLen?.includes("100,000")) return 25;
   return 14;
+}
+
+function getGenerationTimeLabel(bookLen: string): string {
+  if (bookLen?.includes("10,000")) return "~2 min generation";
+  if (bookLen?.includes("25,000")) return "~5 min generation";
+  if (bookLen?.includes("50,000")) return "~10 min generation";
+  if (bookLen?.includes("75,000")) return "~15 min generation";
+  if (bookLen?.includes("100,000")) return "~18 min generation";
+  return "~10 min generation";
 }
 
 function fmtEstimate(secs: number): string {
@@ -714,10 +723,10 @@ function HomeContent() {
                   value={bookLength}
                   onChange={(e) => setBookLength(e.target.value)}
                 >
-                  <option value="10,000 words (~40 pages)" className="bg-gray-900">Short (~3 min) — 10,000 words</option>
-                  <option value="25,000 words (~100 pages)" className="bg-gray-900">Medium (~6 min) — 25,000 words</option>
+                  <option value="10,000 words (~40 pages)" className="bg-gray-900">Short (~2 min) — 10,000 words</option>
+                  <option value="25,000 words (~100 pages)" className="bg-gray-900">Medium (~5 min) — 25,000 words</option>
                   <option value="50,000 words (~200 pages)" className="bg-gray-900">Standard (~10 min) — 50,000 words</option>
-                  <option value="75,000 words (~300 pages)" className="bg-gray-900">Long (~14 min) — 75,000 words</option>
+                  <option value="75,000 words (~300 pages)" className="bg-gray-900">Long (~15 min) — 75,000 words</option>
                   <option value="100,000 words (~400 pages)" className="bg-gray-900">Epic (~18 min) — 100,000 words</option>
                 </select>
               </div>
@@ -950,7 +959,7 @@ function HomeContent() {
             {/* Trust badges */}
             <div className="flex justify-center gap-6 mt-8 text-xs text-gray-600">
               <span>Your content stays private</span>
-              <span>~30 second generation</span>
+              <span>{getGenerationTimeLabel(bookLength)}</span>
               <span>PDF and DOCX export</span>
             </div>
           </div>

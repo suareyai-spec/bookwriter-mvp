@@ -10,7 +10,29 @@ import { cookies } from "next/headers";
 // The only two Stripe products PlotGhost sells: monthly subscriptions and
 // one-time credit pack top-ups. There is no other paid path — every
 // generation action is credit-metered (see lib/credits.ts).
+//
+// Env vars this route depends on:
+//   STRIPE_SECRET_KEY — required. Set on lib/stripe.ts's `stripe` client at
+//     module load; missing/invalid keys throw immediately on import, which
+//     would break subscriptions too, not just credit packs (Stripe isn't
+//     configured per-feature — it's one client for everything).
+//
+// No pre-created Stripe Price ID env vars are used for either product
+// (e.g. no STRIPE_CREDIT_PACK_STARTER_PRICE_ID-style variables exist).
+// Both subscription and credit-pack prices are created dynamically via
+// price_data on each checkout session, sourced from PLANS (lib/stripe.ts)
+// and CREDIT_PACKS (lib/credits.ts) — nothing extra needs to be added to
+// Vercel to add or change a plan or pack; edit those two files instead.
 export async function POST(req: Request) {
+  try {
+    return await handleCheckout(req);
+  } catch (err) {
+    console.error("[stripe/checkout] failed:", err);
+    return NextResponse.json({ error: "Checkout is not available right now. Contact support." }, { status: 500 });
+  }
+}
+
+async function handleCheckout(req: Request) {
   // --- RATE LIMIT ---
   const rl = await rateLimitByUser("stripe-checkout", 10, 60 * 60 * 1000);
   if (rl.blocked) return rl.blocked;
@@ -82,6 +104,13 @@ export async function POST(req: Request) {
   if (type === "credit_pack") {
     const pack = getCreditPack((body as any).packId || "");
     if (!pack) return NextResponse.json({ error: "Invalid credit pack" }, { status: 400 });
+    if (!pack.price || !pack.credits) {
+      // Defensive check on the CREDIT_PACKS entry itself — not currently
+      // reachable, but if a pack is ever added without a price/credits
+      // value, fail with a friendly message instead of sending Stripe a
+      // $0 or NaN line item.
+      return NextResponse.json({ error: "Credit packs not yet configured. Contact support." }, { status: 503 });
+    }
 
     const checkoutSession = await stripe.checkout.sessions.create({
       customer: customerId,

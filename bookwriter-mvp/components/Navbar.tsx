@@ -13,14 +13,32 @@ const PLAN_BADGES: Record<string, { label: string; color: string }> = {
   pro: { label: "Pro", color: "bg-purple-500/20 text-purple-400 border-purple-500/30" },
 };
 
-const CREATE_ITEMS = [
-  { label: "Books & Series", href: "/create" },
-  { label: "University Courses", href: "/special/university-course" },
-  { label: "Influencer Course", href: "/special/influencer-course" },
-  { label: "Newsletters & Articles", href: "/newsletter" },
-  { label: "Translation", href: "/translate" },
-  { label: "Research Assistant", href: "/special/thesis" },
-  { label: "White Papers & Reports", href: "/special/whitepaper" },
+const CREATE_GROUPS = [
+  {
+    group: "Books",
+    items: [{ label: "Books & Series", href: "/create" }],
+  },
+  {
+    group: "Courses",
+    items: [
+      { label: "University Course", href: "/special/university-course" },
+      { label: "Influencer Course", href: "/special/influencer-course" },
+    ],
+  },
+  {
+    group: "Content",
+    items: [
+      { label: "Newsletters & Articles", href: "/newsletter" },
+      { label: "White Papers & Reports", href: "/special/whitepaper" },
+    ],
+  },
+  {
+    group: "Academic",
+    items: [
+      { label: "Research & Thesis", href: "/special/thesis" },
+      { label: "Translation", href: "/translate" },
+    ],
+  },
 ];
 
 export default function Navbar() {
@@ -133,16 +151,21 @@ export default function Navbar() {
               </svg>
             </button>
             {createOpen && (
-              <div className="absolute top-full left-0 mt-1 w-56 bg-[#12121a] border border-white/[0.08] rounded-xl shadow-2xl py-2 z-50">
-                {CREATE_ITEMS.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={closeMenu}
-                    className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-white/[0.06] transition-colors"
-                  >
-                    {item.label}
-                  </Link>
+              <div className="absolute top-full left-0 mt-1 w-60 bg-[#12121a] border border-white/[0.08] rounded-xl shadow-2xl py-2 z-50">
+                {CREATE_GROUPS.map((g, gi) => (
+                  <div key={g.group} className={gi > 0 ? "mt-1 pt-1 border-t border-white/[0.06]" : ""}>
+                    <div className="px-4 pt-1.5 pb-1 text-[10px] font-semibold uppercase tracking-wide text-gray-600">{g.group}</div>
+                    {g.items.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={closeMenu}
+                        className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/[0.06] transition-colors"
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
                 ))}
               </div>
             )}
@@ -174,15 +197,20 @@ export default function Navbar() {
         <div className="md:hidden absolute top-full left-0 right-0 z-50 bg-[#0a0a0f]/95 backdrop-blur-xl border-b border-white/[0.06] shadow-2xl">
           <div className="flex flex-col gap-1 px-4 py-4 text-sm">
             <div className="text-xs font-semibold uppercase tracking-wide text-gray-600 pt-2 pb-1">Create</div>
-            {CREATE_ITEMS.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={closeMenu}
-                className="text-gray-400 hover:text-white transition-colors py-2 pl-1"
-              >
-                {item.label}
-              </Link>
+            {CREATE_GROUPS.map((g) => (
+              <div key={g.group}>
+                <div className="text-[10px] font-semibold uppercase tracking-wide text-gray-700 pt-2 pb-0.5 pl-1">{g.group}</div>
+                {g.items.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={closeMenu}
+                    className="block text-gray-400 hover:text-white transition-colors py-2 pl-1"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
             ))}
 
             {!session && (
