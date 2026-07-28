@@ -16,6 +16,7 @@ const PLAN_BADGES: Record<string, { label: string; color: string }> = {
 const CREATE_ITEMS = [
   { label: "Books & Series", href: "/create" },
   { label: "University Courses", href: "/special/university-course" },
+  { label: "Influencer Course", href: "/special/influencer-course" },
   { label: "Newsletters & Articles", href: "/newsletter" },
   { label: "Translation", href: "/translate" },
   { label: "Research Assistant", href: "/special/thesis" },

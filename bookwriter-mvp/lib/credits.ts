@@ -29,6 +29,11 @@ export const CREDIT_COST: Record<string, number> = {
   course_mini: 8,     // 5-7 lessons
   course_full: 16,    // 10-20 lessons
   course_premium: 20, // 10-20 lessons + workbook
+  // Premium influencer/coach-style course (4-10 modules, each with a named
+  // framework, multiple lessons, a worksheet, and an action step) plus a
+  // bonuses section and sales-page copy — a 3-stage generation comparable in
+  // depth to course_premium, priced the same.
+  influencer_course: 20,
   // A 12-15 week university course generates roughly 20-30 model calls
   // (syllabus + weekly outlines + 12-15 weekly lectures + assessment package)
   // and comparable-or-greater total word volume to an Epic book (30 credits),
