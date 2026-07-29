@@ -31,15 +31,6 @@ const MODE_CONFIG: Record<string, {
     ],
     color: "amber",
   },
-  thesis: {
-    title: "Research & Thesis Assistant",
-    contentType: "thesis",
-    tiers: [
-      { key: "thesis_standard", label: "Standard", credits: 4 },
-      { key: "thesis_doctoral", label: "Advanced Research Project", credits: 4 },
-    ],
-    color: "cyan",
-  },
   course: {
     title: "Influencer Course Builder",
     contentType: "course",
@@ -72,13 +63,6 @@ export default function SpecialModePage() {
   const [synopsis, setSynopsis] = useState("");
   const [characters, setCharacters] = useState("");
   const [selectedTier, setSelectedTier] = useState(config?.tiers[0]?.key || "");
-
-  // Thesis-specific
-  const [fieldOfStudy, setFieldOfStudy] = useState("");
-  const [thesisStatement, setThesisStatement] = useState("");
-  const [citationStyle, setCitationStyle] = useState("apa");
-  const [methodologyType, setMethodologyType] = useState("");
-  const [targetLength, setTargetLength] = useState("");
 
   // Course-specific
   const [topic, setTopic] = useState("");
@@ -217,13 +201,6 @@ export default function SpecialModePage() {
       params.tone = tone;
       params.synopsis = synopsis;
       params.characters = characters;
-    }
-    if (mode === "thesis") {
-      params.fieldOfStudy = fieldOfStudy;
-      params.thesisStatement = thesisStatement;
-      params.citationStyle = citationStyle;
-      params.methodologyType = methodologyType;
-      params.targetLength = targetLength;
     }
     if (mode === "course") {
       params.topic = topic;
@@ -393,39 +370,6 @@ export default function SpecialModePage() {
                 <div>
                   <label className={labelClass}>Characters</label>
                   <textarea className={inputClass} rows={3} value={characters} onChange={(e) => setCharacters(e.target.value)} placeholder="Describe your main characters, their traits, and relationships..." />
-                </div>
-              </>
-            )}
-
-            {mode === "thesis" && (
-              <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className={labelClass}>Field of Study</label>
-                    <input className={inputClass} value={fieldOfStudy} onChange={(e) => setFieldOfStudy(e.target.value)} placeholder="e.g. Psychology, Computer Science" />
-                  </div>
-                  <div>
-                    <label className={labelClass}>Citation Style</label>
-                    <select className={inputClass} value={citationStyle} onChange={(e) => setCitationStyle(e.target.value)}>
-                      <option value="apa">APA</option>
-                      <option value="mla">MLA</option>
-                      <option value="chicago">Chicago</option>
-                    </select>
-                  </div>
-                </div>
-                <div>
-                  <label className={labelClass}>Thesis Statement</label>
-                  <textarea className={inputClass} rows={2} value={thesisStatement} onChange={(e) => setThesisStatement(e.target.value)} placeholder="Your central thesis or research question..." />
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className={labelClass}>Methodology Type</label>
-                    <input className={inputClass} value={methodologyType} onChange={(e) => setMethodologyType(e.target.value)} placeholder="e.g. Qualitative, Quantitative, Mixed" />
-                  </div>
-                  <div>
-                    <label className={labelClass}>Target Length</label>
-                    <input className={inputClass} value={targetLength} onChange={(e) => setTargetLength(e.target.value)} placeholder="e.g. 10,000 words, 50 pages" />
-                  </div>
                 </div>
               </>
             )}

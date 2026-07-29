@@ -34,6 +34,8 @@ const Body = z.object({
   citationStyle: z.string().max(20).optional(),
   methodologyType: z.string().max(200).optional(),
   targetLength: z.string().max(100).optional(),
+  documentType: z.string().max(60).optional(),
+  academicLevel: z.string().max(60).optional(),
   topic: z.string().max(500).optional(),
   targetAudience: z.string().max(500).optional(),
   platform: z.string().max(50).optional(),
@@ -198,15 +200,20 @@ function getThesisPrompt(body: z.infer<typeof Body>, refContext: string, styleRe
     apa: "APA 7th Edition — (Author, Year) in-text, full reference list",
     mla: "MLA 9th Edition — (Author Page) in-text, Works Cited list",
     chicago: "Chicago Manual of Style — footnotes with bibliography",
+    harvard: "Harvard Referencing — (Author, Year) in-text, alphabetical reference list",
+    ieee: "IEEE — numbered [1] in-text citations, numbered reference list in order of appearance",
+    ama: "AMA (American Medical Association) — superscript numbered citations, numbered reference list",
+    bluebook: "Bluebook — legal citation format with full case/statute/source citations in footnotes",
   };
   const citation = citationMap[body.citationStyle || "apa"] || citationMap.apa;
 
   const context = `Title: "${body.title}"
+Document Type: ${body.documentType || "Thesis"}
 Field of Study: ${body.fieldOfStudy || "Not specified"}
+Academic Level: ${body.academicLevel || (isDoctoral ? "Doctoral / PhD" : "Standard academic")}
 Thesis Statement: ${body.thesisStatement || "Not specified"}
 Citation Style: ${citation}
 Methodology: ${body.methodologyType || "Not specified"}
-Level: ${isDoctoral ? "Doctoral / PhD" : "Standard academic"}
 Additional Notes: ${body.description || "None"}${refContext}`;
 
   return {
@@ -226,7 +233,7 @@ ${isDoctoral ? "- Doctoral-level depth: theoretical framework, comprehensive lit
     section: (idx: number, total: number, outline: string, prev: string[]) => {
       const sectionName = sections[idx - 1] || `Section ${idx}`;
       const prevSummary = prev.length > 0 ? `\nPrevious sections summary:\n${prev.map((p, i) => `${sections[i]}: ${p.slice(0, 500)}...`).join("\n\n")}` : "";
-      const ACADEMIC_SYSTEM_PROMPT = `You are an expert academic writer producing a thesis, dissertation, or academic book chapter on ${body.fieldOfStudy || `"${body.title}"`}. Your writing must be rigorous, specific, and confident — not defensive, not generic, not padded.
+      const ACADEMIC_SYSTEM_PROMPT = `You are an expert academic writer producing a ${(body.documentType || "thesis").toLowerCase()} on ${body.fieldOfStudy || `"${body.title}"`}. Your writing must be rigorous, specific, and confident — not defensive, not generic, not padded.
 
 WRITE WITH AUTHORITY: Prefer active voice and direct statements. "This study demonstrates" beats "it can be noted that the findings suggest." Hedging is appropriate when genuinely uncertain — it is not a default tone.
 
