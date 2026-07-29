@@ -62,32 +62,43 @@ export default function WhitepaperPage() {
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+    setError(null);
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("files", file);
     try {
       const res = await fetch("/api/upload", { method: "POST", body: formData });
-      if (res.ok) {
-        const data = await res.json();
-        setReferences((prev) => [...prev, { type: "pdf", name: file.name, content: data.text || data.content || "" }]);
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Failed to upload PDF");
+      } else {
+        const uploaded = data.files?.[0];
+        setReferences((prev) => [...prev, { type: "pdf", name: uploaded?.name || file.name, content: uploaded?.content || "" }]);
       }
-    } catch {}
+    } catch {
+      setError("Failed to upload PDF");
+    }
     if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
   async function handleGdocAdd() {
     if (!gdocUrl.trim()) return;
+    setError(null);
     try {
       const res = await fetch("/api/fetch-doc", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url: gdocUrl }),
       });
-      if (res.ok) {
-        const data = await res.json();
-        setReferences((prev) => [...prev, { type: "gdoc", name: gdocUrl, content: data.text || data.content || "" }]);
-        setGdocUrl("");
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Failed to fetch document");
+        return;
       }
-    } catch {}
+      setReferences((prev) => [...prev, { type: "gdoc", name: data.name || gdocUrl, content: data.content || "" }]);
+      setGdocUrl("");
+    } catch {
+      setError("Failed to fetch document");
+    }
   }
 
   function handlePasteAdd() {
@@ -326,9 +337,9 @@ export default function WhitepaperPage() {
               <h3 className="text-sm font-semibold text-gray-300 mb-3">Reference Materials (optional)</h3>
               <div className="space-y-3">
                 <div>
-                  <input type="file" ref={fileInputRef} onChange={handleFileUpload} accept=".pdf,.txt,.doc,.docx" className="hidden" />
+                  <input type="file" ref={fileInputRef} onChange={handleFileUpload} accept=".pdf" className="hidden" />
                   <button onClick={() => fileInputRef.current?.click()} className="text-sm bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] rounded-lg px-4 py-2 transition-all text-gray-300">
-                    Upload PDF / Document
+                    Upload PDF
                   </button>
                 </div>
                 <div className="flex gap-2">
