@@ -68,6 +68,11 @@ export const CREDIT_COST: Record<string, number> = {
   // at the full-book flat rate — see getRevisionCreditCost() below.
   revision_chapter: 1,
   revision_full: 3,
+
+  // ──── INLINE EDITOR ────
+  // Flat 1 credit per selection-based AI rewrite in the inline editor —
+  // cheapest tier since it's a small, targeted passage, not a full chapter.
+  content_rewrite: 1,
 };
 
 /**

@@ -6,6 +6,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import BookAIEditor from "@/components/BookAIEditor";
+import ContentEditor from "@/components/ContentEditor";
 
 interface Version {
   id: string;
@@ -93,12 +94,6 @@ export default function BookDetailPage() {
   const [book, setBook] = useState<BookDetail | null>(null);
   const [selectedVersion, setSelectedVersion] = useState<number>(0);
   const [loading, setLoading] = useState(true);
-
-  // Edit mode state
-  const [editMode, setEditMode] = useState(false);
-  const [editTitle, setEditTitle] = useState("");
-  const [editContent, setEditContent] = useState("");
-  const [editSaving, setEditSaving] = useState(false);
 
   // Series state
   const [showSeriesModal, setShowSeriesModal] = useState(false);
@@ -306,33 +301,14 @@ export default function BookDetailPage() {
     setPasteText("");
   }
 
-  function enterEditMode() {
-    if (!book || !currentVersion) return;
-    setEditTitle(book.title);
-    setEditContent(currentVersion.content);
-    setEditMode(true);
-  }
-
-  async function saveEdit() {
-    if (!book || !editContent.trim()) return;
-    setEditSaving(true);
-    try {
-      const res = await fetch("/api/books/edit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          bookId: book.id,
-          title: editTitle.trim() || book.title,
-          content: editContent,
-          notes: "Manual edit",
-        }),
-      });
-      if (res.ok) {
-        setEditMode(false);
-        await fetchBook();
-      }
-    } catch {}
-    setEditSaving(false);
+  function handleEditorSaved(newContent: string) {
+    setBook((prev) => {
+      if (!prev) return prev;
+      const versions = prev.versions.map((v, i) =>
+        i === selectedVersion ? { ...v, content: newContent, wordCount: newContent.split(/\s+/).filter(Boolean).length } : v
+      );
+      return { ...prev, versions };
+    });
   }
 
   async function saveChapter() {
@@ -804,13 +780,6 @@ export default function BookDetailPage() {
                 Chapters
               </button>
               <button
-                onClick={enterEditMode}
-                disabled={isInProgress || !currentVersion || editMode}
-                className="text-sm bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/30 text-amber-400 rounded-lg px-3 py-1.5 transition-all disabled:opacity-40"
-              >
-                Edit
-              </button>
-              <button
                 onClick={() => setShowSeriesModal(true)}
                 disabled={isInProgress || seriesLoading}
                 className="text-sm bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/30 text-indigo-400 rounded-lg px-3 py-1.5 transition-all disabled:opacity-40"
@@ -1239,63 +1208,16 @@ export default function BookDetailPage() {
               </div>
             </div>
 
-            {currentVersion && !editMode && (
-              <>
-                <div className="flex justify-center gap-6 py-3 border-b border-white/[0.06] text-sm text-gray-400">
-                  <span>{(currentVersion.wordCount || currentVersion.content.split(/\s+/).filter(Boolean).length).toLocaleString()} words</span>
-                  <span>~{Math.ceil((currentVersion.wordCount || currentVersion.content.split(/\s+/).filter(Boolean).length) / 300)} pages</span>
-                  <span>Version {currentVersion.version}</span>
-                </div>
-                <div className="p-6 sm:p-10">
-                  <div className="whitespace-pre-wrap text-gray-300 leading-[1.8] text-[15px] max-h-[80vh] overflow-y-auto pr-2">
-                    {currentVersion.content}
-                  </div>
-                </div>
-              </>
-            )}
-
-            {currentVersion && editMode && (
-              <>
-                <div className="border-b border-white/[0.06] p-4">
-                  <div className="flex items-center justify-between gap-4 flex-wrap">
-                    <div className="flex-1 min-w-0">
-                      <label className="block text-xs text-gray-500 mb-1">Title</label>
-                      <input
-                        className="w-full bg-white/[0.04] border border-amber-500/30 rounded-lg px-3 py-2 text-white text-lg font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/50"
-                        value={editTitle}
-                        onChange={(e) => setEditTitle(e.target.value)}
-                        style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-                      />
-                    </div>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={saveEdit}
-                        disabled={editSaving}
-                        className="bg-green-600/20 hover:bg-green-600/30 border border-green-500/30 text-green-400 rounded-lg px-4 py-2 text-sm font-medium transition-all disabled:opacity-50"
-                      >
-                        {editSaving ? "Saving..." : "Save as New Version"}
-                      </button>
-                      <button
-                        onClick={() => setEditMode(false)}
-                        className="bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] text-gray-400 rounded-lg px-4 py-2 text-sm transition-all"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
-                  <div className="mt-2 text-xs text-gray-500">
-                    {editContent.split(/\s+/).filter(Boolean).length.toLocaleString()} words · Editing will save as a new version
-                  </div>
-                </div>
-                <div className="p-4">
-                  <textarea
-                    className="w-full bg-white/[0.02] border border-amber-500/20 rounded-xl p-6 text-gray-300 leading-[1.8] text-[15px] focus:outline-none focus:ring-2 focus:ring-amber-500/30 resize-none"
-                    value={editContent}
-                    onChange={(e) => setEditContent(e.target.value)}
-                    style={{ minHeight: "70vh" }}
-                  />
-                </div>
-              </>
+            {currentVersion && (
+              <div className="p-4 sm:p-6">
+                <ContentEditor
+                  key={currentVersion.id}
+                  bookId={book.id}
+                  versionId={currentVersion.id}
+                  initialContent={currentVersion.content}
+                  onSaved={handleEditorSaved}
+                />
+              </div>
             )}
 
             {!currentVersion && book.status !== "complete" && (

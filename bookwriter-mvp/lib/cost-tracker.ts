@@ -8,7 +8,7 @@ const PRICING: Record<string, { input: number; output: number }> = {
   default: { input: 15, output: 75 },
 };
 
-export type CostType = "book" | "revision" | "special" | "newsletter" | "article" | "translation" | "humanizer";
+export type CostType = "book" | "revision" | "special" | "newsletter" | "article" | "translation" | "humanizer" | "content_rewrite";
 
 export function estimateCost(inputTokens: number, outputTokens: number, model?: string): number {
   const pricing = PRICING[model || ""] || PRICING.default;

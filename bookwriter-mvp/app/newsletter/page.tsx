@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import GenerateButton from "@/components/GenerateButton";
+import ContentEditor from "@/components/ContentEditor";
 import { getCreditCost } from "@/lib/credits";
 
 const INDUSTRIES = [
@@ -71,6 +72,7 @@ function NewsletterContent() {
 
   const [step, setStep] = useState<"input" | "generating" | "result">("input");
   const [result, setResult] = useState("");
+  const [resultBookId, setResultBookId] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [progress, setProgress] = useState(0);
   const [statusText, setStatusText] = useState("");
@@ -198,6 +200,7 @@ function NewsletterContent() {
                 break;
               case "complete":
                 setResult(event.content);
+                setResultBookId(event.bookId || null);
                 setStep("result");
                 break;
               case "error":
@@ -515,11 +518,20 @@ function NewsletterContent() {
             </div>
 
             {/* Rendered newsletter */}
-            <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-6 sm:p-8">
-              <div className="prose prose-invert max-w-none">
-                <pre className="whitespace-pre-wrap text-sm text-gray-200 font-sans leading-relaxed">{result}</pre>
+            {resultBookId ? (
+              <ContentEditor
+                key={resultBookId}
+                bookId={resultBookId}
+                initialContent={result}
+                onSaved={setResult}
+              />
+            ) : (
+              <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-6 sm:p-8">
+                <div className="prose prose-invert max-w-none">
+                  <pre className="whitespace-pre-wrap text-sm text-gray-200 font-sans leading-relaxed">{result}</pre>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
       </div>
