@@ -7,15 +7,13 @@ import { PLAN_MONTHLY_CREDITS, PLAN_ROLLOVER_CAP, getCreditPack } from "@/lib/cr
 export async function POST(req: Request) {
   const body = await req.text();
 
-  // TODO: Verify webhook signature when STRIPE_WEBHOOK_SECRET is configured
-  // const sig = req.headers.get("stripe-signature")!;
-  // const event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET!);
-
+  const sig = req.headers.get("stripe-signature")!;
   let event: Stripe.Event;
   try {
-    event = JSON.parse(body) as Stripe.Event;
-  } catch {
-    return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
+    event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET!);
+  } catch (err) {
+    console.error("[webhook] signature verification failed:", err instanceof Error ? err.message : err);
+    return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
   switch (event.type) {
