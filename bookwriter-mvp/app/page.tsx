@@ -62,6 +62,16 @@ const CREATION_MODES = [
     ),
   },
   {
+    title: "Influencer Courses",
+    href: "/special/influencer-course",
+    description: "Build a premium course your audience will pay for — named frameworks, actionable modules, worksheets and sales copy included. The course Alex Hormozi would sell.",
+    icon: (
+      <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+      </svg>
+    ),
+  },
+  {
     title: "Newsletters & Articles",
     href: "/newsletter",
     description: "Keep your audience engaged with SEO-optimized articles, newsletters, opinion pieces and how-to guides. Consistent publishing without the time investment.",
@@ -162,7 +172,7 @@ const FEATURES = [
 
 const STATS = [
   { value: "10+", label: "Languages" },
-  { value: "6", label: "Creation Modes" },
+  { value: "7", label: "Creation Modes" },
   { value: "PDF & Word", label: "Export" },
   { value: "Global", label: "Used by Experts Worldwide" },
 ];
