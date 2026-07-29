@@ -14,6 +14,12 @@ import { getStyleExamples } from "@/lib/embeddings";
 export const maxDuration = 900;
 export const dynamic = "force-dynamic";
 
+const ReferenceItem = z.object({
+  type: z.enum(["pdf", "gdoc", "text"]),
+  content: z.string(),
+  name: z.string(),
+});
+
 const Body = z.object({
   title: z.string().min(1).max(200),
   brandName: z.string().min(1).max(200),
@@ -25,7 +31,24 @@ const Body = z.object({
   pairWithBook: z.boolean().default(false),
   bookTitle: z.string().max(200).optional(),
   language: z.string().max(30).optional(),
+  references: z.array(ReferenceItem).optional(),
 });
+
+function buildReferenceContext(references: z.infer<typeof ReferenceItem>[]): string {
+  if (!references.length) return "";
+  const MAX_REF_CHARS = 50000;
+  let total = 0;
+  const parts: string[] = [];
+  for (let i = 0; i < references.length; i++) {
+    const ref = references[i];
+    const remaining = MAX_REF_CHARS - total;
+    if (remaining <= 0) break;
+    const content = ref.content.slice(0, remaining);
+    total += content.length;
+    parts.push(`[Reference ${i + 1}: ${ref.name}]\n${content}`);
+  }
+  return `\n\nREFERENCE MATERIALS (draw on this source material for frameworks, examples, and specifics — ground the course in it rather than generic knowledge where it applies):\n${parts.join("\n\n")}`;
+}
 
 const TONE_GUIDANCE: Record<string, string> = {
   "Tactical & Direct": "Give the instruction, not the theory. Numbered steps, clear cause-and-effect. Minimal narrative — get to the how.",
@@ -58,6 +81,7 @@ function getInfluencerCoursePrompt(body: z.infer<typeof Body>, styleReference: s
   const toneGuidance = TONE_GUIDANCE[body.tone];
   const systemPrompt = INFLUENCER_COURSE_SYSTEM_PROMPT;
 
+  const refContext = body.references?.length ? buildReferenceContext(body.references) : "";
   const context = `Course Title: "${body.title}"
 Creator / Brand: ${body.brandName}
 Topic / Niche: ${body.topic}
@@ -65,7 +89,7 @@ Target Student: ${body.targetStudent}
 Core Transformation (what they can DO after this course that they couldn't before): ${body.coreTransformation}
 Number of Modules: ${moduleCount}
 Tone: ${body.tone} — ${toneGuidance}
-${body.pairWithBook && body.bookTitle ? `This course is sold as a companion to the book "${body.bookTitle}" — reference it naturally where it strengthens credibility or cross-sell (e.g. in the overview and sales description), but do not force it into every module.` : ""}`;
+${body.pairWithBook && body.bookTitle ? `This course is sold as a companion to the book "${body.bookTitle}" — reference it naturally where it strengthens credibility or cross-sell (e.g. in the overview and sales description), but do not force it into every module.` : ""}${refContext}`;
 
   return {
     sectionCount: moduleCount + 1, // + final bonuses/sales-copy stage

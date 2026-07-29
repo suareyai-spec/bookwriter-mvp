@@ -10,6 +10,12 @@ import { inngest } from "@/lib/inngest";
 export const maxDuration = 30;
 export const dynamic = "force-dynamic";
 
+const ReferenceItem = z.object({
+  type: z.enum(["pdf", "gdoc", "text"]),
+  content: z.string(),
+  name: z.string(),
+});
+
 const Body = z.object({
   courseTitle: z.string().min(1).max(200),
   subject: z.string().min(1).max(200),
@@ -22,6 +28,7 @@ const Body = z.object({
   deliveryFormat: z.string().max(100).optional(),
   gradingPreference: z.enum(["quiz-heavy", "project-heavy", "balanced"]).default("balanced"),
   language: z.string().max(30).optional(),
+  references: z.array(ReferenceItem).optional(),
 });
 
 export async function POST(req: Request) {

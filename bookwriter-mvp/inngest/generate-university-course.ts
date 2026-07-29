@@ -10,6 +10,12 @@ import { getStyleExamples } from "@/lib/embeddings";
 
 // ──── Schema (mirrored from api/special/university-course/route.ts) ────────
 
+const ReferenceItem = z.object({
+  type: z.enum(["pdf", "gdoc", "text"]),
+  content: z.string(),
+  name: z.string(),
+});
+
 const Body = z.object({
   courseTitle: z.string().min(1).max(200),
   subject: z.string().min(1).max(200),
@@ -22,6 +28,7 @@ const Body = z.object({
   deliveryFormat: z.string().max(100).optional(),
   gradingPreference: z.enum(["quiz-heavy", "project-heavy", "balanced"]).default("balanced"),
   language: z.string().max(30).optional(),
+  references: z.array(ReferenceItem).optional(),
 });
 
 type CourseBody = z.infer<typeof Body>;
@@ -64,8 +71,27 @@ async function callClaude(prompt: string, maxTokens: number, longOutput = false)
   return { text, inputTokens, outputTokens };
 }
 
+// Folds uploaded PDFs / Google Docs / pasted text into a labeled block
+// appended to courseContext() — shared by every stage prompt below.
+function buildReferenceContext(references: z.infer<typeof ReferenceItem>[]): string {
+  if (!references.length) return "";
+  const MAX_REF_CHARS = 50000;
+  let total = 0;
+  const parts: string[] = [];
+  for (let i = 0; i < references.length; i++) {
+    const ref = references[i];
+    const remaining = MAX_REF_CHARS - total;
+    if (remaining <= 0) break;
+    const content = ref.content.slice(0, remaining);
+    total += content.length;
+    parts.push(`[Reference ${i + 1}: ${ref.name}]\n${content}`);
+  }
+  return `\n\nREFERENCE MATERIALS (draw on these when relevant — ground syllabus content, readings, and examples in this source material rather than generic knowledge where it applies):\n${parts.join("\n\n")}`;
+}
+
 function courseContext(body: CourseBody, lang: string): string {
   const level = LEVEL_LABELS[body.academicLevel] || body.academicLevel;
+  const refContext = body.references?.length ? buildReferenceContext(body.references) : "";
   return `Course Title: "${body.courseTitle}"
 Subject / Discipline: ${body.subject}
 Academic Level: ${level}
@@ -77,7 +103,7 @@ Language: ${lang} — write everything in ${lang}.
 Course Description:
 ${body.description}
 ${body.audiencePrerequisites ? `\nTarget Audience & Prerequisites:\n${body.audiencePrerequisites}` : ""}
-${body.learningObjectives?.trim() ? `\nInstructor-Provided Learning Objectives (use these as the foundation — refine into measurable, Bloom's-mapped objectives, do not replace with generic ones):\n${body.learningObjectives}` : "\nNo learning objectives were provided — generate 3-5 measurable, Bloom's-taxonomy-mapped objectives yourself, grounded in the course description above."}`;
+${body.learningObjectives?.trim() ? `\nInstructor-Provided Learning Objectives (use these as the foundation — refine into measurable, Bloom's-mapped objectives, do not replace with generic ones):\n${body.learningObjectives}` : "\nNo learning objectives were provided — generate 3-5 measurable, Bloom's-taxonomy-mapped objectives yourself, grounded in the course description above."}${refContext}`;
 }
 
 // The system prompt for all CONTENT-generation stages (weekly lectures + assessments).

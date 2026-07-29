@@ -76,8 +76,69 @@ function NewsletterContent() {
   const [statusText, setStatusText] = useState("");
   const previewRef = useRef<HTMLDivElement>(null);
 
+  interface ReferenceItem { type: "pdf" | "gdoc" | "text"; name: string; content: string; }
+  const [references, setReferences] = useState<ReferenceItem[]>([]);
+  const [gdocUrl, setGdocUrl] = useState("");
+  const [pasteText, setPasteText] = useState("");
+  const [refLoading, setRefLoading] = useState(false);
+  const [refError, setRefError] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   function toggleSection(s: string) {
     setSections(prev => prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s]);
+  }
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = e.target.files;
+    if (!files?.length) return;
+    const currentCount = references.filter(r => r.type === "pdf").length;
+    if (currentCount + files.length > 5) {
+      setRefError("Maximum 5 PDF files allowed");
+      return;
+    }
+    setRefLoading(true);
+    setRefError("");
+    try {
+      const formData = new FormData();
+      for (const file of Array.from(files)) {
+        if (file.size > 10 * 1024 * 1024) {
+          setRefError(`File "${file.name}" exceeds 10MB limit`);
+          setRefLoading(false);
+          return;
+        }
+        formData.append("files", file);
+      }
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const data = await res.json();
+      if (!res.ok) { setRefError(data.error || "Failed to upload PDF"); setRefLoading(false); return; }
+      setReferences(prev => [...prev, ...data.files.map((f: { name: string; content: string }) => ({ type: "pdf" as const, name: f.name, content: f.content }))]);
+    } catch { setRefError("Failed to upload PDF"); }
+    setRefLoading(false);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  async function handleGdocAdd() {
+    if (!gdocUrl.trim()) return;
+    setRefLoading(true);
+    setRefError("");
+    try {
+      const res = await fetch("/api/fetch-doc", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ url: gdocUrl }) });
+      const data = await res.json();
+      if (!res.ok) { setRefError(data.error || "Failed to fetch document"); setRefLoading(false); return; }
+      setReferences(prev => [...prev, { type: "gdoc", name: data.name, content: data.content }]);
+      setGdocUrl("");
+    } catch { setRefError("Failed to fetch document"); }
+    setRefLoading(false);
+  }
+
+  function handlePasteAdd() {
+    if (!pasteText.trim()) return;
+    setReferences(prev => [...prev, { type: "text", name: `Pasted Text ${prev.filter(r => r.type === "text").length + 1}`, content: pasteText }]);
+    setPasteText("");
+  }
+
+  function removeReference(index: number) {
+    setReferences(prev => prev.filter((_, i) => i !== index));
   }
 
   const selectedPrice = WORD_COUNTS.find(w => w.key === wordCount)?.price || 19;
@@ -97,6 +158,7 @@ function NewsletterContent() {
         body: JSON.stringify({
           companyName, industry, newsletterType, tone, keyTopics,
           targetAudience, callToAction, sections, wordCount, language,
+          references,
         }),
       });
 
@@ -333,6 +395,43 @@ function NewsletterContent() {
                   <select className={`${inputClass} appearance-none`} value={language} onChange={e => setLanguage(e.target.value)}>
                     {LANGUAGES.map(l => <option key={l} value={l} className="bg-gray-900">{l}</option>)}
                   </select>
+                </div>
+              </div>
+
+              {/* Reference Materials */}
+              <div className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-5">
+                <h3 className="text-sm font-semibold text-gray-300 mb-3">Reference Materials (optional)</h3>
+                {refError && <div className="mb-3 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg p-3">{refError}</div>}
+                <div className="space-y-3">
+                  <div>
+                    <input type="file" ref={fileInputRef} onChange={handleFileUpload} accept=".pdf" multiple className="hidden" />
+                    <button onClick={() => fileInputRef.current?.click()} disabled={refLoading} className="text-sm bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] rounded-lg px-4 py-2 transition-all text-gray-300 disabled:opacity-50">
+                      {refLoading ? "Processing..." : "Upload PDF"}
+                    </button>
+                  </div>
+                  <div className="flex gap-2">
+                    <input className={`${inputClass} flex-1`} value={gdocUrl} onChange={(e) => setGdocUrl(e.target.value)} placeholder="Google Docs URL" />
+                    <button onClick={handleGdocAdd} disabled={!gdocUrl.trim() || refLoading} className="text-sm bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] rounded-lg px-4 py-2 transition-all text-gray-300 whitespace-nowrap disabled:opacity-50">
+                      Add
+                    </button>
+                  </div>
+                  <div className="flex gap-2">
+                    <textarea className={`${inputClass} flex-1`} rows={2} value={pasteText} onChange={(e) => setPasteText(e.target.value)} placeholder="Paste reference text..." />
+                    <button onClick={handlePasteAdd} disabled={!pasteText.trim()} className="text-sm bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] rounded-lg px-4 py-2 transition-all text-gray-300 self-end whitespace-nowrap disabled:opacity-50">
+                      Add
+                    </button>
+                  </div>
+                  {references.length > 0 && (
+                    <div className="space-y-2 mt-2">
+                      {references.map((ref, i) => (
+                        <div key={i} className="flex items-center gap-2 bg-white/[0.03] rounded-lg px-3 py-2 text-sm">
+                          <span className="text-gray-400 flex-1 truncate">{ref.name}</span>
+                          <span className="text-xs text-gray-500">{ref.type}</span>
+                          <button onClick={() => removeReference(i)} className="text-red-400 hover:text-red-300 text-xs">Remove</button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
 

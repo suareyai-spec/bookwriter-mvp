@@ -14,6 +14,12 @@ import { getStyleExamples } from "@/lib/embeddings";
 export const maxDuration = 120;
 export const dynamic = "force-dynamic";
 
+const ReferenceItem = z.object({
+  type: z.enum(["pdf", "gdoc", "text"]),
+  content: z.string(),
+  name: z.string(),
+});
+
 const Body = z.object({
   companyName: z.string().min(1).max(200),
   industry: z.string().max(60),
@@ -26,7 +32,24 @@ const Body = z.object({
   wordCount: z.enum(["brief", "standard", "detailed", "comprehensive"]),
   language: z.string().max(30).optional(),
   writingSample: z.string().max(10000).optional(),
+  references: z.array(ReferenceItem).optional(),
 });
+
+function buildReferenceContext(references: z.infer<typeof ReferenceItem>[]): string {
+  if (!references.length) return "";
+  const MAX_REF_CHARS = 50000;
+  let total = 0;
+  const parts: string[] = [];
+  for (let i = 0; i < references.length; i++) {
+    const ref = references[i];
+    const remaining = MAX_REF_CHARS - total;
+    if (remaining <= 0) break;
+    const content = ref.content.slice(0, remaining);
+    total += content.length;
+    parts.push(`[Reference ${i + 1}: ${ref.name}]\n${content}`);
+  }
+  return `\n\nREFERENCE MATERIALS (draw on this source material where relevant):\n${parts.join("\n\n")}`;
+}
 
 const PRICING: Record<string, number> = {
   brief: 900,       // $9
@@ -145,6 +168,8 @@ export async function POST(req: Request) {
       ? `\n\nINCLUDE THESE SECTIONS:\n${body.sections.map(s => `- ${s}`).join("\n")}`
       : "";
 
+    const refContext = body.references?.length ? buildReferenceContext(body.references) : "";
+
     const styleReference = await getStyleExamples(`${body.industry}: ${body.keyTopics}`, "newsletter");
 
     const prompt = `You are writing a newsletter email on behalf of ${body.companyName} to their subscriber list. The primary purpose is to give something of genuine value — not to sell, announce, or update. Value first, always.
@@ -174,7 +199,7 @@ TARGET LENGTH: ~${wordTarget} words
 ${sectionsText}
 ${styleReference ? `\n${styleReference}\n` : ""}
 CONTENT TO COVER:
-${body.keyTopics}
+${body.keyTopics}${refContext}
 
 FORMAT:
 1. 3 SUBJECT LINE OPTIONS (each under 50 chars, each a different approach)
