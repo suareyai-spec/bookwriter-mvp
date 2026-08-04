@@ -815,10 +815,12 @@ Write the entire outline in ${lang}. ALL text must be in ${lang} — chapter tit
 
       await releaseGenerationSlot(userId);
 
-      const finishedUser = await prisma.user.findUnique({ where: { id: userId }, select: { email: true } });
+      const finishedUser = await prisma.user.findUnique({ where: { id: userId }, select: { email: true, name: true } });
       if (finishedUser?.email) {
         await sendGenerationCompleteEmail({
           to: finishedUser.email,
+          name: finishedUser.name,
+          contentTypeLabel: isCourse ? "Course" : "Book",
           title: body.title,
           wordCount: totalWords,
           bookId,

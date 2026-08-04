@@ -1051,8 +1051,14 @@ export async function POST(req: Request) {
           controller.enqueue(new TextEncoder().encode(sseEvent({ type: "complete", bookId: record.id })));
           controller.close();
           await releaseGenerationSlot(userId);
+          const contentTypeLabel = body.mode === "thesis" ? (body.documentType || "Thesis")
+            : body.mode === "comic" ? "Comic Book"
+            : body.mode === "playwright" ? "Play"
+            : "Course";
           sendGenerationCompleteEmail({
             to: specialUser.email,
+            name: specialUser.name,
+            contentTypeLabel,
             title: record.title,
             wordCount,
             bookId: record.id,

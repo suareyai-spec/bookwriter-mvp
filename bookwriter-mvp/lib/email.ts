@@ -35,19 +35,21 @@ function wrapperHtml(bodyHtml: string): string {
 
 export async function sendGenerationCompleteEmail(params: {
   to: string;
+  name?: string | null;
+  contentTypeLabel: string;
   title: string;
-  wordCount: number;
   bookId: string;
+  wordCount?: number;
 }): Promise<void> {
-  const { to, title, wordCount, bookId } = params;
+  const { to, name, contentTypeLabel, title, bookId, wordCount } = params;
   const libraryUrl = `${APP_URL}/library/${bookId}`;
-  const subject = `Your ${title} is ready on PlotGhost`;
+  const subject = `Your ${contentTypeLabel} is ready on PlotGhost`;
   const html = wrapperHtml(`
-    <h1 style="font-size: 20px; margin-bottom: 16px;">Your book is ready!</h1>
-    <p style="font-size: 15px; line-height: 1.6;"><strong>${escapeHtml(title)}</strong> has finished generating.</p>
-    <p style="font-size: 15px; line-height: 1.6;">Word count: <strong>${wordCount.toLocaleString()}</strong></p>
+    <h1 style="font-size: 20px; margin-bottom: 16px;">Your ${escapeHtml(contentTypeLabel)} is ready!</h1>
+    <p style="font-size: 15px; line-height: 1.6;">Hi ${escapeHtml(name || "there")},</p>
+    <p style="font-size: 15px; line-height: 1.6;"><strong>${escapeHtml(title)}</strong> has finished generating${wordCount ? ` — ${wordCount.toLocaleString()} words` : ""}.</p>
     <p style="margin: 24px 0;">
-      <a href="${libraryUrl}" style="background: #111; color: #fff; padding: 12px 20px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 600;">View in your library</a>
+      <a href="${libraryUrl}" style="background: #111; color: #fff; padding: 12px 20px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 600;">Open in PlotGhost &rarr; edit, export, or share</a>
     </p>
   `);
   await send(to, subject, html);

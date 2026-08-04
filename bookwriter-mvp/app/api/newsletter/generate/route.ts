@@ -261,6 +261,8 @@ Write the complete newsletter now:`;
           await releaseGenerationSlot(userId);
           sendGenerationCompleteEmail({
             to: user.email,
+            name: user.name,
+            contentTypeLabel: "Newsletter",
             title: record.title,
             wordCount: newsletter.split(/\s+/).filter(Boolean).length,
             bookId: record.id,

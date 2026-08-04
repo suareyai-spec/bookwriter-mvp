@@ -943,10 +943,12 @@ Write everything in ${lang}.`;
 
       await releaseGenerationSlot(userId);
 
-      const finishedUser = await prisma.user.findUnique({ where: { id: userId }, select: { email: true } });
+      const finishedUser = await prisma.user.findUnique({ where: { id: userId }, select: { email: true, name: true } });
       if (finishedUser?.email) {
         await sendGenerationCompleteEmail({
           to: finishedUser.email,
+          name: finishedUser.name,
+          contentTypeLabel: "University Course",
           title: body.courseTitle,
           wordCount: totalWords,
           bookId,

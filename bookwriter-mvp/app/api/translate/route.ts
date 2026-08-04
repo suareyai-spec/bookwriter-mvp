@@ -345,6 +345,8 @@ export async function POST(req: Request) {
             const sourceBook = await prisma.book.findUnique({ where: { id: body.bookId }, select: { title: true } }).catch(() => null);
             sendGenerationCompleteEmail({
               to: user.email,
+              name: user.name,
+              contentTypeLabel: "Translation",
               title: sourceBook?.title ? `${sourceBook.title} (${body.targetLanguage} translation)` : `Translation to ${body.targetLanguage}`,
               wordCount: targetWordCount,
               bookId: body.bookId,

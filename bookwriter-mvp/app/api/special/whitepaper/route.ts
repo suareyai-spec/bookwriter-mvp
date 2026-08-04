@@ -353,7 +353,7 @@ export async function POST(req: Request) {
           controller.enqueue(new TextEncoder().encode(sseEvent({ type: "complete", bookId: record.id })));
           controller.close();
           await releaseGenerationSlot(userId);
-          sendGenerationCompleteEmail({ to: user.email, title: record.title, wordCount, bookId: record.id })
+          sendGenerationCompleteEmail({ to: user.email, name: user.name, contentTypeLabel: body.documentType, title: record.title, wordCount, bookId: record.id })
             .catch((emailErr) => console.error('[whitepaper] success email failed:', emailErr));
         } catch (err) {
           const message = err instanceof Error ? err.message : "Failed";

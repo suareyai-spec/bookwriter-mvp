@@ -401,6 +401,8 @@ ${article.slice(0, 2000)}`;
           await releaseGenerationSlot(userId);
           sendGenerationCompleteEmail({
             to: user.email,
+            name: user.name,
+            contentTypeLabel: "Article",
             title: record.title,
             wordCount: article.split(/\s+/).filter(Boolean).length,
             bookId: record.id,
